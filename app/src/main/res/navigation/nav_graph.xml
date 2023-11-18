@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/nav_graph">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/searchFragment">
 
+    <fragment
+        android:id="@+id/signUpFragment"
+        android:name="com.kh.mo.shopyapp.ui.SignUpFragment"
+        android:label="fragment_singin"
+        tools:layout="@layout/fragment_singin" />
+    <fragment
+        android:id="@+id/signInFragment"
+        android:name="com.kh.mo.shopyapp.ui.SignInFragment"
+        android:label="SignInFragment" />
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.kh.mo.shopyapp.SearchFragment"
+        android:label="fragment_search"
+        tools:layout="@layout/fragment_search" />
 </navigation>
