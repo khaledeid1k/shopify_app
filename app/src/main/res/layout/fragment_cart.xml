@@ -80,6 +80,8 @@
         android:drawablePadding="@dimen/_16sdp"
         android:padding="@dimen/_8sdp"
         android:text="@string/checkout"
+        android:paddingStart="@dimen/_16sdp"
+        android:textAllCaps="false"
         android:textColor="?attr/colorBackgroundFloating"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
