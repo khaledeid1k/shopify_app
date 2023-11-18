@@ -106,7 +106,7 @@
                 app:layout_constraintTop_toBottomOf="@id/productsRecyclerV" />
 
             <TextView
-                android:id="@+id/paymentEditTxt"
+                android:id="@+id/editPaymentTxtV"
                 style="@style/sub_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -126,6 +126,14 @@
                 app:layout_constraintEnd_toEndOf="@id/productsRecyclerV"
                 app:layout_constraintStart_toStartOf="@id/productsRecyclerV"
                 app:layout_constraintTop_toBottomOf="@id/paymentTxtV">
+
+                <ImageView
+                    android:id="@+id/paymentMethodImgV"
+                    android:layout_width="@dimen/_50sdp"
+                    android:layout_height="@dimen/_50sdp"
+                    android:layout_gravity="center|start"
+                    android:layout_marginStart="@dimen/_8sdp"
+                    android:src="@drawable/ma_symbol" />
 
                 <TextView
                     android:id="@+id/paymentCardTypeTxt"
@@ -189,7 +197,7 @@
         tools:text="Total" />
 
     <TextView
-        android:id="@+id/cartTotalCurrencyTxtV"
+        android:id="@+id/checkoutTotalCurrencyTxtV"
         style="@style/sub_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
