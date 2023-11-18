@@ -1,18 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="@dimen/_16sdp"
     tools:context=".CartFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/cartRecyclerV"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:layout_height="0dp"
         android:orientation="vertical"
-        tools:listitem="@layout/item_cart"
-        tools:itemCount="4"/>
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/line"
+        tools:itemCount="4"
+        tools:listitem="@layout/item_cart" />
 
-</FrameLayout>
+    <View
+        android:id="@+id/line"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_1sdp"
+        android:layout_marginStart="@dimen/_16sdp"
+        android:layout_marginEnd="@dimen/_16sdp"
+        android:alpha=".5"
+        android:layout_marginBottom="@dimen/_16sdp"
+        android:background="@color/sub_text"
+        app:layout_constraintBottom_toTopOf="@id/cartTotalTxtV" />
+
+    <TextView
+        android:id="@+id/cartTotalTxtV"
+        style="@style/sub_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/cartTotalPriceTxtV"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="Total" />
+
+    <TextView
+        android:id="@+id/cartTotalCurrencyTxtV"
+        style="@style/sub_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="?attr/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="@id/cartTotalPriceTxtV"
+        app:layout_constraintStart_toEndOf="@id/cartTotalPriceTxtV"
+        app:layout_constraintTop_toTopOf="@id/cartTotalPriceTxtV"
+        tools:text="@string/dollar_currency" />
+
+    <TextView
+        android:id="@+id/cartTotalPriceTxtV"
+        style="@style/sub_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textColor="?attr/colorPrimary"
+        app:layout_constraintBottom_toTopOf="@+id/cartShippingTitleTxtV"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="33.33" />
+
+    <TextView
+        android:id="@+id/cartShippingTitleTxtV"
+        style="@style/sub_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="Free Shipping" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/cartCheckoutBtn"
+        style="@style/sub_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/round_corners"
+        android:backgroundTint="?attr/colorPrimary"
+        android:drawableEnd="@drawable/ic_arrow_right_background"
+        android:drawablePadding="@dimen/_16sdp"
+        android:padding="@dimen/_8sdp"
+        android:text="@string/checkout"
+        android:textColor="?attr/colorBackgroundFloating"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/cartTotalTxtV" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

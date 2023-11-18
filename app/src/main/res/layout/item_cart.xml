@@ -70,6 +70,7 @@
         app:layout_constraintBottom_toBottomOf="@id/cartItemImgV">
 
         <ImageView
+            android:id="@+id/cartItemSubBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_sub"
@@ -77,6 +78,7 @@
             android:background="@drawable/round_corners" />
 
         <TextView
+            android:id="@+id/cartItemCountTxtV"
             style="@style/sub_title"
             android:textColor="?attr/colorBackgroundFloating"
             android:layout_width="wrap_content"
@@ -86,6 +88,7 @@
             tools:text="1" />
 
         <ImageView
+            android:id="@+id/cartItemAddBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_add"
