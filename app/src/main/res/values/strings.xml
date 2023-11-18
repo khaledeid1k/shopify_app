@@ -14,4 +14,5 @@
     <string name="Products">Products</string>
     <string name="confirm">Confirm</string>
     <string name="payment_method">Payment Method</string>
+    <string name="saved_address">Saved Addresses</string>
 </resources>
