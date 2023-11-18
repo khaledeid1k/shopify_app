@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CheckoutFragment">
+
+    <TextView
+        android:id="@+id/addressTxtV"
+        style="@style/main_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:text="@string/address"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/addressEditTxt"
+        style="@style/sub_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/_20sdp"
+        android:clickable="true"
+        android:focusable="true"
+        android:text="@string/edit"
+        app:layout_constraintBottom_toBottomOf="@id/addressTxtV"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/mapAddressImgV"
+        android:layout_width="@dimen/_75sdp"
+        android:layout_height="@dimen/_75sdp"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:elevation="8dp"
+        android:src="@drawable/map_location"
+        app:layout_constraintStart_toStartOf="@id/addressTxtV"
+        app:layout_constraintTop_toBottomOf="@id/addressTxtV" />
+
+    <TextView
+        android:id="@+id/addressNameValueTxtV"
+        style="@style/main_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_8sdp"
+        app:layout_constraintStart_toEndOf="@id/mapAddressImgV"
+        app:layout_constraintTop_toTopOf="@id/mapAddressImgV"
+        tools:text="House" />
+
+    <TextView
+        android:id="@+id/addressValueTxtV"
+        style="@style/sub_title"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/_8sdp"
+        app:layout_constraintBottom_toBottomOf="@id/mapAddressImgV"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/mapAddressImgV"
+        app:layout_constraintTop_toBottomOf="@id/addressNameValueTxtV"
+        tools:text="flat number street name name name name city country code" />
+
+    <TextView
+        android:id="@+id/ProductsTxtV"
+        style="@style/main_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:text="@string/Products"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/mapAddressImgV" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/productsRecyclerV"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/_20sdp"
+        android:orientation="vertical"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/ProductsTxtV"
+        app:layout_constraintTop_toBottomOf="@+id/ProductsTxtV"
+        tools:itemCount="2"
+        tools:listitem="@layout/item_checkout" />
+
+    <TextView
+        android:id="@+id/paymentTxtV"
+        style="@style/main_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:text="@string/payment_method"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/productsRecyclerV" />
+
+    <TextView
+        android:id="@+id/paymentEditTxt"
+        style="@style/sub_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/_20sdp"
+        android:clickable="true"
+        android:focusable="true"
+        android:text="@string/edit"
+        app:layout_constraintBottom_toBottomOf="@id/paymentTxtV"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_75sdp"
+        app:cardCornerRadius="@dimen/_8sdp"
+        app:cardUseCompatPadding="true"
+        app:layout_constraintEnd_toEndOf="@id/productsRecyclerV"
+        app:layout_constraintStart_toStartOf="@id/productsRecyclerV"
+        app:layout_constraintTop_toBottomOf="@id/paymentTxtV">
+
+        <TextView
+            android:id="@+id/paymentCardTypeTxt"
+            style="@style/sub_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|center"
+            android:layout_marginTop="@dimen/_4sdp"
+            tools:text="Master Card" />
+
+        <TextView
+            android:id="@+id/paymentCardNumberTxt"
+            style="@style/sub_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center"
+            android:layout_marginBottom="@dimen/_4sdp"
+            tools:text="123456789101122" />
+
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/checkoutTotalTxtV"
+        style="@style/sub_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/ProductsTxtV"
+        app:layout_constraintTop_toTopOf="@+id/confirmBtn"
+        tools:text="Total" />
+
+    <TextView
+        android:id="@+id/cartTotalCurrencyTxtV"
+        style="@style/sub_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="?attr/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="@id/checkoutTotalPriceTxtV"
+        app:layout_constraintStart_toEndOf="@id/checkoutTotalPriceTxtV"
+        app:layout_constraintTop_toTopOf="@id/checkoutTotalPriceTxtV"
+        tools:text="@string/dollar_currency" />
+
+    <TextView
+        android:id="@+id/checkoutTotalPriceTxtV"
+        style="@style/sub_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textColor="?attr/colorPrimary"
+        app:layout_constraintStart_toStartOf="@id/checkoutTotalTxtV"
+        app:layout_constraintTop_toBottomOf="@id/checkoutTotalTxtV"
+        tools:text="33.33" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/confirmBtn"
+        style="@style/sub_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/_16sdp"
+        android:layout_marginBottom="@dimen/_16sdp"
+        android:background="@drawable/round_corners"
+        android:backgroundTint="?attr/colorPrimary"
+        android:drawableEnd="@drawable/ic_arrow_right_background"
+        android:drawablePadding="@dimen/_16sdp"
+        android:padding="@dimen/_8sdp"
+        android:text="@string/confirm"
+        android:textColor="?attr/colorBackgroundFloating"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/_8sdp">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/cartItemImgV"
+        android:layout_width="@dimen/_75sdp"
+        android:layout_height="@dimen/_75sdp"
+        android:layout_marginStart="@dimen/_8sdp"
+        android:layout_marginBottom="@dimen/_8sdp"
+        android:elevation="8dp"
+        android:src="@drawable/product_placeholder"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/cartItemTitleTxtV"
+        style="@style/sub_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_8sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/cartItemImgV"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Samsung Galaxy Watch 6" />
+
+    <TextView
+        android:id="@+id/cartItemVariantTxtV"
+        style="@style/sub_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@id/cartItemTitleTxtV"
+        app:layout_constraintStart_toStartOf="@id/cartItemTitleTxtV"
+        app:layout_constraintTop_toBottomOf="@id/cartItemTitleTxtV"
+        tools:text="Silver" />
+
+    <TextView
+        android:id="@+id/cartItemPriceTxtV"
+        style="@style/sub_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textColor="?attr/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="@id/cartItemImgV"
+        app:layout_constraintStart_toStartOf="@id/cartItemVariantTxtV"
+        tools:text="33.33" />
+
+    <TextView
+        android:id="@+id/cartItemCurrencyTxtV"
+        style="@style/sub_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="?attr/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="@id/cartItemPriceTxtV"
+        app:layout_constraintStart_toEndOf="@id/cartItemPriceTxtV"
+        app:layout_constraintTop_toTopOf="@id/cartItemPriceTxtV"
+        tools:text="@string/dollar_currency" />
+</androidx.constraintlayout.widget.ConstraintLayout>
