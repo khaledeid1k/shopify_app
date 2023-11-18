@@ -32,12 +32,32 @@
     <TextView
         android:id="@+id/cartItemVariantTxtV"
         style="@style/sub_title"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="@id/cartItemTitleTxtV"
         app:layout_constraintStart_toStartOf="@id/cartItemTitleTxtV"
         app:layout_constraintTop_toBottomOf="@id/cartItemTitleTxtV"
         tools:text="Silver" />
+
+    <TextView
+        android:id="@+id/x"
+        style="@style/sub_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_4sdp"
+        android:text="@string/x"
+        android:textColor="@color/orange"
+        app:layout_constraintStart_toEndOf="@id/cartItemVariantTxtV"
+        app:layout_constraintTop_toTopOf="@id/cartItemVariantTxtV" />
+
+    <TextView
+        android:id="@+id/cartItemNumberTxtV"
+        style="@style/sub_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/orange"
+        app:layout_constraintStart_toEndOf="@id/x"
+        app:layout_constraintTop_toTopOf="@id/x"
+        tools:text="3" />
 
     <TextView
         android:id="@+id/cartItemPriceTxtV"
