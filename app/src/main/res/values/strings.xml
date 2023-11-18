@@ -38,4 +38,7 @@
     <string name="flat_number_hint">Enter Flat Number</string>
     <string name="mark_location">Mark Location</string>
     <string name="mark_location_hint">Enter a mark location near you</string>
+    <string name="order_success">Order placed successfully</string>
+    <string name="order_success_desc">Your order had been placed successfully and will arrive at your location within 3 to 4 working days</string>
+    <string name="done">Done</string>
 </resources>
