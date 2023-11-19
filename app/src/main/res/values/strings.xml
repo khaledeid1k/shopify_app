@@ -17,5 +17,16 @@
     <string name="sign_up">Sign Up</string>
     <string name="enter_your_credentials_to_continue">Enter your credentials to continue</string>
     <string name="user_name">User Name</string>
+    <string name="product">Product</string>
+    <string name="details">Details</string>
+    <string name="reviews">Reviews</string>
+    <string name="select_color">Select Color</string>
+    <string name="select_size">Select Size(US)</string>
+    <string name="brand">BRAND</string>
+    <string name="sku">SKU</string>
+    <string name="condition">CONDITION</string>
+    <string name="material">MATERIAL</string>
+    <string name="category">CATEGORY</string>
+    <string name="fitting">FITTING</string>
 
 </resources>

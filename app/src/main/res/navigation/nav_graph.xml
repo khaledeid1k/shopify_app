@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/favoritesFragment">
+    app:startDestination="@id/productFragment">
 
     <fragment
         android:id="@+id/signUpFragment"
@@ -23,4 +23,8 @@
         android:id="@+id/favoritesFragment"
         android:name="com.kh.mo.shopyapp.ui.FavoritesFragment"
         android:label="FavoritesFragment" />
+    <fragment
+        android:id="@+id/productFragment"
+        android:name="com.kh.mo.shopyapp.ui.product.ProductFragment"
+        android:label="ProductFragment" />
 </navigation>
