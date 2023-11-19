@@ -17,6 +17,7 @@ android {
         Properties properties = new Properties()
         properties.load(project.rootProject.file('local.properties').newDataInputStream())
         buildConfigField "String", "baseURL", "\"${properties.getProperty('baseURL')}\""
+        buildConfigField "String", "accessToken", "\"${properties.getProperty('accessToken')}\""
 
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -125,4 +126,6 @@ dependencies {
     testImplementation "androidx.test.ext:junit-ktx:$androidXTestExtKotlinRunnerVersion"
     testImplementation "androidx.test:core-ktx:$androidXTestCoreVersion"
     testImplementation "org.robolectric:robolectric:4.8"
+
+ implementation "androidx.viewpager2:viewpager2:1.0.0"
 }
