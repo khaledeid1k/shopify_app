@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.product.view.ProductFragment">
+
+        <ImageView
+            android:id="@+id/back_from_product"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:src="@drawable/back"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/name_of_product"
+            app:layout_constraintTop_toTopOf="@+id/name_of_product" />
+
+        <TextView
+            android:id="@+id/name_of_product"
+            style="@style/sub_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Faux Sued Ankle Boots" />
+
+        <TextView
+            android:id="@+id/tv_price_product_item"
+            style="@style/sub_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:layout_marginEnd="@dimen/_4sdp"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_rate_product_item"
+            app:layout_constraintEnd_toStartOf="@+id/tv_rate_product_item"
+            app:layout_constraintTop_toTopOf="@+id/tv_rate_product_item"
+            tools:text="25$" />
+
+        <TextView
+            android:id="@+id/tv_rate_product_item"
+            style="@style/sub_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_4sdp"
+
+            android:background="@drawable/round_rate"
+            android:paddingHorizontal="@dimen/_4sdp"
+            android:paddingVertical="@dimen/_1sdp"
+            app:drawableStartCompat="@drawable/ic_star"
+            app:drawableTint="@color/white"
+
+            app:layout_constraintEnd_toEndOf="@+id/name_of_product"
+            app:layout_constraintStart_toStartOf="@+id/name_of_product"
+            app:layout_constraintTop_toBottomOf="@+id/name_of_product"
+            tools:text="4.9" />
+
+        <ImageView
+            android:id="@+id/product_image"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_150sdp"
+            android:src="@drawable/ic_launcher_background"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_rate_product_item" />
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/home_fragment_tabs"
+            android:layout_width="match_parent"
+            android:layout_height="?android:attr/actionBarSize"
+            app:itemTextColor="@color/orange"
+            android:layout_marginTop="@dimen/_10sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/product_image"
+            app:tabGravity="center"
+            app:tabIndicatorColor="@color/orange"
+            app:tabMode="scrollable"
+            app:tabRippleColor="@color/orange"
+            app:tabUnboundedRipple="true"
+            app:tabSelectedTextColor="@color/orange"
+            app:tabTextColor="@android:color/darker_gray" />
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/home_fragment_viewPager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:animateLayoutChanges="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/home_fragment_tabs" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

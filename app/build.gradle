@@ -127,4 +127,6 @@ dependencies {
     testImplementation "androidx.test.ext:junit-ktx:$androidXTestExtKotlinRunnerVersion"
     testImplementation "androidx.test:core-ktx:$androidXTestCoreVersion"
     testImplementation "org.robolectric:robolectric:4.8"
+
+ implementation "androidx.viewpager2:viewpager2:1.0.0"
 }

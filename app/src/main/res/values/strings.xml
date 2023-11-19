@@ -7,9 +7,67 @@
     <string name="cart">Cart</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="login">Login</string>
+    <string name="enter_your_emails_and_password">Enter your emails and password</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="forget_password">Forget Password ? </string>
+
+    <string name="don_t_have_an_account_sign_up_now">Don’t have an account, <b><u><font color="#FF6969">Sign Up</font></u></b></string>
+    <string name="sign_up">Sign Up</string>
+    <string name="enter_your_credentials_to_continue">Enter your credentials to continue</string>
+    <string name="user_name">User Name</string>
+    <string name="product">Product</string>
+    <string name="details">Details</string>
+    <string name="reviews">Reviews</string>
+    <string name="select_color">Select Color</string>
+    <string name="select_size">Select Size(US)</string>
+    <string name="brand">BRAND</string>
+    <string name="sku">SKU</string>
+    <string name="condition">CONDITION</string>
+    <string name="material">MATERIAL</string>
+    <string name="category">CATEGORY</string>
+    <string name="fitting">FITTING</string>
+
     <string name="brands">Brands</string>
     <string name="categories">Categories</string>
     <string name="orders">Orders</string>
     <string name="edit_profile">Edit Profile</string>
     <string name="all_my_orders">All My Orders</string>
+    <string name="dollar_currency">$</string>
+    <string name="checkout">Checkout</string>
+    <string name="address">Address</string>
+    <string name="edit">Edit</string>
+    <string name="Products">Products</string>
+    <string name="confirm">Confirm</string>
+    <string name="payment_method">Payment Method</string>
+    <string name="saved_address">Saved Addresses</string>
+    <string name="card_number">Card Number</string>
+    <string name="card_number_hint">Enter Card Number</string>
+    <string name="card_holder_name">Card Holder Name</string>
+    <string name="card_expired">Expired</string>
+    <string name="card_holder_hint">Card Holder Name</string>
+    <string name="card_expired_hint">MM/YY</string>
+    <string name="card_cvv">CVV code</string>
+    <string name="card_cvv_hint">CVV</string>
+    <string name="add_card">Add Card</string>
+    <string name="add_coupon">Add Coupon</string>
+    <string name="add_coupon_hint">Enter Your Coupon</string>
+    <string name="city">City</string>
+    <string name="city_name_hint">Enter City Name</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="phone_number_hint">Enter Phone Number</string>
+    <string name="street_name">Street Name</string>
+    <string name="street_name_hint">Enter Street Name</string>
+    <string name="building_number">Building Number</string>
+    <string name="building_number_hint">Enter Building Number</string>
+    <string name="flat_number">Flat Number</string>
+    <string name="flat_number_hint">Enter Flat Number</string>
+    <string name="mark_location">Mark Location</string>
+    <string name="mark_location_hint">Enter a mark location near you</string>
+    <string name="order_success">Order placed successfully</string>
+    <string name="order_success_desc">Your order had been placed successfully and will arrive at your location within 3 to 4 working days</string>
+    <string name="done">Done</string>
+    <string name="x">x</string>
+    <string name="add_address">Add Address</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.kh.mo.shopyapp.home.view
+package com.kh.mo.shopyapp.ui.home.view
 
 import android.content.Context
 import android.view.View

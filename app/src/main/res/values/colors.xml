@@ -6,10 +6,8 @@
     <color name="dark_gray">#7C7C7C</color>
     <color name="sub_text">#515C6F</color>
     <color name="main_text">#393B3E</color>
-
-
-
-
+    <color name="unselected_chip_background_color">#CF0E00</color>
+    <color name="selected_chip_background_color">#2C41B4</color>
 
 
 </resources>

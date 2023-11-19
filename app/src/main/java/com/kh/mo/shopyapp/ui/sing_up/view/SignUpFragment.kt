@@ -1,4 +1,4 @@
-package com.kh.mo.shopyapp.profile
+package com.kh.mo.shopyapp.ui.sing_up.view
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import com.kh.mo.shopyapp.R
 
 
-class ProfileFragment : Fragment() {
+class SignUpFragment : Fragment() {
 
 
     override fun onCreateView(
@@ -16,9 +16,7 @@ class ProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false)
+        return inflater.inflate(R.layout.fragment_sign_up, container, false)
     }
-
-
 
 }

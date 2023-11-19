@@ -5,6 +5,15 @@
         <item name="colorSecondary">@color/dark_gray</item>
     </style>
 
+
+    <style name="big_title">
+        <item name="android:textColor">@color/main_text</item>
+        <item name="android:textSize">@dimen/_25ssp</item>
+        <item name="android:fontFamily">@font/inter</item>
+        <item name="android:layout_marginStart">@dimen/_20sdp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <style name="main_title">
         <item name="android:textColor">@color/main_text</item>
         <item name="android:textSize">@dimen/_20ssp</item>
@@ -17,6 +26,25 @@
         <item name="android:textColor">@color/sub_text</item>
         <item name="android:textSize">@dimen/_14ssp</item>
         <item name="android:fontFamily">@font/inter_medium</item>
+    </style>
+
+
+    <style name="small_title">
+        <item name="android:textColor">@color/main_text</item>
+        <item name="android:textSize">@dimen/_10ssp</item>
+        <item name="android:fontFamily">@font/inter_medium</item>
+    </style>
+
+
+    <style name="SearchBarStyle">
+        <item name="android:background">@drawable/search_bar_background_light</item>
+        <item name="shapeAppearanceOverlay">@color/dark_gray</item>
+        <item name="android:elevation">6dp</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="hintTextColor">@color/dark_gray</item>
+    </style>
+    <style name="UnselectedTabStyle" parent="TextAppearance.Design.Tab">
+        <item name="android:textColor">@android:color/darker_gray</item>
     </style>
 
 </resources>

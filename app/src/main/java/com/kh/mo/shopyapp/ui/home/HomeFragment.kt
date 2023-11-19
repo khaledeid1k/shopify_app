@@ -1,4 +1,4 @@
-package com.kh.mo.shopyapp.home
+package com.kh.mo.shopyapp.ui.home
 
 import android.os.Bundle
 import android.view.LayoutInflater
