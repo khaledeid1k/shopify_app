@@ -1,4 +1,4 @@
-package com.kh.mo.shopyapp.order
+package com.kh.mo.shopyapp.ui.order
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
