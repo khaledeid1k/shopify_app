@@ -27,4 +27,9 @@
         android:id="@+id/productFragment"
         android:name="com.kh.mo.shopyapp.ui.product.view.ProductFragment"
         android:label="ProductFragment" />
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.kh.mo.shopyapp.home.view.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" />
 </navigation>

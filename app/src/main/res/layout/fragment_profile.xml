@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".profile.ProfileFragment"
+    android:background="@color/gray">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/image_profile"
+        android:layout_width="@dimen/_100sdp"
+        android:layout_height="@dimen/_100sdp"
+        tools:src="@drawable/ic_launcher_background"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_margin="@dimen/_10sdp"/>
+
+    <TextView
+        android:id="@+id/tv_name_profile"
+        style="@style/main_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_20sdp"
+        app:layout_constraintStart_toEndOf="@+id/image_profile"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Hanaa Hany" />
+
+    <TextView
+        android:layout_marginTop="@dimen/_5sdp"
+        android:id="@+id/tv_product_size_order"
+        style="@style/sub_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="hanaahany822@gmail.com"
+        app:layout_constraintStart_toStartOf="@+id/tv_name_profile"
+        app:layout_constraintTop_toBottomOf="@+id/tv_name_profile" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_edit_profile"
+        android:layout_marginHorizontal="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@+id/image_profile"
+        app:layout_constraintTop_toBottomOf="@+id/tv_product_size_order"
+        android:text="@string/edit_profile"
+        android:textAllCaps="false"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        app:cornerRadius="@dimen/_10sdp"/>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_edit_profile"
+        app:cardCornerRadius="@dimen/_10sdp"
+        android:elevation="@dimen/_10sdp"
+        app:cardUseCompatPadding="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/tv_all_my_orders"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                style="@style/sub_title"
+                android:text="@string/all_my_orders"
+                android:padding="@dimen/_10sdp"
+                android:drawablePadding="@dimen/_10sdp"
+                app:drawableStartCompat="@drawable/ic_orders"
+                app:drawableEndCompat="@drawable/ic_arrow" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/image_product_order_profile"
+                android:layout_width="@dimen/_70sdp"
+                android:layout_height="@dimen/_70sdp"
+                android:src="@drawable/img"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_all_my_orders"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_margin="@dimen/_10sdp"
+                />
+
+            <TextView
+                android:id="@+id/tv_product_name_order_profile"
+                style="@style/sub_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Faux Sued Ankle Boots"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/image_product_order_profile"
+                app:layout_constraintTop_toBottomOf="@id/tv_all_my_orders"
+                android:layout_marginTop="@dimen/_20sdp"/>
+
+            <TextView
+                android:id="@+id/tv_product_size_order_profile"
+                style="@style/sub_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="7, Hot Pink"
+                app:layout_constraintEnd_toEndOf="@+id/tv_product_name_order_profile"
+                app:layout_constraintStart_toStartOf="@+id/tv_product_name_order_profile"
+                app:layout_constraintTop_toBottomOf="@+id/tv_product_name_order_profile" />
+
+            <TextView
+                android:id="@+id/tv_product_price_order_profile"
+                style="@style/sub_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="49$"
+                android:textColor="@color/orange"
+                app:layout_constraintEnd_toEndOf="@+id/tv_product_name_order_profile"
+                app:layout_constraintStart_toStartOf="@+id/tv_product_name_order_profile"
+                app:layout_constraintTop_toBottomOf="@+id/tv_product_size_order_profile" />
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/card1"
+        app:cardCornerRadius="@dimen/_10sdp"
+        android:elevation="@dimen/_10sdp"
+        app:cardUseCompatPadding="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/tv_fav_profile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                style="@style/sub_title"
+                android:text="@string/favourite"
+                android:padding="@dimen/_10sdp"
+                android:drawablePadding="@dimen/_10sdp"
+                app:drawableStartCompat="@drawable/ic_orders"
+                app:drawableEndCompat="@drawable/ic_arrow" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_fav_profile"
+                tools:listitem="@layout/fav_item"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:spanCount="2"/>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+    </androidx.cardview.widget.CardView>
+
+
+
+
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
