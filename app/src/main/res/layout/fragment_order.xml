@@ -17,7 +17,7 @@
         android:id="@+id/recycler_orders"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:listitem="@layout/order_item"/>
+        tools:listitem="@layout/item_order"/>
 
 
 
