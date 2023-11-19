@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     tools:context=".AddPaymentFragment">
 
     <TextView
@@ -21,7 +21,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_8sdp"
-        android:layout_marginEnd="@dimen/_8sdp"
+        android:layout_marginEnd="@dimen/_20sdp"
         app:layout_constraintEnd_toStartOf="@id/guideline"
         app:layout_constraintStart_toStartOf="@id/cardNumberTxtV"
         app:layout_constraintTop_toBottomOf="@id/cardNumberTxtV">
@@ -30,7 +30,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/city_name_hint"
-            android:inputType="number" />
+            android:inputType="text" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -50,7 +50,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_8sdp"
-        android:layout_marginEnd="@dimen/_8sdp"
+        android:layout_marginEnd="@dimen/_20sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/guideline"
         app:layout_constraintTop_toBottomOf="@id/phoneNumberTxtV">
@@ -107,7 +107,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_8sdp"
-        android:layout_marginEnd="@dimen/_8sdp"
+        android:layout_marginEnd="@dimen/_20sdp"
         app:layout_constraintEnd_toStartOf="@id/guideline"
         app:layout_constraintStart_toStartOf="@id/buildingNumberTxtV"
         app:layout_constraintTop_toBottomOf="@id/buildingNumberTxtV">
@@ -136,7 +136,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_8sdp"
-        android:layout_marginEnd="@dimen/_8sdp"
+        android:layout_marginEnd="@dimen/_20sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/guideline"
         app:layout_constraintTop_toBottomOf="@id/buildingNumberTxtV">
@@ -173,7 +173,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/mark_location_hint"
-            android:inputType="number" />
+            android:inputType="text" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -182,6 +182,7 @@
         style="@style/sub_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_20sdp"
         android:layout_marginEnd="@dimen/_16sdp"
         android:layout_marginBottom="@dimen/_16sdp"
         android:background="@drawable/round_corners"
@@ -190,11 +191,12 @@
         android:drawablePadding="@dimen/_16sdp"
         android:padding="@dimen/_8sdp"
         android:paddingStart="@dimen/_16sdp"
-        android:text="@string/confirm"
+        android:text="@string/add_address"
         android:textAllCaps="false"
         android:textColor="?attr/colorBackgroundFloating"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/markLocationTxtF" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
