@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.ProductFragment">
+
+    <ImageView
+        android:id="@+id/back_from_product"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:src="@drawable/back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/name_of_product"
+        app:layout_constraintTop_toTopOf="@+id/name_of_product"
+       />
+
+    <TextView
+        android:id="@+id/name_of_product"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Faux Sued Ankle Boots"
+        android:layout_marginTop="@dimen/_10sdp"
+        style="@style/sub_title"
+        app:layout_constraintStart_toEndOf="@+id/back_from_product"
+        />
+
+    <TextView
+        android:id="@+id/tv_price_product_item"
+        style="@style/sub_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:layout_marginEnd="@dimen/_10sdp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_rate_product_item"
+        app:layout_constraintEnd_toStartOf="@+id/tv_rate_product_item"
+        app:layout_constraintTop_toTopOf="@+id/tv_rate_product_item"
+        tools:text="25$" />
+
+    <TextView
+        android:id="@+id/tv_rate_product_item"
+        style="@style/sub_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/round_rate"
+        android:padding="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_4sdp"
+        app:layout_constraintHorizontal_bias=".7"
+        app:drawableStartCompat="@drawable/ic_star"
+        app:drawableTint="@color/white"
+        app:layout_constraintEnd_toEndOf="@+id/name_of_product"
+        app:layout_constraintStart_toStartOf="@+id/name_of_product"
+        app:layout_constraintTop_toBottomOf="@+id/name_of_product"
+        tools:text="4.9" />
+    <ImageView
+        android:id="@+id/app_icon"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_launcher_background"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_rate_product_item"
+       />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
