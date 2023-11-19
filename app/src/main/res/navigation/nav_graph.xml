@@ -7,24 +7,24 @@
 
     <fragment
         android:id="@+id/signUpFragment"
-        android:name="com.kh.mo.shopyapp.ui.SignUpFragment"
+        android:name="com.kh.mo.shopyapp.ui.sing_up.view.SignUpFragment"
         android:label="fragment_singin"
         tools:layout="@layout/fragment_singin" />
     <fragment
         android:id="@+id/signInFragment"
-        android:name="com.kh.mo.shopyapp.ui.SignInFragment"
+        android:name="com.kh.mo.shopyapp.ui.sing_in.view.SignInFragment"
         android:label="SignInFragment" />
     <fragment
         android:id="@+id/searchFragment"
-        android:name="com.kh.mo.shopyapp.SearchFragment"
+        android:name="com.kh.mo.shopyapp.ui.search.view.SearchFragment"
         android:label="fragment_search"
         tools:layout="@layout/fragment_search" />
     <fragment
         android:id="@+id/favoritesFragment"
-        android:name="com.kh.mo.shopyapp.ui.FavoritesFragment"
+        android:name="com.kh.mo.shopyapp.ui.favorite.view.FavoritesFragment"
         android:label="FavoritesFragment" />
     <fragment
         android:id="@+id/productFragment"
-        android:name="com.kh.mo.shopyapp.ui.product.ProductFragment"
+        android:name="com.kh.mo.shopyapp.ui.product.view.ProductFragment"
         android:label="ProductFragment" />
 </navigation>

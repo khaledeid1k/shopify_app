@@ -1,4 +1,4 @@
-package com.kh.mo.shopyapp.ui
+package com.kh.mo.shopyapp.ui.sing_up.view
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,15 +8,15 @@ import android.view.ViewGroup
 import com.kh.mo.shopyapp.R
 
 
-class FavoritesFragment : Fragment() {
+class SignUpFragment : Fragment() {
 
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_favorites, container, false)
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_sign_up, container, false)
     }
-
 
 }
