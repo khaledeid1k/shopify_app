@@ -5,6 +5,42 @@
     <string name="search">Search</string>
     <string name="profile">Profile</string>
     <string name="cart">Cart</string>
-<!-- TODO: Remove or change this placeholder text -->
+    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="dollar_currency">$</string>
+    <string name="checkout">Checkout</string>
+    <string name="address">Address</string>
+    <string name="edit">Edit</string>
+    <string name="Products">Products</string>
+    <string name="confirm">Confirm</string>
+    <string name="payment_method">Payment Method</string>
+    <string name="saved_address">Saved Addresses</string>
+    <string name="card_number">Card Number</string>
+    <string name="card_number_hint">Enter Card Number</string>
+    <string name="card_holder_name">Card Holder Name</string>
+    <string name="card_expired">Expired</string>
+    <string name="card_holder_hint">Card Holder Name</string>
+    <string name="card_expired_hint">MM/YY</string>
+    <string name="card_cvv">CVV code</string>
+    <string name="card_cvv_hint">CVV</string>
+    <string name="add_card">Add Card</string>
+    <string name="add_coupon">Add Coupon</string>
+    <string name="add_coupon_hint">Enter Your Coupon</string>
+    <string name="city">City</string>
+    <string name="city_name_hint">Enter City Name</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="phone_number_hint">Enter Phone Number</string>
+    <string name="street_name">Street Name</string>
+    <string name="street_name_hint">Enter Street Name</string>
+    <string name="building_number">Building Number</string>
+    <string name="building_number_hint">Enter Building Number</string>
+    <string name="flat_number">Flat Number</string>
+    <string name="flat_number_hint">Enter Flat Number</string>
+    <string name="mark_location">Mark Location</string>
+    <string name="mark_location_hint">Enter a mark location near you</string>
+    <string name="order_success">Order placed successfully</string>
+    <string name="order_success_desc">Your order had been placed successfully and will arrive at your location within 3 to 4 working days</string>
+    <string name="done">Done</string>
+    <string name="x">x</string>
+    <string name="add_address">Add Address</string>
 </resources>
