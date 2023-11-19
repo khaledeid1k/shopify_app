@@ -3,8 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     tools:context=".AddPaymentFragment">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
 
     <TextView
         android:id="@+id/cardNumberTxtV"
@@ -23,6 +30,7 @@
         android:layout_marginTop="@dimen/_8sdp"
         android:layout_marginEnd="@dimen/_20sdp"
         app:layout_constraintEnd_toEndOf="parent"
+
         app:layout_constraintStart_toStartOf="@id/cardNumberTxtV"
         app:layout_constraintTop_toBottomOf="@id/cardNumberTxtV">
 
@@ -51,6 +59,7 @@
         android:layout_marginTop="@dimen/_8sdp"
         android:layout_marginEnd="@dimen/_20sdp"
         app:layout_constraintEnd_toEndOf="parent"
+
         app:layout_constraintStart_toStartOf="@id/cardHolderNameTxtV"
         app:layout_constraintTop_toBottomOf="@id/cardHolderNameTxtV">
 
@@ -78,7 +87,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_8sdp"
         android:layout_marginEnd="@dimen/_20sdp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/guideline"
         app:layout_constraintStart_toStartOf="@id/cardExpiredTxtV"
         app:layout_constraintTop_toBottomOf="@id/cardExpiredTxtV">
 
@@ -96,9 +105,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginStart="0dp"
         android:text="@string/card_cvv"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/cardExpiredTxtF" />
+        app:layout_constraintStart_toStartOf="@id/guideline"
+        app:layout_constraintTop_toBottomOf="@id/cardHolderNameTxtF" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/cvvTxtF"
@@ -123,8 +133,7 @@
         style="@style/sub_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/_16sdp"
-        android:layout_marginBottom="@dimen/_16sdp"
+        android:layout_marginEnd="@dimen/_20sdp"
         android:background="@drawable/round_corners"
         android:backgroundTint="?attr/colorPrimary"
         android:drawableEnd="@drawable/ic_arrow_right_background"
@@ -134,6 +143,9 @@
         android:paddingStart="@dimen/_16sdp"
         android:textAllCaps="false"
         android:textColor="?attr/colorBackgroundFloating"
+        app:layout_constraintTop_toBottomOf="@id/cvvTxtF"
+        android:layout_marginTop="@dimen/_20sdp"
         app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="@dimen/_20sdp"
         app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
