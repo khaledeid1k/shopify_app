@@ -1,6 +1,7 @@
 package com.kh.mo.shopyapp.repo
 
 import com.kh.mo.shopyapp.model.response.barnds.BrandsResponse
+import com.kh.mo.shopyapp.model.response.maincategory.MainCategoryResponse
 import com.kh.mo.shopyapp.remote.ApiSate
 import com.kh.mo.shopyapp.remote.RemoteSource
 import kotlinx.coroutines.flow.Flow
@@ -26,6 +27,25 @@ class RepoImp private constructor(private var remoteSource: RemoteSource):Repo{
         }.catch {
             emit(ApiSate.Failure(it.message!!))
         }
+    }
+
+    override suspend fun getMainCategories(): Flow<ApiSate<MainCategoryResponse>> {
+        return flow {
+
+            emit(ApiSate.Loading)
+            val mainCategories =
+                remoteSource.getMainCategories()
+            if (mainCategories.isSuccessful) {
+                remoteSource.getMainCategories().body()
+                    ?.let { emit(ApiSate.Success(it)) }
+            } else {
+                emit(ApiSate.Failure(mainCategories.message()))
+            }
+
+        }.catch {
+            emit(ApiSate.Failure(it.message!!))
+        }
+
     }
 
     companion object {

@@ -2,12 +2,17 @@ package com.kh.mo.shopyapp.remote
 
 import android.content.Context
 import com.kh.mo.shopyapp.model.response.barnds.BrandsResponse
+import com.kh.mo.shopyapp.model.response.maincategory.MainCategoryResponse
 import com.kh.mo.shopyapp.remote.service.Network
 import retrofit2.Response
 
 class RemoteSourceImp private constructor():RemoteSource {
     override suspend fun getAllBrands(): Response<BrandsResponse> {
         return Network.retrofitService.getAllBrands()
+    }
+
+    override suspend fun getMainCategories(): Response<MainCategoryResponse> {
+        return Network.retrofitService.getMainCategories()
     }
 
     companion object{
