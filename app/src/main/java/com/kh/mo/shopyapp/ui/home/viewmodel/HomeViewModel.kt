@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kh.mo.shopyapp.model.response.barnds.SmartCollection
+import com.kh.mo.shopyapp.model.ui.AdModel
 import com.kh.mo.shopyapp.model.ui.maincategory.CustomCollection
 import com.kh.mo.shopyapp.remote.ApiSate
 import com.kh.mo.shopyapp.repo.Repo
@@ -25,9 +26,6 @@ class HomeViewModel(private var _irepo: Repo) : ViewModel() {
     private val _mainCategories = MutableStateFlow<ApiSate<List<CustomCollection>>>(ApiSate.Loading)
     val mainCategories: StateFlow<ApiSate<List<CustomCollection>>> = _mainCategories
 
-    init {
-        getAds()
-    }
 
     fun getAllBrands() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -76,13 +74,13 @@ class HomeViewModel(private var _irepo: Repo) : ViewModel() {
         }
     }
 
-    private fun getAds() {
+    fun getCoupon(adItem: AdModel) {
         viewModelScope.launch(Dispatchers.IO) {
-            _irepo.getDiscountCode("1402684080412", "17996919505180").collectLatest {
+            _irepo.getDiscountCode(adItem.priceRuleId, adItem.discountCodeId).collectLatest {
                 when (it) {
-                    is ApiSate.Failure -> Log.i(TAG, "getAds: ${it.msg}")
-                    ApiSate.Loading -> Log.i(TAG, "getAds: $it")
-                    is ApiSate.Success -> Log.i(TAG, "getAds: ${it.data}")
+                    is ApiSate.Failure -> Log.i(TAG, "getCoupon: ${it.msg}")
+                    ApiSate.Loading -> Log.i(TAG, "getCoupon: $it")
+                    is ApiSate.Success -> Log.i(TAG, "getCoupon: ${it.data.discountCode?.code}")
                 }
             }
         }

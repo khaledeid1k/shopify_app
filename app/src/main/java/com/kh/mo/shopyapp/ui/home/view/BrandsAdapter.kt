@@ -1,12 +1,10 @@
-package com.kh.mo.shopyapp.home.view
+package com.kh.mo.shopyapp.ui.home.view
 
 
 import android.content.Context
 import android.util.Log
-import android.view.View
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
