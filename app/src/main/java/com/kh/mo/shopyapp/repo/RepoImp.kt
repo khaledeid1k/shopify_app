@@ -1,5 +1,6 @@
 package com.kh.mo.shopyapp.repo
 
+import com.kh.mo.shopyapp.model.response.ads.DiscountCodeResponse
 import com.kh.mo.shopyapp.model.response.barnds.BrandsResponse
 import com.kh.mo.shopyapp.model.response.maincategory.MainCategoryResponse
 import com.kh.mo.shopyapp.remote.ApiSate
@@ -8,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 
-class RepoImp private constructor(private var remoteSource: RemoteSource):Repo{
+class RepoImp private constructor(private var remoteSource: RemoteSource) : Repo {
 
 
     override suspend fun getAllBrands(): Flow<ApiSate<BrandsResponse>> {
@@ -51,7 +52,7 @@ class RepoImp private constructor(private var remoteSource: RemoteSource):Repo{
     companion object {
         @Volatile
         private var instance: RepoImp? = null
-        fun getRepoImpInstance( remoteSource: RemoteSource): RepoImp {
+        fun getRepoImpInstance(remoteSource: RemoteSource): RepoImp {
             return instance ?: synchronized(this) {
                 val instanceHolder = RepoImp(remoteSource)
                 instance = instanceHolder
@@ -61,7 +62,19 @@ class RepoImp private constructor(private var remoteSource: RemoteSource):Repo{
         }
     }
 
-
+    override suspend fun getDiscountCode(
+        priceRuleId: String,
+        discountCodeId: String
+    ): Flow<ApiSate<DiscountCodeResponse>> {
+        return flow {
+            emit(ApiSate.Loading)
+            try {
+                emit(ApiSate.Success(remoteSource.getDiscountCode(priceRuleId, discountCodeId)))
+            } catch (e: Exception) {
+                emit(ApiSate.Failure(e.message.toString()))
+            }
+        }
+    }
 }
 
 
