@@ -7,10 +7,14 @@
 
     </data>
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="3"
+        android:layout_height="wrap_content"
         tools:context=".ui.sing_up.view.SignUpFragment">
 
 
@@ -29,7 +33,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.30" />
+            app:layout_constraintGuide_percent="0.20" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline_v_r"
@@ -88,17 +92,18 @@
             app:layout_constraintEnd_toStartOf="@+id/guideline_v_r"
             app:layout_constraintTop_toBottomOf="@+id/user_name"
             app:layout_constraintStart_toEndOf="@+id/guideline_v_l"
-            app:startIconDrawable="@drawable/email"
+            app:startIconDrawable="@drawable/person"
             app:layout_constraintBottom_toTopOf="@+id/email"
             app:layout_constraintVertical_bias=".0"
-
-            tools:hint="Email">
+            android:hint="@string/username">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/user_name_value"
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress"
-                tools:text="sdfdsfsdfsdfds@gmail.com"
+                tools:text="sdfdsfsdf"
                 tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -127,9 +132,10 @@
             app:layout_constraintBottom_toTopOf="@+id/password"
             app:layout_constraintVertical_bias=".0"
 
-            tools:hint="Email">
+            android:hint="@string/email">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/email_value"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress"
@@ -155,7 +161,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:endIconMode="password_toggle"
-            app:errorEnabled="true"
             app:errorIconDrawable="@null"
             app:layout_constraintVertical_bias=".0"
 
@@ -163,9 +168,47 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/password"
             app:layout_constraintStart_toEndOf="@+id/guideline_v_l"
-            tools:hint="Password">
+            android:hint="@string/password">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/password_value"
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="asdasds"
+                android:inputType="textPassword"
+                tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <TextView
+            android:id="@+id/confirm_password"
+            style="@style/sub_title"
+            app:layout_constraintBottom_toTopOf="@+id/confirm_password_textField"
+            android:layout_marginTop="@dimen/_10sdp"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/confirm_password"
+            app:layout_constraintStart_toEndOf="@+id/guideline_v_l"
+            app:layout_constraintTop_toBottomOf="@+id/password_textField" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/confirm_password_textField"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:endIconMode="password_toggle"
+            app:errorIconDrawable="@null"
+            app:layout_constraintVertical_bias=".0"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_v_r"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/confirm_password"
+            app:layout_constraintStart_toEndOf="@+id/guideline_v_l"
+            android:hint="@string/confirm_password">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/confirm_password_value"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 tools:text="asdasds"
@@ -177,6 +220,8 @@
         <Button
             android:id="@+id/sing_up_b"
             android:layout_width="0dp"
+            android:layout_marginTop="@dimen/_10sdp"
+
             android:layout_height="wrap_content"
             android:textColor="@color/white"
             android:text="@string/sign_up"
@@ -186,7 +231,7 @@
             app:layout_constraintStart_toEndOf="@+id/guideline_v_l"
             app:layout_constraintVertical_bias=".5"
             android:padding="@dimen/_10sdp"
-            app:layout_constraintTop_toBottomOf="@+id/password_textField" />
+            app:layout_constraintTop_toBottomOf="@+id/confirm_password_textField" />
 
         <TextView
             android:id="@+id/go_to_register"
@@ -196,9 +241,11 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginBottom="@dimen/_7sdp"
+            android:layout_marginBottom="@dimen/_5sdp"
             app:layout_constraintTop_toBottomOf="@+id/sing_up_b" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
 </layout>
