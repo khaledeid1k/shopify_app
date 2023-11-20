@@ -1,22 +1,26 @@
 package com.kh.mo.shopyapp.ui.sing_up.view
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import com.kh.mo.shopyapp.R
+import com.kh.mo.shopyapp.databinding.FragmentSignUpBinding
+import com.kh.mo.shopyapp.model.request.UserData
+import com.kh.mo.shopyapp.ui.base.BaseFragment
+import com.kh.mo.shopyapp.ui.sing_up.viewmodel.SignUpViewModel
 
 
-class SignUpFragment : Fragment() {
+class SignUpFragment : BaseFragment<FragmentSignUpBinding, SignUpViewModel>() {
 
+    override val layoutIdFragment: Int=R.layout.fragment_sign_up
+    override fun getViewModelClass() = SignUpViewModel::class.java
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_sign_up, container, false)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.singUpB.setOnClickListener {
+            viewModel.storeData("1569897106932", UserData("khaledEid@gmail.com","1234567"))
+
+        }
     }
+
 
 }
