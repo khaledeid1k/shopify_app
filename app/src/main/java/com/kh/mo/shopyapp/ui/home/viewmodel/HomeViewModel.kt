@@ -12,10 +12,12 @@ import com.kh.mo.shopyapp.repo.maper.convertToSmartCollection
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlin.Result.Companion.success
 
 class HomeViewModel(private var _irepo: Repo) : ViewModel() {
+    private val TAG = "TAG HomeViewModel"
 
     private val _barnds = MutableStateFlow<ApiSate<List<SmartCollection>>>(ApiSate.Loading)
     val barnds: StateFlow<ApiSate<List<SmartCollection>>> = _barnds
@@ -23,6 +25,9 @@ class HomeViewModel(private var _irepo: Repo) : ViewModel() {
     private val _mainCategories = MutableStateFlow<ApiSate<List<CustomCollection>>>(ApiSate.Loading)
     val mainCategories: StateFlow<ApiSate<List<CustomCollection>>> = _mainCategories
 
+    init {
+        getAds()
+    }
 
     fun getAllBrands() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -68,6 +73,18 @@ class HomeViewModel(private var _irepo: Repo) : ViewModel() {
 
 
                 }
+        }
+    }
+
+    private fun getAds() {
+        viewModelScope.launch(Dispatchers.IO) {
+            _irepo.getDiscountCode("1402684080412", "17996919505180").collectLatest {
+                when (it) {
+                    is ApiSate.Failure -> Log.i(TAG, "getAds: ${it.msg}")
+                    ApiSate.Loading -> Log.i(TAG, "getAds: $it")
+                    is ApiSate.Success -> Log.i(TAG, "getAds: ${it.data}")
+                }
+            }
         }
     }
 }
