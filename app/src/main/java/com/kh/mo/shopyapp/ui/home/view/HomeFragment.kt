@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import com.kh.mo.shopyapp.databinding.FragmentHomeBinding
+import com.kh.mo.shopyapp.home.view.BrandsAdapter
 import com.kh.mo.shopyapp.model.ui.AdModel
 import com.kh.mo.shopyapp.remote.RemoteSourceImp
 import com.kh.mo.shopyapp.repo.RepoImp
@@ -62,7 +63,7 @@ class HomeFragment : BaseFragment() {
         val totalPages = adsList.size
         lifecycleScope.launch(Dispatchers.Main) {
             while (isActive) {
-                delay(2000)
+                delay(3000)
                 binding.recyclerCoupon.apply {
                     if (currentItem + 1 > totalPages - 1) {
                         currentItem = 0
@@ -110,7 +111,7 @@ class HomeFragment : BaseFragment() {
             BaseViewModelFactory(
                 RepoImp.getRepoImpInstance
                     (
-                    RemoteSourceImp.getRemoteDataImpInstance()
+                    RemoteSourceImp.getRemoteSourceImpInstance()
                 )
             )
         homeViewModel = ViewModelProvider(
