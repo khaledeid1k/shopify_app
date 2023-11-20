@@ -6,4 +6,9 @@ object Constants {
     const val email = "email"
     const val password = "password"
 
+
+    const val ErrorEmail = "ErrorEmail"
+    const val ErrorPassword = "ErrorPassword"
+    const val ErrorRePassword = "ErrorRePassword"
+
 }
