@@ -9,6 +9,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.kh.mo.shopyapp.local.LocalSourceImp
 import com.kh.mo.shopyapp.remote.RemoteSourceImp
 import com.kh.mo.shopyapp.repo.RepoImp
 
@@ -23,6 +24,7 @@ abstract class BaseFragment<DB : ViewDataBinding, VM : ViewModel> : Fragment() {
         super.onCreate(savedInstanceState)
         intiViewModel()
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -41,9 +43,11 @@ abstract class BaseFragment<DB : ViewDataBinding, VM : ViewModel> : Fragment() {
         val showProductsViewModelFactory =
             BaseViewModelFactory(
                 RepoImp.getRepoImpInstance(
-                    (RemoteSourceImp.getRemoteSourceImpInstance())
-                )
+                    RemoteSourceImp.getRemoteSourceImpInstance(),
+                    LocalSourceImp.getLocalSourceImpInstance()
+
             )
+        )
         viewModel = ViewModelProvider(
             this,
             showProductsViewModelFactory
