@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.Navigation
 import com.kh.mo.shopyapp.databinding.FragmentHomeBinding
 import com.kh.mo.shopyapp.home.view.BrandsAdapter
 import com.kh.mo.shopyapp.remote.RemoteSourceImp
@@ -44,6 +45,7 @@ class HomeFragment : BaseFragment() {
 
 
 
+
     }
 
     private fun getMainCategories() {
@@ -63,7 +65,10 @@ class HomeFragment : BaseFragment() {
     private fun getBrands() {
         lifecycleScope.launch {
             homeViewModel.barnds.collect {
-                brandsAdapter=BrandsAdapter(requireContext())
+                brandsAdapter=BrandsAdapter(requireContext()){
+                    val action=HomeFragmentDirections.actionHomeFragmentToBrandProductsFragment(it.title!!,it.image?.src!!)
+                    Navigation.findNavController(requireView()).navigate(action)
+                }
                 brandsAdapter.submitList(it.toData())
 
                 Log.i("HomeFragment",it.toData()?.get(0)?.image?.src.toString())

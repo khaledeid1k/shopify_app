@@ -1,39 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.home.view.brand.BrandProductsFragment"
-    android:orientation="vertical"
-    android:background="@color/gray">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
 
-    <com.google.android.material.card.MaterialCardView
+    </data>
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:cardElevation="@dimen/_10sdp"
-        app:cardCornerRadius="@dimen/_10sdp"
-        app:cardUseCompatPadding="true"
-        >
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_180sdp"
-            android:src="@drawable/img"
-            android:scaleType="fitXY"
-            android:id="@+id/img_brand_item"/>
-    </com.google.android.material.card.MaterialCardView>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/recycle_products_specific_brand"
+        android:layout_height="match_parent"
+        tools:context=".ui.home.view.brand.BrandProductsFragment"
         android:orientation="vertical"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/item_order"
-        android:layout_marginHorizontal="@dimen/_10sdp"/>
+        android:background="@color/gray">
 
 
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardElevation="@dimen/_10sdp"
+            app:cardCornerRadius="@dimen/_10sdp"
+            app:cardUseCompatPadding="true">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_180sdp"
+                android:src="@drawable/img"
+                android:scaleType="fitXY"
+                android:id="@+id/img_brand_item" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/recycle_products_specific_brand"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_order"
+            android:layout_marginHorizontal="@dimen/_10sdp" />
 
 
-</LinearLayout>
+    </LinearLayout>
+</layout>
