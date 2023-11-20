@@ -16,16 +16,14 @@
         android:layout_height="match_parent"
         tools:context=".home.view.HomeFragment">
 
-        <androidx.recyclerview.widget.RecyclerView
+        <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/recycler_coupon"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_150sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            android:orientation="horizontal"
-            tools:listitem="@layout/item_coupon" />
+            android:orientation="horizontal" />
 
         <TextView
             android:id="@+id/tv_main_category_home"
