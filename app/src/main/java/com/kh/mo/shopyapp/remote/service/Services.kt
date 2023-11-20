@@ -19,6 +19,6 @@ interface Services {
     suspend fun getDiscountCode(
         @Path("priceRuleId") priceRuleId: String,
         @Path("discountCodeId") discountCodeId: String
-    ): DiscountCodeResponse
+    ): Response<DiscountCodeResponse>
 
 }

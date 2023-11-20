@@ -49,6 +49,25 @@ class RepoImp private constructor(private var remoteSource: RemoteSource) : Repo
 
     }
 
+    override suspend fun getDiscountCode(
+        priceRuleId: String,
+        discountCodeId: String
+    ): Flow<ApiSate<DiscountCodeResponse>> {
+        return flow {
+            emit(ApiSate.Loading)
+            val response = remoteSource.getDiscountCode(priceRuleId, discountCodeId)
+            if (response.isSuccessful) {
+                response.body()?.let {
+                    emit(ApiSate.Success(it))
+                } ?: emit(ApiSate.Failure("Null Response"))
+            } else {
+                emit(ApiSate.Failure(response.message()))
+            }
+        }.catch {
+            emit(ApiSate.Failure(it.message.toString()))
+        }
+    }
+
     companion object {
         @Volatile
         private var instance: RepoImp? = null
@@ -58,20 +77,6 @@ class RepoImp private constructor(private var remoteSource: RemoteSource) : Repo
                 instance = instanceHolder
                 instanceHolder
 
-            }
-        }
-    }
-
-    override suspend fun getDiscountCode(
-        priceRuleId: String,
-        discountCodeId: String
-    ): Flow<ApiSate<DiscountCodeResponse>> {
-        return flow {
-            emit(ApiSate.Loading)
-            try {
-                emit(ApiSate.Success(remoteSource.getDiscountCode(priceRuleId, discountCodeId)))
-            } catch (e: Exception) {
-                emit(ApiSate.Failure(e.message.toString()))
             }
         }
     }

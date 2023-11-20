@@ -9,5 +9,5 @@ interface RemoteSource {
 
     suspend fun getAllBrands(): Response<BrandsResponse>
     suspend fun getMainCategories(): Response<MainCategoryResponse>
-    suspend fun getDiscountCode(priceRuleId: String, discountCodeId: String): DiscountCodeResponse
+    suspend fun getDiscountCode(priceRuleId: String, discountCodeId: String): Response<DiscountCodeResponse>
 }
