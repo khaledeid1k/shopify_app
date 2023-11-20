@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.Navigation
 import com.kh.mo.shopyapp.databinding.FragmentHomeBinding
 import com.kh.mo.shopyapp.model.ui.AdModel
 import com.kh.mo.shopyapp.remote.RemoteSourceImp
@@ -25,6 +26,7 @@ class HomeFragment : BaseFragment() {
     private lateinit var homeViewModel:HomeViewModel
     private lateinit var binding: FragmentHomeBinding
     private lateinit var brandsAdapter: BrandsAdapter
+    private lateinit var mainCategoriesAdapter: MainCategoryAdapter
     private lateinit var adsAdapter: AdsAdapter
     private val listener: (AdModel) -> Unit = {
         homeViewModel.getCoupon(it)
@@ -43,7 +45,11 @@ class HomeFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         intiViewModel()
         homeViewModel.getAllBrands()
+        homeViewModel.getMainCategories()
+
         getBrands()
+        getMainCategories()
+
 
         val adsList = listOf(
             AdModel("https://drive.google.com/uc?export=download&id=1nmCztDLfwa7Kkw7-yz8tJEvqUi6oKA4M", "1402684080412", "17996919505180"),
@@ -68,10 +74,28 @@ class HomeFragment : BaseFragment() {
         }
     }
 
+    private fun getMainCategories() {
+        lifecycleScope.launch {
+            homeViewModel.mainCategories.collect {
+                mainCategoriesAdapter= MainCategoryAdapter(requireContext())
+                //to drop the first item from response
+                mainCategoriesAdapter.submitList(it.toData()?.drop(1))
+
+                Log.i("HomeFragment",it.toData()?.get(0)?.image?.src.toString())
+                binding.recyclerCategory.adapter = mainCategoriesAdapter
+            }
+
+        }
+
+    }
+
     private fun getBrands() {
         lifecycleScope.launch {
             homeViewModel.barnds.collect {
-                brandsAdapter= BrandsAdapter(requireContext())
+                brandsAdapter=BrandsAdapter(requireContext()){
+                    val action=HomeFragmentDirections.actionHomeFragmentToBrandProductsFragment(it.title!!,it.image?.src!!)
+                    Navigation.findNavController(requireView()).navigate(action)
+                }
                 brandsAdapter.submitList(it.toData())
 
                 Log.i("HomeFragment",it.toData()?.get(0)?.image?.src.toString())
