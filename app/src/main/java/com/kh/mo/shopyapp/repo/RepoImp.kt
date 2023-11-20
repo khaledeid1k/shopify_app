@@ -2,11 +2,13 @@ package com.kh.mo.shopyapp.repo
 
 import com.kh.mo.shopyapp.model.response.barnds.BrandsResponse
 import com.kh.mo.shopyapp.model.response.maincategory.MainCategoryResponse
+import com.kh.mo.shopyapp.model.response.productsofbrand.ProductsOfSpecificBrandResponse
 import com.kh.mo.shopyapp.remote.ApiSate
 import com.kh.mo.shopyapp.remote.RemoteSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
+import retrofit2.Response
 
 class RepoImp private constructor(private var remoteSource: RemoteSource):Repo{
 
@@ -46,6 +48,23 @@ class RepoImp private constructor(private var remoteSource: RemoteSource):Repo{
             emit(ApiSate.Failure(it.message!!))
         }
 
+    }
+
+    override suspend fun getProductsOfSpecificBrand(brandName: String):Flow<ApiSate<ProductsOfSpecificBrandResponse>> {
+        return flow {
+            emit(ApiSate.Loading)
+            val brandItems =
+                remoteSource.getProductsOfSpecificBrand(brandName)
+            if (brandItems.isSuccessful) {
+                remoteSource.getProductsOfSpecificBrand(brandName).body()
+                    ?.let { emit(ApiSate.Success(it)) }
+            } else {
+                emit(ApiSate.Failure(brandItems.message()))
+            }
+
+        }.catch {
+            emit(ApiSate.Failure(it.message!!))
+        }
     }
 
     companion object {
