@@ -54,8 +54,8 @@ class HomeFragment : BaseFragment() {
 
         val adsList = listOf(
             AdModel("https://drive.google.com/uc?export=download&id=1nmCztDLfwa7Kkw7-yz8tJEvqUi6oKA4M", "1402684080412", "17996919505180"),
-            AdModel("https://drive.google.com/uc?export=download&id=1kJqcbsprXzbROM3zepzryPi7i0dQ5fah", "1402721403164", "18006657990940"),
-            AdModel("https://drive.google.com/uc?export=download&id=1CUw0NsjOuTcMfktIzhpSMlhhApf9-QQ3", "1402721534236", "18006657466652")
+            AdModel("https://drive.google.com/uc?export=download&id=1zAUMAjtzIXoF475iIHL8zEdfyY9LuyXh", "1402721403164", "18006657990940"),
+            AdModel("https://drive.google.com/uc?export=download&id=1g7MDyebKasgGHrI1vgewTLhT-NO37ePW", "1402721534236", "18006657466652")
         )
         adsAdapter = AdsAdapter(requireContext(), adsList, listener)
         binding.recyclerCoupon.adapter = adsAdapter
