@@ -18,7 +18,7 @@ class RemoteSourceImp private constructor():RemoteSource {
     companion object{
         @Volatile
         private  var instance: RemoteSourceImp?=null
-        fun getRemoteDataImpInstance(): RemoteSourceImp {
+        fun getRemoteSourceImpInstance(): RemoteSourceImp {
             return instance ?: synchronized(this){
                 val instanceHolder= RemoteSourceImp()
                 instance =instanceHolder
