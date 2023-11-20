@@ -1,8 +1,8 @@
 package com.kh.mo.shopyapp.ui.sing_up.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kh.mo.shopyapp.model.entity.CustomerEntity
 import com.kh.mo.shopyapp.model.entity.Validation
 import com.kh.mo.shopyapp.model.request.UserData
 import com.kh.mo.shopyapp.remote.ApiState
@@ -13,17 +13,25 @@ import kotlinx.coroutines.launch
 
 class SignUpViewModel(private val repo: Repo) : ViewModel() {
 
-    private val _saveCustomer = MutableStateFlow<ApiState<String>>(ApiState.Loading)
-    val saveCustomer: StateFlow<ApiState<String>> = _saveCustomer
+    private val _saveCustomerFireBase = MutableStateFlow<ApiState<String>>(ApiState.Loading)
+    val saveCustomerFireBase: StateFlow<ApiState<String>> = _saveCustomerFireBase
 
+    private val _createCustomer = MutableStateFlow<ApiState<CustomerEntity>>(ApiState.Loading)
+    val createCustomer: StateFlow<ApiState<CustomerEntity>> = _createCustomer
 
-    fun storeData(userId: String, userData: UserData) {
+    fun storeCustomerFireBase(userId: Long, userData: UserData) {
         viewModelScope.launch {
             repo.storeData(userId, userData).collect {
                 when (it) {
-                    is ApiState.Failure -> Log.d("sadasdasdasd", "storeData:Failure ")
-                    ApiState.Loading -> Log.d("sadasdasdasd", "storeData:Loading ")
-                    is ApiState.Success -> Log.d("sadasdasdasd", "storeData:Success ")
+                    is ApiState.Failure -> {
+                        _saveCustomerFireBase.value = ApiState.Failure(it.msg)
+                    }
+                    is ApiState.Loading -> {
+                        _saveCustomerFireBase.value = ApiState.Loading
+                    }
+                    is ApiState.Success -> {
+                        _saveCustomerFireBase.value = ApiState.Success(it.data)
+                    }
                 }
 
 
@@ -32,12 +40,33 @@ class SignUpViewModel(private val repo: Repo) : ViewModel() {
         }
     }
 
+    fun createUser(userData: UserData) {
+        viewModelScope.launch {
+            repo.createCustomer(userData).collect {
+                when (it) {
+                    is ApiState.Failure -> {
+                        _createCustomer.value = ApiState.Failure(it.msg)
+                    }
+                    is ApiState.Loading -> {
+                        _createCustomer.value = ApiState.Loading
+                    }
+                    is ApiState.Success -> {
+                        _createCustomer.value = ApiState.Success(it.data)
+                    }
+                }
+            }
+        }
+    }
     fun validateUserName(userName: String) = repo.validateUserName(userName)
+
+    fun validateEmail(email: String): Validation = repo.validateEmail(email)
 
     fun validatePassword(password: String) = repo.validatePassword(password)
 
     fun validateConfirmPassword(password: String, rePassword: String) =
         repo.validateConfirmPassword(password, rePassword)
 
-    fun validateEmail(email: String): Validation = repo.validateEmail(email)
+
+
+
 }

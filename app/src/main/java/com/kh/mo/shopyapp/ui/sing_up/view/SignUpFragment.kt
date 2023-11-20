@@ -1,17 +1,21 @@
 package com.kh.mo.shopyapp.ui.sing_up.view
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
+import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.kh.mo.shopyapp.R
 import com.kh.mo.shopyapp.databinding.FragmentSignUpBinding
+import com.kh.mo.shopyapp.model.entity.CustomerEntity
 import com.kh.mo.shopyapp.model.entity.Validation
 import com.kh.mo.shopyapp.model.request.UserData
+import com.kh.mo.shopyapp.remote.ApiState
 import com.kh.mo.shopyapp.ui.base.BaseFragment
 import com.kh.mo.shopyapp.ui.sing_up.viewmodel.SignUpViewModel
 import com.kh.mo.shopyapp.utils.getText
+import kotlinx.coroutines.launch
 
 
 class SignUpFragment : BaseFragment<FragmentSignUpBinding, SignUpViewModel>() {
@@ -25,8 +29,10 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding, SignUpViewModel>() {
         checkEmailValueValidation()
         checkPasswordValidation()
         checkConfirmPasswordValidation()
+        createUser()
+        observeCreateCustomerResult()
+        observeSaveCustomerInFireBaseResult ()
     }
-
 
 
     private fun printValidationResult(validation: Validation, field: TextInputLayout) {
@@ -39,13 +45,15 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding, SignUpViewModel>() {
             }
         }
     }
+
     private fun checkValueValidation(
         textInputEditText: TextInputEditText,
-        validate:(text:String)->Unit, ) {
+        validate: (text: String) -> Unit,
+    ) {
         binding.apply {
             textInputEditText.getText {
                 validate(it)
-                }
+            }
         }
     }
 
@@ -53,38 +61,44 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding, SignUpViewModel>() {
     private fun checkUserNameValidation() {
         checkValueValidation(
             binding.userNameValue,
-        ){
+        ) {
             printValidationResult(viewModel.validateUserName(it), binding.userNameTextField)
         }
 
     }
+
     private fun checkEmailValueValidation() {
 
         checkValueValidation(
             binding.emailValue,
-        ){
+        ) {
             printValidationResult(viewModel.validateEmail(it), binding.emailTextField)
         }
 
     }
+
     private fun checkPasswordValidation() {
         checkValueValidation(
             binding.passwordValue,
-        ){
+        ) {
             printValidationResult(viewModel.validatePassword(it), binding.passwordTextField)
         }
 
     }
+
     private fun checkConfirmPasswordValidation() {
         checkValueValidation(
             binding.confirmPasswordValue,
-        ){
+        ) {
             val passwordValue = binding.passwordValue.text.toString()
-            printValidationResult(viewModel.validateConfirmPassword(passwordValue,it), binding.confirmPasswordTextField)
+            printValidationResult(
+                viewModel.validateConfirmPassword(passwordValue, it),
+                binding.confirmPasswordTextField
+            )
         }
     }
 
-    private fun checkDataValidation(createUser:(userData:UserData)->Unit) {
+    private fun checkDataValidation(createUser: (userData: UserData) -> Unit) {
         binding.singUpB.setOnClickListener {
             binding.userNameValue.text?.trim().toString().let { userNameValue ->
                 val validateUserName = viewModel.validateUserName(userNameValue)
@@ -108,27 +122,69 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding, SignUpViewModel>() {
                 }
             }
             binding.confirmPasswordValue.text?.trim().toString().let { confirmPasswordValue ->
-                val passwordValue=  binding.passwordValue.text?.trim().toString()
-                val validateConfirmPassword = viewModel.validateConfirmPassword(passwordValue,confirmPasswordValue)
+                val passwordValue = binding.passwordValue.text?.trim().toString()
+                val validateConfirmPassword =
+                    viewModel.validateConfirmPassword(passwordValue, confirmPasswordValue)
                 if (!validateConfirmPassword.isValid) {
                     printValidationResult(validateConfirmPassword, binding.confirmPasswordTextField)
                     return@setOnClickListener
                 }
             }
-            createUser(UserData(
-                binding.userNameValue.text?.trim().toString(),
-                binding.emailValue.text?.trim().toString(),
-                binding.passwordValue.text?.trim().toString(),
-            ))
+            createUser(
+                UserData(
+                    binding.userNameValue.text?.trim().toString(),
+                    binding.emailValue.text?.trim().toString(),
+                    binding.passwordValue.text?.trim().toString(),
+                )
+            )
 
         }
     }
 
 
     private fun createUser() {
-        checkDataValidation{
-
+        checkDataValidation {
+            viewModel.createUser(it)
         }
+    }
 
+
+    private fun observeCreateCustomerResult() {
+        lifecycleScope.launch {
+            viewModel.createCustomer.collect {
+                when (it) {
+                    is ApiState.Failure -> {}
+                    ApiState.Loading -> {}
+                    is ApiState.Success -> {
+                        storeInFirebase(it.data)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun storeInFirebase(data: CustomerEntity){
+        viewModel.storeCustomerFireBase(
+            data.id,
+            UserData(
+                data.first_name,
+                data.email,
+                binding.passwordValue.text?.trim().toString()
+            )
+        )
+    }
+
+    private fun observeSaveCustomerInFireBaseResult (){
+        lifecycleScope.launch {
+            viewModel.saveCustomerFireBase.collect {
+                when(it){
+                    is ApiState.Failure -> {}
+                    ApiState.Loading -> {}
+                    is ApiState.Success ->{
+                        Toast.makeText(requireContext(), "Sing Up Successfully ", Toast.LENGTH_SHORT).show()}
+                }
+
+            }
+        }
     }
 }
