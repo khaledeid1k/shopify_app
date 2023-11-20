@@ -14,7 +14,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".home.view.HomeFragment">
+        tools:context=".home.view.HomeFragment"
+        android:background="@color/gray">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_coupon"

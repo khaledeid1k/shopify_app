@@ -30,11 +30,11 @@ class HomeViewModel(private var _irepo: Repo) : ViewModel() {
                 .collect {
                     when (it) {
                         is ApiSate.Failure -> {
-                            Log.i("ss0", "Fail")
+                            Log.i("ss0", "brands:Fail")
                         }
                         is ApiSate.Loading -> {
                             _barnds.value = ApiSate.Loading
-                            Log.i("ss0", "Loading")
+                            Log.i("ss0", "brands:Loading")
                         }
                         is ApiSate.Success -> {
                             success(it.data)
@@ -53,16 +53,19 @@ class HomeViewModel(private var _irepo: Repo) : ViewModel() {
                 .collect {
                     when (it) {
                         is ApiSate.Failure -> {
-                            Log.i("ss0", "Fail")
+                            Log.i("ss0", "main: Fail")
                         }
                         is ApiSate.Loading -> {
                             _mainCategories.value = ApiSate.Loading
-                            Log.i("ss0", "Loading")
+                            Log.i("ss0", "main:Loading")
                         }
                         is ApiSate.Success -> {
                             success(it.data)
                             _mainCategories.value =
                                 ApiSate.Success(it.data.convertToCustomCollection())
+                            Log.i("ss0", "main:Success")
+
+
                         }
                     }
 

@@ -21,6 +21,8 @@ class HomeFragment : BaseFragment() {
     private lateinit var homeViewModel:HomeViewModel
     private lateinit var binding: FragmentHomeBinding
     private lateinit var brandsAdapter: BrandsAdapter
+    private lateinit var mainCategoriesAdapter: MainCategoryAdapter
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,10 +37,27 @@ class HomeFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         intiViewModel()
         homeViewModel.getAllBrands()
+        homeViewModel.getMainCategories()
+
         getBrands()
+        getMainCategories()
 
 
 
+    }
+
+    private fun getMainCategories() {
+        lifecycleScope.launch {
+            homeViewModel.mainCategories.collect {
+                mainCategoriesAdapter= MainCategoryAdapter(requireContext())
+                //to drop the first item from response
+                mainCategoriesAdapter.submitList(it.toData()?.drop(1))
+
+                Log.i("HomeFragment",it.toData()?.get(0)?.image?.src.toString())
+                binding.recyclerCategory.adapter = mainCategoriesAdapter
+            }
+
+        }
     }
 
     private fun getBrands() {
@@ -59,7 +78,7 @@ class HomeFragment : BaseFragment() {
             BaseViewModelFactory(
                 RepoImp.getRepoImpInstance
                     (
-                    RemoteSourceImp.getRemoteDataImpInstance()
+                    RemoteSourceImp.getRemoteSourceImpInstance()
                 )
             )
         homeViewModel = ViewModelProvider(
