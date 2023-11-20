@@ -13,6 +13,7 @@
     <string name="password">Password</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="forget_password">Forget Password ? </string>
+    <string name="already_have_account">Already have account? <b><u><font color="#FF6969">Log In</font></u></b></string>
 
     <string name="don_t_have_an_account_sign_up_now">Don’t have an account, <b><u><font color="#FF6969">Sign Up</font></u></b></string>
     <string name="sign_up">Sign Up</string>
