@@ -1,6 +1,7 @@
 package com.kh.mo.shopyapp.remote.service
 
 import com.kh.mo.shopyapp.model.response.ads.DiscountCodeResponse
+import com.kh.mo.shopyapp.model.response.allproducts.AllProductsResponse
 import com.kh.mo.shopyapp.model.response.barnds.BrandsResponse
 import com.kh.mo.shopyapp.model.response.maincategory.MainCategoryResponse
 import com.kh.mo.shopyapp.model.response.productsofbrand.ProductsOfSpecificBrandResponse
@@ -25,5 +26,8 @@ interface Services {
         @Path("priceRuleId") priceRuleId: String,
         @Path("discountCodeId") discountCodeId: String
     ): Response<DiscountCodeResponse>
+
+    @GET("products.json")
+    suspend fun getAllProducts(): Response<AllProductsResponse>
 
 }

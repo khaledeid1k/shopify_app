@@ -1,5 +1,6 @@
 package com.kh.mo.shopyapp.remote
 
+import com.kh.mo.shopyapp.model.response.allproducts.AllProductsResponse
 import com.kh.mo.shopyapp.model.response.barnds.BrandsResponse
 import com.kh.mo.shopyapp.model.response.maincategory.MainCategoryResponse
 import com.kh.mo.shopyapp.model.response.productsofbrand.ProductsOfSpecificBrandResponse
@@ -17,6 +18,10 @@ class RemoteSourceImp private constructor() : RemoteSource {
 
     override suspend fun getProductsOfSpecificBrand(brandName: String): Response<ProductsOfSpecificBrandResponse> {
         return Network.retrofitService.getProductsOfSpecificBrand(brandName)
+    }
+
+    override suspend fun getAllProducts(): Response<AllProductsResponse> {
+        return Network.retrofitService.getAllProducts()
     }
 
     companion object {

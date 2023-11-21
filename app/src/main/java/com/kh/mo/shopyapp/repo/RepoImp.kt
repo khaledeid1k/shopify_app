@@ -1,6 +1,7 @@
 package com.kh.mo.shopyapp.repo
 
 import com.kh.mo.shopyapp.model.response.ads.DiscountCodeResponse
+import com.kh.mo.shopyapp.model.response.allproducts.AllProductsResponse
 import com.kh.mo.shopyapp.model.response.barnds.BrandsResponse
 import com.kh.mo.shopyapp.model.response.maincategory.MainCategoryResponse
 import com.kh.mo.shopyapp.model.response.productsofbrand.ProductsOfSpecificBrandResponse
@@ -61,6 +62,24 @@ class RepoImp private constructor(private var remoteSource: RemoteSource):Repo{
                     ?.let { emit(ApiSate.Success(it)) }
             } else {
                 emit(ApiSate.Failure(brandItems.message()))
+            }
+
+        }.catch {
+            emit(ApiSate.Failure(it.message!!))
+        }
+    }
+
+    override suspend fun getAllProducts(): Flow<ApiSate<AllProductsResponse>> {
+        return flow {
+
+            emit(ApiSate.Loading)
+            val allProducts =
+                remoteSource.getAllProducts()
+            if (allProducts.isSuccessful) {
+                remoteSource.getAllProducts().body()
+                    ?.let { emit(ApiSate.Success(it)) }
+            } else {
+                emit(ApiSate.Failure(allProducts.message()))
             }
 
         }.catch {
