@@ -7,7 +7,6 @@ import com.kh.mo.shopyapp.model.response.ads.DiscountCodeResponse
 import com.kh.mo.shopyapp.model.response.barnds.BrandsResponse
 import com.kh.mo.shopyapp.model.response.maincategory.MainCategoryResponse
 import com.kh.mo.shopyapp.model.response.productsofbrand.ProductsOfSpecificBrandResponse
-import com.kh.mo.shopyapp.remote.ApiSate
 import com.kh.mo.shopyapp.remote.ApiState
 import com.kh.mo.shopyapp.remote.RemoteSource
 import com.kh.mo.shopyapp.repo.mapper.convertCustomerResponseToCustomerEntity
@@ -69,76 +68,76 @@ class RepoImp private constructor(
     override fun validateConfirmPassword(password: String, rePassword: String) =
         localSource.validateConfirmPassword(password, rePassword)
 
-    override suspend fun getAllBrands(): Flow<ApiSate<BrandsResponse>> {
+    override suspend fun getAllBrands(): Flow<ApiState<BrandsResponse>> {
         return flow {
 
-            emit(ApiSate.Loading)
+            emit(ApiState.Loading)
             val allBrands =
                 remoteSource.getAllBrands()
             if (allBrands.isSuccessful) {
                 remoteSource.getAllBrands().body()
-                    ?.let { emit(ApiSate.Success(it)) }
+                    ?.let { emit(ApiState.Success(it)) }
             } else {
-                emit(ApiSate.Failure(allBrands.message()))
+                emit(ApiState.Failure(allBrands.message()))
             }
 
         }.catch {
-            emit(ApiSate.Failure(it.message!!))
+            emit(ApiState.Failure(it.message!!))
         }
     }
 
-    override suspend fun getMainCategories(): Flow<ApiSate<MainCategoryResponse>> {
+    override suspend fun getMainCategories(): Flow<ApiState<MainCategoryResponse>> {
         return flow {
 
-            emit(ApiSate.Loading)
+            emit(ApiState.Loading)
             val mainCategories =
                 remoteSource.getMainCategories()
             if (mainCategories.isSuccessful) {
                 remoteSource.getMainCategories().body()
-                    ?.let { emit(ApiSate.Success(it)) }
+                    ?.let { emit(ApiState.Success(it)) }
             } else {
-                emit(ApiSate.Failure(mainCategories.message()))
+                emit(ApiState.Failure(mainCategories.message()))
             }
 
         }.catch {
-            emit(ApiSate.Failure(it.message!!))
+            emit(ApiState.Failure(it.message!!))
         }
 
     }
 
-    override suspend fun getProductsOfSpecificBrand(brandName: String): Flow<ApiSate<ProductsOfSpecificBrandResponse>> {
+    override suspend fun getProductsOfSpecificBrand(brandName: String): Flow<ApiState<ProductsOfSpecificBrandResponse>> {
         return flow {
-            emit(ApiSate.Loading)
+            emit(ApiState.Loading)
             val brandItems =
                 remoteSource.getProductsOfSpecificBrand(brandName)
             if (brandItems.isSuccessful) {
                 remoteSource.getProductsOfSpecificBrand(brandName).body()
-                    ?.let { emit(ApiSate.Success(it)) }
+                    ?.let { emit(ApiState.Success(it)) }
             } else {
-                emit(ApiSate.Failure(brandItems.message()))
+                emit(ApiState.Failure(brandItems.message()))
             }
 
         }.catch {
-            emit(ApiSate.Failure(it.message!!))
+            emit(ApiState.Failure(it.message!!))
         }
     }
 
     override suspend fun getDiscountCode(
         priceRuleId: String,
         discountCodeId: String
-    ): Flow<ApiSate<DiscountCodeResponse>> {
+    ): Flow<ApiState<DiscountCodeResponse>> {
         return flow {
-            emit(ApiSate.Loading)
+            emit(ApiState.Loading)
             val response = remoteSource.getDiscountCode(priceRuleId, discountCodeId)
             if (response.isSuccessful) {
                 response.body()?.let {
-                    emit(ApiSate.Success(it))
-                } ?: emit(ApiSate.Failure("Null Response"))
+                    emit(ApiState.Success(it))
+                } ?: emit(ApiState.Failure("Null Response"))
             } else {
-                emit(ApiSate.Failure(response.message()))
+                emit(ApiState.Failure(response.message()))
             }
         }.catch {
-            emit(ApiSate.Failure(it.message.toString()))
+            emit(ApiState.Failure(it.message.toString()))
         }
     }
 

@@ -1,7 +1,6 @@
 package com.kh.mo.shopyapp.local
 
 import com.kh.mo.shopyapp.model.entity.Validation
-import com.kh.mo.shopyapp.model.request.UserData
 
 interface LocalSource {
 

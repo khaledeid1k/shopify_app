@@ -1,6 +1,7 @@
 package com.kh.mo.shopyapp.remote
 
 import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.FirebaseFirestore
 import com.kh.mo.shopyapp.model.request.CustomerDataRequest
 import com.kh.mo.shopyapp.model.request.CustomerRequest
 import com.kh.mo.shopyapp.model.request.UserData
@@ -85,7 +86,6 @@ class RemoteSourceImp private constructor() : RemoteSource {
                 val instanceHolder = RemoteSourceImp()
                 instance = instanceHolder
                 instanceHolder
-
             }
         }
     }

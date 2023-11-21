@@ -7,7 +7,7 @@ import com.kh.mo.shopyapp.model.response.barnds.SmartCollection
 import com.kh.mo.shopyapp.model.ui.AdModel
 import com.kh.mo.shopyapp.model.ui.maincategory.CustomCollection
 import com.kh.mo.shopyapp.model.ui.productsofbrand.Product
-import com.kh.mo.shopyapp.remote.ApiSate
+import com.kh.mo.shopyapp.remote.ApiState
 import com.kh.mo.shopyapp.repo.Repo
 import com.kh.mo.shopyapp.repo.maper.convertToCustomCollection
 import com.kh.mo.shopyapp.repo.maper.convertToProduct
@@ -22,30 +22,30 @@ import kotlin.Result.Companion.success
 class HomeViewModel(private var _irepo: Repo) : ViewModel() {
     private val TAG = "TAG HomeViewModel"
 
-    private val _barnds = MutableStateFlow<ApiSate<List<SmartCollection>>>(ApiSate.Loading)
-    val barnds: StateFlow<ApiSate<List<SmartCollection>>> = _barnds
+    private val _barnds = MutableStateFlow<ApiState<List<SmartCollection>>>(ApiState.Loading)
+    val barnds: StateFlow<ApiState<List<SmartCollection>>> = _barnds
 
-    private val _mainCategories = MutableStateFlow<ApiSate<List<CustomCollection>>>(ApiSate.Loading)
-    val mainCategories: StateFlow<ApiSate<List<CustomCollection>>> = _mainCategories
+    private val _mainCategories = MutableStateFlow<ApiState<List<CustomCollection>>>(ApiState.Loading)
+    val mainCategories: StateFlow<ApiState<List<CustomCollection>>> = _mainCategories
 
-    private val _productsBrand = MutableStateFlow<ApiSate<List<Product>>>(ApiSate.Loading)
-    val productsBrand: StateFlow<ApiSate<List<Product>>> = _productsBrand
+    private val _productsBrand = MutableStateFlow<ApiState<List<Product>>>(ApiState.Loading)
+    val productsBrand: StateFlow<ApiState<List<Product>>> = _productsBrand
 
 
     fun getAllBrands() {
         viewModelScope.launch(Dispatchers.IO) {
             _irepo.getAllBrands().collect {
                 when (it) {
-                    is ApiSate.Failure -> {
+                    is ApiState.Failure -> {
                         Log.i("ss0", "brands:Fail")
                     }
-                    is ApiSate.Loading -> {
-                        _barnds.value = ApiSate.Loading
+                    is ApiState.Loading -> {
+                        _barnds.value = ApiState.Loading
                         Log.i("ss0", "brands:Loading")
                     }
-                    is ApiSate.Success -> {
+                    is ApiState.Success -> {
                         success(it.data)
-                        _barnds.value = ApiSate.Success(it.data.convertToSmartCollection())
+                        _barnds.value = ApiState.Success(it.data.convertToSmartCollection())
                     }
                 }
 
@@ -58,16 +58,16 @@ class HomeViewModel(private var _irepo: Repo) : ViewModel() {
         viewModelScope.launch(Dispatchers.IO) {
             _irepo.getMainCategories().collect {
                 when (it) {
-                    is ApiSate.Failure -> {
+                    is ApiState.Failure -> {
                         Log.i("ss0", "main: Fail")
                     }
-                    is ApiSate.Loading -> {
-                        _mainCategories.value = ApiSate.Loading
+                    is ApiState.Loading -> {
+                        _mainCategories.value = ApiState.Loading
                         Log.i("ss0", "main:Loading")
                     }
-                    is ApiSate.Success -> {
+                    is ApiState.Success -> {
                         success(it.data)
-                        _mainCategories.value = ApiSate.Success(it.data.convertToCustomCollection())
+                        _mainCategories.value = ApiState.Success(it.data.convertToCustomCollection())
                         Log.i("ss0", "main:Success")
 
 
@@ -83,16 +83,16 @@ class HomeViewModel(private var _irepo: Repo) : ViewModel() {
         viewModelScope.launch(Dispatchers.IO) {
             _irepo.getProductsOfSpecificBrand(brandName).collect {
                 when (it) {
-                    is ApiSate.Failure -> {
+                    is ApiState.Failure -> {
                         Log.i("ss0", "productBrand: Fail")
                     }
-                    is ApiSate.Loading -> {
-                        _productsBrand.value = ApiSate.Loading
+                    is ApiState.Loading -> {
+                        _productsBrand.value = ApiState.Loading
                         Log.i("ss0", "productBrand:Loading")
                     }
-                    is ApiSate.Success -> {
+                    is ApiState.Success -> {
                         success(it.data)
-                        _productsBrand.value = ApiSate.Success(it.data.convertToProduct())
+                        _productsBrand.value = ApiState.Success(it.data.convertToProduct())
                         Log.i("ss0", "productBrand:Success")
 
 
@@ -108,9 +108,9 @@ class HomeViewModel(private var _irepo: Repo) : ViewModel() {
         viewModelScope.launch(Dispatchers.IO) {
             _irepo.getDiscountCode(adItem.priceRuleId, adItem.discountCodeId).collectLatest {
                 when (it) {
-                    is ApiSate.Failure -> Log.i(TAG, "getCoupon: ${it.msg}")
-                    ApiSate.Loading -> Log.i(TAG, "getCoupon: $it")
-                    is ApiSate.Success -> Log.i(TAG, "getCoupon: ${it.data.discountCode?.code}")
+                    is ApiState.Failure -> Log.i(TAG, "getCoupon: ${it.msg}")
+                    ApiState.Loading -> Log.i(TAG, "getCoupon: $it")
+                    is ApiState.Success -> Log.i(TAG, "getCoupon: ${it.data.discountCode?.code}")
                 }
             }
         }
