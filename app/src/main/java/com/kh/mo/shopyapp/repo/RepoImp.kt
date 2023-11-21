@@ -6,6 +6,7 @@ import com.kh.mo.shopyapp.model.request.UserData
 import com.kh.mo.shopyapp.remote.ApiState
 import com.kh.mo.shopyapp.remote.RemoteSource
 import com.kh.mo.shopyapp.repo.mapper.convertCustomerResponseToCustomerEntity
+import com.kh.mo.shopyapp.repo.mapper.convertLoginToUserData
 import com.kh.mo.shopyapp.repo.mapper.convertUserDataToCustomerData
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -37,6 +38,24 @@ class RepoImp private constructor(
         }
     }
 
+    override suspend fun singIn(email: String)=  flow {
+        emit(ApiState.Loading)
+        val customer = remoteSource.singIn(email)
+        if (!customer.isSuccessful) {
+            emit(ApiState.Failure("NetWork Error"))
+        } else {
+            customer.body()?.let { responseBody ->
+                emit(ApiState.Success(responseBody.convertLoginToUserData()))
+            } ?: run {
+                emit(ApiState.Failure("Email not exist"))
+            }
+        }
+    }.catch {
+        emit(ApiState.Failure(it.message!!))
+    }
+
+    override suspend fun checkCustomerExists(customerId: String) =
+        remoteSource.checkCustomerExists(customerId)
 
     override fun validateUserName(userName: String) = localSource.validateUserName(userName)
     override fun validateEmail(email: String) = localSource.validateEmail(email)

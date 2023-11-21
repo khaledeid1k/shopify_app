@@ -1,13 +1,16 @@
 package com.kh.mo.shopyapp.remote
 
+import android.util.Log
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.kh.mo.shopyapp.model.request.CustomerDataRequest
 import com.kh.mo.shopyapp.model.request.CustomerRequest
 import com.kh.mo.shopyapp.model.request.UserData
 import com.kh.mo.shopyapp.model.response.create_customer.CustomerResponse
+import com.kh.mo.shopyapp.model.response.login.Login
 import com.kh.mo.shopyapp.remote.service.Network
 import com.kh.mo.shopyapp.utils.Constants
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 import retrofit2.Response
@@ -33,6 +36,29 @@ class RemoteSourceImp private constructor() : RemoteSource {
     override suspend fun createCustomer(customerDataRequest: CustomerDataRequest): Response<CustomerResponse> {
         return network.createCustomer(CustomerRequest(customerDataRequest))
 
+    }
+
+    override suspend fun singIn(email: String): Response<Login> {
+        return network.singIn(email)
+    }
+
+    override suspend fun checkCustomerExists(customerId: String) = flow {
+        var email = ""
+        var password = ""
+        emit(ApiState.Loading)
+        val collection =
+            FirebaseFirestore.getInstance().collection(Constants.collectionPath)
+                .document(customerId)
+        val documentSnapshot = collection.get().await()
+        if (documentSnapshot.exists()) {
+            email = documentSnapshot.getString(Constants.email).toString()
+            password = documentSnapshot.getString(Constants.password).toString()
+
+        }
+        emit(ApiState.Success(UserData(email = email, password = password)))
+
+    }.catch {
+        emit(ApiState.Failure(it.message.toString()))
     }
 
 
