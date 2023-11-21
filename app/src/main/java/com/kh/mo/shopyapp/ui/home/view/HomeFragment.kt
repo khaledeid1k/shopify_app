@@ -51,13 +51,16 @@ class HomeFragment : BaseFragment() {
             AdModel("https://drive.google.com/uc?export=download&id=1CUw0NsjOuTcMfktIzhpSMlhhApf9-QQ3", "1402721534236", "18006657466652")
         )
         adsAdapter = AdsAdapter(requireContext(), adsList, listener)
-        binding.recyclerCoupon.adapter = adsAdapter
+        binding.apply {
+            couponPager.adapter = adsAdapter
+            dotsIndicator.setViewPager2(couponPager)
+        }
 
         val totalPages = adsList.size
         lifecycleScope.launch(Dispatchers.Main) {
             while (isActive) {
                 delay(2000)
-                binding.recyclerCoupon.apply {
+                binding.couponPager.apply {
                     if (currentItem + 1 > totalPages - 1) {
                         currentItem = 0
                     } else {

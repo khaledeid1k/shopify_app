@@ -95,7 +95,7 @@ dependencies {
     implementation 'com.intuit.sdp:sdp-android:1.1.0'
     implementation 'com.intuit.ssp:ssp-android:1.1.0'
 
-//Room Database
+    //Room Database
     def room_version = "2.5.2"
 
     implementation "androidx.room:room-runtime:$room_version"
@@ -128,5 +128,9 @@ dependencies {
     testImplementation "androidx.test:core-ktx:$androidXTestCoreVersion"
     testImplementation "org.robolectric:robolectric:4.8"
 
- implementation "androidx.viewpager2:viewpager2:1.0.0"
+    // ViewPager
+    implementation "androidx.viewpager2:viewpager2:1.0.0"
+
+    // Pager Dots Indicator
+    implementation("com.tbuonomo:dotsindicator:4.2")
 }
