@@ -19,7 +19,22 @@ class ProductFragment : BaseFragment<FragmentProductBinding, ProductViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val receiveProduct = receiveProduct()
         initProductPageAdapter()
+        tightIndicatorToViewPager()
+        binding.apply {
+            lifecycleOwner = this@ProductFragment
+            product=receiveProduct
+        }
+
+    }
+
+   private fun tightIndicatorToViewPager(){
+       binding.apply {
+           productImagesViewPager.adapter = ProductImagesAdapter(receiveProduct().images)
+           dotsIndicator.setViewPager2(productImagesViewPager)
+       }
+
     }
 
 
@@ -42,6 +57,8 @@ class ProductFragment : BaseFragment<FragmentProductBinding, ProductViewModel>()
         }.attach()
 
     }
+
+
 
 }
 

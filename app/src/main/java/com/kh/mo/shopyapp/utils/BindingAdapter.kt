@@ -22,3 +22,12 @@ fun ImageView.setImageUrl(url: String?) {
 fun TextView.setRandomRate(t:String) {
     this.text= String.format("%.1f", Random.nextDouble(1.0, 5.0))
 }
+
+//@BindingAdapter(value = ["app:adapterImagesOfProduct"])
+//fun ViewPager2.adapterImagesOfProduct(images: List<ImageResponse?>?) {
+//    images?.let {
+//        this.adapter = ProductImagesAdapter(it)
+//    }
+//
+//}
+

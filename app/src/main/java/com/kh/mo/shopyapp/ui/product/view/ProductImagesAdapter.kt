@@ -4,13 +4,13 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.kh.mo.shopyapp.R
-import com.kh.mo.shopyapp.databinding.ItemProductImageBinding
+import coil.load
 
-class ProductImagesAdapter (
-    private val context: Context,
-    private val adsList: List<String>,
+import com.kh.mo.shopyapp.databinding.ItemProductImageBinding
+import com.kh.mo.shopyapp.model.response.productsofbrand.ImageResponse
+
+class ProductImagesAdapter(
+    private val images: List<ImageResponse?>?
 ) :
     RecyclerView.Adapter<ProductImagesAdapter.ViewHolder>() {
     private lateinit var binding: ItemProductImageBinding
@@ -22,14 +22,11 @@ class ProductImagesAdapter (
         return ViewHolder(binding)
     }
 
-    override fun getItemCount() = adsList.size
+    override fun getItemCount() = images?.size?:0
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val adItem = adsList[position]
-        Glide.with(context)
-            .load(adItem)
-            .placeholder(R.drawable.product_placeholder)
-            .into(binding.productImage)
+        val imageItem = images?.get(position)
+        binding.productImage.load(imageItem?.src)
     }
 
     class ViewHolder(binding: ItemProductImageBinding) : RecyclerView.ViewHolder(binding.root)
