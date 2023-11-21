@@ -24,11 +24,6 @@ class MainActivity : AppCompatActivity() {
         )
         setUpBottomNavigationView()
 
-        lifecycleScope.launch {
-            //Log.d("asdadasdadada", "onCreate:${ Network.retrofitService.getAllProducts().body()} ")
-
-        }
-
 
     }
 
@@ -38,5 +33,33 @@ class MainActivity : AppCompatActivity() {
         controller = navHostFragment.navController
         NavigationUI.setupWithNavController(binding.bottomNavigation, controller)
 
+        binding.bottomNavigation.setOnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.home -> {
+                    controller.navigate(R.id.homeFragment)
+                    true
+                }
+                R.id.favourite -> {
+                    controller.navigate(R.id.favoritesFragment)
+                    true
+                }
+                R.id.search -> {
+                    controller.navigate(R.id.searchFragment)
+                    true
+                }
+                R.id.cart -> {
+                    controller.navigate(R.id.cartFragment)
+                    true
+                }
+                R.id.profile -> {
+                    controller.navigate(R.id.profileFragment)
+                    true
+                }
+                else -> false
+            }
+        }
     }
-}
+
+    }
+
+
