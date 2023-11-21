@@ -12,6 +12,7 @@ class BaseViewModelFactory(private val repo: Repo) : ViewModelProvider.Factory {
         return when (modelClass) {
 
           SignUpViewModel::class.java ->  SignUpViewModel(repo) as T
+            SignInViewModel::class.java ->  SignInViewModel(repo) as T
             else ->  throw Throwable("Unsupported view model")
         }
     }
