@@ -226,7 +226,7 @@
             android:textColor="@color/white"
             android:text="@string/sign_up"
             android:layout_marginHorizontal="@dimen/_22sdp"
-            app:layout_constraintBottom_toTopOf="@+id/go_to_register"
+            app:layout_constraintBottom_toTopOf="@+id/go_to_login"
             app:layout_constraintEnd_toStartOf="@+id/guideline_v_r"
             app:layout_constraintStart_toEndOf="@+id/guideline_v_l"
             app:layout_constraintVertical_bias=".5"
@@ -234,7 +234,7 @@
             app:layout_constraintTop_toBottomOf="@+id/confirm_password_textField" />
 
         <TextView
-            android:id="@+id/go_to_register"
+            android:id="@+id/go_to_login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/already_have_account"
