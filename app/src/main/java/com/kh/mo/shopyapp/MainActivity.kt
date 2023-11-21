@@ -1,11 +1,12 @@
 package com.kh.mo.shopyapp
 
-import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.kh.mo.shopyapp.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {

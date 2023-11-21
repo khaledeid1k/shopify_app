@@ -33,10 +33,7 @@ abstract class BaseFragment<DB : ViewDataBinding, VM : ViewModel> : Fragment() {
             inflater, layoutIdFragment,
             container, false
         )
-
-
         return binding.root
-
     }
 
     private fun intiViewModel() {
@@ -46,13 +43,11 @@ abstract class BaseFragment<DB : ViewDataBinding, VM : ViewModel> : Fragment() {
                     RemoteSourceImp.getRemoteSourceImpInstance(),
                     LocalSourceImp.getLocalSourceImpInstance()
 
+                )
             )
-        )
         viewModel = ViewModelProvider(
             this,
             showProductsViewModelFactory
         )[getViewModelClass()]
     }
-
-
 }

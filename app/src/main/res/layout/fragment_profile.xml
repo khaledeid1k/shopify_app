@@ -156,7 +156,7 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_fav_profile"
-                tools:listitem="@layout/fav_item"
+                tools:listitem="@layout/item_fav"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:spanCount="2"/>
 

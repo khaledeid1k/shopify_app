@@ -3,7 +3,6 @@ package com.kh.mo.shopyapp.local
 import com.kh.mo.shopyapp.local.validation.AuthInputValidatorImpl
 import com.kh.mo.shopyapp.local.validation.ValidationSateImpl
 import com.kh.mo.shopyapp.model.entity.Validation
-import com.kh.mo.shopyapp.model.request.UserData
 
 class LocalSourceImp private constructor():LocalSource {
     private val validationSateImpl= ValidationSateImpl(AuthInputValidatorImpl())

@@ -9,7 +9,7 @@
         android:id="@+id/signUpFragment"
         android:name="com.kh.mo.shopyapp.ui.sing_up.view.SignUpFragment"
         android:label="fragment_singup"
-        tools:layout="@layout/fragment_sign_up" >
+        tools:layout="@layout/fragment_sign_up">
         <action
             android:id="@+id/action_signUpFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
@@ -20,7 +20,7 @@
     <fragment
         android:id="@+id/signInFragment"
         android:name="com.kh.mo.shopyapp.ui.sing_in.view.SignInFragment"
-        android:label="SignInFragment" >
+        android:label="SignInFragment">
         <action
             android:id="@+id/action_signInFragment_to_signUpFragment"
             app:destination="@id/signUpFragment" />
@@ -43,7 +43,33 @@
         android:label="ProductFragment" />
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.kh.mo.shopyapp.ui.home.HomeFragment"
+        android:name="com.kh.mo.shopyapp.ui.home.view.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_homeFragment_to_brandProductsFragment"
+            app:destination="@id/brandProductsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/cartFragment"
+        android:name="com.kh.mo.shopyapp.ui.cart.CartFragment"
+        android:label="fragment_cart"
+        tools:layout="@layout/fragment_cart" />
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.kh.mo.shopyapp.ui.profile.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/brandProductsFragment"
+        android:name="com.kh.mo.shopyapp.ui.home.view.brand.BrandProductsFragment"
+        android:label="fragment_brand_products"
+        tools:layout="@layout/fragment_brand_products">
+        <argument
+            android:name="brandName"
+            app:argType="string" />
+        <argument
+            android:name="brandImage"
+            app:argType="string" />
+    </fragment>
 </navigation>

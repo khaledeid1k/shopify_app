@@ -1,13 +1,15 @@
 package com.kh.mo.shopyapp.remote
 
-import android.util.Log
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.kh.mo.shopyapp.model.request.CustomerDataRequest
 import com.kh.mo.shopyapp.model.request.CustomerRequest
 import com.kh.mo.shopyapp.model.request.UserData
+import com.kh.mo.shopyapp.model.response.barnds.BrandsResponse
 import com.kh.mo.shopyapp.model.response.create_customer.CustomerResponse
 import com.kh.mo.shopyapp.model.response.login.Login
+import com.kh.mo.shopyapp.model.response.maincategory.MainCategoryResponse
+import com.kh.mo.shopyapp.model.response.productsofbrand.ProductsOfSpecificBrandResponse
 import com.kh.mo.shopyapp.remote.service.Network
 import com.kh.mo.shopyapp.utils.Constants
 import kotlinx.coroutines.flow.catch
@@ -61,6 +63,20 @@ class RemoteSourceImp private constructor() : RemoteSource {
         emit(ApiState.Failure(it.message.toString()))
     }
 
+    override suspend fun getAllBrands(): Response<BrandsResponse> {
+        return Network.retrofitService.getAllBrands()
+    }
+
+    override suspend fun getMainCategories(): Response<MainCategoryResponse> {
+        return Network.retrofitService.getMainCategories()
+    }
+
+    override suspend fun getProductsOfSpecificBrand(brandName: String): Response<ProductsOfSpecificBrandResponse> {
+        return Network.retrofitService.getProductsOfSpecificBrand(brandName)
+    }
+
+    override suspend fun getDiscountCode(priceRuleId: String, discountCodeId: String) =
+        Network.retrofitService.getDiscountCode(priceRuleId, discountCodeId)
 
     companion object {
         @Volatile
@@ -70,7 +86,6 @@ class RemoteSourceImp private constructor() : RemoteSource {
                 val instanceHolder = RemoteSourceImp()
                 instance = instanceHolder
                 instanceHolder
-
             }
         }
     }
