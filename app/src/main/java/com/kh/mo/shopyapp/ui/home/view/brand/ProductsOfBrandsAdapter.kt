@@ -14,7 +14,7 @@ import com.kh.mo.shopyapp.databinding.ItemOrderBinding
 import com.kh.mo.shopyapp.model.response.barnds.SmartCollection
 import com.kh.mo.shopyapp.model.ui.productsofbrand.Product
 
-class ProductsOfBrandsAdapter( var context: Context) :
+class ProductsOfBrandsAdapter( var context: Context,val onClickListener:(position:Int)->Unit) :
 ListAdapter<Product, ProductsOfBrandsAdapter.ProductsOfBrandVH>(RecyclerDiffUtilProductsBrandsItem()) {
     private lateinit var binding: ItemOrderBinding
 
@@ -29,6 +29,9 @@ ListAdapter<Product, ProductsOfBrandsAdapter.ProductsOfBrandVH>(RecyclerDiffUtil
     override fun onBindViewHolder(holder: ProductsOfBrandVH, position: Int) {
         val currentItem = getItem(position)
         holder.onBind(currentItem)
+        holder.itemView.setOnClickListener{
+            onClickListener(position)
+        }
 
     }
 
