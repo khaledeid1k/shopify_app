@@ -6,7 +6,8 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object Network {
-    private val client=OkHttpClient.Builder().addInterceptor(ShopyInterceptor()).build()
+
+    private val client = OkHttpClient.Builder().addInterceptor(ShopyInterceptor()).build()
     private val retrofit: Retrofit = Retrofit.Builder()
         .client(client)
         .baseUrl(BuildConfig.baseURL)
@@ -16,8 +17,4 @@ object Network {
     val retrofitService: Services by lazy {
         retrofit.create(Services::class.java)
     }
-
-
-
-
 }

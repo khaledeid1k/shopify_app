@@ -11,7 +11,9 @@
     <string name="enter_your_emails_and_password">Enter your emails and password</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
     <string name="forget_password">Forget Password ? </string>
+    <string name="already_have_account">Already have account? <b><u><font color="#FF6969">Log In</font></u></b></string>
 
     <string name="don_t_have_an_account_sign_up_now">Don’t have an account, <b><u><font color="#FF6969">Sign Up</font></u></b></string>
     <string name="sign_up">Sign Up</string>
@@ -70,4 +72,5 @@
     <string name="done">Done</string>
     <string name="x">x</string>
     <string name="add_address">Add Address</string>
+    <string name="username">UserName</string>
 </resources>

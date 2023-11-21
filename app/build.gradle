@@ -1,7 +1,8 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
-    id 'androidx.navigation.safeargs'
+    id 'com.google.gms.google-services'
+    id 'androidx.navigation.safeargs.kotlin'
 }
 
 android {
@@ -14,7 +15,6 @@ android {
         targetSdk 34
         versionCode 1
         versionName "1.0"
-
 
         Properties properties = new Properties()
         properties.load(project.rootProject.file('local.properties').newDataInputStream())
@@ -38,14 +38,12 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-    buildFeatures{
+    buildFeatures {
         dataBinding true
     }
 }
 
 dependencies {
-
-
     ext {
         coroutinesVersion = "1.5.0"
         androidXTestExtKotlinRunnerVersion = '1.1.3'
@@ -62,7 +60,6 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
     //Splash Screen
     implementation 'androidx.core:core-splashscreen:1.0.1'
-
 
     //Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
@@ -82,15 +79,12 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment:2.5.3"
     implementation "androidx.navigation:navigation-ui:2.5.3"
 
-
     //CircleImageView
     implementation 'de.hdodenhof:circleimageview:3.1.0'
-
 
     //Lotti
     def lottieVersion = "3.4.0"
     implementation "com.airbnb.android:lottie:$lottieVersion"
-
 
     //handle size
     implementation 'com.intuit.sdp:sdp-android:1.1.0'
@@ -102,8 +96,6 @@ dependencies {
     implementation "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
 
-
-
     //viewModel
     implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2"
@@ -113,8 +105,6 @@ dependencies {
     implementation 'com.google.android.gms:play-services-location:21.0.1'
     implementation 'com.google.android.gms:play-services-maps:18.2.0'
 
-
-
     // InstantTaskExecutorRule
     testImplementation "androidx.arch.core:core-testing:2.1.0"
     androidTestImplementation "androidx.arch.core:core-testing:2.1.0"
@@ -123,14 +113,21 @@ dependencies {
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion"
     androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion"
 
-
     // AndroidX and Robolectric
     testImplementation "androidx.test.ext:junit-ktx:$androidXTestExtKotlinRunnerVersion"
     testImplementation "androidx.test:core-ktx:$androidXTestCoreVersion"
     testImplementation "org.robolectric:robolectric:4.8"
 
-    // ViewPager
+    //view Pager
     implementation "androidx.viewpager2:viewpager2:1.0.0"
+
+    //fireBase
+    implementation platform('com.google.firebase:firebase-bom:32.3.1')
+    implementation 'com.google.firebase:firebase-analytics'
+
+    //FireBase Auth
+    implementation("com.google.firebase:firebase-auth")
+    implementation("com.google.firebase:firebase-firestore")
 
     // Pager Dots Indicator
     implementation("com.tbuonomo:dotsindicator:4.2")
