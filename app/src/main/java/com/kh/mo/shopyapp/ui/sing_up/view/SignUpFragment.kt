@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.kh.mo.shopyapp.R
@@ -13,6 +14,7 @@ import com.kh.mo.shopyapp.model.entity.Validation
 import com.kh.mo.shopyapp.model.request.UserData
 import com.kh.mo.shopyapp.remote.ApiState
 import com.kh.mo.shopyapp.ui.base.BaseFragment
+import com.kh.mo.shopyapp.ui.sing_in.view.SignInFragmentDirections
 import com.kh.mo.shopyapp.ui.sing_up.viewmodel.SignUpViewModel
 import com.kh.mo.shopyapp.utils.getText
 import kotlinx.coroutines.launch
@@ -32,6 +34,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding, SignUpViewModel>() {
         createUser()
         observeCreateCustomerResult()
         observeSaveCustomerInFireBaseResult ()
+        navigateToSingIn()
     }
 
 
@@ -132,9 +135,9 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding, SignUpViewModel>() {
             }
             createUser(
                 UserData(
-                    binding.userNameValue.text?.trim().toString(),
-                    binding.emailValue.text?.trim().toString(),
-                    binding.passwordValue.text?.trim().toString(),
+                    userName=   binding.userNameValue.text?.trim().toString(),
+                  email=  binding.emailValue.text?.trim().toString(),
+                 password=   binding.passwordValue.text?.trim().toString(),
                 )
             )
 
@@ -167,9 +170,9 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding, SignUpViewModel>() {
         viewModel.storeCustomerFireBase(
             data.id,
             UserData(
-                data.first_name,
-                data.email,
-                binding.passwordValue.text?.trim().toString()
+                userName=     data.first_name,
+                email=   data.email,
+                password=     binding.passwordValue.text?.trim().toString()
             )
         )
     }
@@ -181,10 +184,25 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding, SignUpViewModel>() {
                     is ApiState.Failure -> {}
                     ApiState.Loading -> {}
                     is ApiState.Success ->{
-                        Toast.makeText(requireContext(), "Sing Up Successfully ", Toast.LENGTH_SHORT).show()}
+                        Toast.makeText(requireContext(), "Sing Up Successfully ", Toast.LENGTH_SHORT).show()
+                        findNavController().navigate(
+                            SignUpFragmentDirections.actionSignUpFragmentToHomeFragment()
+                        )
+
+                    }
+
                 }
 
             }
         }
+    }
+
+
+   private fun navigateToSingIn(){
+       binding.goToLogin.setOnClickListener {
+           findNavController().navigate(
+               SignUpFragmentDirections.actionSignUpFragmentToSignInFragment()
+           )
+       }
     }
 }
