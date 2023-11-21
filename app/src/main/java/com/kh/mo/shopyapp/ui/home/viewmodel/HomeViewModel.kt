@@ -22,8 +22,8 @@ import kotlin.Result.Companion.success
 class HomeViewModel(private var _irepo: Repo) : ViewModel() {
     private val TAG = "TAG HomeViewModel"
 
-    private val _barnds = MutableStateFlow<ApiSate<List<SmartCollection>>>(ApiSate.Loading)
-    val barnds: StateFlow<ApiSate<List<SmartCollection>>> = _barnds
+    private val _brands = MutableStateFlow<ApiSate<List<SmartCollection>>>(ApiSate.Loading)
+    val brands: StateFlow<ApiSate<List<SmartCollection>>> = _brands
 
     private val _mainCategories = MutableStateFlow<ApiSate<List<CustomCollection>>>(ApiSate.Loading)
     val mainCategories: StateFlow<ApiSate<List<CustomCollection>>> = _mainCategories
@@ -31,21 +31,26 @@ class HomeViewModel(private var _irepo: Repo) : ViewModel() {
     private val _productsBrand = MutableStateFlow<ApiSate<List<Product>>>(ApiSate.Loading)
     val productsBrand: StateFlow<ApiSate<List<Product>>> = _productsBrand
 
+    init{
+        getAllBrands()
+        getMainCategories()
+
+    }
 
     fun getAllBrands() {
         viewModelScope.launch(Dispatchers.IO) {
             _irepo.getAllBrands().collect {
                 when (it) {
                     is ApiSate.Failure -> {
-                        Log.i("ss0", "brands:Fail")
+                        Log.i(TAG, "brands:Fail")
                     }
                     is ApiSate.Loading -> {
-                        _barnds.value = ApiSate.Loading
-                        Log.i("ss0", "brands:Loading")
+                        _brands.value = ApiSate.Loading
+                        Log.i(TAG, "brands:Loading")
                     }
                     is ApiSate.Success -> {
                         success(it.data)
-                        _barnds.value = ApiSate.Success(it.data.convertToSmartCollection())
+                        _brands.value = ApiSate.Success(it.data.convertToSmartCollection())
                     }
                 }
 
@@ -59,16 +64,16 @@ class HomeViewModel(private var _irepo: Repo) : ViewModel() {
             _irepo.getMainCategories().collect {
                 when (it) {
                     is ApiSate.Failure -> {
-                        Log.i("ss0", "main: Fail")
+                        Log.i(TAG, "main: Fail")
                     }
                     is ApiSate.Loading -> {
                         _mainCategories.value = ApiSate.Loading
-                        Log.i("ss0", "main:Loading")
+                        Log.i(TAG, "main:Loading")
                     }
                     is ApiSate.Success -> {
                         success(it.data)
                         _mainCategories.value = ApiSate.Success(it.data.convertToCustomCollection())
-                        Log.i("ss0", "main:Success")
+                        Log.i(TAG, "main:Success")
 
 
                     }
@@ -84,16 +89,16 @@ class HomeViewModel(private var _irepo: Repo) : ViewModel() {
             _irepo.getProductsOfSpecificBrand(brandName).collect {
                 when (it) {
                     is ApiSate.Failure -> {
-                        Log.i("ss0", "productBrand: Fail")
+                        Log.i(TAG, "productBrand: Fail")
                     }
                     is ApiSate.Loading -> {
                         _productsBrand.value = ApiSate.Loading
-                        Log.i("ss0", "productBrand:Loading")
+                        Log.i(TAG, "productBrand:Loading")
                     }
                     is ApiSate.Success -> {
                         success(it.data)
                         _productsBrand.value = ApiSate.Success(it.data.convertToProduct())
-                        Log.i("ss0", "productBrand:Success")
+                        Log.i(TAG, "productBrand:Success")
 
 
                     }

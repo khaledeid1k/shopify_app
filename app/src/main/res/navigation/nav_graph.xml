@@ -36,6 +36,9 @@
         <action
             android:id="@+id/action_homeFragment_to_brandProductsFragment"
             app:destination="@id/brandProductsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_categoryFragment"
+            app:destination="@id/categoryFragment" />
 
     </fragment>
     <fragment
@@ -58,6 +61,15 @@
             app:argType="string" />
         <argument
             android:name="brandImage"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/categoryFragment"
+        android:name="com.kh.mo.shopyapp.ui.category.view.CategoryFragment"
+        android:label="fragment_category"
+        tools:layout="@layout/fragment_category" >
+        <argument
+            android:name="nameOfMainCategory"
             app:argType="string" />
     </fragment>
 </navigation>

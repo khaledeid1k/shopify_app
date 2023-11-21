@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
+import com.kh.mo.shopyapp.R
 import com.kh.mo.shopyapp.databinding.FragmentHomeBinding
 import com.kh.mo.shopyapp.home.view.BrandsAdapter
 import com.kh.mo.shopyapp.model.ui.AdModel
@@ -18,7 +19,6 @@ import com.kh.mo.shopyapp.ui.base.BaseViewModelFactory
 import com.kh.mo.shopyapp.ui.home.viewmodel.HomeViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 
@@ -45,9 +45,6 @@ class HomeFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         intiViewModel()
-        homeViewModel.getAllBrands()
-        homeViewModel.getMainCategories()
-
         getBrands()
         getMainCategories()
 
@@ -77,12 +74,15 @@ class HomeFragment : BaseFragment() {
 
     private fun getMainCategories() {
         lifecycleScope.launch {
-            homeViewModel.mainCategories.collect {
-                mainCategoriesAdapter= MainCategoryAdapter(requireContext())
+            homeViewModel.mainCategories.collect {category->
+                mainCategoriesAdapter= MainCategoryAdapter(requireContext()){
+                    val action=HomeFragmentDirections.actionHomeFragmentToCategoryFragment(category.toData()?.get(0)?.title!!.drop(1))
+                    Navigation.findNavController(requireView()).navigate(action)
+                }
                 //to drop the first item from response
-                mainCategoriesAdapter.submitList(it.toData()?.drop(1))
+                mainCategoriesAdapter.submitList(category.toData()?.drop(1))
 
-                Log.i("HomeFragment",it.toData()?.get(0)?.image?.src.toString())
+                Log.i("HomeFragment",category.toData()?.get(0)?.image?.src.toString())
                 binding.recyclerCategory.adapter = mainCategoriesAdapter
             }
 
@@ -92,7 +92,7 @@ class HomeFragment : BaseFragment() {
 
     private fun getBrands() {
         lifecycleScope.launch {
-            homeViewModel.barnds.collect {
+            homeViewModel.brands.collect {
                 brandsAdapter=BrandsAdapter(requireContext()){
                     val action=HomeFragmentDirections.actionHomeFragmentToBrandProductsFragment(it.title!!,it.image?.src!!)
                     Navigation.findNavController(requireView()).navigate(action)
