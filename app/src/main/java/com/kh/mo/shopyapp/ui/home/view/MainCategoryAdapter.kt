@@ -46,7 +46,7 @@ class MainCategoryAdapter(var context: Context,private val onClick:(CustomCollec
                     .load(currentItem.image?.src)
                     .placeholder(R.drawable.placeholder_products)
                     .into(imageCategoryItem)
-                Log.i("HomeFragment", currentItem.image?.src.toString())
+                currentItem.image?.src?.let { Log.i("HomeFragment", it) }
 
 
             }

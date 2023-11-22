@@ -5,12 +5,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kh.mo.shopyapp.model.response.barnds.SmartCollection
 import com.kh.mo.shopyapp.model.ui.AdModel
+import com.kh.mo.shopyapp.model.ui.allproducts.Products
 import com.kh.mo.shopyapp.model.ui.maincategory.CustomCollection
-import com.kh.mo.shopyapp.model.ui.productsofbrand.Product
 import com.kh.mo.shopyapp.remote.ApiSate
 import com.kh.mo.shopyapp.repo.Repo
+import com.kh.mo.shopyapp.repo.maper.convertToAllProducts
 import com.kh.mo.shopyapp.repo.maper.convertToCustomCollection
-import com.kh.mo.shopyapp.repo.maper.convertToProduct
 import com.kh.mo.shopyapp.repo.maper.convertToSmartCollection
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -28,8 +28,8 @@ class HomeViewModel(private var _irepo: Repo) : ViewModel() {
     private val _mainCategories = MutableStateFlow<ApiSate<List<CustomCollection>>>(ApiSate.Loading)
     val mainCategories: StateFlow<ApiSate<List<CustomCollection>>> = _mainCategories
 
-    private val _productsBrand = MutableStateFlow<ApiSate<List<Product>>>(ApiSate.Loading)
-    val productsBrand: StateFlow<ApiSate<List<Product>>> = _productsBrand
+    private val _productsBrand = MutableStateFlow<ApiSate<List<Products>>>(ApiSate.Loading)
+    val productsBrand: StateFlow<ApiSate<List<Products>>> = _productsBrand
 
     init{
         getAllBrands()
@@ -97,7 +97,7 @@ class HomeViewModel(private var _irepo: Repo) : ViewModel() {
                     }
                     is ApiSate.Success -> {
                         success(it.data)
-                        _productsBrand.value = ApiSate.Success(it.data.convertToProduct())
+                        _productsBrand.value = ApiSate.Success(it.data.convertToAllProducts())
                         Log.i(TAG, "productBrand:Success")
 
 

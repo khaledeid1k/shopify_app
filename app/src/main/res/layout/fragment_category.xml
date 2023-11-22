@@ -12,6 +12,32 @@
         android:layout_height="match_parent"
         tools:context=".ui.category.view.CategoryFragment"
         android:orientation="vertical">
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/search_text_input_layout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_35sdp"
+            app:hintEnabled="false"
+            android:layout_margin="@dimen/_10sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/search_text"
+            >
+            <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                android:id="@+id/search_auto_complete_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="@string/search"
+                android:imeOptions="actionGo"
+                android:inputType="text"
+                style="@style/SearchBarStyle"
+                android:elevation="0dp"
+                android:textSize="@dimen/_12ssp"
+                android:drawablePadding="@dimen/_10sdp"
+                android:drawableStart="@drawable/search"
+                android:maxLines="1"
+                android:paddingStart="@dimen/_10sdp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
 
         <TextView
             android:id="@+id/tv_category_name"
@@ -20,9 +46,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_20sdp"
-            android:layout_marginStart="@dimen/_20sdp"
             android:fontFamily="@font/inter_extrabold"
-            tools:text="Men" />
+            tools:text="Men"
+           />
 
         <com.google.android.material.chip.ChipGroup
             style="@style/Widget.MaterialComponents.ChipGroup"

@@ -28,6 +28,8 @@ class CategoryFragment : BaseFragment() {
     private lateinit var categoryViewModel: CategoryViewModel
     private lateinit var subCategoriesAdapter:SubCategoriesAdapter
     private var categoryName=""
+    private var collectionId:Long= 0L
+
     private lateinit var binding:FragmentCategoryBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,10 +42,17 @@ class CategoryFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         categoryName = CategoryFragmentArgs.fromBundle(requireArguments()).nameOfMainCategory
+        collectionId = CategoryFragmentArgs.fromBundle(requireArguments()).collectionId
+
+
+        Log.i(TAG,collectionId.toString())
+        Log.i(TAG,categoryName)
 
         intiViewModel()
+        categoryViewModel.getCollectionProducts(collectionId)
         binding.tvCategoryName.text=categoryName
         getSubCategories()
+        getCollectionProducts()
 
     }
     private fun getSubCategories(){
@@ -54,10 +63,18 @@ class CategoryFragment : BaseFragment() {
                 binding.secondSubcategory.setText(data?.get(1)?.productType.toString())
                 binding.thirdSubcategory.setText(data?.get(2)?.productType.toString())
 
-//                subCategoriesAdapter= SubCategoriesAdapter(requireContext())
-//
-//                subCategoriesAdapter.submitList(it.toData()?.distinctBy { it.productType })
-//                binding.recyclerSubCategory.adapter = subCategoriesAdapter
+            }
+
+        }
+    }
+
+    private fun getCollectionProducts(){
+        lifecycleScope.launch {
+            categoryViewModel.productsCollection.collect {
+                subCategoriesAdapter= SubCategoriesAdapter(requireContext())
+
+                subCategoriesAdapter.submitList(it.toData())
+                binding.recyclerProductsCategory.adapter = subCategoriesAdapter
             }
 
         }

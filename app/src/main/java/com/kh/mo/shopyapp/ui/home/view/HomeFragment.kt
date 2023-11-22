@@ -24,6 +24,7 @@ import kotlinx.coroutines.launch
 
 class HomeFragment : BaseFragment() {
 
+    private val TAG="HomeFragment"
     private lateinit var homeViewModel:HomeViewModel
     private lateinit var binding: FragmentHomeBinding
     private lateinit var brandsAdapter: BrandsAdapter
@@ -76,8 +77,13 @@ class HomeFragment : BaseFragment() {
         lifecycleScope.launch {
             homeViewModel.mainCategories.collect {category->
                 mainCategoriesAdapter= MainCategoryAdapter(requireContext()){
-                    val action=HomeFragmentDirections.actionHomeFragmentToCategoryFragment(category.toData()?.get(0)?.title!!.drop(1))
-                    Navigation.findNavController(requireView()).navigate(action)
+                  //  Log.i("sssss",category.toData()!!.get(category.toData()!!.lastIndexOf(it)).title)
+                    val title=category.toData()?.get(category.toData()!!.lastIndexOf(it))?.title!!
+                    val collectionId= category.toData()!!.get(category.toData()!!.lastIndexOf(it)).id!!
+                    val action=HomeFragmentDirections.actionHomeFragmentToCategoryFragment(title,collectionId)
+                        Navigation.findNavController(requireView()).navigate(action)
+
+
                 }
                 //to drop the first item from response
                 mainCategoriesAdapter.submitList(category.toData()?.drop(1))
@@ -94,6 +100,7 @@ class HomeFragment : BaseFragment() {
         lifecycleScope.launch {
             homeViewModel.brands.collect {
                 brandsAdapter=BrandsAdapter(requireContext()){
+
                     val action=HomeFragmentDirections.actionHomeFragmentToBrandProductsFragment(it.title!!,it.image?.src!!)
                     Navigation.findNavController(requireView()).navigate(action)
                 }

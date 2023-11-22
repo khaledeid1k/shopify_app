@@ -71,5 +71,8 @@
         <argument
             android:name="nameOfMainCategory"
             app:argType="string" />
+        <argument
+            android:name="collectionId"
+            app:argType="long" />
     </fragment>
 </navigation>
