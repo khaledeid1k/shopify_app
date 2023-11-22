@@ -5,6 +5,7 @@ import com.kh.mo.shopyapp.model.request.UserData
 import com.kh.mo.shopyapp.model.response.ads.DiscountCodeResponse
 import com.kh.mo.shopyapp.model.response.barnds.BrandsResponse
 import com.kh.mo.shopyapp.model.response.create_customer.CustomerResponse
+import com.kh.mo.shopyapp.model.response.currency.Rates
 import com.kh.mo.shopyapp.model.response.login.Login
 import com.kh.mo.shopyapp.model.response.maincategory.MainCategoryResponse
 import com.kh.mo.shopyapp.model.response.productsofbrand.ProductsOfSpecificBrandResponse
@@ -24,5 +25,6 @@ interface RemoteSource {
     suspend fun checkCustomerExists(customerId: String): Flow<ApiState<UserData>>
     suspend fun createCustomer(customerDataRequest: CustomerDataRequest): Response<CustomerResponse>
     suspend fun singIn(email: String): Response<Login>
-
+    suspend fun getCurrencyRate(): Rates
+    suspend fun isCurrencyDbUpdated(): Boolean
 }

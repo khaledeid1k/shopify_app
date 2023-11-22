@@ -1,5 +1,6 @@
 package com.kh.mo.shopyapp.repo
 
+import android.util.Log
 import com.kh.mo.shopyapp.local.LocalSource
 import com.kh.mo.shopyapp.model.entity.CustomerEntity
 import com.kh.mo.shopyapp.model.request.UserData
@@ -12,15 +13,24 @@ import com.kh.mo.shopyapp.remote.RemoteSource
 import com.kh.mo.shopyapp.repo.mapper.convertCustomerResponseToCustomerEntity
 import com.kh.mo.shopyapp.repo.mapper.convertLoginToUserData
 import com.kh.mo.shopyapp.repo.mapper.convertUserDataToCustomerData
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.launch
 
 class RepoImp private constructor(
     private val remoteSource: RemoteSource,
     private val localSource: LocalSource
 ) : Repo {
+    private val TAG = "TAG RepoImp"
 
+    init {
+        GlobalScope.launch(Dispatchers.IO) {
+            Log.i(TAG, "currencyRates: ${remoteSource.getCurrencyRate()}")
+        }
+    }
     override suspend fun storeData(userId: Long, userData: UserData) =
         remoteSource.storeData(userId, userData)
 

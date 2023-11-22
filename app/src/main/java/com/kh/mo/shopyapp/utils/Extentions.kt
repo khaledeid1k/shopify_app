@@ -3,9 +3,8 @@ package com.kh.mo.shopyapp.utils
 import android.text.Editable
 import android.text.TextWatcher
 import com.google.android.material.textfield.TextInputEditText
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Locale
+import java.math.BigDecimal
+import java.math.RoundingMode
 
 
 fun TextInputEditText.getText(textValue: (text: String) -> Unit) {
@@ -44,8 +43,6 @@ fun Double.toEUR(toEURRate: Double): Double {
     return this * toEURRate
 }
 
-fun main() {
-    val sdf = SimpleDateFormat("EEEMMMddyyyy", Locale.ENGLISH)
-    val calendar = Calendar.getInstance()
-    println(sdf.format(calendar.time) == "TueNov212023")
+fun Double.roundTwoDecimals(): Double {
+    return BigDecimal(this).setScale(2, RoundingMode.HALF_UP).toDouble()
 }
