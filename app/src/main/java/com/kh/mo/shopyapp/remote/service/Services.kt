@@ -4,7 +4,6 @@ import com.kh.mo.shopyapp.model.response.ads.DiscountCodeResponse
 import com.kh.mo.shopyapp.model.response.allproducts.AllProductsResponse
 import com.kh.mo.shopyapp.model.response.barnds.BrandsResponse
 import com.kh.mo.shopyapp.model.response.maincategory.MainCategoryResponse
-import com.kh.mo.shopyapp.model.response.productsofbrand.ProductsOfSpecificBrandResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -19,7 +18,7 @@ interface Services {
     suspend fun getMainCategories(): Response<MainCategoryResponse>
 
     @GET("products.json")
-    suspend fun getProductsOfSpecificBrand(@Query("vendor") brandName:String): Response<ProductsOfSpecificBrandResponse>
+    suspend fun getProductsOfSpecificBrand(@Query("vendor") brandName:String): Response<AllProductsResponse>
 
     @GET("price_rules/{priceRuleId}/discount_codes/{discountCodeId}.json")
     suspend fun getDiscountCode(
@@ -29,5 +28,8 @@ interface Services {
 
     @GET("products.json")
     suspend fun getAllProducts(): Response<AllProductsResponse>
+
+    @GET("products.json")
+    suspend fun getProductsByCollection(@Query("collection_id") collectionId:Long): Response<AllProductsResponse>
 
 }

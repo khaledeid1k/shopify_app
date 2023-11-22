@@ -4,7 +4,6 @@ import com.kh.mo.shopyapp.model.response.ads.DiscountCodeResponse
 import com.kh.mo.shopyapp.model.response.allproducts.AllProductsResponse
 import com.kh.mo.shopyapp.model.response.barnds.BrandsResponse
 import com.kh.mo.shopyapp.model.response.maincategory.MainCategoryResponse
-import com.kh.mo.shopyapp.model.response.productsofbrand.ProductsOfSpecificBrandResponse
 import com.kh.mo.shopyapp.remote.ApiSate
 import com.kh.mo.shopyapp.remote.RemoteSource
 import kotlinx.coroutines.flow.Flow
@@ -52,7 +51,7 @@ class RepoImp private constructor(private var remoteSource: RemoteSource):Repo{
 
     }
 
-    override suspend fun getProductsOfSpecificBrand(brandName: String):Flow<ApiSate<ProductsOfSpecificBrandResponse>> {
+    override suspend fun getProductsOfSpecificBrand(brandName: String):Flow<ApiSate<AllProductsResponse>> {
         return flow {
             emit(ApiSate.Loading)
             val brandItems =
@@ -80,6 +79,23 @@ class RepoImp private constructor(private var remoteSource: RemoteSource):Repo{
                     ?.let { emit(ApiSate.Success(it)) }
             } else {
                 emit(ApiSate.Failure(allProducts.message()))
+            }
+
+        }.catch {
+            emit(ApiSate.Failure(it.message!!))
+        }
+    }
+
+    override suspend fun getProductsByCollection(collectionId: Long): Flow<ApiSate<AllProductsResponse>> {
+        return flow {
+            emit(ApiSate.Loading)
+            val productsCategory =
+                remoteSource.getProductsByCollection(collectionId)
+            if (productsCategory.isSuccessful) {
+                remoteSource.getProductsByCollection(collectionId).body()
+                    ?.let { emit(ApiSate.Success(it)) }
+            } else {
+                emit(ApiSate.Failure(productsCategory.message()))
             }
 
         }.catch {
