@@ -69,4 +69,7 @@
     <string name="x">x</string>
     <string name="add_address">Add Address</string>
     <string name="username">UserName</string>
+    <string name="login_first">Login First</string>
+    <string name="not_logged_in_message">You need to Login to see your order history, wishlist and may other features</string>
+    <string name="settings">Settings</string>
 </resources>
