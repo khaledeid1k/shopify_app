@@ -3,14 +3,10 @@ package com.kh.mo.shopyapp.ui.category.viewmodel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kh.mo.shopyapp.model.response.allproducts.AllProductsResponse
-import com.kh.mo.shopyapp.model.response.barnds.SmartCollection
 import com.kh.mo.shopyapp.model.ui.allproducts.Products
-import com.kh.mo.shopyapp.remote.ApiSate
+import com.kh.mo.shopyapp.remote.ApiState
 import com.kh.mo.shopyapp.repo.Repo
 import com.kh.mo.shopyapp.repo.maper.convertToAllProducts
-import com.kh.mo.shopyapp.repo.maper.convertToCustomCollection
-import com.kh.mo.shopyapp.repo.maper.convertToSmartCollection
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -18,57 +14,58 @@ import kotlinx.coroutines.launch
 
 class CategoryViewModel(private var _irepo: Repo) : ViewModel() {
     private val TAG = "TAG CategoryViewModel"
-    private val _products = MutableStateFlow<ApiSate<List<Products>>>(ApiSate.Loading)
-    val products: StateFlow<ApiSate<List<Products>>> = _products
+    private val _products = MutableStateFlow<ApiState<List<Products>>>(ApiState.Loading)
+    val products: StateFlow<ApiState<List<Products>>> = _products
 
-    private val _productsCollection = MutableStateFlow<ApiSate<List<Products>>>(ApiSate.Loading)
-    val productsCollection: StateFlow<ApiSate<List<Products>>> = _productsCollection
+    private val _productsCollection = MutableStateFlow<ApiState<List<Products>>>(ApiState.Loading)
+    val productsCollection: StateFlow<ApiState<List<Products>>> = _productsCollection
 
     init {
         getSubCategories()
 
     }
+
     fun getSubCategories() {
         viewModelScope.launch(Dispatchers.IO) {
             _irepo.getAllProducts().collect {
                 when (it) {
-                    is ApiSate.Failure -> {
+                    is ApiState.Failure -> {
                         Log.i(TAG, "products:Fail")
                     }
-                    is ApiSate.Loading -> {
-                        _products.value = ApiSate.Loading
+
+                    is ApiState.Loading -> {
+                        _products.value = ApiState.Loading
                         Log.i(TAG, "products:Loading")
                     }
-                    is ApiSate.Success -> {
+
+                    is ApiState.Success -> {
                         Result.success(it.data)
-                        _products.value = ApiSate.Success(it.data.convertToAllProducts())
+                        _products.value = ApiState.Success(it.data.convertToAllProducts())
                     }
                 }
-
-
             }
         }
     }
-    fun getCollectionProducts(collectionId:Long){
+
+    fun getCollectionProducts(collectionId: Long) {
         viewModelScope.launch(Dispatchers.IO) {
             _irepo.getProductsByCollection(collectionId).collect {
                 when (it) {
-                    is ApiSate.Failure -> {
+                    is ApiState.Failure -> {
                         Log.i(TAG, "products:Fail")
                     }
-                    is ApiSate.Loading -> {
-                        _productsCollection.value = ApiSate.Loading
+
+                    is ApiState.Loading -> {
+                        _productsCollection.value = ApiState.Loading
                         Log.i(TAG, "products:Loading")
                     }
-                    is ApiSate.Success -> {
+
+                    is ApiState.Success -> {
                         Result.success(it.data)
-                        _productsCollection.value = ApiSate.Success(it.data.convertToAllProducts())
+                        _productsCollection.value = ApiState.Success(it.data.convertToAllProducts())
                     }
                 }
-
-
             }
         }
-
     }
 }

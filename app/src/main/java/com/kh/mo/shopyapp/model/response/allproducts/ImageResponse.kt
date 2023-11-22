@@ -1,4 +1,4 @@
-package com.kh.mo.shopyapp.model.response.productsofbrand
+package com.kh.mo.shopyapp.model.response.allproducts
 
 
 import android.os.Parcelable

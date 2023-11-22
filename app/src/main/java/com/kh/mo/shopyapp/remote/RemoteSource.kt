@@ -9,7 +9,6 @@ import com.kh.mo.shopyapp.model.response.create_customer.CustomerResponse
 import com.kh.mo.shopyapp.model.response.currency.Rates
 import com.kh.mo.shopyapp.model.response.login.Login
 import com.kh.mo.shopyapp.model.response.maincategory.MainCategoryResponse
-import com.kh.mo.shopyapp.model.response.productsofbrand.ProductsOfSpecificBrandResponse
 import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 
@@ -22,7 +21,7 @@ interface RemoteSource {
         discountCodeId: String
     ): Response<DiscountCodeResponse>
 
-    suspend fun getProductsOfSpecificBrand(brandName: String): Response<ProductsOfSpecificBrandResponse>
+    suspend fun getProductsOfSpecificBrand(brandName: String): Response<AllProductsResponse>
     suspend fun storeData(userId: Long, userData: UserData): Flow<ApiState<String>>
     suspend fun checkCustomerExists(customerId: String): Flow<ApiState<UserData>>
     suspend fun createCustomer(customerDataRequest: CustomerDataRequest): Response<CustomerResponse>

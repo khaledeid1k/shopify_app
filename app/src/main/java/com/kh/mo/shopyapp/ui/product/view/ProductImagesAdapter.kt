@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 
 import com.kh.mo.shopyapp.databinding.ItemProductImageBinding
-import com.kh.mo.shopyapp.model.response.productsofbrand.ImageResponse
+import com.kh.mo.shopyapp.model.response.allproducts.ImageResponse
 
 class ProductImagesAdapter(
     private val images: List<ImageResponse?>?

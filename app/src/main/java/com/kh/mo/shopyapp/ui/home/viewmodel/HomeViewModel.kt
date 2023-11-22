@@ -7,7 +7,6 @@ import com.kh.mo.shopyapp.model.response.barnds.SmartCollection
 import com.kh.mo.shopyapp.model.ui.AdModel
 import com.kh.mo.shopyapp.model.ui.allproducts.Products
 import com.kh.mo.shopyapp.model.ui.maincategory.CustomCollection
-import com.kh.mo.shopyapp.model.ui.productsofbrand.Product
 import com.kh.mo.shopyapp.remote.ApiState
 import com.kh.mo.shopyapp.repo.Repo
 import com.kh.mo.shopyapp.repo.maper.convertToAllProducts
@@ -29,8 +28,8 @@ class HomeViewModel(private var _irepo: Repo) : ViewModel() {
     private val _mainCategories = MutableStateFlow<ApiState<List<CustomCollection>>>(ApiState.Loading)
     val mainCategories: StateFlow<ApiState<List<CustomCollection>>> = _mainCategories
 
-    private val _productsBrand = MutableStateFlow<ApiState<List<Product>>>(ApiState.Loading)
-    val productsBrand: StateFlow<ApiState<List<Product>>> = _productsBrand
+    private val _productsBrand = MutableStateFlow<ApiState<List<Products>>>(ApiState.Loading)
+    val productsBrand: StateFlow<ApiState<List<Products>>> = _productsBrand
 
     init{
         getAllBrands()
@@ -46,12 +45,12 @@ class HomeViewModel(private var _irepo: Repo) : ViewModel() {
                         Log.i("ss0", "brands:Fail")
                     }
                     is ApiState.Loading -> {
-                        _barnds.value = ApiState.Loading
+                        _brands.value = ApiState.Loading
                         Log.i("ss0", "brands:Loading")
                     }
                     is ApiState.Success -> {
                         success(it.data)
-                        _barnds.value = ApiState.Success(it.data.convertToSmartCollection())
+                        _brands.value = ApiState.Success(it.data.convertToSmartCollection())
                     }
                 }
 
@@ -98,15 +97,12 @@ class HomeViewModel(private var _irepo: Repo) : ViewModel() {
                     }
                     is ApiState.Success -> {
                         success(it.data)
-                        _productsBrand.value = ApiState.Success(it.data.convertToProduct())
+                        _productsBrand.value = ApiState.Success(it.data.convertToAllProducts())
                         Log.i("ss0", "productBrand:Success")
-
 
                     }
                 }
-
-
-                }
+            }
         }
     }
 

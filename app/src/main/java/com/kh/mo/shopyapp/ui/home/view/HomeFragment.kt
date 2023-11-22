@@ -27,8 +27,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
     private val TAG = "HomeFragment"
     override val layoutIdFragment = R.layout.fragment_home
     override fun getViewModelClass() = HomeViewModel::class.java
-    private lateinit var homeViewModel: HomeViewModel
-    private lateinit var binding: FragmentHomeBinding
     private lateinit var brandsAdapter: BrandsAdapter
     private lateinit var mainCategoriesAdapter: MainCategoryAdapter
     private lateinit var adsAdapter: AdsAdapter
@@ -111,11 +109,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
     private fun getBrands() {
         lifecycleScope.launch {
-            viewModel.barnds.collect {
-                brandsAdapter = BrandsAdapter(requireContext()) {
+            viewModel.brands.collect {
+                brandsAdapter = BrandsAdapter(requireContext()) {collection ->
                     val action = HomeFragmentDirections.actionHomeFragmentToBrandProductsFragment(
-                        it.title!!,
-                        it.image?.src!!
+                        collection.title!!,
+                        collection.image?.src!!
                     )
                     Navigation.findNavController(requireView()).navigate(action)
                 }

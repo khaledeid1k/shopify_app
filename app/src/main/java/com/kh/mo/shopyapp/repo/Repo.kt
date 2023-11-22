@@ -7,7 +7,6 @@ import com.kh.mo.shopyapp.model.response.ads.DiscountCodeResponse
 import com.kh.mo.shopyapp.model.response.allproducts.AllProductsResponse
 import com.kh.mo.shopyapp.model.response.barnds.BrandsResponse
 import com.kh.mo.shopyapp.model.response.maincategory.MainCategoryResponse
-import com.kh.mo.shopyapp.model.response.productsofbrand.ProductsOfSpecificBrandResponse
 import com.kh.mo.shopyapp.remote.ApiState
 import kotlinx.coroutines.flow.Flow
 
@@ -21,7 +20,6 @@ interface Repo {
     fun validateEmail(email: String): Validation
     fun validateUserName(userName: String): Validation
     suspend fun getAllBrands(): Flow<ApiState<BrandsResponse>>
-    suspend fun getProductsOfSpecificBrand(brandName: String): Flow<ApiState<ProductsOfSpecificBrandResponse>>
     suspend fun getMainCategories(): Flow<ApiState<MainCategoryResponse>>
     suspend fun getDiscountCode(
         priceRuleId: String,

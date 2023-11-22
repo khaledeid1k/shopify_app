@@ -2,40 +2,39 @@ package com.kh.mo.shopyapp.ui.category.view
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.Navigation
 import com.kh.mo.shopyapp.R
 import com.kh.mo.shopyapp.databinding.FragmentCategoryBinding
-import com.kh.mo.shopyapp.home.view.BrandsAdapter
+import com.kh.mo.shopyapp.local.LocalSourceImp
 import com.kh.mo.shopyapp.remote.RemoteSourceImp
 import com.kh.mo.shopyapp.repo.RepoImp
-import com.kh.mo.shopyapp.ui.base.BaseFragment
 import com.kh.mo.shopyapp.ui.base.BaseViewModelFactory
 import com.kh.mo.shopyapp.ui.category.viewmodel.CategoryViewModel
-import com.kh.mo.shopyapp.ui.home.view.HomeFragmentDirections
-import com.kh.mo.shopyapp.ui.home.view.brand.BrandProductsFragmentArgs
-import com.kh.mo.shopyapp.ui.home.viewmodel.HomeViewModel
 import kotlinx.coroutines.launch
 
 
-class CategoryFragment : BaseFragment() {
+class CategoryFragment : Fragment() {
     private val TAG = "TAG CategoryFragment"
     private lateinit var categoryViewModel: CategoryViewModel
-    private lateinit var subCategoriesAdapter:SubCategoriesAdapter
-    private var categoryName=""
-    private var collectionId:Long= 0L
+    private lateinit var subCategoriesAdapter: SubCategoriesAdapter
+    private var categoryName = ""
+    private var collectionId: Long = 0L
 
-    private lateinit var binding:FragmentCategoryBinding
+    private lateinit var binding: FragmentCategoryBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding=FragmentCategoryBinding.inflate(inflater,container,false)
+        binding = DataBindingUtil.inflate(
+            inflater, R.layout.fragment_category,
+            container, false
+        )
         return binding.root
     }
 
@@ -45,20 +44,21 @@ class CategoryFragment : BaseFragment() {
         collectionId = CategoryFragmentArgs.fromBundle(requireArguments()).collectionId
 
 
-        Log.i(TAG,collectionId.toString())
-        Log.i(TAG,categoryName)
+        Log.i(TAG, collectionId.toString())
+        Log.i(TAG, categoryName)
 
         intiViewModel()
         categoryViewModel.getCollectionProducts(collectionId)
-        binding.tvCategoryName.text=categoryName
+        binding.tvCategoryName.text = categoryName
         getSubCategories()
         getCollectionProducts()
 
     }
-    private fun getSubCategories(){
+
+    private fun getSubCategories() {
         lifecycleScope.launch {
             categoryViewModel.products.collect {
-                val data=it.toData()?.distinctBy { it.productType }
+                val data = it.toData()?.distinctBy { it.productType }
                 binding.firstSubcategory.setText(data?.get(0)?.productType.toString())
                 binding.secondSubcategory.setText(data?.get(1)?.productType.toString())
                 binding.thirdSubcategory.setText(data?.get(2)?.productType.toString())
@@ -68,10 +68,10 @@ class CategoryFragment : BaseFragment() {
         }
     }
 
-    private fun getCollectionProducts(){
+    private fun getCollectionProducts() {
         lifecycleScope.launch {
             categoryViewModel.productsCollection.collect {
-                subCategoriesAdapter= SubCategoriesAdapter(requireContext())
+                subCategoriesAdapter = SubCategoriesAdapter(requireContext())
 
                 subCategoriesAdapter.submitList(it.toData())
                 binding.recyclerProductsCategory.adapter = subCategoriesAdapter
@@ -85,7 +85,8 @@ class CategoryFragment : BaseFragment() {
             BaseViewModelFactory(
                 RepoImp.getRepoImpInstance
                     (
-                    RemoteSourceImp.getRemoteSourceImpInstance()
+                    RemoteSourceImp.getRemoteSourceImpInstance(),
+                    LocalSourceImp.getLocalSourceImpInstance()
                 )
             )
         categoryViewModel = ViewModelProvider(
@@ -93,7 +94,6 @@ class CategoryFragment : BaseFragment() {
             showProductsViewModelFactory
         )[CategoryViewModel::class.java]
     }
-
 
 
 }

@@ -1,7 +1,6 @@
 package com.kh.mo.shopyapp.ui.home.view.brand
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -58,26 +57,21 @@ class BrandProductsFragment : Fragment() {
                     is ApiState.Failure ->{}
                     ApiState.Loading -> {}
                     is ApiState.Success -> {
-                        val product = it.data
+                        val products = it.data
                         productsBrandsAdapter = ProductsOfBrandsAdapter(requireContext()){
                             position->
                             findNavController().navigate(
                                 BrandProductsFragmentDirections.actionBrandProductsFragmentToProductFragment(
-                                    product[position]
+                                    products[position]
                                 )
                             )
-
                         }
-                        productsBrandsAdapter.submitList(product)
+                        productsBrandsAdapter.submitList(products)
 
                         binding.recycleProductsSpecificBrand.adapter = productsBrandsAdapter
                     }
                 }
-
-
-
             }
-
         }
     }
 

@@ -7,7 +7,7 @@
 
         <variable
             name="product"
-            type="com.kh.mo.shopyapp.model.ui.productsofbrand.Product" />
+            type="com.kh.mo.shopyapp.model.ui.allproducts.Products" />
 
     </data>
 

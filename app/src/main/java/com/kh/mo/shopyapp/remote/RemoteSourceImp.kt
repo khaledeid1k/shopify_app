@@ -12,7 +12,6 @@ import com.kh.mo.shopyapp.model.response.create_customer.CustomerResponse
 import com.kh.mo.shopyapp.model.response.currency.Rates
 import com.kh.mo.shopyapp.model.response.login.Login
 import com.kh.mo.shopyapp.model.response.maincategory.MainCategoryResponse
-import com.kh.mo.shopyapp.model.response.productsofbrand.ProductsOfSpecificBrandResponse
 import com.kh.mo.shopyapp.remote.service.Network
 import com.kh.mo.shopyapp.utils.Constants
 import com.kh.mo.shopyapp.utils.getCurrentDate
@@ -161,8 +160,5 @@ class RemoteSourceImp private constructor() : RemoteSource {
             }
         }
     }
-
-    override suspend fun getDiscountCode(priceRuleId: String, discountCodeId: String) =
-        Network.retrofitService.getDiscountCode(priceRuleId, discountCodeId)
 }
 
