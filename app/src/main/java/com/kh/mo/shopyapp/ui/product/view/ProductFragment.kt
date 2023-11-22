@@ -5,6 +5,7 @@ import android.view.View
 import com.google.android.material.tabs.TabLayoutMediator
 import com.kh.mo.shopyapp.R
 import com.kh.mo.shopyapp.databinding.FragmentProductBinding
+import com.kh.mo.shopyapp.model.ui.productsofbrand.Product
 import com.kh.mo.shopyapp.ui.base.BaseFragment
 import com.kh.mo.shopyapp.ui.product.viewmodel.ProductViewModel
 
@@ -20,8 +21,8 @@ class ProductFragment : BaseFragment<FragmentProductBinding, ProductViewModel>()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val receiveProduct = receiveProduct()
-        initProductPageAdapter()
-        tightIndicatorToViewPager()
+        initProductPageAdapter(receiveProduct)
+        tightIndicatorToViewPagerOfImages()
         binding.apply {
             lifecycleOwner = this@ProductFragment
             product=receiveProduct
@@ -29,7 +30,7 @@ class ProductFragment : BaseFragment<FragmentProductBinding, ProductViewModel>()
 
     }
 
-   private fun tightIndicatorToViewPager(){
+   private fun tightIndicatorToViewPagerOfImages(){
        binding.apply {
            productImagesViewPager.adapter = ProductImagesAdapter(receiveProduct().images)
            dotsIndicator.setViewPager2(productImagesViewPager)
@@ -38,11 +39,15 @@ class ProductFragment : BaseFragment<FragmentProductBinding, ProductViewModel>()
     }
 
 
-    private fun initProductPageAdapter(){
+    private fun initProductPageAdapter(receiveProduct: Product) {
         val productFragmentPageAdapter = ProductFragmentPageAdapter(
+            receiveProduct,
             requireActivity().supportFragmentManager, lifecycle
         )
+        tightIndicatorToViewPagerOfFragments(productFragmentPageAdapter)
 
+    }
+    private fun tightIndicatorToViewPagerOfFragments(productFragmentPageAdapter:ProductFragmentPageAdapter){
         binding.homeFragmentViewPager.adapter = productFragmentPageAdapter
         TabLayoutMediator(
             binding.homeFragmentTabs,
@@ -55,9 +60,7 @@ class ProductFragment : BaseFragment<FragmentProductBinding, ProductViewModel>()
             }
 
         }.attach()
-
     }
-
 
 
 }

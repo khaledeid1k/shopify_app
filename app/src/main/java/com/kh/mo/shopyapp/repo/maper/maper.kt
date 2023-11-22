@@ -29,7 +29,7 @@ fun ProductsOfSpecificBrandResponse.convertToProduct():List<Product>{
 
     return this.products?.map {
 
-        Product(it?.images,it?.title,it?.variants)
+        Product(it?.images,it?.title,it?.variants,it?.options)
     } ?: emptyList()
 
 }
