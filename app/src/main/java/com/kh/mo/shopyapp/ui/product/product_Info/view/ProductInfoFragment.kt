@@ -23,8 +23,9 @@ class ProductInfoFragment :BaseFragment<FragmentProductInfoBinding,ProductInfoVi
     fun sada(){
 
         val product = arguments?.getParcelable<Product>(Constants.ProductInfoFragment)
-        Log.d("TAG", "sada: $product")
+
         binding.listSize.adapter=ProductSizeAdapter(product?.options?.get(0)?.values)
+        binding.listColor.adapter=ProductColorsAdapter(product?.options?.get(1)?.values)
 
     }
 
