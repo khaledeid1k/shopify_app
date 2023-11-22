@@ -9,23 +9,23 @@ import kotlinx.parcelize.Parcelize
 
 data class ImageResponse(
     @SerializedName("admin_graphql_api_id")
-    val adminGraphqlApiId: String?,
+    val adminGraphqlApiId: String,
     @SerializedName("created_at")
-    val createdAt: String?,
+    val createdAt: String,
     @SerializedName("height")
-    val height: Int?,
+    val height: Int,
     @SerializedName("id")
-    val id: Long?,
+    val id: Long,
     @SerializedName("position")
-    val position: Int?,
+    val position: Int,
     @SerializedName("product_id")
-    val productId: Long?,
+    val productId: Long,
     @SerializedName("src")
-    val src: String?,
+    val src: String,
     @SerializedName("updated_at")
-    val updatedAt: String?,
+    val updatedAt: String,
     @SerializedName("variant_ids")
-    val variantIds: List<Long?>?,
+    val variantIds: List<Long>,
     @SerializedName("width")
-    val width: Int?
+    val width: Int
 ) : Parcelable

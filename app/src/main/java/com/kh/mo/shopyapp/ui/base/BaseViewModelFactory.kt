@@ -3,6 +3,7 @@ package com.kh.mo.shopyapp.ui.base
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.kh.mo.shopyapp.repo.Repo
+import com.kh.mo.shopyapp.ui.category.viewmodel.CategoryViewModel
 import com.kh.mo.shopyapp.ui.home.viewmodel.HomeViewModel
 import com.kh.mo.shopyapp.ui.product.product_Info.viewmodel.ProductInfoViewModel
 import com.kh.mo.shopyapp.ui.product.product_details.viewmodel.ProductDetailsViewModel
@@ -19,6 +20,7 @@ class BaseViewModelFactory(private val repo: Repo) : ViewModelProvider.Factory {
             ProductViewModel::class.java -> ProductViewModel(repo) as T
             ProductInfoViewModel::class.java -> ProductInfoViewModel(repo) as T
             ProductDetailsViewModel::class.java -> ProductDetailsViewModel(repo) as T
+            CategoryViewModel::class.java -> CategoryViewModel(repo) as T
             else -> throw Throwable("Unsupported view model")
         }
     }

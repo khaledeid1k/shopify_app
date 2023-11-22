@@ -3,23 +3,32 @@ package com.kh.mo.shopyapp.ui.home.view
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import com.kh.mo.shopyapp.R
 import com.kh.mo.shopyapp.databinding.FragmentHomeBinding
 import com.kh.mo.shopyapp.home.view.BrandsAdapter
 import com.kh.mo.shopyapp.model.ui.AdModel
+import com.kh.mo.shopyapp.remote.RemoteSourceImp
+import com.kh.mo.shopyapp.repo.RepoImp
 import com.kh.mo.shopyapp.ui.base.BaseFragment
+import com.kh.mo.shopyapp.ui.base.BaseViewModelFactory
 import com.kh.mo.shopyapp.ui.home.viewmodel.HomeViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 
 class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
+    private val TAG = "HomeFragment"
     override val layoutIdFragment = R.layout.fragment_home
     override fun getViewModelClass() = HomeViewModel::class.java
+    private lateinit var homeViewModel: HomeViewModel
+    private lateinit var binding: FragmentHomeBinding
     private lateinit var brandsAdapter: BrandsAdapter
     private lateinit var mainCategoriesAdapter: MainCategoryAdapter
     private lateinit var adsAdapter: AdsAdapter
@@ -76,12 +85,24 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
     private fun getMainCategories() {
         lifecycleScope.launch {
-            viewModel.mainCategories.collect {
-                mainCategoriesAdapter = MainCategoryAdapter(requireContext())
-                //to drop the first item from response
-                mainCategoriesAdapter.submitList(it.toData()?.drop(1))
+            viewModel.mainCategories.collect { category ->
+                mainCategoriesAdapter = MainCategoryAdapter(requireContext()) {
+                    //  Log.i("sssss",category.toData()!!.get(category.toData()!!.lastIndexOf(it)).title)
+                    val title = category.toData()?.get(category.toData()!!.lastIndexOf(it))?.title!!
+                    val collectionId =
+                        category.toData()!!.get(category.toData()!!.lastIndexOf(it)).id!!
+                    val action = HomeFragmentDirections.actionHomeFragmentToCategoryFragment(
+                        title,
+                        collectionId
+                    )
+                    Navigation.findNavController(requireView()).navigate(action)
 
-                Log.i("HomeFragment", it.toData()?.get(0)?.image?.src.toString())
+
+                }
+                //to drop the first item from response
+                mainCategoriesAdapter.submitList(category.toData()?.drop(1))
+
+                Log.i("HomeFragment", category.toData()?.get(0)?.image?.src.toString())
                 binding.recyclerCategory.adapter = mainCategoriesAdapter
             }
 

@@ -4,6 +4,7 @@ import com.kh.mo.shopyapp.model.entity.CustomerEntity
 import com.kh.mo.shopyapp.model.entity.Validation
 import com.kh.mo.shopyapp.model.request.UserData
 import com.kh.mo.shopyapp.model.response.ads.DiscountCodeResponse
+import com.kh.mo.shopyapp.model.response.allproducts.AllProductsResponse
 import com.kh.mo.shopyapp.model.response.barnds.BrandsResponse
 import com.kh.mo.shopyapp.model.response.maincategory.MainCategoryResponse
 import com.kh.mo.shopyapp.model.response.productsofbrand.ProductsOfSpecificBrandResponse
@@ -26,4 +27,8 @@ interface Repo {
         priceRuleId: String,
         discountCodeId: String
     ): Flow<ApiState<DiscountCodeResponse>>
+    suspend fun getProductsOfSpecificBrand(brandName:String): Flow<ApiState<AllProductsResponse>>
+    suspend fun getAllProducts(): Flow<ApiState<AllProductsResponse>>
+    suspend fun getProductsByCollection(collectionId:Long): Flow<ApiState<AllProductsResponse>>
+
 }

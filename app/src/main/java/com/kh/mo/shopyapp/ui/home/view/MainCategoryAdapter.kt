@@ -15,7 +15,7 @@ import com.kh.mo.shopyapp.home.view.BrandsAdapter
 import com.kh.mo.shopyapp.model.response.barnds.SmartCollection
 import com.kh.mo.shopyapp.model.ui.maincategory.CustomCollection
 
-class MainCategoryAdapter(var context: Context) :
+class MainCategoryAdapter(var context: Context,private val onClick:(CustomCollection)->Unit) :
     ListAdapter<CustomCollection, MainCategoryAdapter.CategoryVH>(RecyclerDiffUtilCategoryItem()) {
     private lateinit var binding: ItemCategoryBinding
 
@@ -30,6 +30,9 @@ class MainCategoryAdapter(var context: Context) :
     override fun onBindViewHolder(holder: CategoryVH, position: Int) {
         val currentItem = getItem(position)
         holder.onBind(currentItem)
+        holder.itemView.setOnClickListener{
+            onClick(currentItem)
+        }
     }
 
 
@@ -43,7 +46,7 @@ class MainCategoryAdapter(var context: Context) :
                     .load(currentItem.image?.src)
                     .placeholder(R.drawable.placeholder_products)
                     .into(imageCategoryItem)
-                Log.i("HomeFragment", currentItem.image?.src.toString())
+                currentItem.image?.src?.let { Log.i("HomeFragment", it) }
 
 
             }

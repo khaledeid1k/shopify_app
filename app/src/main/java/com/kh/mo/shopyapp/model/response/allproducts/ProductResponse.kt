@@ -1,43 +1,43 @@
-package com.kh.mo.shopyapp.model.response.productsofbrand
+package com.kh.mo.shopyapp.model.response.allproducts
 
 
 import com.google.gson.annotations.SerializedName
 
 data class ProductResponse(
     @SerializedName("admin_graphql_api_id")
-    val adminGraphqlApiId: String?,
+    val adminGraphqlApiId: String,
     @SerializedName("body_html")
-    val bodyHtml: String?,
+    val bodyHtml: String,
     @SerializedName("created_at")
-    val createdAt: String?,
+    val createdAt: String,
     @SerializedName("handle")
-    val handle: String?,
+    val handle: String,
     @SerializedName("id")
-    val id: Long?,
+    val id: Long,
     @SerializedName("image")
-    val image: ImageResponse?,
+    val image: ImageResponse,
     @SerializedName("images")
-    val images: List<ImageResponse?>?,
+    val images: List<ImageResponse>,
     @SerializedName("options")
-    val options: List<OptionResponse?>?,
+    val options: List<OptionResponse>,
     @SerializedName("product_type")
-    val productType: String?,
+    val productType: String,
     @SerializedName("published_at")
-    val publishedAt: String?,
+    val publishedAt: String,
     @SerializedName("published_scope")
-    val publishedScope: String?,
+    val publishedScope: String,
     @SerializedName("status")
-    val status: String?,
+    val status: String,
     @SerializedName("tags")
-    val tags: String?,
+    val tags: String,
     @SerializedName("template_suffix")
-    val templateSuffix: Any?,
+    val templateSuffix: Any,
     @SerializedName("title")
-    val title: String?,
+    val title: String,
     @SerializedName("updated_at")
-    val updatedAt: String?,
+    val updatedAt: String,
     @SerializedName("variants")
-    val variants: List<VariantResponse?>?,
+    val variants: List<VariantResponse>,
     @SerializedName("vendor")
-    val vendor: String?
+    val vendor: String
 )

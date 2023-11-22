@@ -5,5 +5,5 @@ import com.google.gson.annotations.SerializedName
 
 data class BrandsResponse(
     @SerializedName("smart_collections")
-    val smartCollections: List<SmartCollectionRespnse?>?
+    val smartCollections: List<SmartCollectionRespnse>
 )

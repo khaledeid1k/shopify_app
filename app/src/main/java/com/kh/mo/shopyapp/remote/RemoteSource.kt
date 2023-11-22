@@ -3,6 +3,7 @@ package com.kh.mo.shopyapp.remote
 import com.kh.mo.shopyapp.model.request.CustomerDataRequest
 import com.kh.mo.shopyapp.model.request.UserData
 import com.kh.mo.shopyapp.model.response.ads.DiscountCodeResponse
+import com.kh.mo.shopyapp.model.response.allproducts.AllProductsResponse
 import com.kh.mo.shopyapp.model.response.barnds.BrandsResponse
 import com.kh.mo.shopyapp.model.response.create_customer.CustomerResponse
 import com.kh.mo.shopyapp.model.response.currency.Rates
@@ -20,6 +21,7 @@ interface RemoteSource {
         priceRuleId: String,
         discountCodeId: String
     ): Response<DiscountCodeResponse>
+
     suspend fun getProductsOfSpecificBrand(brandName: String): Response<ProductsOfSpecificBrandResponse>
     suspend fun storeData(userId: Long, userData: UserData): Flow<ApiState<String>>
     suspend fun checkCustomerExists(customerId: String): Flow<ApiState<UserData>>
@@ -27,4 +29,6 @@ interface RemoteSource {
     suspend fun singIn(email: String): Response<Login>
     suspend fun getCurrencyRate(): Rates
     suspend fun isCurrencyDbUpdated(): Boolean
+    suspend fun getAllProducts(): Response<AllProductsResponse>
+    suspend fun getProductsByCollection(collectionId: Long): Response<AllProductsResponse>
 }

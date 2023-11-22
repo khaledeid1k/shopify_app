@@ -7,5 +7,7 @@ import com.kh.mo.shopyapp.model.response.maincategory.ImageResponse
 data class CustomCollection(
     @SerializedName("image")
     val image: ImageResponse?,
-    val title: String?
-    )
+    val title: String?,
+    @SerializedName("id")
+    val id: Long?
+)

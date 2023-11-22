@@ -1,5 +1,6 @@
 package com.kh.mo.shopyapp.remote
 
+import com.kh.mo.shopyapp.model.response.allproducts.AllProductsResponse
 import android.util.Log
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
@@ -133,8 +134,16 @@ class RemoteSourceImp private constructor() : RemoteSource {
         return Network.retrofitService.getMainCategories()
     }
 
-    override suspend fun getProductsOfSpecificBrand(brandName: String): Response<ProductsOfSpecificBrandResponse> {
+    override suspend fun getProductsOfSpecificBrand(brandName: String): Response<AllProductsResponse> {
         return Network.retrofitService.getProductsOfSpecificBrand(brandName)
+    }
+
+    override suspend fun getAllProducts(): Response<AllProductsResponse> {
+        return Network.retrofitService.getAllProducts()
+    }
+
+    override suspend fun getProductsByCollection(collectionId: Long): Response<AllProductsResponse> {
+        return Network.retrofitService.getProductsByCollection(collectionId)
     }
 
     override suspend fun getDiscountCode(priceRuleId: String, discountCodeId: String) =
@@ -148,7 +157,12 @@ class RemoteSourceImp private constructor() : RemoteSource {
                 val instanceHolder = RemoteSourceImp()
                 instance = instanceHolder
                 instanceHolder
+
             }
         }
     }
+
+    override suspend fun getDiscountCode(priceRuleId: String, discountCodeId: String) =
+        Network.retrofitService.getDiscountCode(priceRuleId, discountCodeId)
 }
+

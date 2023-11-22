@@ -9,13 +9,13 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.kh.mo.shopyapp.R
-import com.kh.mo.shopyapp.databinding.ItemBrandBinding
 import com.kh.mo.shopyapp.databinding.ItemOrderBinding
-import com.kh.mo.shopyapp.model.response.barnds.SmartCollection
-import com.kh.mo.shopyapp.model.ui.productsofbrand.Product
+import com.kh.mo.shopyapp.model.ui.allproducts.Products
 
-class ProductsOfBrandsAdapter( var context: Context,val onClickListener:(position:Int)->Unit) :
-ListAdapter<Product, ProductsOfBrandsAdapter.ProductsOfBrandVH>(RecyclerDiffUtilProductsBrandsItem()) {
+class ProductsOfBrandsAdapter(var context: Context, val onClickListener: (position: Int) -> Unit) :
+    ListAdapter<Products, ProductsOfBrandsAdapter.ProductsOfBrandVH>(
+        RecyclerDiffUtilProductsBrandsItem()
+    ) {
     private lateinit var binding: ItemOrderBinding
 
 
@@ -29,24 +29,25 @@ ListAdapter<Product, ProductsOfBrandsAdapter.ProductsOfBrandVH>(RecyclerDiffUtil
     override fun onBindViewHolder(holder: ProductsOfBrandVH, position: Int) {
         val currentItem = getItem(position)
         holder.onBind(currentItem)
-        holder.itemView.setOnClickListener{
+        holder.itemView.setOnClickListener {
             onClickListener(position)
         }
 
     }
 
-    inner class ProductsOfBrandVH(var binding: ItemOrderBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class ProductsOfBrandVH(var binding: ItemOrderBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
-        fun onBind(currentItem: Product) {
+        fun onBind(currentItem: Products) {
             binding.apply {
                 tvProductNameOrder.text = currentItem.title
                 Glide.with(context)
-                    .load(currentItem.images?.get(0)?.src)
+                    .load(currentItem.images.get(0).src)
                     .placeholder(R.drawable.placeholder_products)
                     .into(imageProductOrder)
-                Log.i("HomeFragment", currentItem.images?.get(0)?.src.toString())
+                Log.i("HomeFragment", currentItem.images.get(0).src.toString())
 
-                tvProductPriceOrder.text=currentItem.variants?.get(0)?.price
+                tvProductPriceOrder.text = currentItem.variants.get(0).price
             }
 
         }
@@ -55,15 +56,15 @@ ListAdapter<Product, ProductsOfBrandsAdapter.ProductsOfBrandVH>(RecyclerDiffUtil
 
 }
 
-class RecyclerDiffUtilProductsBrandsItem : DiffUtil.ItemCallback<Product>() {
+class RecyclerDiffUtilProductsBrandsItem : DiffUtil.ItemCallback<Products>() {
     override fun areItemsTheSame(
-        oldItem: Product, newItem: Product
+        oldItem: Products, newItem: Products
     ): Boolean {
         return oldItem == newItem
     }
 
     override fun areContentsTheSame(
-        oldItem: Product, newItem: Product
+        oldItem: Products, newItem: Products
     ): Boolean {
         return oldItem == newItem
     }

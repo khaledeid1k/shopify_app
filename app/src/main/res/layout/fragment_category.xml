@@ -1,40 +1,115 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".CategoryFragment"
-    android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <TextView
-        android:id="@+id/tv_category_name"
-        style="@style/main_title"
+    <data>
+
+    </data>
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:fontFamily="@font/inter_extrabold"
-        tools:text="Men" />
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_sub_category"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/_20sdp"
-        tools:listitem="@layout/item_category"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        android:orientation="horizontal"
-        />
+        android:layout_height="match_parent"
+        tools:context=".ui.category.view.CategoryFragment"
+        android:orientation="vertical">
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/search_text_input_layout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_35sdp"
+            app:hintEnabled="false"
+            android:layout_margin="@dimen/_10sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/search_text"
+            >
+            <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                android:id="@+id/search_auto_complete_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="@string/search"
+                android:imeOptions="actionGo"
+                android:inputType="text"
+                style="@style/SearchBarStyle"
+                android:elevation="0dp"
+                android:textSize="@dimen/_12ssp"
+                android:drawablePadding="@dimen/_10sdp"
+                android:drawableStart="@drawable/search"
+                android:maxLines="1"
+                android:paddingStart="@dimen/_10sdp" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/_20sdp"
-        tools:listitem="@layout/item_product"
-        android:id="@+id/recycler_products_category"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        app:spanCount="2"
-        />
+
+        <TextView
+            android:id="@+id/tv_category_name"
+            style="@style/main_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_20sdp"
+            android:fontFamily="@font/inter_extrabold"
+            tools:text="Men"
+           />
+
+        <com.google.android.material.chip.ChipGroup
+            style="@style/Widget.MaterialComponents.ChipGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            app:singleLine="true"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_gravity="center"
+            >
 
 
 
-</LinearLayout>
+            <com.google.android.material.chip.Chip
+                android:id="@+id/first_subcategory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                tools:text="Shirts"
+                app:chipIcon="@drawable/accessory"
+                app:chipIconEnabled="true"/>
+            <com.google.android.material.chip.Chip
+                android:id="@+id/second_subcategory"
+                tools:text="Shirts"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:chipIcon="@drawable/shoes"
+                app:chipIconEnabled="true"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                />
+            <com.google.android.material.chip.Chip
+                android:id="@+id/third_subcategory"
+                tools:text="Shirts"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:chipIcon="@drawable/shirt"
+
+                app:chipIconEnabled="true"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                />
+        </com.google.android.material.chip.ChipGroup>
+
+<!--        <androidx.recyclerview.widget.RecyclerView-->
+<!--            android:id="@+id/recycler_sub_category"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_margin="@dimen/_20sdp"-->
+<!--            tools:listitem="@layout/item_category"-->
+
+<!--            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"-->
+<!--            app:spanCount="3" />-->
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_20sdp"
+            tools:listitem="@layout/item_product"
+            android:id="@+id/recycler_products_category"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:spanCount="2" />
+
+
+    </LinearLayout>
+</layout>

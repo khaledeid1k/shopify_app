@@ -5,12 +5,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kh.mo.shopyapp.model.response.barnds.SmartCollection
 import com.kh.mo.shopyapp.model.ui.AdModel
+import com.kh.mo.shopyapp.model.ui.allproducts.Products
 import com.kh.mo.shopyapp.model.ui.maincategory.CustomCollection
 import com.kh.mo.shopyapp.model.ui.productsofbrand.Product
 import com.kh.mo.shopyapp.remote.ApiState
 import com.kh.mo.shopyapp.repo.Repo
+import com.kh.mo.shopyapp.repo.maper.convertToAllProducts
 import com.kh.mo.shopyapp.repo.maper.convertToCustomCollection
-import com.kh.mo.shopyapp.repo.maper.convertToProduct
 import com.kh.mo.shopyapp.repo.maper.convertToSmartCollection
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,8 +23,8 @@ import kotlin.Result.Companion.success
 class HomeViewModel(private var _irepo: Repo) : ViewModel() {
     private val TAG = "TAG HomeViewModel"
 
-    private val _barnds = MutableStateFlow<ApiState<List<SmartCollection>>>(ApiState.Loading)
-    val barnds: StateFlow<ApiState<List<SmartCollection>>> = _barnds
+    private val _brands = MutableStateFlow<ApiState<List<SmartCollection>>>(ApiState.Loading)
+    val brands: StateFlow<ApiState<List<SmartCollection>>> = _brands
 
     private val _mainCategories = MutableStateFlow<ApiState<List<CustomCollection>>>(ApiState.Loading)
     val mainCategories: StateFlow<ApiState<List<CustomCollection>>> = _mainCategories
@@ -31,6 +32,11 @@ class HomeViewModel(private var _irepo: Repo) : ViewModel() {
     private val _productsBrand = MutableStateFlow<ApiState<List<Product>>>(ApiState.Loading)
     val productsBrand: StateFlow<ApiState<List<Product>>> = _productsBrand
 
+    init{
+        getAllBrands()
+        getMainCategories()
+
+    }
 
     fun getAllBrands() {
         viewModelScope.launch(Dispatchers.IO) {

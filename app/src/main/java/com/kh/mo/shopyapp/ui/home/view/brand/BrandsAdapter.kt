@@ -13,7 +13,6 @@ import com.bumptech.glide.Glide
 import com.kh.mo.shopyapp.R
 import com.kh.mo.shopyapp.databinding.ItemBrandBinding
 import com.kh.mo.shopyapp.model.response.barnds.SmartCollection
-import com.kh.mo.shopyapp.model.ui.productsofbrand.Product
 
 
 class BrandsAdapter(var context: Context,private val onClick:(SmartCollection)->Unit) :

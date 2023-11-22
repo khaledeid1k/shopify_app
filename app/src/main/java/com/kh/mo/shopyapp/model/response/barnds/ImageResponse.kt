@@ -5,13 +5,13 @@ import com.google.gson.annotations.SerializedName
 
 data class ImageResponse(
     @SerializedName("alt")
-    val alt: Any?,
+    val alt: Any,
     @SerializedName("created_at")
-    val createdAt: String?,
+    val createdAt: String,
     @SerializedName("height")
-    val height: Int?,
+    val height: Int,
     @SerializedName("src")
-    val src: String?,
+    val src: String,
     @SerializedName("width")
-    val width: Int?
+    val width: Int
 )
