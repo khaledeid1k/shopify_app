@@ -37,5 +37,4 @@ interface Services {
     @GET("customers.json")
     suspend fun singIn(@Query("email") email: String): Response<Login>
 
-
 }
