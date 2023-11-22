@@ -145,6 +145,13 @@ class RemoteSourceImp private constructor() : RemoteSource {
         return Network.retrofitService.getProductsByCollection(collectionId)
     }
 
+    override suspend fun filterProductsBySubCollection(
+        collectionId: Long,
+        productType: String
+    ): Response<AllProductsResponse> {
+        return Network.retrofitService.filterProductsBySubCollection(collectionId,productType)
+    }
+
     override suspend fun getDiscountCode(priceRuleId: String, discountCodeId: String) =
         Network.retrofitService.getDiscountCode(priceRuleId, discountCodeId)
 

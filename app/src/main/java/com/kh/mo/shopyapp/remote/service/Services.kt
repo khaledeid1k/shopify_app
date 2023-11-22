@@ -43,4 +43,7 @@ interface Services {
     @GET("customers.json")
     suspend fun singIn(@Query("email") email: String): Response<Login>
 
+    @GET("products.json")
+    suspend fun filterProductsBySubCollection(@Query("collection_id") collectionId: Long,@Query("product_type") productType: String): Response<AllProductsResponse>
+
 }

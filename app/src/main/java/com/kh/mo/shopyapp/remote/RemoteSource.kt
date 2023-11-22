@@ -30,4 +30,6 @@ interface RemoteSource {
     suspend fun isCurrencyDbUpdated(): Boolean
     suspend fun getAllProducts(): Response<AllProductsResponse>
     suspend fun getProductsByCollection(collectionId: Long): Response<AllProductsResponse>
+    suspend fun filterProductsBySubCollection(collectionId: Long,productType:String): Response<AllProductsResponse>
+
 }
