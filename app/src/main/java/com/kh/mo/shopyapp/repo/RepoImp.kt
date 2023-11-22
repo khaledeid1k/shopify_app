@@ -8,7 +8,6 @@ import com.kh.mo.shopyapp.model.response.ads.DiscountCodeResponse
 import com.kh.mo.shopyapp.model.response.allproducts.AllProductsResponse
 import com.kh.mo.shopyapp.model.response.barnds.BrandsResponse
 import com.kh.mo.shopyapp.model.response.maincategory.MainCategoryResponse
-import com.kh.mo.shopyapp.model.response.productsofbrand.ProductsOfSpecificBrandResponse
 import com.kh.mo.shopyapp.model.ui.Review
 import com.kh.mo.shopyapp.remote.ApiState
 import com.kh.mo.shopyapp.remote.RemoteSource
