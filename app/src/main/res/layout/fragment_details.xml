@@ -29,14 +29,13 @@
             android:layout_height="wrap_content" />
 
         <TextView
-            app:layout_constraintTop_toBottomOf="@+id/brand"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:text="Lily’s Ankle Boots"
             android:id="@+id/brand_value"
             style="@style/small_title"
-            android:layout_marginStart="@dimen/_10sdp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@+id/brand"
+            app:layout_constraintTop_toBottomOf="@+id/brand"
+            tools:text="Lily’s Ankle Boots" />
 
 
 
@@ -54,14 +53,13 @@
             android:layout_height="wrap_content" />
 
         <TextView
-            app:layout_constraintTop_toBottomOf="@+id/weight_unit"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:text="Brand New, With Box"
             android:id="@+id/weight_unit_value"
             style="@style/small_title"
-            android:layout_marginStart="@dimen/_10sdp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@+id/weight_unit"
+            app:layout_constraintTop_toBottomOf="@+id/weight_unit"
+            tools:text="Brand New, With Box" />
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline_h"
             android:layout_width="wrap_content"
@@ -75,9 +73,9 @@
             style="@style/sub_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/_10sdp"
             android:text="@string/state"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/category"
+            app:layout_constraintStart_toStartOf="@+id/category"
             app:layout_constraintTop_toBottomOf="@+id/guideline_h" />
 
         <TextView

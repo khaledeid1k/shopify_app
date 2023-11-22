@@ -7,7 +7,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.kh.mo.shopyapp.model.ui.productsofbrand.Product
 import com.kh.mo.shopyapp.ui.product.product_Info.view.ProductInfoFragment
 import com.kh.mo.shopyapp.ui.product.product_details.view.ProductDetailsFragment
-import com.kh.mo.shopyapp.ui.product.product_reviews.view.ReviewsFragment
+import com.kh.mo.shopyapp.ui.product.product_reviews.view.ProductReviewsFragment
 
 class ProductFragmentPageAdapter(
     private val  receiveProduct: Product,
@@ -20,7 +20,7 @@ class ProductFragmentPageAdapter(
         return when (position) {
             0 -> ProductInfoFragment.newInstance(receiveProduct)
             1 -> ProductDetailsFragment.newInstance(receiveProduct)
-            else -> ReviewsFragment()
+            else -> ProductReviewsFragment()
         }
     }
 }
