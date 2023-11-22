@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 
 data class SmartCollection(
     @SerializedName("title")
-    val title: String?,
+    val title: String,
     @SerializedName("image")
-    val image: ImageResponse?
+    val image: ImageResponse
 )

@@ -1,75 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:elevation="@dimen/_10sdp"
-    app:cardCornerRadius="@dimen/_6sdp"
-    app:cardUseCompatPadding="true"
-    >
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <data>
+
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="@dimen/_10sdp"
+        app:cardCornerRadius="@dimen/_6sdp"
+        app:cardUseCompatPadding="true"
+
         >
 
-        <ImageView
-            android:id="@+id/image_product_item"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:scaleType="centerCrop"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:src="@drawable/img"
-           />
+            android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/tv_name_product_item"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="T-Shirt"
-            style="@style/main_title"
-            android:layout_marginEnd="@dimen/_20sdp"
-            android:layout_marginTop="@dimen/_10sdp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/image_product_item" />
+            <ImageView
+                android:id="@+id/image_product_item"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_130sdp"
+                android:scaleType="fitXY"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:src="@drawable/shirt"
 
+                />
 
-        <TextView
-            android:id="@+id/tv_price_product_item"
-            style="@style/sub_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_10sdp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_name_product_item"
-            android:textStyle="bold"
-            tools:text="25$" />
-
-        <TextView
-            android:id="@+id/tv_rate_product_item"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="4.9"
-            style="@style/sub_title"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_margin="@dimen/_10sdp"
-            app:layout_constraintTop_toBottomOf="@+id/tv_name_product_item"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:background="@drawable/round_rate"
-            android:padding="@dimen/_5sdp"
-            app:drawableStartCompat="@drawable/ic_star" />
+            <TextView
+                android:id="@+id/tv_name_product_item"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="T-Shirt"
+                style="@style/sub_title"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginStart="@dimen/_20sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/image_product_item" />
 
 
+            <TextView
+                android:id="@+id/tv_price_product_item"
+                style="@style/sub_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_10sdp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_name_product_item"
+                android:textStyle="bold"
+                tools:text="25$" />
+
+            <TextView
+                android:id="@+id/tv_rate_product_item"
+                style="@style/small_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_10sdp"
+                android:background="@drawable/round_rate"
+                android:padding="@dimen/_5sdp"
+                app:drawableStartCompat="@drawable/ic_star"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_name_product_item"
+                tools:text="4.9" />
+
+            <ImageView
+                android:id="@+id/image_fav"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:src="@drawable/ic_favorite"
+                android:background="@drawable/round_rate"
+                android:layout_margin="@dimen/_5sdp"
+                android:padding="@dimen/_4sdp" />
+
+            <ImageView
+                android:id="@+id/image_cart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="@id/image_product_item"
+                android:src="@drawable/ic_cart"
+                android:background="@drawable/round_rate"
+                android:layout_marginHorizontal="@dimen/_5sdp"
+                android:padding="@dimen/_4sdp" />
 
 
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-</com.google.android.material.card.MaterialCardView>
+    </com.google.android.material.card.MaterialCardView>
+</layout>

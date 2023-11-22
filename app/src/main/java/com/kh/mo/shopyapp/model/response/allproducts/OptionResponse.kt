@@ -5,13 +5,13 @@ import com.google.gson.annotations.SerializedName
 
 data class OptionResponse(
     @SerializedName("id")
-    val id: Long?,
+    val id: Long,
     @SerializedName("name")
-    val name: String?,
+    val name: String,
     @SerializedName("position")
-    val position: Int?,
+    val position: Int,
     @SerializedName("product_id")
-    val productId: Long?,
+    val productId: Long,
     @SerializedName("values")
-    val values: List<String?>?
+    val values: List<String>
 )

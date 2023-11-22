@@ -5,9 +5,9 @@ import com.google.gson.annotations.SerializedName
 
 data class RuleResponse(
     @SerializedName("column")
-    val column: String?,
+    val column: String,
     @SerializedName("condition")
-    val condition: String?,
+    val condition: String,
     @SerializedName("relation")
-    val relation: String?
+    val relation: String
 )
