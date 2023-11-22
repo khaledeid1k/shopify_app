@@ -1,15 +1,18 @@
 package com.kh.mo.shopyapp.model.response.productsofbrand
 
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class VariantResponse(
     @SerializedName("admin_graphql_api_id")
     val adminGraphqlApiId: String?,
     @SerializedName("barcode")
-    val barcode: Any?,
+    val barcode: String?,
     @SerializedName("compare_at_price")
-    val compareAtPrice: Any?,
+    val compareAtPrice: Double?,
     @SerializedName("created_at")
     val createdAt: String?,
     @SerializedName("fulfillment_service")
@@ -19,7 +22,7 @@ data class VariantResponse(
     @SerializedName("id")
     val id: Long?,
     @SerializedName("image_id")
-    val imageId: Any?,
+    val imageId: Long?,
     @SerializedName("inventory_item_id")
     val inventoryItemId: Long?,
     @SerializedName("inventory_management")
@@ -35,7 +38,7 @@ data class VariantResponse(
     @SerializedName("option2")
     val option2: String?,
     @SerializedName("option3")
-    val option3: Any?,
+    val option3: String?,
     @SerializedName("position")
     val position: Int?,
     @SerializedName("price")
@@ -56,4 +59,4 @@ data class VariantResponse(
     val weight: Double?,
     @SerializedName("weight_unit")
     val weightUnit: String?
-)
+) : Parcelable

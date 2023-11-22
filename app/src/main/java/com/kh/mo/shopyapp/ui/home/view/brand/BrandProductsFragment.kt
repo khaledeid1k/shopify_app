@@ -8,10 +8,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.kh.mo.shopyapp.R
 import com.kh.mo.shopyapp.databinding.FragmentBrandProductsBinding
 import com.kh.mo.shopyapp.local.LocalSourceImp
+import com.kh.mo.shopyapp.remote.ApiState
 import com.kh.mo.shopyapp.remote.RemoteSourceImp
 import com.kh.mo.shopyapp.repo.RepoImp
 import com.kh.mo.shopyapp.ui.base.BaseViewModelFactory
@@ -30,7 +32,7 @@ class BrandProductsFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         binding = FragmentBrandProductsBinding.inflate(inflater, container, false)
         return binding.root
@@ -52,11 +54,28 @@ class BrandProductsFragment : Fragment() {
     private fun getProductsOfBrand() {
         lifecycleScope.launch {
             homeViewModel.productsBrand.collect {
-                productsBrandsAdapter = ProductsOfBrandsAdapter(requireContext())
-                productsBrandsAdapter.submitList(it.toData())
+                when(it){
+                    is ApiState.Failure ->{}
+                    ApiState.Loading -> {}
+                    is ApiState.Success -> {
+                        val product = it.data
+                        productsBrandsAdapter = ProductsOfBrandsAdapter(requireContext()){
+                            position->
+                            findNavController().navigate(
+                                BrandProductsFragmentDirections.actionBrandProductsFragmentToProductFragment(
+                                    product[position]
+                                )
+                            )
 
-                Log.i("HomeFragment", it.toData()?.get(0)?.images?.get(0)?.src.toString())
-                binding.recycleProductsSpecificBrand.adapter = productsBrandsAdapter
+                        }
+                        productsBrandsAdapter.submitList(product)
+
+                        binding.recycleProductsSpecificBrand.adapter = productsBrandsAdapter
+                    }
+                }
+
+
+
             }
 
         }

@@ -10,4 +10,6 @@ object Constants {
     const val ErrorRePassword = "ErrorRePassword"
     const val CURRENCY_COLLECTION_ID = "currency_rate"
     const val CURRENCY_DOCUMENT_ID = "CurrencyCollectionID"
+    const val ProductInfoFragment = "ProductInfoFragment"
+    const val ProductDetailsFragment = "ProductDetailsFragment"
 }

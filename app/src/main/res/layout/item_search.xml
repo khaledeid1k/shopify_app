@@ -48,7 +48,7 @@
 
 
         <TextView
-            android:id="@+id/tv_price_product_item"
+            android:id="@+id/product_price"
             style="@style/sub_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -60,7 +60,7 @@
             tools:text="25$" />
 
         <TextView
-            android:id="@+id/tv_rate_product_item"
+            android:id="@+id/product_rate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="4.9"

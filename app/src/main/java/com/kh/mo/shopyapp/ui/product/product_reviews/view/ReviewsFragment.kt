@@ -1,4 +1,4 @@
-package com.kh.mo.shopyapp.ui.product.view
+package com.kh.mo.shopyapp.ui.product.product_reviews.view
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import com.kh.mo.shopyapp.R
 
 
-class ProductInfoFragment : Fragment() {
+class ReviewsFragment : Fragment() {
 
 
     override fun onCreateView(
@@ -16,7 +16,7 @@ class ProductInfoFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_product_info, container, false)
+        return inflater.inflate(R.layout.fragment_reviews, container, false)
     }
 
 }

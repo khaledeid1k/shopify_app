@@ -1,61 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.product.view.ProductInfoFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:id="@+id/select_color"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="@style/sub_title"
-        android:layout_margin="@dimen/_10sdp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:text="@string/select_color" />
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/list_color"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:layout_marginStart="@dimen/_10sdp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:orientation="horizontal"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/item_select_color"
-        tools:itemCount="5"
-        app:layout_constraintTop_toBottomOf="@+id/select_color"
-        />
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/select_color"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/sub_title"
+            android:layout_margin="@dimen/_10sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:text="@string/select_color" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/list_color"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_select_color"
+            tools:itemCount="5"
+            app:layout_constraintTop_toBottomOf="@+id/select_color" />
 
 
-    <TextView
-        android:id="@+id/select_size"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="@style/sub_title"
-        android:layout_margin="@dimen/_10sdp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/list_color"
-        android:text="@string/select_size" />
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/list_size"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:orientation="horizontal"
-        android:layout_marginStart="@dimen/_10sdp"
+        <TextView
+            android:id="@+id/select_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/sub_title"
+            android:layout_margin="@dimen/_10sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/list_color"
+            android:text="@string/select_size" />
 
-        android:layout_marginTop="@dimen/_10sdp"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/list_size"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            android:orientation="horizontal"
+            android:layout_marginStart="@dimen/_10sdp"
 
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/item_select_size"
-        tools:itemCount="5"
-        app:layout_constraintTop_toBottomOf="@+id/select_size"
-        />
+            android:layout_marginTop="@dimen/_10sdp"
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_select_size"
+            tools:itemCount="5"
+            app:layout_constraintTop_toBottomOf="@+id/select_size" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
