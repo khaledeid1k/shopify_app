@@ -1,12 +1,12 @@
 package com.kh.mo.shopyapp
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.kh.mo.shopyapp.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -27,5 +27,12 @@ class MainActivity : AppCompatActivity() {
         controller = navHostFragment.navController
         NavigationUI.setupWithNavController(binding.bottomNavigation, controller)
 
+        controller.addOnDestinationChangedListener { _, navDestination, _ ->
+            if (navDestination.id == R.id.signInFragment || navDestination.id == R.id.signUpFragment) {
+                binding.bottomNavigation.visibility = View.GONE
+            } else {
+                binding.bottomNavigation.visibility = View.VISIBLE
+            }
+        }
     }
 }
