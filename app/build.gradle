@@ -20,6 +20,7 @@ android {
         properties.load(project.rootProject.file('local.properties').newDataInputStream())
         buildConfigField "String", "baseURL", "\"${properties.getProperty('baseURL')}\""
         buildConfigField "String", "accessToken", "\"${properties.getProperty('accessToken')}\""
+        buildConfigField "String", "currencyApiKey", "\"${properties.getProperty('currencyApiKey')}\""
 
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
