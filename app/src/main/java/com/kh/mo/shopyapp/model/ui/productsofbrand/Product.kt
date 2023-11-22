@@ -18,4 +18,9 @@ data class Product(
     val variants: List<VariantResponse?>?,
     @SerializedName("options")
     val options: List<OptionResponse?>?,
-) : Parcelable
+
+    val product_type: String?,
+    val vendor: String?,
+    val status: String?,
+
+    ) : Parcelable

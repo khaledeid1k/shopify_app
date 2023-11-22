@@ -26,8 +26,8 @@
     <string name="select_size">Select Size(US)</string>
     <string name="brand">BRAND</string>
     <string name="sku">SKU</string>
-    <string name="condition">CONDITION</string>
-    <string name="material">MATERIAL</string>
+    <string name="weight">WEIGHT</string>
+    <string name="state">STATE</string>
     <string name="category">CATEGORY</string>
     <string name="fitting">FITTING</string>
 

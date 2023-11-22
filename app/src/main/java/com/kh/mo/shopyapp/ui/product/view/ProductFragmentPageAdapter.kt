@@ -4,10 +4,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.kh.mo.shopyapp.model.response.productsofbrand.OptionResponse
 import com.kh.mo.shopyapp.model.ui.productsofbrand.Product
 import com.kh.mo.shopyapp.ui.product.product_Info.view.ProductInfoFragment
-import com.kh.mo.shopyapp.ui.product.product_details.view.DetailsFragment
+import com.kh.mo.shopyapp.ui.product.product_details.view.ProductDetailsFragment
 import com.kh.mo.shopyapp.ui.product.product_reviews.view.ReviewsFragment
 
 class ProductFragmentPageAdapter(
@@ -20,8 +19,8 @@ class ProductFragmentPageAdapter(
     override fun createFragment(position: Int): Fragment {
         return when (position) {
             0 -> ProductInfoFragment.newInstance(receiveProduct)
-            1 -> ReviewsFragment()
-            else -> DetailsFragment()
+            1 -> ProductDetailsFragment.newInstance(receiveProduct)
+            else -> ReviewsFragment()
         }
     }
 }

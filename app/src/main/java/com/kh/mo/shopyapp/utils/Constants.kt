@@ -9,5 +9,6 @@ object Constants {
     const val ErrorPassword = "ErrorPassword"
     const val ErrorRePassword = "ErrorRePassword"
     const val ProductInfoFragment = "ProductInfoFragment"
+    const val ProductDetailsFragment = "ProductDetailsFragment"
 
 }
