@@ -15,44 +15,37 @@ import com.kh.mo.shopyapp.local.LocalSourceImp
 import com.kh.mo.shopyapp.remote.ApiState
 import com.kh.mo.shopyapp.remote.RemoteSourceImp
 import com.kh.mo.shopyapp.repo.RepoImp
+import com.kh.mo.shopyapp.ui.base.BaseFragment
 import com.kh.mo.shopyapp.ui.base.BaseViewModelFactory
 import com.kh.mo.shopyapp.ui.home.viewmodel.HomeViewModel
 import kotlinx.coroutines.launch
 
 
-class BrandProductsFragment : Fragment() {
+class BrandProductsFragment : BaseFragment<FragmentBrandProductsBinding,HomeViewModel> (){
 
-    private lateinit var homeViewModel: HomeViewModel
+
     private var brandName: String = ""
     private var brandImage: String = ""
-    private lateinit var binding: FragmentBrandProductsBinding
+    override val layoutIdFragment = R.layout.fragment_brand_products
+    override fun getViewModelClass() = HomeViewModel::class.java
     private lateinit var productsBrandsAdapter: ProductsOfBrandsAdapter
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        // Inflate the layout for this fragment
-        binding = FragmentBrandProductsBinding.inflate(inflater, container, false)
-        return binding.root
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        intiViewModel()
+
         brandName = BrandProductsFragmentArgs.fromBundle(requireArguments()).brandName
         brandImage = BrandProductsFragmentArgs.fromBundle(requireArguments()).brandImage
         Glide.with(requireContext())
             .load(brandImage)
             .placeholder(R.drawable.placeholder_products)
             .into(binding.imgBrandItem)
-        homeViewModel.getProductsOfSpecificBrand(brandName)
+        viewModel.getProductsOfSpecificBrand(brandName)
         getProductsOfBrand()
     }
 
     private fun getProductsOfBrand() {
         lifecycleScope.launch {
-            homeViewModel.productsBrand.collect {
+            viewModel.productsBrand.collect {
                 when(it){
                     is ApiState.Failure ->{}
                     ApiState.Loading -> {}
@@ -75,19 +68,6 @@ class BrandProductsFragment : Fragment() {
         }
     }
 
-    private fun intiViewModel() {
-        val showProductsViewModelFactory =
-            BaseViewModelFactory(
-                RepoImp.getRepoImpInstance
-                    (
-                    RemoteSourceImp.getRemoteSourceImpInstance(),
-                    LocalSourceImp.getLocalSourceImpInstance()
-                )
-            )
-        homeViewModel = ViewModelProvider(
-            this,
-            showProductsViewModelFactory
-        )[HomeViewModel::class.java]
-    }
+
 
 }

@@ -2,41 +2,25 @@ package com.kh.mo.shopyapp.ui.category.view
 
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.kh.mo.shopyapp.R
 import com.kh.mo.shopyapp.databinding.FragmentCategoryBinding
-import com.kh.mo.shopyapp.local.LocalSourceImp
-import com.kh.mo.shopyapp.remote.RemoteSourceImp
-import com.kh.mo.shopyapp.repo.RepoImp
-import com.kh.mo.shopyapp.ui.base.BaseViewModelFactory
+import com.kh.mo.shopyapp.remote.ApiState
+import com.kh.mo.shopyapp.ui.base.BaseFragment
 import com.kh.mo.shopyapp.ui.category.viewmodel.CategoryViewModel
 import kotlinx.coroutines.launch
 
 
-class CategoryFragment : Fragment() {
+class CategoryFragment : BaseFragment<FragmentCategoryBinding, CategoryViewModel>() {
     private val TAG = "TAG CategoryFragment"
-    private lateinit var categoryViewModel: CategoryViewModel
+    override val layoutIdFragment = R.layout.fragment_category
+    override fun getViewModelClass() = CategoryViewModel::class.java
     private lateinit var subCategoriesAdapter: SubCategoriesAdapter
     private var categoryName = ""
+    private var productType = ""
     private var collectionId: Long = 0L
 
-    private lateinit var binding: FragmentCategoryBinding
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = DataBindingUtil.inflate(
-            inflater, R.layout.fragment_category,
-            container, false
-        )
-        return binding.root
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -47,21 +31,45 @@ class CategoryFragment : Fragment() {
         Log.i(TAG, collectionId.toString())
         Log.i(TAG, categoryName)
 
-        intiViewModel()
-        categoryViewModel.getCollectionProducts(collectionId)
+        viewModel.getCollectionProducts(collectionId)
+        viewModel.filterProductsBySubCollection(collectionId, productType)
         binding.tvCategoryName.text = categoryName
         getSubCategories()
         getCollectionProducts()
+        filterProductsBySubCollection()
+        onClick()
+    }
 
+    private fun onClick() {
+        binding.firstSubcategory.setOnClickListener {
+            productType = binding.firstSubcategory.text.toString()
+            viewModel.filterProductsBySubCollection(collectionId, productType)
+        }
+        binding.secondSubcategory.setOnClickListener {
+            productType = binding.secondSubcategory.text.toString()
+            viewModel.filterProductsBySubCollection(collectionId, productType)
+        }
+        binding.thirdSubcategory.setOnClickListener {
+            productType = binding.thirdSubcategory.text.toString()
+            viewModel.filterProductsBySubCollection(collectionId, productType)
+        }
     }
 
     private fun getSubCategories() {
         lifecycleScope.launch {
-            categoryViewModel.products.collect {
-                val data = it.toData()?.distinctBy { it.productType }
-                binding.firstSubcategory.setText(data?.get(0)?.productType.toString())
-                binding.secondSubcategory.setText(data?.get(1)?.productType.toString())
-                binding.thirdSubcategory.setText(data?.get(2)?.productType.toString())
+            viewModel.products.collect {
+                when (it) {
+                    is ApiState.Failure -> {}
+                    is ApiState.Loading -> {}
+                    is ApiState.Success -> {
+                        val data = it.data.distinctBy { it.productType }
+                        binding.firstSubcategory.setText(data.get(0).productType)
+                        binding.secondSubcategory.setText(data.get(1).productType)
+                        binding.thirdSubcategory.setText(data.get(2).productType)
+                    }
+
+                }
+
 
             }
 
@@ -70,30 +78,41 @@ class CategoryFragment : Fragment() {
 
     private fun getCollectionProducts() {
         lifecycleScope.launch {
-            categoryViewModel.productsCollection.collect {
-                subCategoriesAdapter = SubCategoriesAdapter(requireContext())
+            viewModel.productsCollection.collect {
+                when (it) {
+                    is ApiState.Failure -> {}
+                    is ApiState.Loading -> {}
+                    is ApiState.Success -> {
+                        subCategoriesAdapter = SubCategoriesAdapter(requireContext())
 
-                subCategoriesAdapter.submitList(it.toData())
-                binding.recyclerProductsCategory.adapter = subCategoriesAdapter
+                        subCategoriesAdapter.submitList(it.data)
+                        binding.recyclerProductsCategory.adapter = subCategoriesAdapter
+                    }
+
+
+                }
+
             }
 
         }
     }
 
-    private fun intiViewModel() {
-        val showProductsViewModelFactory =
-            BaseViewModelFactory(
-                RepoImp.getRepoImpInstance
-                    (
-                    RemoteSourceImp.getRemoteSourceImpInstance(),
-                    LocalSourceImp.getLocalSourceImpInstance()
-                )
-            )
-        categoryViewModel = ViewModelProvider(
-            this,
-            showProductsViewModelFactory
-        )[CategoryViewModel::class.java]
-    }
+    private fun filterProductsBySubCollection() {
+        lifecycleScope.launch {
+            viewModel.filterProductsCollection.collect {
+                when (it) {
+                    is ApiState.Failure -> {}
+                    is ApiState.Loading -> {}
+                    is ApiState.Success -> {
+                        subCategoriesAdapter = SubCategoriesAdapter(requireContext())
+                        subCategoriesAdapter.submitList(it.data)
+                        binding.recyclerProductsCategory.adapter = subCategoriesAdapter
+                    }
+                }
 
+            }
+
+        }
+    }
 
 }
