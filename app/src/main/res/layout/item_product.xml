@@ -58,20 +58,6 @@
                 android:textStyle="bold"
                 tools:text="25$" />
 
-            <TextView
-                android:id="@+id/tv_rate_product_item"
-                style="@style/small_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/_10sdp"
-                android:background="@drawable/round_rate"
-                android:padding="@dimen/_5sdp"
-                app:drawableStartCompat="@drawable/ic_star"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_name_product_item"
-                tools:text="4.9" />
-
             <ImageView
                 android:id="@+id/image_fav"
                 android:layout_width="wrap_content"
@@ -87,8 +73,9 @@
                 android:id="@+id/image_cart"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toBottomOf="@id/image_product_item"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_name_product_item"
                 android:src="@drawable/ic_cart"
                 android:background="@drawable/round_rate"
                 android:layout_marginHorizontal="@dimen/_5sdp"
