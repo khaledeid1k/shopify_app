@@ -78,4 +78,5 @@
     <string name="country">Country</string>
     <string name="address_tag">Address tag</string>
     <string name="default_address">(Default)</string>
+    <string name="update_address">Update Address</string>
 </resources>

@@ -121,7 +121,10 @@
         android:label="AddressDetailsFragment" >
         <argument
             android:name="address"
-            app:argType="com.kh.mo.shopyapp.model.entity.AddressEntity" />
+            app:argType="com.kh.mo.shopyapp.model.ui.Address" />
+        <argument
+            android:name="source"
+            app:argType="string" />
     </fragment>
     <dialog
         android:id="@+id/addressFragment"

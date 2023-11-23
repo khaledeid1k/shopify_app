@@ -8,10 +8,10 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.kh.mo.shopyapp.databinding.ItemLocationBinding
-import com.kh.mo.shopyapp.model.entity.AddressEntity
+import com.kh.mo.shopyapp.model.ui.Address
 
-class AddressAdapter(private val context: Context, private val listener: (AddressEntity) -> Unit) :
-    ListAdapter<AddressEntity, AddressAdapter.ViewHolder>(AddressDiffUtils()) {
+class AddressAdapter(private val context: Context, private val listener: (Address) -> Unit) :
+    ListAdapter<Address, AddressAdapter.ViewHolder>(AddressDiffUtils()) {
     lateinit var binding: ItemLocationBinding
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AddressAdapter.ViewHolder {
         val inflater: LayoutInflater =
@@ -24,7 +24,7 @@ class AddressAdapter(private val context: Context, private val listener: (Addres
         val item = getItem(position)
         binding.apply {
             addressNameValueTxtV.text = item.name
-            isDefaultAddressTxtV.visibility = if(item.default) View.VISIBLE else View.GONE
+            isDefaultAddressTxtV.visibility = if(item.default == true) View.VISIBLE else View.GONE
             addressValueTxtV.text =
                 "${item.city} ${item.state} ${item.country}\n${item.phone}\n${item.address}"
             addressItemCard.setOnClickListener { listener(item) }
@@ -34,15 +34,15 @@ class AddressAdapter(private val context: Context, private val listener: (Addres
     class ViewHolder(val binding: ItemLocationBinding) : RecyclerView.ViewHolder(binding.root)
 }
 
-class AddressDiffUtils : DiffUtil.ItemCallback<AddressEntity>() {
+class AddressDiffUtils : DiffUtil.ItemCallback<Address>() {
     override fun areItemsTheSame(
-        oldItem: AddressEntity, newItem: AddressEntity
+        oldItem: Address, newItem: Address
     ): Boolean {
         return oldItem === newItem
     }
 
     override fun areContentsTheSame(
-        oldItem: AddressEntity, newItem: AddressEntity
+        oldItem: Address, newItem: Address
     ): Boolean {
         return oldItem == newItem
     }

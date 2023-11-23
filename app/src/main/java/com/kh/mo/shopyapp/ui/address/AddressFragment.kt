@@ -16,7 +16,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.kh.mo.shopyapp.R
 import com.kh.mo.shopyapp.databinding.FragmentAddressBinding
 import com.kh.mo.shopyapp.local.LocalSourceImp
-import com.kh.mo.shopyapp.model.entity.AddressEntity
+import com.kh.mo.shopyapp.model.ui.Address
 import com.kh.mo.shopyapp.remote.ApiState
 import com.kh.mo.shopyapp.remote.RemoteSourceImp
 import com.kh.mo.shopyapp.repo.RepoImp
@@ -35,9 +35,9 @@ class AddressFragment : BottomSheetDialogFragment() {
     private lateinit var addressAdapter: AddressAdapter
     val userId: MutableStateFlow<Long?> = MutableStateFlow(null)
     var mView: View? = null
-    private val listener: (AddressEntity) -> Unit = {address ->
+    private val listener: (Address) -> Unit = { address ->
         mView?.let{_view ->
-            val action = SettingsFragmentDirections.actionSettingsFragmentToAddressDetailsFragment(address)
+            val action = SettingsFragmentDirections.actionSettingsFragmentToAddressDetailsFragment(address, "settings")
             Navigation.findNavController(_view).navigate(action)
             this.dismiss()
         }
@@ -129,7 +129,7 @@ class AddressFragment : BottomSheetDialogFragment() {
         }
     }
 
-    private fun showAddressList(addressList: List<AddressEntity>) {
+    private fun showAddressList(addressList: List<Address>) {
         binding.apply {
             progressBar.visibility = View.GONE
             noAddressesCard.visibility = View.GONE
