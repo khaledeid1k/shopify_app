@@ -23,23 +23,24 @@
             tools:src="@drawable/ic_launcher_background" />
 
         <TextView
-            android:id="@+id/tv_name_profile"
+            android:id="@+id/userNameTV"
             style="@style/main_title"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_20sdp"
             app:layout_constraintStart_toEndOf="@+id/image_profile"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Hanaa Hany" />
 
         <TextView
-            android:id="@+id/tv_product_size_order"
+            android:id="@+id/emailTV"
             style="@style/sub_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_5sdp"
-            app:layout_constraintStart_toStartOf="@+id/tv_name_profile"
-            app:layout_constraintTop_toBottomOf="@+id/tv_name_profile"
+            app:layout_constraintStart_toStartOf="@+id/userNameTV"
+            app:layout_constraintTop_toBottomOf="@+id/userNameTV"
             tools:text="hanaahany822@gmail.com" />
 
         <com.google.android.material.button.MaterialButton
@@ -49,12 +50,12 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/_20sdp"
             android:layout_marginTop="@dimen/_10sdp"
-            android:visibility="gone"
             android:text="@string/settings"
             android:textAllCaps="false"
+            android:visibility="gone"
             app:cornerRadius="@dimen/_10sdp"
             app:layout_constraintStart_toEndOf="@+id/image_profile"
-            app:layout_constraintTop_toBottomOf="@+id/tv_product_size_order" />
+            app:layout_constraintTop_toBottomOf="@+id/emailTV" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/notLoggedInCard"
@@ -119,7 +120,7 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/card1"
+            android:id="@+id/ordersCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:elevation="@dimen/_10sdp"
@@ -193,6 +194,7 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/wishListCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:elevation="@dimen/_10sdp"
@@ -200,7 +202,7 @@
             app:cardCornerRadius="@dimen/_10sdp"
             app:cardUseCompatPadding="true"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/card1">
+            app:layout_constraintTop_toBottomOf="@id/ordersCard">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -213,13 +215,14 @@
                     android:layout_height="wrap_content"
                     android:drawablePadding="@dimen/_10sdp"
                     android:padding="@dimen/_10sdp"
-                    android:text="@string/favourite"
+                    android:text="@string/wish_list"
                     app:drawableEndCompat="@drawable/ic_arrow"
                     app:drawableStartCompat="@drawable/ic_orders"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/wishListRV"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"

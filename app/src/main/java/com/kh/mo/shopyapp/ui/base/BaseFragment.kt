@@ -7,11 +7,17 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.kh.mo.shopyapp.local.LocalSourceImp
 import com.kh.mo.shopyapp.remote.RemoteSourceImp
 import com.kh.mo.shopyapp.repo.RepoImp
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 abstract class BaseFragment<DB : ViewDataBinding, VM : ViewModel> : Fragment() {
     lateinit var viewModel: VM
@@ -49,5 +55,16 @@ abstract class BaseFragment<DB : ViewDataBinding, VM : ViewModel> : Fragment() {
             this,
             showProductsViewModelFactory
         )[getViewModelClass()]
+    }
+
+    fun <T> collectLatestFlowOnLifecycle(
+        flow: Flow<T>,
+        collect: suspend (T) -> Unit
+    ) {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                flow.collectLatest(collect)
+            }
+        }
     }
 }
