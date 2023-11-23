@@ -17,6 +17,8 @@ interface Repo {
     suspend fun storeCustomerInFireBase(userId: Long, userData: UserData): Flow<ApiState<String>>
     suspend fun singUpWithFireBase(userData: UserData): Flow<ApiState<String>>    
     suspend fun singInWithFireBase(userData: UserData): Flow<ApiState<String>>
+    suspend fun logout()
+    fun checkIsUserLogin():Boolean
 
     suspend fun createCustomer(userData: UserData): Flow<ApiState<CustomerEntity>>
     suspend fun singInCustomer(email: String): Flow<ApiState<UserData>>

@@ -57,7 +57,9 @@ class RepoImp private constructor(
             emit(ApiState.Failure("An error occurred: ${it.message}"))
         }
 
+    override suspend fun logout() { remoteSource.logout() }
 
+    override fun checkIsUserLogin()=remoteSource.checkIsUserLogin()
 
 
     override suspend fun createCustomer(userData: UserData): Flow<ApiState<CustomerEntity>> {

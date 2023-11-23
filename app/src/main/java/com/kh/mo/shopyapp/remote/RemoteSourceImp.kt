@@ -26,10 +26,12 @@ import retrofit2.Response
 class RemoteSourceImp private constructor() : RemoteSource {
     private val TAG = "TAG RemoteSourceImp"
     private val network = Network.retrofitService
+    private val firebaseAuth = FirebaseAuth.getInstance()
+    private val firebaseFireStore=FirebaseFirestore.getInstance()
 
     override suspend fun storeCustomerInFireBase(userId: Long, userData: UserData) = flow {
         emit(ApiState.Loading)
-        val documentReference: DocumentReference = FirebaseFirestore.getInstance().collection(
+        val documentReference: DocumentReference =firebaseFireStore.collection(
             Constants.collectionPath
         ).document(userId.toString())
         val user: HashMap<String, String> = HashMap()
@@ -47,7 +49,7 @@ class RemoteSourceImp private constructor() : RemoteSource {
         var password = ""
         emit(ApiState.Loading)
         val collection =
-            FirebaseFirestore.getInstance().collection(Constants.collectionPath)
+            firebaseFireStore.collection(Constants.collectionPath)
                 .document(customerId)
         val documentSnapshot = collection.get().await()
         if (documentSnapshot.exists()) {
@@ -63,18 +65,20 @@ class RemoteSourceImp private constructor() : RemoteSource {
 
 
     override suspend fun singUpWithFireBase(userData: UserData): Task<AuthResult> {
-        val firebaseAuth = FirebaseAuth.getInstance()
         return firebaseAuth.createUserWithEmailAndPassword(
             userData.email, userData.password
         )
     }
-
     override suspend fun singInWithFireBase(userData: UserData): Task<AuthResult> {
-        val firebaseAuth = FirebaseAuth.getInstance()
         return firebaseAuth.signInWithEmailAndPassword(
             userData.email, userData.password
         )
     }
+    override suspend fun logout() {
+         firebaseAuth.signOut()
+    }
+    override fun checkIsUserLogin()=firebaseAuth.currentUser!=null
+
 
 
 

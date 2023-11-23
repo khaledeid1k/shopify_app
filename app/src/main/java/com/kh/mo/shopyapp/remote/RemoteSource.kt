@@ -18,6 +18,8 @@ interface RemoteSource {
 
     suspend fun singUpWithFireBase(userData: UserData): Task<AuthResult>
     suspend fun singInWithFireBase(userData: UserData): Task<AuthResult>
+    suspend fun logout()
+    fun checkIsUserLogin():Boolean
     suspend fun getAllBrands(): Response<BrandsResponse>
     suspend fun getMainCategories(): Response<MainCategoryResponse>
     suspend fun getDiscountCode(

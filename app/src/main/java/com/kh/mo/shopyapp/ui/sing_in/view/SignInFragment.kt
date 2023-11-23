@@ -31,7 +31,13 @@ class SignInFragment : BaseFragment<FragmentSinginBinding, SignInViewModel>() {
         checkPasswordValidation()
         singInCustomer()
         navigateToSingUp()
+        checkIsUserLogin()
     }
+
+   private fun checkIsUserLogin(){
+        if(viewModel.checkIsUserLogin()){navigateToHomeScreen()}
+    }
+
 
     private fun observeLoginWithApi() {
         lifecycleScope.launch {
@@ -61,9 +67,7 @@ class SignInFragment : BaseFragment<FragmentSinginBinding, SignInViewModel>() {
                     is ApiState.Success -> {
                         Toast.makeText(requireContext(), "Sing in Successfully", Toast.LENGTH_SHORT)
                             .show()
-                        findNavController().navigate(
-                            SignInFragmentDirections.actionSignInFragmentToHomeFragment()
-                        )
+                        navigateToHomeScreen()
                     }
                 }
             }
@@ -148,6 +152,12 @@ class SignInFragment : BaseFragment<FragmentSinginBinding, SignInViewModel>() {
                 SignInFragmentDirections.actionSignInFragmentToSignUpFragment()
             )
         }
+    }
+    private fun navigateToHomeScreen(){
+
+        findNavController().navigate(
+            SignInFragmentDirections.actionSignInFragmentToHomeFragment()
+        )
     }
 
 }

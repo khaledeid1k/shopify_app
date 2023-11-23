@@ -55,6 +55,9 @@ class SignInViewModel(private val repo: Repo) : ViewModel() {
         }
     }
 
+    fun checkIsUserLogin()=repo.checkIsUserLogin()
+
+
     fun validateEmail(email: String): Validation = repo.validateEmail(email)
 
     fun validatePassword(password: String) = repo.validatePassword(password)
