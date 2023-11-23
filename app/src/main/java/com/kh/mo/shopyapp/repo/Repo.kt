@@ -1,5 +1,7 @@
 package com.kh.mo.shopyapp.repo
 
+import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.AuthResult
 import com.kh.mo.shopyapp.model.entity.CustomerEntity
 import com.kh.mo.shopyapp.model.entity.Validation
 import com.kh.mo.shopyapp.model.request.UserData
@@ -12,7 +14,9 @@ import com.kh.mo.shopyapp.remote.ApiState
 import kotlinx.coroutines.flow.Flow
 
 interface Repo {
-    suspend fun storeData(userId: Long, userData: UserData): Flow<ApiState<String>>
+    suspend fun storeCustomerInFireBase(userId: Long, userData: UserData): Flow<ApiState<String>>
+    suspend fun singUpWithFireBase(userData: UserData): Flow<ApiState<String>>    
+    
     suspend fun createCustomer(userData: UserData): Flow<ApiState<CustomerEntity>>
     suspend fun singIn(email: String): Flow<ApiState<UserData>>
     suspend fun checkCustomerExists(customerId: String): Flow<ApiState<UserData>>

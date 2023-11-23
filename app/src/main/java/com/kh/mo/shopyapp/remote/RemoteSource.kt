@@ -1,5 +1,7 @@
 package com.kh.mo.shopyapp.remote
 
+import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.AuthResult
 import com.kh.mo.shopyapp.model.request.CustomerDataRequest
 import com.kh.mo.shopyapp.model.request.UserData
 import com.kh.mo.shopyapp.model.response.ads.DiscountCodeResponse
@@ -14,6 +16,7 @@ import retrofit2.Response
 
 interface RemoteSource {
 
+    suspend fun singUpWithFireBase(userData: UserData): Task<AuthResult>
     suspend fun getAllBrands(): Response<BrandsResponse>
     suspend fun getMainCategories(): Response<MainCategoryResponse>
     suspend fun getDiscountCode(
@@ -22,7 +25,7 @@ interface RemoteSource {
     ): Response<DiscountCodeResponse>
 
     suspend fun getProductsOfSpecificBrand(brandName: String): Response<AllProductsResponse>
-    suspend fun storeData(userId: Long, userData: UserData): Flow<ApiState<String>>
+    suspend fun storeCustomerInFireBase(userId: Long, userData: UserData): Flow<ApiState<String>>
     suspend fun checkCustomerExists(customerId: String): Flow<ApiState<UserData>>
     suspend fun createCustomer(customerDataRequest: CustomerDataRequest): Response<CustomerResponse>
     suspend fun singIn(email: String): Response<Login>

@@ -1,12 +1,15 @@
 package com.kh.mo.shopyapp.remote
 
-import com.kh.mo.shopyapp.model.response.allproducts.AllProductsResponse
 import android.util.Log
+import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.AuthResult
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.kh.mo.shopyapp.model.request.CustomerDataRequest
 import com.kh.mo.shopyapp.model.request.CustomerRequest
 import com.kh.mo.shopyapp.model.request.UserData
+import com.kh.mo.shopyapp.model.response.allproducts.AllProductsResponse
 import com.kh.mo.shopyapp.model.response.barnds.BrandsResponse
 import com.kh.mo.shopyapp.model.response.create_customer.CustomerResponse
 import com.kh.mo.shopyapp.model.response.currency.Rates
@@ -23,7 +26,7 @@ import retrofit2.Response
 class RemoteSourceImp private constructor() : RemoteSource {
     private val TAG = "TAG RemoteSourceImp"
     private val network = Network.retrofitService
-    override suspend fun storeData(userId: Long, userData: UserData) = flow {
+    override suspend fun storeCustomerInFireBase(userId: Long, userData: UserData) = flow {
         emit(ApiState.Loading)
         val documentReference: DocumentReference = FirebaseFirestore.getInstance().collection(
             Constants.collectionPath
@@ -38,6 +41,16 @@ class RemoteSourceImp private constructor() : RemoteSource {
             emit(ApiState.Failure("An error occurred: ${exception.message}"))
         }
     }
+
+
+    override suspend fun singUpWithFireBase(userData: UserData): Task<AuthResult> {
+        val firebaseAuth = FirebaseAuth.getInstance()
+        return firebaseAuth.createUserWithEmailAndPassword(
+            userData.email, userData.password
+        )
+    }
+
+
 
     override suspend fun createCustomer(customerDataRequest: CustomerDataRequest): Response<CustomerResponse> {
         return network.createCustomer(CustomerRequest(customerDataRequest))

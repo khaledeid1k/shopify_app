@@ -1,6 +1,8 @@
 package com.kh.mo.shopyapp.repo
 
 import android.util.Log
+import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.AuthResult
 import com.kh.mo.shopyapp.local.LocalSource
 import com.kh.mo.shopyapp.model.entity.CustomerEntity
 import com.kh.mo.shopyapp.model.request.UserData
@@ -20,6 +22,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
 class RepoImp private constructor(
     private val remoteSource: RemoteSource,
@@ -33,8 +36,17 @@ class RepoImp private constructor(
         }
     }
 
-    override suspend fun storeData(userId: Long, userData: UserData) =
-        remoteSource.storeData(userId, userData)
+    override suspend fun storeCustomerInFireBase(userId: Long, userData: UserData) =
+        remoteSource.storeCustomerInFireBase(userId, userData)
+
+    override suspend fun singUpWithFireBase(userData: UserData) =
+        flow {
+            emit(ApiState.Loading)
+            remoteSource.singUpWithFireBase(userData).await()
+            emit(ApiState.Success("Sign up Successfully "))
+        }.catch {
+            emit(ApiState.Failure("An error occurred: ${it.message}"))
+        }
 
 
     override suspend fun createCustomer(userData: UserData): Flow<ApiState<CustomerEntity>> {
@@ -78,24 +90,99 @@ class RepoImp private constructor(
 
     override fun validateUserName(userName: String) = localSource.validateUserName(userName)
     override fun reviews(): List<Review> {
-        val reviewsList =  listOf(
-            Review(name="khaled eid", time="2023-11-22 15:22", rating=4, reviewText="This product is amazing! I love how easy it is to use and how well it works."),
-            Review(name="Omar ali", time="2023-11-22 15:30 ", rating=5, reviewText="I am so happy with this purchase. It has exceeded all of my expectations."),
-            Review(name="Mohand tarek", time="2023-11-22 15:45 ", rating=3, reviewText="This product is okay. It does what it is supposed to do, but I am not blown away by it."),
-            Review(name="Ehab ali", time="2023-11-22 16:00 ", rating=2, reviewText="I am not impressed with this product. It is not worth the money."),
-            Review(name="Moazz omar", time="2023-11-22 16:15 ", rating=1, reviewText="This product is terrible. I would not recommend it to anyone."),
-            Review(name="Hanna mohammed", time="2023-11-22 16:30 ", rating=4, reviewText="Overall, I'm pretty satisfied with this product. It's not perfect, but it does the job well enough."),
-            Review(name="Mahmoud tarek", time="2023-11-22 16:45 ", rating=5, reviewText="I absolutely love this product! It's changed the way I do things for the better."),
-            Review(name="Walla ramy", time="2023-11-22 17:00 ", rating=3, reviewText="This product is just okay. It's not great, but it's not bad either."),
-            Review(name="Hany rezk", time="2023-11-22 17:15 ", rating=2, reviewText="I'm disappointed with this product. It didn't meet my expectations."),
-            Review(name="Amar ali", time="2023-11-22 17:30 ", rating=1, reviewText="This product is a waste of money. I would never buy it again."),
-            Review(name="Tamer maher", time="2023-11-22 17:45 ", rating=4, reviewText="I'm happy with this product. It's a good value for the price."),
-            Review(name="abdall mohammed", time="2023-11-22 18:00 ", rating=5, reviewText="I highly recommend this product to anyone looking for a high-quality solution."),
-            Review(name="Hessen farok", time="2023-11-22 18:15 ", rating=3, reviewText="This product is okay for basic needs, but it's not the best on the market."),
-            Review(name="Ahmed kamel", time="2023-11-22 18:30 ", rating=2, reviewText="I was hoping for more from this product. It didn't live up to my expectations."),
-            Review(name="Mustafa ahmed", time="2023-11-22 18:45 ", rating=1, reviewText="This product is a complete disaster. I would never buy it again.")
-      )
-      return  reviewsList.shuffled().subList(1, 15)
+        val reviewsList = listOf(
+            Review(
+                name = "khaled eid",
+                time = "2023-11-22 15:22",
+                rating = 4,
+                reviewText = "This product is amazing! I love how easy it is to use and how well it works."
+            ),
+            Review(
+                name = "Omar ali",
+                time = "2023-11-22 15:30 ",
+                rating = 5,
+                reviewText = "I am so happy with this purchase. It has exceeded all of my expectations."
+            ),
+            Review(
+                name = "Mohand tarek",
+                time = "2023-11-22 15:45 ",
+                rating = 3,
+                reviewText = "This product is okay. It does what it is supposed to do, but I am not blown away by it."
+            ),
+            Review(
+                name = "Ehab ali",
+                time = "2023-11-22 16:00 ",
+                rating = 2,
+                reviewText = "I am not impressed with this product. It is not worth the money."
+            ),
+            Review(
+                name = "Moazz omar",
+                time = "2023-11-22 16:15 ",
+                rating = 1,
+                reviewText = "This product is terrible. I would not recommend it to anyone."
+            ),
+            Review(
+                name = "Hanna mohammed",
+                time = "2023-11-22 16:30 ",
+                rating = 4,
+                reviewText = "Overall, I'm pretty satisfied with this product. It's not perfect, but it does the job well enough."
+            ),
+            Review(
+                name = "Mahmoud tarek",
+                time = "2023-11-22 16:45 ",
+                rating = 5,
+                reviewText = "I absolutely love this product! It's changed the way I do things for the better."
+            ),
+            Review(
+                name = "Walla ramy",
+                time = "2023-11-22 17:00 ",
+                rating = 3,
+                reviewText = "This product is just okay. It's not great, but it's not bad either."
+            ),
+            Review(
+                name = "Hany rezk",
+                time = "2023-11-22 17:15 ",
+                rating = 2,
+                reviewText = "I'm disappointed with this product. It didn't meet my expectations."
+            ),
+            Review(
+                name = "Amar ali",
+                time = "2023-11-22 17:30 ",
+                rating = 1,
+                reviewText = "This product is a waste of money. I would never buy it again."
+            ),
+            Review(
+                name = "Tamer maher",
+                time = "2023-11-22 17:45 ",
+                rating = 4,
+                reviewText = "I'm happy with this product. It's a good value for the price."
+            ),
+            Review(
+                name = "abdall mohammed",
+                time = "2023-11-22 18:00 ",
+                rating = 5,
+                reviewText = "I highly recommend this product to anyone looking for a high-quality solution."
+            ),
+            Review(
+                name = "Hessen farok",
+                time = "2023-11-22 18:15 ",
+                rating = 3,
+                reviewText = "This product is okay for basic needs, but it's not the best on the market."
+            ),
+            Review(
+                name = "Ahmed kamel",
+                time = "2023-11-22 18:30 ",
+                rating = 2,
+                reviewText = "I was hoping for more from this product. It didn't live up to my expectations."
+            ),
+            Review(
+                name = "Mustafa ahmed",
+                time = "2023-11-22 18:45 ",
+                rating = 1,
+                reviewText = "This product is a complete disaster. I would never buy it again."
+            )
+        )
+        return reviewsList.shuffled().subList(1, 15)
 
     }
 

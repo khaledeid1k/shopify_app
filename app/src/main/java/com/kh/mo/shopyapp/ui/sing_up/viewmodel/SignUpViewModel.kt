@@ -19,9 +19,9 @@ class SignUpViewModel(private val repo: Repo) : ViewModel() {
     private val _createCustomer = MutableStateFlow<ApiState<CustomerEntity>>(ApiState.Loading)
     val createCustomer: StateFlow<ApiState<CustomerEntity>> = _createCustomer
 
-    fun storeCustomerFireBase(userId: Long, userData: UserData) {
+    fun singUpWithFireBase(userData: UserData) {
         viewModelScope.launch {
-            repo.storeData(userId, userData).collect {
+            repo.singUpWithFireBase(userData).collect {
                 when (it) {
                     is ApiState.Failure -> {
                         _saveCustomerFireBase.value = ApiState.Failure(it.msg)
