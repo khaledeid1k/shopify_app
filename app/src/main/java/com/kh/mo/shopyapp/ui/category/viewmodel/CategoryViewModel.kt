@@ -89,6 +89,7 @@ class CategoryViewModel(private var _irepo: Repo) : ViewModel() {
                     is ApiState.Success -> {
                         Result.success(it.data)
                         _filterProductsCollection.value = ApiState.Success(it.data.convertToAllProducts())
+
                     }
                 }
             }

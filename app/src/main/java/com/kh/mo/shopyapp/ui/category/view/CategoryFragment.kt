@@ -1,11 +1,14 @@
 package com.kh.mo.shopyapp.ui.category.view
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import androidx.lifecycle.lifecycleScope
 import com.kh.mo.shopyapp.R
 import com.kh.mo.shopyapp.databinding.FragmentCategoryBinding
+import com.kh.mo.shopyapp.model.ui.allproducts.Products
 import com.kh.mo.shopyapp.remote.ApiState
 import com.kh.mo.shopyapp.ui.base.BaseFragment
 import com.kh.mo.shopyapp.ui.category.viewmodel.CategoryViewModel
@@ -20,6 +23,8 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding, CategoryViewModel
     private var categoryName = ""
     private var productType = ""
     private var collectionId: Long = 0L
+    private var flag=true
+    private lateinit var productsList:List<Products>
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -41,19 +46,60 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding, CategoryViewModel
     }
 
     private fun onClick() {
-        binding.firstSubcategory.setOnClickListener {
-            productType = binding.firstSubcategory.text.toString()
-            viewModel.filterProductsBySubCollection(collectionId, productType)
+        binding.chipGroup.setOnCheckedChangeListener { _, checkedId ->
+
+            if(checkedId==R.id.first_subcategory&&flag){
+                flag=false
+                productType = binding.firstSubcategory.text.toString()
+                viewModel.filterProductsBySubCollection(collectionId, productType)
+            }else{
+                flag=true
+                getAllProducts(productsList)
+
+            }
+
+            if(checkedId==R.id.second_subcategory&&flag){
+                flag=false
+                productType = binding.secondSubcategory.text.toString()
+                viewModel.filterProductsBySubCollection(collectionId, productType)
+            }else{
+                flag=true
+                getAllProducts(productsList)
+
+            }
+            if(checkedId==R.id.third_subcategory&&flag){
+                flag=false
+                productType = binding.thirdSubcategory.text.toString()
+                viewModel.filterProductsBySubCollection(collectionId, productType)
+            }else{
+                flag=true
+                getAllProducts(productsList)
+
+            }
+
+
         }
-        binding.secondSubcategory.setOnClickListener {
-            productType = binding.secondSubcategory.text.toString()
-            viewModel.filterProductsBySubCollection(collectionId, productType)
+        binding.etSearch.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                val searchText = p0.toString().trim()
+                val filteredList = productsList.filter { brand ->
+                    brand.title.contains(searchText, ignoreCase = true)
+                }
+                    subCategoriesAdapter = SubCategoriesAdapter(requireContext())
+                    subCategoriesAdapter.submitList(filteredList)
+                    binding.recyclerProductsCategory.adapter = subCategoriesAdapter
+            }
+            override fun afterTextChanged(p0: Editable?) {
+
+            }
+            }
+        )
+
         }
-        binding.thirdSubcategory.setOnClickListener {
-            productType = binding.thirdSubcategory.text.toString()
-            viewModel.filterProductsBySubCollection(collectionId, productType)
-        }
-    }
+
 
     private fun getSubCategories() {
         lifecycleScope.launch {
@@ -67,12 +113,8 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding, CategoryViewModel
                         binding.secondSubcategory.setText(data.get(1).productType)
                         binding.thirdSubcategory.setText(data.get(2).productType)
                     }
-
                 }
-
-
             }
-
         }
     }
 
@@ -83,13 +125,10 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding, CategoryViewModel
                     is ApiState.Failure -> {}
                     is ApiState.Loading -> {}
                     is ApiState.Success -> {
-                        subCategoriesAdapter = SubCategoriesAdapter(requireContext())
+                        getAllProducts(it.data)
+                        productsList=it.data
 
-                        subCategoriesAdapter.submitList(it.data)
-                        binding.recyclerProductsCategory.adapter = subCategoriesAdapter
                     }
-
-
                 }
 
             }
@@ -104,15 +143,20 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding, CategoryViewModel
                     is ApiState.Failure -> {}
                     is ApiState.Loading -> {}
                     is ApiState.Success -> {
-                        subCategoriesAdapter = SubCategoriesAdapter(requireContext())
-                        subCategoriesAdapter.submitList(it.data)
-                        binding.recyclerProductsCategory.adapter = subCategoriesAdapter
+                        getAllProducts(it.data)
+
+
                     }
                 }
 
             }
 
         }
+    }
+    private fun getAllProducts(list: List<Products>){
+        subCategoriesAdapter = SubCategoriesAdapter(requireContext())
+        subCategoriesAdapter.submitList(list)
+        binding.recyclerProductsCategory.adapter = subCategoriesAdapter
     }
 
 }

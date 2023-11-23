@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import androidx.room.util.convertUUIDToByte
 import com.bumptech.glide.Glide
 import com.kh.mo.shopyapp.R
 import com.kh.mo.shopyapp.databinding.ItemProductBinding
@@ -40,6 +41,7 @@ class SubCategoriesAdapter(private var context: Context):
                     .into(imageProductItem)
                 tvPriceProductItem.text=currentItem.variants?.get(0)?.price.toString()
                 Log.i("HomeFragment", currentItem.image?.src.toString())
+
             }
 
         }
