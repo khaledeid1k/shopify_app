@@ -41,5 +41,6 @@ interface Repo {
     suspend fun getProductsOfSpecificBrand(brandName:String): Flow<ApiState<AllProductsResponse>>
     suspend fun getAllProducts(): Flow<ApiState<AllProductsResponse>>
     suspend fun getProductsByCollection(collectionId:Long): Flow<ApiState<AllProductsResponse>>
+    suspend fun filterProductsBySubCollection(collectionId:Long,productType:String): Flow<ApiState<AllProductsResponse>>
 
 }

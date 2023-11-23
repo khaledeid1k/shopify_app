@@ -69,4 +69,9 @@
     <string name="x">x</string>
     <string name="add_address">Add Address</string>
     <string name="username">UserName</string>
+    <string name="price">Price</string>
+    <string name="from">From</string>
+    <string name="to">To</string>
+    <string name="save">save</string>
+    <string name="filter">Filter</string>
 </resources>

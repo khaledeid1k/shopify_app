@@ -50,4 +50,7 @@ interface Services {
     suspend fun createFavoriteDraft(@Body draftOrderRequest: DraftOrderRequest): Response<DraftOrderResponse>
 
 
+    @GET("products.json")
+    suspend fun filterProductsBySubCollection(@Query("collection_id") collectionId: Long,@Query("product_type") productType: String): Response<AllProductsResponse>
+
 }

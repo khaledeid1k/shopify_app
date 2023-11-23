@@ -12,43 +12,60 @@
         android:layout_height="match_parent"
         tools:context=".ui.category.view.CategoryFragment"
         android:orientation="vertical">
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/search_text_input_layout"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_35sdp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:hintEnabled="false"
-            android:layout_margin="@dimen/_10sdp"
+            android:layout_margin="@dimen/_20sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/search_text"
+
             >
-            <com.google.android.material.textfield.MaterialAutoCompleteTextView
-                android:id="@+id/search_auto_complete_text_view"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_search"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:hint="@string/search"
                 android:imeOptions="actionGo"
                 android:inputType="text"
-                style="@style/SearchBarStyle"
-                android:elevation="0dp"
                 android:textSize="@dimen/_12ssp"
                 android:drawablePadding="@dimen/_10sdp"
                 android:drawableStart="@drawable/search"
                 android:maxLines="1"
-                android:paddingStart="@dimen/_10sdp" />
+                android:padding="@dimen/_10sdp"/>
         </com.google.android.material.textfield.TextInputLayout>
 
-
-        <TextView
-            android:id="@+id/tv_category_name"
-            style="@style/main_title"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:layout_marginEnd="@dimen/_20sdp"
-            android:fontFamily="@font/inter_extrabold"
-            tools:text="Men"
-           />
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/tv_category_name"
+                style="@style/main_title"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_20sdp"
+                android:fontFamily="@font/inter_extrabold"
+                tools:text="Men"
+                />
+
+            <ImageView
+                android:id="@+id/filter_by_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/filter_category"
+                android:layout_marginEnd="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_6sdp"/>
+
+        </LinearLayout>
+
 
         <com.google.android.material.chip.ChipGroup
             style="@style/Widget.MaterialComponents.ChipGroup"
@@ -58,6 +75,8 @@
             app:singleLine="true"
             android:layout_marginTop="@dimen/_20sdp"
             android:layout_gravity="center"
+            app:singleSelection="true"
+            android:id="@+id/chip_group"
             >
 
 
@@ -69,7 +88,8 @@
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 tools:text="Shirts"
                 app:chipIcon="@drawable/accessory"
-                app:chipIconEnabled="true"/>
+                app:chipIconEnabled="true"
+                />
             <com.google.android.material.chip.Chip
                 android:id="@+id/second_subcategory"
                 tools:text="Shirts"
@@ -85,7 +105,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:chipIcon="@drawable/shirt"
-
                 app:chipIconEnabled="true"
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 />
@@ -109,6 +128,16 @@
             android:id="@+id/recycler_products_category"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:spanCount="2" />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            app:lottie_rawRes="@raw/no_product"
+            android:id="@+id/lotti_no_product"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"/>
+
 
 
     </LinearLayout>

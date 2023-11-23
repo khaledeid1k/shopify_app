@@ -322,6 +322,26 @@ class RepoImp private constructor(
         }
     }
 
+    override suspend fun filterProductsBySubCollection(
+        collectionId: Long,
+        productType: String
+    ): Flow<ApiState<AllProductsResponse>> {
+        return flow {
+            emit(ApiState.Loading)
+            val productsSubCategory =
+                remoteSource.filterProductsBySubCollection(collectionId,productType)
+            if (productsSubCategory.isSuccessful) {
+                remoteSource.filterProductsBySubCollection(collectionId,productType).body()
+                    ?.let { emit(ApiState.Success(it)) }
+            } else {
+                emit(ApiState.Failure(productsSubCategory.message()))
+            }
+
+        }.catch {
+            emit(ApiState.Failure(it.message!!))
+        }
+    }
+
     override suspend fun getDiscountCode(
         priceRuleId: String,
         discountCodeId: String

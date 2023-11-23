@@ -20,6 +20,9 @@ class CategoryViewModel(private var _irepo: Repo) : ViewModel() {
     private val _productsCollection = MutableStateFlow<ApiState<List<Products>>>(ApiState.Loading)
     val productsCollection: StateFlow<ApiState<List<Products>>> = _productsCollection
 
+    private val _filterProductsCollection = MutableStateFlow<ApiState<List<Products>>>(ApiState.Loading)
+    val filterProductsCollection: StateFlow<ApiState<List<Products>>> = _filterProductsCollection
+
     init {
         getSubCategories()
 
@@ -63,6 +66,30 @@ class CategoryViewModel(private var _irepo: Repo) : ViewModel() {
                     is ApiState.Success -> {
                         Result.success(it.data)
                         _productsCollection.value = ApiState.Success(it.data.convertToAllProducts())
+                    }
+                }
+            }
+        }
+    }
+
+
+    fun filterProductsBySubCollection(collectionId: Long,productType:String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            _irepo.filterProductsBySubCollection(collectionId,productType).collect {
+                when (it) {
+                    is ApiState.Failure -> {
+                        Log.i(TAG, "products:Fail")
+                    }
+
+                    is ApiState.Loading -> {
+                        _filterProductsCollection.value = ApiState.Loading
+                        Log.i(TAG, "products:Loading")
+                    }
+
+                    is ApiState.Success -> {
+                        Result.success(it.data)
+                        _filterProductsCollection.value = ApiState.Success(it.data.convertToAllProducts())
+
                     }
                 }
             }
