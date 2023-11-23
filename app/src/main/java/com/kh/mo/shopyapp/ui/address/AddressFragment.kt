@@ -4,10 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import android.widget.Toast
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.kh.mo.shopyapp.R
 
-class AddressFragment : Fragment() {
+class AddressFragment : BottomSheetDialogFragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -19,5 +21,9 @@ class AddressFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val btn = view.findViewById<FloatingActionButton>(R.id.openMapBtn)
+        btn.setOnClickListener {
+            Toast.makeText(requireContext(), "openmap", Toast.LENGTH_SHORT).show()
+        }
     }
 }

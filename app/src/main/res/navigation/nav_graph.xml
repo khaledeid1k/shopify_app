@@ -75,6 +75,9 @@
         <action
             android:id="@+id/action_profileFragment_to_signInFragment"
             app:destination="@id/signInFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
     </fragment>
     <fragment
         android:id="@+id/brandProductsFragment"
@@ -103,4 +106,9 @@
             android:name="collectionId"
             app:argType="long" />
     </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.kh.mo.shopyapp.ui.settings.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" />
 </navigation>
