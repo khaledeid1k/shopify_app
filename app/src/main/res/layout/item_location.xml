@@ -19,23 +19,12 @@
             android:layout_height="wrap_content"
             android:padding="8dp">
 
-            <!--<de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/mapAddressImgV"
-                android:layout_width="@dimen/_50sdp"
-                android:layout_height="@dimen/_50sdp"
-                android:layout_margin="@dimen/_8sdp"
-                android:elevation="8dp"
-                android:src="@drawable/map_location"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />-->
-
             <TextView
                 android:id="@+id/addressNameValueTxtV"
                 style="@style/main_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/_16ssp"
+                android:textSize="@dimen/_14ssp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="House" />
@@ -54,7 +43,7 @@
 
             <TextView
                 android:id="@+id/addressValueTxtV"
-                style="@style/sub_title"
+                style="@style/small_title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="parent"
