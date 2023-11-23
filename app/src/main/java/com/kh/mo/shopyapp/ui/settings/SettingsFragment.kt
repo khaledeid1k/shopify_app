@@ -11,6 +11,7 @@ import com.kh.mo.shopyapp.ui.profile.viewmodel.ProfileViewModel
 
 class SettingsFragment : BaseFragment<FragmentSettingsBinding, ProfileViewModel>() {
     private val TAG = "TAG SettingsFragment"
+    private lateinit var _view: View
     override val layoutIdFragment = R.layout.fragment_settings
 
     override fun getViewModelClass() = ProfileViewModel::class.java
@@ -24,6 +25,7 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, ProfileViewModel>
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        _view = view
         setSettingsList()
     }
 
@@ -39,6 +41,7 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, ProfileViewModel>
         val dialog = AddressFragment()
         dialog.show(requireActivity().supportFragmentManager, dialog.tag)
         dialog.userId.value = viewModel.userData.value?.id
+        dialog.mView = _view
     }
 
 }

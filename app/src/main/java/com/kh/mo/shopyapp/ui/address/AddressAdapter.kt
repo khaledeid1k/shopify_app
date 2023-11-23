@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kh.mo.shopyapp.databinding.ItemLocationBinding
 import com.kh.mo.shopyapp.model.entity.AddressEntity
 
-class AddressAdapter(private val context: Context) :
+class AddressAdapter(private val context: Context, private val listener: (AddressEntity) -> Unit) :
     ListAdapter<AddressEntity, AddressAdapter.ViewHolder>(AddressDiffUtils()) {
     lateinit var binding: ItemLocationBinding
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AddressAdapter.ViewHolder {
@@ -27,6 +27,7 @@ class AddressAdapter(private val context: Context) :
             isDefaultAddressTxtV.visibility = if(item.default) View.VISIBLE else View.GONE
             addressValueTxtV.text =
                 "${item.city} ${item.state} ${item.country}\n${item.phone}\n${item.address}"
+            addressItemCard.setOnClickListener { listener(item) }
         }
     }
 

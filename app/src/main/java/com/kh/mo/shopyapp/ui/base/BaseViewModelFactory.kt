@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.kh.mo.shopyapp.repo.Repo
 import com.kh.mo.shopyapp.ui.address.AddressViewModel
+import com.kh.mo.shopyapp.ui.address.details.AddressDetailsViewModel
 import com.kh.mo.shopyapp.ui.category.viewmodel.CategoryViewModel
 import com.kh.mo.shopyapp.ui.home.viewmodel.HomeViewModel
 import com.kh.mo.shopyapp.ui.product.product_Info.viewmodel.ProductInfoViewModel
@@ -25,6 +26,7 @@ class BaseViewModelFactory(private val repo: Repo) : ViewModelProvider.Factory {
             CategoryViewModel::class.java -> CategoryViewModel(repo) as T
             ProfileViewModel::class.java -> ProfileViewModel(repo) as T
             AddressViewModel::class.java -> AddressViewModel(repo) as T
+            AddressDetailsViewModel::class.java -> AddressDetailsViewModel(repo) as T
             else -> throw Throwable("Unsupported view model")
         }
     }

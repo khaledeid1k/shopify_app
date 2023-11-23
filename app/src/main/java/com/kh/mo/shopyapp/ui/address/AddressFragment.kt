@@ -11,6 +11,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.Navigation
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.kh.mo.shopyapp.R
 import com.kh.mo.shopyapp.databinding.FragmentAddressBinding
@@ -20,6 +21,7 @@ import com.kh.mo.shopyapp.remote.ApiState
 import com.kh.mo.shopyapp.remote.RemoteSourceImp
 import com.kh.mo.shopyapp.repo.RepoImp
 import com.kh.mo.shopyapp.ui.base.BaseViewModelFactory
+import com.kh.mo.shopyapp.ui.settings.SettingsFragmentDirections
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -32,6 +34,14 @@ class AddressFragment : BottomSheetDialogFragment() {
     private lateinit var binding: FragmentAddressBinding
     private lateinit var addressAdapter: AddressAdapter
     val userId: MutableStateFlow<Long?> = MutableStateFlow(null)
+    var mView: View? = null
+    private val listener: (AddressEntity) -> Unit = {address ->
+        mView?.let{_view ->
+            val action = SettingsFragmentDirections.actionSettingsFragmentToAddressDetailsFragment(address)
+            Navigation.findNavController(_view).navigate(action)
+            this.dismiss()
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -71,7 +81,7 @@ class AddressFragment : BottomSheetDialogFragment() {
             this,
             viewModelFactory
         )[AddressViewModel::class.java]
-        addressAdapter = AddressAdapter(requireContext())
+        addressAdapter = AddressAdapter(requireContext(), listener)
     }
 
     private fun observerUserId() {
