@@ -24,8 +24,8 @@
     <string name="select_size">اختار حجم(US)</string>
     <string name="brand">العلامة التجارية</string>
     <string name="sku">رمز التخزين التعريفي</string>
-    <string name="condition">الحالة</string>
-    <string name="material">الخامة</string>
+    <string name="weight">الوزن</string>
+    <string name="state">الدولة</string>
     <string name="category">الفئة</string>
     <string name="fitting">مناسب ل</string>
     <string name="brands">العلامات التجارية</string>
@@ -70,4 +70,13 @@
     <string name="x">x</string>
     <string name="add_address">اضف عنوان</string>
     <string name="username">اسم المستخدم</string>
+    <string name="login_first">سجل الدخول اولا</string>
+    <string name="not_logged_in_message">انت بحاجه لتسجيل الدخول لكي ترى طلبات والعديدات من المميزات الاخرى</string>
+    <string name="settings">الاعدادات</string>
+    <string name="wish_list">قائمة الرغبات</string>
+    <string name="no_saved_addresses">لا يوجد عنواين محفوظة</string>
+    <string name="not_saved_addresses_message">لنبدأ باضافة عنوان توصيل طلباتك اليه</string>
+    <string name="country">الدولة</string>
+    <string name="address_tag">تمميز العنوان</string>
+    <string name="default_address">(الرئيسي)</string>
 </resources>

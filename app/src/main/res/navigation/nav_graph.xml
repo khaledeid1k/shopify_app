@@ -27,6 +27,10 @@
         <action
             android:id="@+id/action_signInFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
+        <argument
+            android:name="source"
+            app:argType="string"
+            android:defaultValue="NAN" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
@@ -65,9 +69,16 @@
         tools:layout="@layout/fragment_cart" />
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.kh.mo.shopyapp.ui.profile.ProfileFragment"
+        android:name="com.kh.mo.shopyapp.ui.profile.view.ProfileFragment"
         android:label="fragment_profile"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_profileFragment_to_signInFragment"
+            app:destination="@id/signInFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/brandProductsFragment"
         android:name="com.kh.mo.shopyapp.ui.home.view.brand.BrandProductsFragment"
@@ -95,4 +106,25 @@
             android:name="collectionId"
             app:argType="long" />
     </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.kh.mo.shopyapp.ui.settings.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" >
+        <action
+            android:id="@+id/action_settingsFragment_to_addressDetailsFragment"
+            app:destination="@id/addressDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addressDetailsFragment"
+        android:name="com.kh.mo.shopyapp.ui.address.details.AddressDetailsFragment"
+        android:label="AddressDetailsFragment" >
+        <argument
+            android:name="address"
+            app:argType="com.kh.mo.shopyapp.model.entity.AddressEntity" />
+    </fragment>
+    <dialog
+        android:id="@+id/addressFragment"
+        android:name="com.kh.mo.shopyapp.ui.address.AddressFragment"
+        android:label="AddressFragment" />
 </navigation>

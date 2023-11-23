@@ -4,6 +4,7 @@ import android.util.Log
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.kh.mo.shopyapp.local.LocalSource
+import com.kh.mo.shopyapp.model.entity.AddressEntity
 import com.kh.mo.shopyapp.model.entity.CustomerEntity
 import com.kh.mo.shopyapp.model.request.DraftOrderRequest
 import com.kh.mo.shopyapp.model.request.UserData
@@ -18,6 +19,7 @@ import com.kh.mo.shopyapp.remote.RemoteSource
 import com.kh.mo.shopyapp.repo.maper.convertDraftOrderResponseToDraftOrder
 import com.kh.mo.shopyapp.repo.mapper.convertCustomerResponseToCustomerEntity
 import com.kh.mo.shopyapp.repo.mapper.convertLoginToUserData
+import com.kh.mo.shopyapp.repo.mapper.convertToAddressEntity
 import com.kh.mo.shopyapp.repo.mapper.convertUserDataToCustomerData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -352,6 +354,26 @@ class RepoImp private constructor(
             if (response.isSuccessful) {
                 response.body()?.let {
                     emit(ApiState.Success(it))
+                } ?: emit(ApiState.Failure("Null Response"))
+            } else {
+                emit(ApiState.Failure(response.message()))
+            }
+        }.catch {
+            emit(ApiState.Failure(it.message.toString()))
+        }
+    }
+
+    override suspend fun getAddressesOfCustomer(customerId: Long): Flow<ApiState<List<AddressEntity>>> {
+        return flow {
+            emit(ApiState.Loading)
+            val response = remoteSource.getAddressesOfCustomer(customerId)
+            if (response.isSuccessful) {
+                response.body()?.let { addressRespone ->
+                    emit(ApiState.Success(
+                        addressRespone.addresses.map {
+                            it.convertToAddressEntity()
+                        }
+                    ))
                 } ?: emit(ApiState.Failure("Null Response"))
             } else {
                 emit(ApiState.Failure(response.message()))

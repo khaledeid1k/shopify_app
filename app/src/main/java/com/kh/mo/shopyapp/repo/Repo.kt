@@ -1,11 +1,13 @@
 package com.kh.mo.shopyapp.repo
 
+import com.kh.mo.shopyapp.model.entity.AddressEntity
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.kh.mo.shopyapp.model.entity.CustomerEntity
 import com.kh.mo.shopyapp.model.entity.Validation
 import com.kh.mo.shopyapp.model.request.DraftOrderRequest
 import com.kh.mo.shopyapp.model.request.UserData
+import com.kh.mo.shopyapp.model.response.address.AddressResponse
 import com.kh.mo.shopyapp.model.response.ads.DiscountCodeResponse
 import com.kh.mo.shopyapp.model.response.allproducts.AllProductsResponse
 import com.kh.mo.shopyapp.model.response.barnds.BrandsResponse
@@ -43,4 +45,5 @@ interface Repo {
     suspend fun getProductsByCollection(collectionId:Long): Flow<ApiState<AllProductsResponse>>
     suspend fun filterProductsBySubCollection(collectionId:Long,productType:String): Flow<ApiState<AllProductsResponse>>
 
+    suspend fun getAddressesOfCustomer(customerId: Long): Flow<ApiState<List<AddressEntity>>>
 }
