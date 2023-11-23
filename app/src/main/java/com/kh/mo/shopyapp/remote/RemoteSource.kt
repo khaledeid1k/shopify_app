@@ -17,6 +17,7 @@ import retrofit2.Response
 interface RemoteSource {
 
     suspend fun singUpWithFireBase(userData: UserData): Task<AuthResult>
+    suspend fun singInWithFireBase(userData: UserData): Task<AuthResult>
     suspend fun getAllBrands(): Response<BrandsResponse>
     suspend fun getMainCategories(): Response<MainCategoryResponse>
     suspend fun getDiscountCode(
@@ -28,7 +29,7 @@ interface RemoteSource {
     suspend fun storeCustomerInFireBase(userId: Long, userData: UserData): Flow<ApiState<String>>
     suspend fun checkCustomerExists(customerId: String): Flow<ApiState<UserData>>
     suspend fun createCustomer(customerDataRequest: CustomerDataRequest): Response<CustomerResponse>
-    suspend fun singIn(email: String): Response<Login>
+    suspend fun singInCustomer(email: String): Response<Login>
     suspend fun getCurrencyRate(): Rates
     suspend fun isCurrencyDbUpdated(): Boolean
     suspend fun getAllProducts(): Response<AllProductsResponse>

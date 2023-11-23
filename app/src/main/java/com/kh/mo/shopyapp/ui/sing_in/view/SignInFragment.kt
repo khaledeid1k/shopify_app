@@ -1,7 +1,6 @@
 package com.kh.mo.shopyapp.ui.sing_in.view
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
@@ -9,57 +8,62 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.kh.mo.shopyapp.R
-import com.kh.mo.shopyapp.databinding.FragmentSignUpBinding
 import com.kh.mo.shopyapp.databinding.FragmentSinginBinding
 import com.kh.mo.shopyapp.model.entity.Validation
 import com.kh.mo.shopyapp.model.request.UserData
 import com.kh.mo.shopyapp.remote.ApiState
 import com.kh.mo.shopyapp.ui.base.BaseFragment
 import com.kh.mo.shopyapp.ui.sing_in.viewmodel.SignInViewModel
-import com.kh.mo.shopyapp.ui.sing_up.view.SignUpFragmentDirections
 import com.kh.mo.shopyapp.utils.getText
 import kotlinx.coroutines.launch
 
 
 class SignInFragment : BaseFragment<FragmentSinginBinding, SignInViewModel>() {
-    override val layoutIdFragment=R.layout.fragment_singin
+    override val layoutIdFragment = R.layout.fragment_singin
 
-    override fun getViewModelClass()=SignInViewModel::class.java
+    override fun getViewModelClass() = SignInViewModel::class.java
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        observeLoginResult()
-        observeLoginInFireBase()
+        observeLoginWithApi()
+        observeLoginWithFireBase()
         checkEmailValueValidation()
         checkPasswordValidation()
-        singIn()
+        singInCustomer()
         navigateToSingUp()
     }
 
-   private fun observeLoginResult(){
+    private fun observeLoginWithApi() {
         lifecycleScope.launch {
-            viewModel.singIn.collect{
-                when(it){
+            viewModel.singIn.collect {
+                when (it) {
                     is ApiState.Failure -> {}
                     ApiState.Loading -> {}
-                    is ApiState.Success -> {viewModel.checkCustomerExists(it.data.id.toString())}
+                    is ApiState.Success -> {
+                        viewModel.singInWithFireBase(
+                            UserData(
+                                email = it.data.email,
+                                password = binding.passwordValue.text.toString()
+                            )
+                        )
+                    }
                 }
             }
         }
     }
-   private fun observeLoginInFireBase(){
+
+    private fun observeLoginWithFireBase() {
         lifecycleScope.launch {
-            viewModel.checkCustomerExists .collect{
-                when(it){
+            viewModel.checkCustomerExists.collect {
+                when (it) {
                     is ApiState.Failure -> {}
                     ApiState.Loading -> {}
                     is ApiState.Success -> {
-                   if(it.data.password==binding.passwordValue.text?.trim().toString()){
-                       Toast.makeText(requireContext(), "Sing in Successfully", Toast.LENGTH_SHORT).show()
-                       findNavController().navigate(
-                               SignInFragmentDirections.actionSignInFragmentToHomeFragment()
-                       )
-                   }
+                        Toast.makeText(requireContext(), "Sing in Successfully", Toast.LENGTH_SHORT)
+                            .show()
+                        findNavController().navigate(
+                            SignInFragmentDirections.actionSignInFragmentToHomeFragment()
+                        )
                     }
                 }
             }
@@ -87,6 +91,7 @@ class SignInFragment : BaseFragment<FragmentSinginBinding, SignInViewModel>() {
             }
         }
     }
+
     private fun checkEmailValueValidation() {
 
         checkValueValidation(
@@ -124,19 +129,20 @@ class SignInFragment : BaseFragment<FragmentSinginBinding, SignInViewModel>() {
             }
             getUserData(
                 UserData(
-                    email=  binding.emailValue.text?.trim().toString(),
-                    password=   binding.passwordValue.text?.trim().toString(),
+                    email = binding.emailValue.text?.trim().toString(),
+                    password = binding.passwordValue.text?.trim().toString(),
                 )
             )
         }
     }
-    private fun singIn() {
+
+    private fun singInCustomer() {
         checkDataValidation {
-            viewModel.singIn(it.email)
+            viewModel.singInCustomer(it.email)
         }
     }
 
-    private fun navigateToSingUp(){
+    private fun navigateToSingUp() {
         binding.goToRegister.setOnClickListener {
             findNavController().navigate(
                 SignInFragmentDirections.actionSignInFragmentToSignUpFragment()

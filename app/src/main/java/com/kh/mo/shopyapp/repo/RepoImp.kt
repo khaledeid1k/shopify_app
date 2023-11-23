@@ -48,6 +48,17 @@ class RepoImp private constructor(
             emit(ApiState.Failure("An error occurred: ${it.message}"))
         }
 
+    override suspend fun singInWithFireBase(userData: UserData)=
+        flow {
+            emit(ApiState.Loading)
+            remoteSource.singInWithFireBase(userData).await()
+            emit(ApiState.Success("Sign in Successfully "))
+        }.catch {
+            emit(ApiState.Failure("An error occurred: ${it.message}"))
+        }
+
+
+
 
     override suspend fun createCustomer(userData: UserData): Flow<ApiState<CustomerEntity>> {
 
@@ -69,9 +80,9 @@ class RepoImp private constructor(
     }
 
 
-    override suspend fun singIn(email: String) = flow {
+    override suspend fun singInCustomer(email: String) = flow {
         emit(ApiState.Loading)
-        val customer = remoteSource.singIn(email)
+        val customer = remoteSource.singInCustomer(email)
         if (!customer.isSuccessful) {
             emit(ApiState.Failure("NetWork Error"))
         } else {

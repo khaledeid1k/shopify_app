@@ -26,6 +26,7 @@ import retrofit2.Response
 class RemoteSourceImp private constructor() : RemoteSource {
     private val TAG = "TAG RemoteSourceImp"
     private val network = Network.retrofitService
+
     override suspend fun storeCustomerInFireBase(userId: Long, userData: UserData) = flow {
         emit(ApiState.Loading)
         val documentReference: DocumentReference = FirebaseFirestore.getInstance().collection(
@@ -41,11 +42,36 @@ class RemoteSourceImp private constructor() : RemoteSource {
             emit(ApiState.Failure("An error occurred: ${exception.message}"))
         }
     }
+    override suspend fun checkCustomerExists(customerId: String) = flow {
+        var email = ""
+        var password = ""
+        emit(ApiState.Loading)
+        val collection =
+            FirebaseFirestore.getInstance().collection(Constants.collectionPath)
+                .document(customerId)
+        val documentSnapshot = collection.get().await()
+        if (documentSnapshot.exists()) {
+            email = documentSnapshot.getString(Constants.email).toString()
+            password = documentSnapshot.getString(Constants.password).toString()
+
+        }
+        emit(ApiState.Success(UserData(email = email, password = password)))
+
+    }.catch {
+        emit(ApiState.Failure(it.message.toString()))
+    }
 
 
     override suspend fun singUpWithFireBase(userData: UserData): Task<AuthResult> {
         val firebaseAuth = FirebaseAuth.getInstance()
         return firebaseAuth.createUserWithEmailAndPassword(
+            userData.email, userData.password
+        )
+    }
+
+    override suspend fun singInWithFireBase(userData: UserData): Task<AuthResult> {
+        val firebaseAuth = FirebaseAuth.getInstance()
+        return firebaseAuth.signInWithEmailAndPassword(
             userData.email, userData.password
         )
     }
@@ -57,7 +83,7 @@ class RemoteSourceImp private constructor() : RemoteSource {
 
     }
 
-    override suspend fun singIn(email: String): Response<Login> {
+    override suspend fun singInCustomer(email: String): Response<Login> {
         return network.singIn(email)
     }
 
@@ -119,24 +145,6 @@ class RemoteSourceImp private constructor() : RemoteSource {
         }
     }
 
-    override suspend fun checkCustomerExists(customerId: String) = flow {
-        var email = ""
-        var password = ""
-        emit(ApiState.Loading)
-        val collection =
-            FirebaseFirestore.getInstance().collection(Constants.collectionPath)
-                .document(customerId)
-        val documentSnapshot = collection.get().await()
-        if (documentSnapshot.exists()) {
-            email = documentSnapshot.getString(Constants.email).toString()
-            password = documentSnapshot.getString(Constants.password).toString()
-
-        }
-        emit(ApiState.Success(UserData(email = email, password = password)))
-
-    }.catch {
-        emit(ApiState.Failure(it.message.toString()))
-    }
 
     override suspend fun getAllBrands(): Response<BrandsResponse> {
         return Network.retrofitService.getAllBrands()

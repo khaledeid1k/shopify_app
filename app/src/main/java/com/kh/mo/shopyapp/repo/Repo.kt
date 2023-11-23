@@ -16,9 +16,10 @@ import kotlinx.coroutines.flow.Flow
 interface Repo {
     suspend fun storeCustomerInFireBase(userId: Long, userData: UserData): Flow<ApiState<String>>
     suspend fun singUpWithFireBase(userData: UserData): Flow<ApiState<String>>    
-    
+    suspend fun singInWithFireBase(userData: UserData): Flow<ApiState<String>>
+
     suspend fun createCustomer(userData: UserData): Flow<ApiState<CustomerEntity>>
-    suspend fun singIn(email: String): Flow<ApiState<UserData>>
+    suspend fun singInCustomer(email: String): Flow<ApiState<UserData>>
     suspend fun checkCustomerExists(customerId: String): Flow<ApiState<UserData>>
     fun validatePassword(password: String): Validation
     fun validateConfirmPassword(password: String, rePassword: String): Validation
