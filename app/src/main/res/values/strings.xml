@@ -77,4 +77,5 @@
     <string name="not_saved_addresses_message">Let\'s start adding your shipping address</string>
     <string name="country">Country</string>
     <string name="address_tag">Address tag</string>
+    <string name="default_address">(Default)</string>
 </resources>

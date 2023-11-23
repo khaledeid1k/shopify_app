@@ -1,5 +1,6 @@
 package com.kh.mo.shopyapp.repo
 
+import com.kh.mo.shopyapp.model.entity.AddressEntity
 import com.kh.mo.shopyapp.model.entity.CustomerEntity
 import com.kh.mo.shopyapp.model.entity.Validation
 import com.kh.mo.shopyapp.model.request.UserData
@@ -30,5 +31,5 @@ interface Repo {
     suspend fun getProductsOfSpecificBrand(brandName:String): Flow<ApiState<AllProductsResponse>>
     suspend fun getAllProducts(): Flow<ApiState<AllProductsResponse>>
     suspend fun getProductsByCollection(collectionId:Long): Flow<ApiState<AllProductsResponse>>
-    suspend fun getAddressesOfCustomer(customerId: Long): Flow<ApiState<AddressResponse>>
+    suspend fun getAddressesOfCustomer(customerId: Long): Flow<ApiState<List<AddressEntity>>>
 }

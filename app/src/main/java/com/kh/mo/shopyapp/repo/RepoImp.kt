@@ -2,9 +2,9 @@ package com.kh.mo.shopyapp.repo
 
 import android.util.Log
 import com.kh.mo.shopyapp.local.LocalSource
+import com.kh.mo.shopyapp.model.entity.AddressEntity
 import com.kh.mo.shopyapp.model.entity.CustomerEntity
 import com.kh.mo.shopyapp.model.request.UserData
-import com.kh.mo.shopyapp.model.response.address.AddressResponse
 import com.kh.mo.shopyapp.model.response.ads.DiscountCodeResponse
 import com.kh.mo.shopyapp.model.response.allproducts.AllProductsResponse
 import com.kh.mo.shopyapp.model.response.barnds.BrandsResponse
@@ -13,6 +13,7 @@ import com.kh.mo.shopyapp.remote.ApiState
 import com.kh.mo.shopyapp.remote.RemoteSource
 import com.kh.mo.shopyapp.repo.mapper.convertCustomerResponseToCustomerEntity
 import com.kh.mo.shopyapp.repo.mapper.convertLoginToUserData
+import com.kh.mo.shopyapp.repo.mapper.convertToAddressEntity
 import com.kh.mo.shopyapp.repo.mapper.convertUserDataToCustomerData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -20,7 +21,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
-import retrofit2.Response
 
 class RepoImp private constructor(
     private val remoteSource: RemoteSource,
@@ -190,13 +190,17 @@ class RepoImp private constructor(
         }
     }
 
-    override suspend fun getAddressesOfCustomer(customerId: Long): Flow<ApiState<AddressResponse>> {
+    override suspend fun getAddressesOfCustomer(customerId: Long): Flow<ApiState<List<AddressEntity>>> {
         return flow {
             emit(ApiState.Loading)
             val response = remoteSource.getAddressesOfCustomer(customerId)
             if (response.isSuccessful) {
-                response.body()?.let {
-                    emit(ApiState.Success(it))
+                response.body()?.let { addressRespone ->
+                    emit(ApiState.Success(
+                        addressRespone.addresses.map {
+                            it.convertToAddressEntity()
+                        }
+                    ))
                 } ?: emit(ApiState.Failure("Null Response"))
             } else {
                 emit(ApiState.Failure(response.message()))

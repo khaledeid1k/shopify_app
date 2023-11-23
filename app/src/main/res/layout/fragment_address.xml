@@ -23,12 +23,21 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/addressesTxtV" />
+
         <androidx.cardview.widget.CardView
             android:id="@+id/noAddressesCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_16sdp"
             android:elevation="@dimen/_10sdp"
+            android:visibility="gone"
             app:cardCornerRadius="@dimen/_10sdp"
             app:cardUseCompatPadding="true"
             app:layout_constraintStart_toStartOf="parent"
@@ -106,10 +115,10 @@
             android:layout_marginTop="@dimen/_16sdp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="16dp"
-            android:visibility="gone"
             android:backgroundTint="?attr/colorPrimary"
             android:src="@drawable/location_pin"
             android:tint="@color/white"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/noAddressesCard" />

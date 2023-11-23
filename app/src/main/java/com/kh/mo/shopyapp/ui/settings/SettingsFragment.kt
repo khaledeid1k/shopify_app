@@ -10,6 +10,7 @@ import com.kh.mo.shopyapp.ui.base.BaseFragment
 import com.kh.mo.shopyapp.ui.profile.viewmodel.ProfileViewModel
 
 class SettingsFragment : BaseFragment<FragmentSettingsBinding, ProfileViewModel>() {
+    private val TAG = "TAG SettingsFragment"
     override val layoutIdFragment = R.layout.fragment_settings
 
     override fun getViewModelClass() = ProfileViewModel::class.java
@@ -35,8 +36,9 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, ProfileViewModel>
     }
 
     private fun showAddresses() {
-        viewModel.getAddresses()
         val dialog = AddressFragment()
         dialog.show(requireActivity().supportFragmentManager, dialog.tag)
+        dialog.userId.value = viewModel.userData.value?.id
     }
+
 }
