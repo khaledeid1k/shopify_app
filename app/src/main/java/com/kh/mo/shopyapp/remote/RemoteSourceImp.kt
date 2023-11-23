@@ -1,16 +1,21 @@
 package com.kh.mo.shopyapp.remote
 
 import android.util.Log
+import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.AuthResult
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.kh.mo.shopyapp.model.request.AddressUpdateRequest
 import com.kh.mo.shopyapp.model.request.CustomerDataRequest
 import com.kh.mo.shopyapp.model.request.CustomerRequest
+import com.kh.mo.shopyapp.model.request.DraftOrderRequest
 import com.kh.mo.shopyapp.model.request.UserData
 import com.kh.mo.shopyapp.model.response.allproducts.AllProductsResponse
 import com.kh.mo.shopyapp.model.response.barnds.BrandsResponse
 import com.kh.mo.shopyapp.model.response.create_customer.CustomerResponse
 import com.kh.mo.shopyapp.model.response.currency.Rates
+import com.kh.mo.shopyapp.model.response.draft_order.DraftOrderResponse
 import com.kh.mo.shopyapp.model.response.login.Login
 import com.kh.mo.shopyapp.model.response.maincategory.MainCategoryResponse
 import com.kh.mo.shopyapp.remote.service.Network
@@ -24,28 +29,64 @@ import retrofit2.Response
 class RemoteSourceImp private constructor() : RemoteSource {
     private val TAG = "TAG RemoteSourceImp"
     private val network = Network.retrofitService
-    override suspend fun storeData(userId: Long, userData: UserData) = flow {
-        emit(ApiState.Loading)
-        val documentReference: DocumentReference = FirebaseFirestore.getInstance().collection(
+    private val firebaseAuth = FirebaseAuth.getInstance()
+    private val firebaseFireStore=FirebaseFirestore.getInstance()
+
+    override suspend fun saveFavoriteDraftIdInFireBase(customerId:Long,favoriteDraft:Long): Task<Void> {
+        val documentReference: DocumentReference =firebaseFireStore.collection(
             Constants.collectionPath
-        ).document(userId.toString())
+        ).document(customerId.toString())
         val user: HashMap<String, String> = HashMap()
-        user[Constants.email] = userData.email
-        user[Constants.password] = userData.password
-        try {
-            documentReference.set(user).await()
-            emit(ApiState.Success("Sign up Successfully "))
-        } catch (exception: Exception) {
-            emit(ApiState.Failure("An error occurred: ${exception.message}"))
-        }
+        user[Constants.DRAFT_FAVORITE_ID] = favoriteDraft.toString()
+       return  documentReference.set(user)
+
     }
+
+    override suspend fun checkCustomerExists(customerId: String) = flow {
+        var email = ""
+        var password = ""
+        emit(ApiState.Loading)
+        val collection =
+            firebaseFireStore.collection(Constants.collectionPath)
+                .document(customerId)
+        val documentSnapshot = collection.get().await()
+        if (documentSnapshot.exists()) {
+//            email = documentSnapshot.getString(Constants.email).toString()
+//            password = documentSnapshot.getString(Constants.password).toString()
+
+        }
+        emit(ApiState.Success(UserData(email = email, password = password)))
+
+    }.catch {
+        emit(ApiState.Failure(it.message.toString()))
+    }
+
+
+    override suspend fun singUpWithFireBase(userData: UserData): Task<AuthResult> {
+        return firebaseAuth.createUserWithEmailAndPassword(
+            userData.email, userData.password
+        )
+    }
+    override suspend fun singInWithFireBase(userData: UserData): Task<AuthResult> {
+        return firebaseAuth.signInWithEmailAndPassword(
+            userData.email, userData.password
+        )
+    }
+    override suspend fun logout() {
+         firebaseAuth.signOut()
+    }
+    override fun checkIsUserLogin()= firebaseAuth.currentUser!=null
+    override suspend fun createFavoriteDraft(draftOrderRequest: DraftOrderRequest): Response<DraftOrderResponse> {
+       return network.createFavoriteDraft(draftOrderRequest)
+    }
+
 
     override suspend fun createCustomer(customerDataRequest: CustomerDataRequest): Response<CustomerResponse> {
         return network.createCustomer(CustomerRequest(customerDataRequest))
 
     }
 
-    override suspend fun singIn(email: String): Response<Login> {
+    override suspend fun singInCustomer(email: String): Response<Login> {
         return network.singIn(email)
     }
 
@@ -107,24 +148,6 @@ class RemoteSourceImp private constructor() : RemoteSource {
         }
     }
 
-    override suspend fun checkCustomerExists(customerId: String) = flow {
-        var email = ""
-        var password = ""
-        emit(ApiState.Loading)
-        val collection =
-            FirebaseFirestore.getInstance().collection(Constants.collectionPath)
-                .document(customerId)
-        val documentSnapshot = collection.get().await()
-        if (documentSnapshot.exists()) {
-            email = documentSnapshot.getString(Constants.email).toString()
-            password = documentSnapshot.getString(Constants.password).toString()
-
-        }
-        emit(ApiState.Success(UserData(email = email, password = password)))
-
-    }.catch {
-        emit(ApiState.Failure(it.message.toString()))
-    }
 
     override suspend fun getAllBrands(): Response<BrandsResponse> {
         return Network.retrofitService.getAllBrands()
@@ -144,6 +167,13 @@ class RemoteSourceImp private constructor() : RemoteSource {
 
     override suspend fun getProductsByCollection(collectionId: Long): Response<AllProductsResponse> {
         return Network.retrofitService.getProductsByCollection(collectionId)
+    }
+
+    override suspend fun filterProductsBySubCollection(
+        collectionId: Long,
+        productType: String
+    ): Response<AllProductsResponse> {
+        return Network.retrofitService.filterProductsBySubCollection(collectionId,productType)
     }
 
     override suspend fun getDiscountCode(priceRuleId: String, discountCodeId: String) =

@@ -9,9 +9,9 @@ import com.kh.mo.shopyapp.model.ui.allproducts.Products
 import com.kh.mo.shopyapp.model.ui.maincategory.CustomCollection
 import com.kh.mo.shopyapp.remote.ApiState
 import com.kh.mo.shopyapp.repo.Repo
-import com.kh.mo.shopyapp.repo.maper.convertToAllProducts
-import com.kh.mo.shopyapp.repo.maper.convertToCustomCollection
-import com.kh.mo.shopyapp.repo.maper.convertToSmartCollection
+import com.kh.mo.shopyapp.repo.mapper.convertToAllProducts
+import com.kh.mo.shopyapp.repo.mapper.convertToCustomCollection
+import com.kh.mo.shopyapp.repo.mapper.convertToSmartCollection
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

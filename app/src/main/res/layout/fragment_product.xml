@@ -35,7 +35,7 @@
             android:layout_marginTop="@dimen/_10sdp"
             android:ellipsize="end"
             android:maxLines="1"
-
+            android:textStyle="bold"
             android:text="@{product.title}"
             android:textAlignment="center"
             app:layout_constraintEnd_toEndOf="parent"
@@ -49,7 +49,7 @@
             setDollarSign="@{product.variants.get(0).price}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/_4sdp"
+            android:layout_marginEnd="@dimen/_15sdp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/product_rate"
             app:layout_constraintEnd_toStartOf="@+id/product_rate"
@@ -63,17 +63,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_4sdp"
-
             android:background="@drawable/round_rate"
             android:drawablePadding="@dimen/_2sdp"
             android:paddingHorizontal="@dimen/_4sdp"
             android:paddingVertical="@dimen/_1sdp"
             app:drawableStartCompat="@drawable/ic_star"
-            app:drawableTint="@color/white"
             app:layout_constraintEnd_toEndOf="@+id/product_name"
+            android:layout_marginStart="@dimen/_20sdp"
             app:layout_constraintStart_toStartOf="@+id/product_name"
             app:layout_constraintTop_toBottomOf="@+id/product_name"
-            tools:text="4.9" />
+            tools:text="4.9"
+            android:paddingStart="@dimen/_10sdp"
+            android:paddingEnd="@dimen/_10sdp"
+            />
 
         <com.tbuonomo.viewpagerdotsindicator.SpringDotsIndicator
             android:id="@+id/dots_indicator"
@@ -125,7 +127,8 @@
             app:tabRippleColor="@color/orange"
             app:tabSelectedTextColor="@color/orange"
             app:tabTextColor="@android:color/darker_gray"
-            app:tabUnboundedRipple="true" />
+            app:tabUnboundedRipple="true"
+            />
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/home_fragment_viewPager"

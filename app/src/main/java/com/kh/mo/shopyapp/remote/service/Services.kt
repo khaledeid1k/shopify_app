@@ -4,10 +4,12 @@ import com.kh.mo.shopyapp.model.request.AddressUpdateRequest
 import com.kh.mo.shopyapp.model.request.CustomerRequest
 import com.kh.mo.shopyapp.model.response.address.AddressResponse
 import com.kh.mo.shopyapp.model.response.address.AddressesResponse
+import com.kh.mo.shopyapp.model.request.DraftOrderRequest
 import com.kh.mo.shopyapp.model.response.ads.DiscountCodeResponse
 import com.kh.mo.shopyapp.model.response.allproducts.AllProductsResponse
 import com.kh.mo.shopyapp.model.response.barnds.BrandsResponse
 import com.kh.mo.shopyapp.model.response.create_customer.CustomerResponse
+import com.kh.mo.shopyapp.model.response.draft_order.DraftOrderResponse
 import com.kh.mo.shopyapp.model.response.login.Login
 import com.kh.mo.shopyapp.model.response.maincategory.MainCategoryResponse
 import retrofit2.Response
@@ -46,6 +48,14 @@ interface Services {
 
     @GET("customers.json")
     suspend fun singIn(@Query("email") email: String): Response<Login>
+
+
+    @POST("draft_orders.json")
+    suspend fun createFavoriteDraft(@Body draftOrderRequest: DraftOrderRequest): Response<DraftOrderResponse>
+
+
+    @GET("products.json")
+    suspend fun filterProductsBySubCollection(@Query("collection_id") collectionId: Long,@Query("product_type") productType: String): Response<AllProductsResponse>
 
     @GET("customers/{customerId}/addresses.json")
     suspend fun getAddressesOfCustomer(

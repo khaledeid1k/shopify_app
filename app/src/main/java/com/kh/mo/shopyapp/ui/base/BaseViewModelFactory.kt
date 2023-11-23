@@ -9,6 +9,7 @@ import com.kh.mo.shopyapp.ui.category.viewmodel.CategoryViewModel
 import com.kh.mo.shopyapp.ui.home.viewmodel.HomeViewModel
 import com.kh.mo.shopyapp.ui.product.product_Info.viewmodel.ProductInfoViewModel
 import com.kh.mo.shopyapp.ui.product.product_details.viewmodel.ProductDetailsViewModel
+import com.kh.mo.shopyapp.ui.product.product_reviews.viewmodel.ProductReviewsViewModel
 import com.kh.mo.shopyapp.ui.product.viewmodel.ProductViewModel
 import com.kh.mo.shopyapp.ui.profile.viewmodel.ProfileViewModel
 import com.kh.mo.shopyapp.ui.sing_in.viewmodel.SignInViewModel
@@ -27,6 +28,7 @@ class BaseViewModelFactory(private val repo: Repo) : ViewModelProvider.Factory {
             ProfileViewModel::class.java -> ProfileViewModel(repo) as T
             AddressViewModel::class.java -> AddressViewModel(repo) as T
             AddressDetailsViewModel::class.java -> AddressDetailsViewModel(repo) as T
+            ProductReviewsViewModel::class.java -> ProductReviewsViewModel(repo) as T
             else -> throw Throwable("Unsupported view model")
         }
     }
