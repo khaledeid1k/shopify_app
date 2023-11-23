@@ -1,8 +1,10 @@
 package com.kh.mo.shopyapp.remote
 
+import com.kh.mo.shopyapp.model.request.AddressUpdateRequest
 import com.kh.mo.shopyapp.model.request.CustomerDataRequest
 import com.kh.mo.shopyapp.model.request.UserData
 import com.kh.mo.shopyapp.model.response.address.AddressResponse
+import com.kh.mo.shopyapp.model.response.address.AddressesResponse
 import com.kh.mo.shopyapp.model.response.ads.DiscountCodeResponse
 import com.kh.mo.shopyapp.model.response.allproducts.AllProductsResponse
 import com.kh.mo.shopyapp.model.response.barnds.BrandsResponse
@@ -31,5 +33,10 @@ interface RemoteSource {
     suspend fun isCurrencyDbUpdated(): Boolean
     suspend fun getAllProducts(): Response<AllProductsResponse>
     suspend fun getProductsByCollection(collectionId: Long): Response<AllProductsResponse>
-    suspend fun getAddressesOfCustomer(customerId: Long): Response<AddressResponse>
+    suspend fun getAddressesOfCustomer(customerId: Long): Response<AddressesResponse>
+    suspend fun updateAddressOfCustomer(
+        customerId: Long,
+        addressId: Long,
+        updatedAddress: AddressUpdateRequest
+    ): Response<AddressResponse>
 }

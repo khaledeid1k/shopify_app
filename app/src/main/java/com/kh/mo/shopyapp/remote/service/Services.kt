@@ -1,7 +1,9 @@
 package com.kh.mo.shopyapp.remote.service
 
+import com.kh.mo.shopyapp.model.request.AddressUpdateRequest
 import com.kh.mo.shopyapp.model.request.CustomerRequest
 import com.kh.mo.shopyapp.model.response.address.AddressResponse
+import com.kh.mo.shopyapp.model.response.address.AddressesResponse
 import com.kh.mo.shopyapp.model.response.ads.DiscountCodeResponse
 import com.kh.mo.shopyapp.model.response.allproducts.AllProductsResponse
 import com.kh.mo.shopyapp.model.response.barnds.BrandsResponse
@@ -12,6 +14,7 @@ import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -47,5 +50,12 @@ interface Services {
     @GET("customers/{customerId}/addresses.json")
     suspend fun getAddressesOfCustomer(
         @Path("customerId") customerId: Long
+    ): Response<AddressesResponse>
+
+    @PUT("customers/{customerId}/addresses/{addressId}")
+    suspend fun updateAddressOfCustomer(
+        @Path("customerId") customerId: Long,
+        @Path("addressId") addressId: Long,
+        @Body updatedAddress: AddressUpdateRequest
     ): Response<AddressResponse>
 }

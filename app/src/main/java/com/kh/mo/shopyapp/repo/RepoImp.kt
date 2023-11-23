@@ -2,7 +2,7 @@ package com.kh.mo.shopyapp.repo
 
 import android.util.Log
 import com.kh.mo.shopyapp.local.LocalSource
-import com.kh.mo.shopyapp.model.entity.AddressEntity
+import com.kh.mo.shopyapp.model.ui.Address
 import com.kh.mo.shopyapp.model.entity.CustomerEntity
 import com.kh.mo.shopyapp.model.request.UserData
 import com.kh.mo.shopyapp.model.response.ads.DiscountCodeResponse
@@ -14,6 +14,7 @@ import com.kh.mo.shopyapp.remote.RemoteSource
 import com.kh.mo.shopyapp.repo.mapper.convertCustomerResponseToCustomerEntity
 import com.kh.mo.shopyapp.repo.mapper.convertLoginToUserData
 import com.kh.mo.shopyapp.repo.mapper.convertToAddressEntity
+import com.kh.mo.shopyapp.repo.mapper.convertToUpdateRequestAddress
 import com.kh.mo.shopyapp.repo.mapper.convertUserDataToCustomerData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -190,14 +191,14 @@ class RepoImp private constructor(
         }
     }
 
-    override suspend fun getAddressesOfCustomer(customerId: Long): Flow<ApiState<List<AddressEntity>>> {
+    override suspend fun getAddressesOfCustomer(customerId: Long): Flow<ApiState<List<Address>>> {
         return flow {
             emit(ApiState.Loading)
             val response = remoteSource.getAddressesOfCustomer(customerId)
             if (response.isSuccessful) {
                 response.body()?.let { addressRespone ->
                     emit(ApiState.Success(
-                        addressRespone.addresses.map {
+                        addressRespone.addressResponses.map {
                             it.convertToAddressEntity()
                         }
                     ))
@@ -206,6 +207,33 @@ class RepoImp private constructor(
                 emit(ApiState.Failure(response.message()))
             }
         }.catch {
+            emit(ApiState.Failure(it.message.toString()))
+        }
+    }
+
+    override suspend fun updateAddressOfCustomer(
+        customerId: Long,
+        addressId: Long,
+        updatedAddress: Address
+    ): Flow<ApiState<Address>> {
+        return flow {
+            emit(ApiState.Loading)
+            val response =
+                remoteSource.updateAddressOfCustomer(customerId, addressId, updatedAddress.convertToUpdateRequestAddress())
+            if (response.isSuccessful) {
+                response.body()?.let { address ->
+                    emit(
+                        ApiState.Success(
+                            (address.convertToAddressEntity())
+                        )
+                    )
+                } ?: emit(ApiState.Failure("Null Response"))
+            } else {
+                Log.i(TAG, "updateAddressOfCustomer: faild ${response}")
+                emit(ApiState.Failure(response.message()))
+            }
+        }.catch {
+            Log.i(TAG, "updateAddressOfCustomer: excep ${it}")
             emit(ApiState.Failure(it.message.toString()))
         }
     }

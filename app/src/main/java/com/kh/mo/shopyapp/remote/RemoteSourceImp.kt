@@ -1,13 +1,13 @@
 package com.kh.mo.shopyapp.remote
 
-import com.kh.mo.shopyapp.model.response.allproducts.AllProductsResponse
 import android.util.Log
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
+import com.kh.mo.shopyapp.model.request.AddressUpdateRequest
 import com.kh.mo.shopyapp.model.request.CustomerDataRequest
 import com.kh.mo.shopyapp.model.request.CustomerRequest
 import com.kh.mo.shopyapp.model.request.UserData
-import com.kh.mo.shopyapp.model.response.address.AddressResponse
+import com.kh.mo.shopyapp.model.response.allproducts.AllProductsResponse
 import com.kh.mo.shopyapp.model.response.barnds.BrandsResponse
 import com.kh.mo.shopyapp.model.response.create_customer.CustomerResponse
 import com.kh.mo.shopyapp.model.response.currency.Rates
@@ -151,6 +151,13 @@ class RemoteSourceImp private constructor() : RemoteSource {
 
     override suspend fun getAddressesOfCustomer(customerId: Long) =
         Network.retrofitService.getAddressesOfCustomer(customerId)
+
+    override suspend fun updateAddressOfCustomer(
+        customerId: Long,
+        addressId: Long,
+        updatedAddress: AddressUpdateRequest
+    ) = Network.retrofitService.updateAddressOfCustomer(customerId, addressId, updatedAddress)
+
     companion object {
         @Volatile
         private var instance: RemoteSourceImp? = null
