@@ -4,6 +4,7 @@ import android.util.Log
 import com.kh.mo.shopyapp.local.LocalSource
 import com.kh.mo.shopyapp.model.entity.CustomerEntity
 import com.kh.mo.shopyapp.model.request.UserData
+import com.kh.mo.shopyapp.model.response.address.AddressResponse
 import com.kh.mo.shopyapp.model.response.ads.DiscountCodeResponse
 import com.kh.mo.shopyapp.model.response.allproducts.AllProductsResponse
 import com.kh.mo.shopyapp.model.response.barnds.BrandsResponse
@@ -19,6 +20,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
+import retrofit2.Response
 
 class RepoImp private constructor(
     private val remoteSource: RemoteSource,
@@ -176,6 +178,22 @@ class RepoImp private constructor(
         return flow {
             emit(ApiState.Loading)
             val response = remoteSource.getDiscountCode(priceRuleId, discountCodeId)
+            if (response.isSuccessful) {
+                response.body()?.let {
+                    emit(ApiState.Success(it))
+                } ?: emit(ApiState.Failure("Null Response"))
+            } else {
+                emit(ApiState.Failure(response.message()))
+            }
+        }.catch {
+            emit(ApiState.Failure(it.message.toString()))
+        }
+    }
+
+    override suspend fun getAddressesOfCustomer(customerId: Long): Flow<ApiState<AddressResponse>> {
+        return flow {
+            emit(ApiState.Loading)
+            val response = remoteSource.getAddressesOfCustomer(customerId)
             if (response.isSuccessful) {
                 response.body()?.let {
                     emit(ApiState.Success(it))

@@ -3,12 +3,14 @@ package com.kh.mo.shopyapp.repo
 import com.kh.mo.shopyapp.model.entity.CustomerEntity
 import com.kh.mo.shopyapp.model.entity.Validation
 import com.kh.mo.shopyapp.model.request.UserData
+import com.kh.mo.shopyapp.model.response.address.AddressResponse
 import com.kh.mo.shopyapp.model.response.ads.DiscountCodeResponse
 import com.kh.mo.shopyapp.model.response.allproducts.AllProductsResponse
 import com.kh.mo.shopyapp.model.response.barnds.BrandsResponse
 import com.kh.mo.shopyapp.model.response.maincategory.MainCategoryResponse
 import com.kh.mo.shopyapp.remote.ApiState
 import kotlinx.coroutines.flow.Flow
+import retrofit2.Response
 
 interface Repo {
     suspend fun storeData(userId: Long, userData: UserData): Flow<ApiState<String>>
@@ -28,5 +30,5 @@ interface Repo {
     suspend fun getProductsOfSpecificBrand(brandName:String): Flow<ApiState<AllProductsResponse>>
     suspend fun getAllProducts(): Flow<ApiState<AllProductsResponse>>
     suspend fun getProductsByCollection(collectionId:Long): Flow<ApiState<AllProductsResponse>>
-
+    suspend fun getAddressesOfCustomer(customerId: Long): Flow<ApiState<AddressResponse>>
 }

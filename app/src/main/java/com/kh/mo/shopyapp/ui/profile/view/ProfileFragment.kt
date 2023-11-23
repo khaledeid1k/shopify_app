@@ -1,17 +1,13 @@
 package com.kh.mo.shopyapp.ui.profile.view
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.navigation.Navigation
 import com.kh.mo.shopyapp.R
 import com.kh.mo.shopyapp.databinding.FragmentProfileBinding
 import com.kh.mo.shopyapp.model.request.UserData
 import com.kh.mo.shopyapp.ui.base.BaseFragment
 import com.kh.mo.shopyapp.ui.profile.viewmodel.ProfileViewModel
-import kotlinx.coroutines.flow.collectLatest
 
 
 class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>() {
@@ -26,11 +22,15 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
             val action = ProfileFragmentDirections.actionProfileFragmentToSignInFragment("profile")
             Navigation.findNavController(view).navigate(action)
         }
+        binding.settingsBtn.setOnClickListener {
+            Navigation.findNavController(view)
+                .navigate(R.id.action_profileFragment_to_settingsFragment)
+        }
         observeUserData()
     }
 
     private fun observeUserData() {
-        collectLatestFlowOnLifecycle(viewModel.userData) {userData ->
+        collectLatestFlowOnLifecycle(viewModel.userData) { userData ->
             userData?.let {
                 showLoggedInViews()
                 setUserData(userData)
@@ -53,6 +53,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
             emailTV.text = data.email
         }
     }
+
     private fun showNotLoggedInViews() {
         binding.apply {
             notLoggedInCard.visibility = View.VISIBLE

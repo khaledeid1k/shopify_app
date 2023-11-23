@@ -1,6 +1,7 @@
 package com.kh.mo.shopyapp.remote.service
 
 import com.kh.mo.shopyapp.model.request.CustomerRequest
+import com.kh.mo.shopyapp.model.response.address.AddressResponse
 import com.kh.mo.shopyapp.model.response.ads.DiscountCodeResponse
 import com.kh.mo.shopyapp.model.response.allproducts.AllProductsResponse
 import com.kh.mo.shopyapp.model.response.barnds.BrandsResponse
@@ -43,4 +44,8 @@ interface Services {
     @GET("customers.json")
     suspend fun singIn(@Query("email") email: String): Response<Login>
 
+    @GET("customers/{customerId}/addresses.json")
+    suspend fun getAddressesOfCustomer(
+        @Path("customerId") customerId: Long
+    ): Response<AddressResponse>
 }

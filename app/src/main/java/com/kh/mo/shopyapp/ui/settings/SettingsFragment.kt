@@ -35,6 +35,7 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, ProfileViewModel>
     }
 
     private fun showAddresses() {
+        viewModel.getAddresses()
         val dialog = AddressFragment()
         dialog.show(requireActivity().supportFragmentManager, dialog.tag)
     }
