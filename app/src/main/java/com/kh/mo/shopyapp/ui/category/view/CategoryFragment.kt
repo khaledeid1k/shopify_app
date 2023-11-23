@@ -29,7 +29,7 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding, CategoryViewModel
     private var productType = ""
     private var collectionId: Long = 0L
     private var flag = true
-    private lateinit var productsList: List<Products>
+    private  var productsList: List<Products> = emptyList()
     private lateinit var filterBinding: DialogFilterBinding
     private lateinit var filterDialog: Dialog
 

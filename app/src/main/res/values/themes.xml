@@ -48,9 +48,10 @@
     </style>
     <style name="product_show_line">
         <item name="android:textSize">12sp</item>
-        <item name="android:background">#B5B5B5</item>
+        <item name="android:background">#E4DFDF</item>
         <item name="android:layout_height">1dp</item>
         <item name="android:layout_width">0dp</item>
-        <item name="android:layout_marginTop">@dimen/_5sdp</item>
+        <item name="android:layout_marginTop">@dimen/_10sdp</item>
     </style>
+
 </resources>
