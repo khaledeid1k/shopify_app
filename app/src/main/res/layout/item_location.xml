@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:padding="8dp">
 
-            <de.hdodenhof.circleimageview.CircleImageView
+            <!--<de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/mapAddressImgV"
                 android:layout_width="@dimen/_50sdp"
                 android:layout_height="@dimen/_50sdp"
@@ -27,15 +27,16 @@
                 android:src="@drawable/map_location"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent" />-->
 
             <TextView
                 android:id="@+id/addressNameValueTxtV"
                 style="@style/main_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="@dimen/_16ssp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/mapAddressImgV"
+                app:layout_constraintTop_toTopOf="parent"
                 tools:text="House" />
 
             <TextView
@@ -44,6 +45,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
+                android:textSize="@dimen/_16ssp"
                 app:layout_constraintStart_toEndOf="@id/addressNameValueTxtV"
                 app:layout_constraintTop_toTopOf="@id/addressNameValueTxtV"
                 app:layout_constraintBottom_toBottomOf="@id/addressNameValueTxtV"
@@ -53,9 +55,9 @@
                 android:id="@+id/addressValueTxtV"
                 style="@style/sub_title"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/mapAddressImgV"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/addressNameValueTxtV"
                 app:layout_constraintTop_toBottomOf="@id/addressNameValueTxtV"
                 tools:text="flat number street name name name name city country code" />

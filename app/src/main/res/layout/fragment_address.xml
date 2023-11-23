@@ -97,15 +97,16 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/savedAddressRecyclerV"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginEnd="@dimen/_20sdp"
             android:orientation="vertical"
             android:visibility="gone"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/guideline2"
             app:layout_constraintStart_toStartOf="@id/addressesTxtV"
             app:layout_constraintTop_toBottomOf="@id/addressesTxtV"
-            tools:itemCount="3"
+            tools:itemCount="2"
             tools:listitem="@layout/item_location" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -121,7 +122,14 @@
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/noAddressesCard" />
+            app:layout_constraintTop_toBottomOf="@id/guideline2" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="265dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
