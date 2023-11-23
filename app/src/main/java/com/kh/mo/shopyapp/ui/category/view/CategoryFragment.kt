@@ -1,12 +1,17 @@
 package com.kh.mo.shopyapp.ui.category.view
 
+import android.app.Dialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import androidx.lifecycle.lifecycleScope
+import com.airbnb.lottie.LottieAnimationView
 import com.kh.mo.shopyapp.R
+import com.kh.mo.shopyapp.databinding.DialogFilterBinding
 import com.kh.mo.shopyapp.databinding.FragmentCategoryBinding
 import com.kh.mo.shopyapp.model.ui.allproducts.Products
 import com.kh.mo.shopyapp.remote.ApiState
@@ -23,8 +28,10 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding, CategoryViewModel
     private var categoryName = ""
     private var productType = ""
     private var collectionId: Long = 0L
-    private var flag=true
-    private lateinit var productsList:List<Products>
+    private var flag = true
+    private lateinit var productsList: List<Products>
+    private lateinit var filterBinding: DialogFilterBinding
+    private lateinit var filterDialog: Dialog
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -42,37 +49,45 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding, CategoryViewModel
         getSubCategories()
         getCollectionProducts()
         filterProductsBySubCollection()
+        initDialog()
         onClick()
+    }
+
+    private fun initDialog() {
+        filterDialog = Dialog(requireContext())
+        filterDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        filterBinding = DialogFilterBinding.inflate(layoutInflater)
+        filterDialog.setContentView(filterBinding.root)
     }
 
     private fun onClick() {
         binding.chipGroup.setOnCheckedChangeListener { _, checkedId ->
 
-            if(checkedId==R.id.first_subcategory&&flag){
-                flag=false
+            if (checkedId == R.id.first_subcategory && flag) {
+                flag = false
                 productType = binding.firstSubcategory.text.toString()
                 viewModel.filterProductsBySubCollection(collectionId, productType)
-            }else{
-                flag=true
+            } else {
+                flag = true
                 getAllProducts(productsList)
 
             }
 
-            if(checkedId==R.id.second_subcategory&&flag){
-                flag=false
+            if (checkedId == R.id.second_subcategory && flag) {
+                flag = false
                 productType = binding.secondSubcategory.text.toString()
                 viewModel.filterProductsBySubCollection(collectionId, productType)
-            }else{
-                flag=true
+            } else {
+                flag = true
                 getAllProducts(productsList)
 
             }
-            if(checkedId==R.id.third_subcategory&&flag){
-                flag=false
+            if (checkedId == R.id.third_subcategory && flag) {
+                flag = false
                 productType = binding.thirdSubcategory.text.toString()
                 viewModel.filterProductsBySubCollection(collectionId, productType)
-            }else{
-                flag=true
+            } else {
+                flag = true
                 getAllProducts(productsList)
 
             }
@@ -83,22 +98,57 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding, CategoryViewModel
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 
             }
+
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 val searchText = p0.toString().trim()
                 val filteredList = productsList.filter { brand ->
                     brand.title.contains(searchText, ignoreCase = true)
                 }
-                    subCategoriesAdapter = SubCategoriesAdapter(requireContext())
-                    subCategoriesAdapter.submitList(filteredList)
-                    binding.recyclerProductsCategory.adapter = subCategoriesAdapter
+                subCategoriesAdapter = SubCategoriesAdapter(requireContext())
+                subCategoriesAdapter.submitList(filteredList)
+                binding.recyclerProductsCategory.adapter = subCategoriesAdapter
             }
+
             override fun afterTextChanged(p0: Editable?) {
 
             }
-            }
+        }
         )
+        binding.filterByPrice.setOnClickListener {
+            filterDialog.show()
+        }
+        filterBinding.btnApplyFilter.setOnClickListener {
+            val filteredPrice = productsList.filter { products ->
+                var minPrice = filterBinding.etFrom.text.toString()
+                var maxPrice = filterBinding.etTo.text.toString()
+                if (minPrice.isBlank() && maxPrice.isBlank()) {
+                    minPrice = "0"
+                    maxPrice = "10000"
+
+
+                } else if (maxPrice.isBlank()) {
+                    maxPrice = "10000"
+                } else {
+                    minPrice = "0"
+                }
+                products.variants[0].price!!.toDouble() in minPrice.toDouble()..maxPrice.toDouble()
+            }
+            if (filteredPrice.isEmpty()) {
+                binding.lottiNoProduct.visibility = LottieAnimationView.VISIBLE
+                getAllProducts(filteredPrice)
+                filterDialog.dismiss()
+
+            } else {
+                binding.lottiNoProduct.visibility = LottieAnimationView.GONE
+                getAllProducts(filteredPrice)
+                filterDialog.dismiss()
+
+            }
+
 
         }
+
+    }
 
 
     private fun getSubCategories() {
@@ -126,7 +176,7 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding, CategoryViewModel
                     is ApiState.Loading -> {}
                     is ApiState.Success -> {
                         getAllProducts(it.data)
-                        productsList=it.data
+                        productsList = it.data
 
                     }
                 }
@@ -153,7 +203,9 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding, CategoryViewModel
 
         }
     }
-    private fun getAllProducts(list: List<Products>){
+
+    private fun getAllProducts(list: List<Products>) {
+
         subCategoriesAdapter = SubCategoriesAdapter(requireContext())
         subCategoriesAdapter.submitList(list)
         binding.recyclerProductsCategory.adapter = subCategoriesAdapter
