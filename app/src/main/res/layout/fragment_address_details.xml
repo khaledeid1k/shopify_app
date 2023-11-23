@@ -7,172 +7,137 @@
     tools:context=".ui.payment.AddPaymentFragment">
 
     <TextView
-        android:id="@+id/cardNumberTxtV"
+        android:id="@+id/addressTxtV"
         style="@style/main_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_20sdp"
-        android:text="@string/city"
+        android:text="@string/address"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/cardNumberTxtF"
+        android:id="@+id/countryTxtF"
+        style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_8sdp"
-        android:layout_marginEnd="@dimen/_20sdp"
+        android:hint="@string/country"
         app:layout_constraintEnd_toStartOf="@id/guideline"
-        app:layout_constraintStart_toStartOf="@id/cardNumberTxtV"
-        app:layout_constraintTop_toBottomOf="@id/cardNumberTxtV">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/addressTxtV">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/countryET"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/city_name_hint"
             android:inputType="text" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <TextView
-        android:id="@+id/phoneNumberTxtV"
-        style="@style/main_title"
-        android:layout_width="wrap_content"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/stateTxtF"
+        style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="@dimen/_20sdp"
-        android:text="@string/phone_number"
+        android:hint="@string/state"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/guideline"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/addressTxtV">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/stateET"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/cityTxtF"
+        style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/city"
+        app:layout_constraintEnd_toStartOf="@id/guideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/countryTxtF">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/cityET"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/addressTagTxtF"
+        style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/address_tag"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/guideline"
+        app:layout_constraintTop_toBottomOf="@id/stateTxtF">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/addressTagET"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/phoneNumberTxtF"
-        android:layout_width="0dp"
+        style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_8sdp"
-        android:layout_marginEnd="@dimen/_20sdp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/guideline"
-        app:layout_constraintTop_toBottomOf="@id/phoneNumberTxtV">
+        android:hint="@string/phone_number"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cityTxtF">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/phoneNumberET"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/phone_number_hint"
             android:inputType="number" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <TextView
-        android:id="@+id/streetNameTxtV"
-        style="@style/main_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_20sdp"
-        android:text="@string/street_name"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/cardNumberTxtF" />
-
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/streetNameTxtF"
+        style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_8sdp"
-        android:layout_marginEnd="@dimen/_20sdp"
+        android:hint="@string/street_name"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@id/streetNameTxtV"
-        app:layout_constraintTop_toBottomOf="@id/streetNameTxtV">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/phoneNumberTxtF">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/streetNameET"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/street_name_hint"
             android:inputType="text" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <TextView
-        android:id="@+id/buildingNumberTxtV"
-        style="@style/main_title"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_20sdp"
-        android:text="@string/building_number"
-        app:layout_constraintEnd_toStartOf="@id/guideline"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/streetNameTxtF" />
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/buildingNumberTxtF"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_8sdp"
-        android:layout_marginEnd="@dimen/_20sdp"
-        app:layout_constraintEnd_toStartOf="@id/guideline"
-        app:layout_constraintStart_toStartOf="@id/buildingNumberTxtV"
-        app:layout_constraintTop_toBottomOf="@id/buildingNumberTxtV">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/building_number_hint"
-            android:inputType="number" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <TextView
-        android:id="@+id/flatNumberTxtV"
-        style="@style/main_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="@dimen/_20sdp"
-        android:text="@string/flat_number"
-        app:layout_constraintStart_toEndOf="@id/guideline"
-        app:layout_constraintTop_toBottomOf="@id/streetNameTxtF" />
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/flatNumberTxtF"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_8sdp"
-        android:layout_marginEnd="@dimen/_20sdp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/guideline"
-        app:layout_constraintTop_toBottomOf="@id/buildingNumberTxtV">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/flat_number_hint"
-            android:inputType="number" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <TextView
-        android:id="@+id/markLocationTxtV"
-        style="@style/main_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_20sdp"
-        android:text="@string/mark_location"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/buildingNumberTxtF" />
-
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/markLocationTxtF"
+        style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_8sdp"
-        android:layout_marginEnd="@dimen/_20sdp"
+        android:hint="@string/mark_location"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@id/markLocationTxtV"
-        app:layout_constraintTop_toBottomOf="@id/markLocationTxtV">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/streetNameTxtF">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/markLocationET"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/mark_location_hint"
             android:inputType="text" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -182,8 +147,7 @@
         style="@style/sub_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_20sdp"
-        android:layout_marginEnd="@dimen/_16sdp"
+        android:layout_marginVertical="@dimen/_16sdp"
         android:layout_marginBottom="@dimen/_16sdp"
         android:background="@drawable/round_corners"
         android:backgroundTint="?attr/colorPrimary"

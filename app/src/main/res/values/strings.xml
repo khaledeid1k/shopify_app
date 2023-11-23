@@ -75,4 +75,6 @@
     <string name="wish_list">Wish List</string>
     <string name="no_saved_addresses">No Saved Addresses</string>
     <string name="not_saved_addresses_message">Let\'s start adding your shipping address</string>
+    <string name="country">Country</string>
+    <string name="address_tag">Address tag</string>
 </resources>
