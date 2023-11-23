@@ -3,7 +3,7 @@ package com.kh.mo.shopyapp.ui.address
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kh.mo.shopyapp.model.entity.AddressEntity
+import com.kh.mo.shopyapp.model.ui.Address
 import com.kh.mo.shopyapp.remote.ApiState
 import com.kh.mo.shopyapp.repo.Repo
 import kotlinx.coroutines.Dispatchers
@@ -15,9 +15,9 @@ import kotlinx.coroutines.launch
 class AddressViewModel(private val repo: Repo) : ViewModel() {
     private val TAG = "TAG AddressViewModel"
 
-    private val _userAddresses: MutableStateFlow<ApiState<List<AddressEntity>>> =
+    private val _userAddresses: MutableStateFlow<ApiState<List<Address>>> =
         MutableStateFlow(ApiState.Loading)
-    val userAddresses: StateFlow<ApiState<List<AddressEntity>>>
+    val userAddresses: StateFlow<ApiState<List<Address>>>
         get() = _userAddresses
 
     fun getAddresses(userId: Long) {

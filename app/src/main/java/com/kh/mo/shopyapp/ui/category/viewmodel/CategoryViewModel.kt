@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.kh.mo.shopyapp.model.ui.allproducts.Products
 import com.kh.mo.shopyapp.remote.ApiState
 import com.kh.mo.shopyapp.repo.Repo
-import com.kh.mo.shopyapp.repo.maper.convertToAllProducts
+import com.kh.mo.shopyapp.repo.mapper.convertToAllProducts
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

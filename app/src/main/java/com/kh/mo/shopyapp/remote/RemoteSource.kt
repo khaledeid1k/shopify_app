@@ -5,7 +5,7 @@ import com.google.firebase.auth.AuthResult
 import com.kh.mo.shopyapp.model.request.CustomerDataRequest
 import com.kh.mo.shopyapp.model.request.DraftOrderRequest
 import com.kh.mo.shopyapp.model.request.UserData
-import com.kh.mo.shopyapp.model.response.address.AddressResponse
+import com.kh.mo.shopyapp.model.response.address.AddressesResponse
 import com.kh.mo.shopyapp.model.response.ads.DiscountCodeResponse
 import com.kh.mo.shopyapp.model.response.allproducts.AllProductsResponse
 import com.kh.mo.shopyapp.model.response.barnds.BrandsResponse
@@ -16,7 +16,6 @@ import com.kh.mo.shopyapp.model.response.login.Login
 import com.kh.mo.shopyapp.model.response.maincategory.MainCategoryResponse
 import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
-import retrofit2.http.Body
 
 interface RemoteSource {
 
@@ -44,5 +43,5 @@ interface RemoteSource {
     suspend fun getProductsByCollection(collectionId: Long): Response<AllProductsResponse>
     suspend fun filterProductsBySubCollection(collectionId: Long,productType:String): Response<AllProductsResponse>
 
-    suspend fun getAddressesOfCustomer(customerId: Long): Response<AddressResponse>
+    suspend fun getAddressesOfCustomer(customerId: Long): Response<AddressesResponse>
 }

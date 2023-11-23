@@ -1,10 +1,8 @@
 package com.kh.mo.shopyapp.repo
 
 import android.util.Log
-import com.google.android.gms.tasks.Task
-import com.google.firebase.auth.AuthResult
 import com.kh.mo.shopyapp.local.LocalSource
-import com.kh.mo.shopyapp.model.entity.AddressEntity
+import com.kh.mo.shopyapp.model.ui.Address
 import com.kh.mo.shopyapp.model.entity.CustomerEntity
 import com.kh.mo.shopyapp.model.request.DraftOrderRequest
 import com.kh.mo.shopyapp.model.request.UserData
@@ -16,11 +14,7 @@ import com.kh.mo.shopyapp.model.ui.DraftOrder
 import com.kh.mo.shopyapp.model.ui.Review
 import com.kh.mo.shopyapp.remote.ApiState
 import com.kh.mo.shopyapp.remote.RemoteSource
-import com.kh.mo.shopyapp.repo.maper.convertDraftOrderResponseToDraftOrder
-import com.kh.mo.shopyapp.repo.mapper.convertCustomerResponseToCustomerEntity
-import com.kh.mo.shopyapp.repo.mapper.convertLoginToUserData
-import com.kh.mo.shopyapp.repo.mapper.convertToAddressEntity
-import com.kh.mo.shopyapp.repo.mapper.convertUserDataToCustomerData
+import com.kh.mo.shopyapp.repo.mapper.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.Flow
@@ -363,14 +357,14 @@ class RepoImp private constructor(
         }
     }
 
-    override suspend fun getAddressesOfCustomer(customerId: Long): Flow<ApiState<List<AddressEntity>>> {
+    override suspend fun getAddressesOfCustomer(customerId: Long): Flow<ApiState<List<Address>>> {
         return flow {
             emit(ApiState.Loading)
             val response = remoteSource.getAddressesOfCustomer(customerId)
             if (response.isSuccessful) {
                 response.body()?.let { addressRespone ->
                     emit(ApiState.Success(
-                        addressRespone.addresses.map {
+                        addressRespone.addressResponses.map {
                             it.convertToAddressEntity()
                         }
                     ))

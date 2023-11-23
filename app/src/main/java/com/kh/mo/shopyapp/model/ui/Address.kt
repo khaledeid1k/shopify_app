@@ -1,10 +1,10 @@
-package com.kh.mo.shopyapp.model.entity
+package com.kh.mo.shopyapp.model.ui
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class AddressEntity(
+data class Address(
     val address: String,
     val markLocation: String="",
     val city: String,
