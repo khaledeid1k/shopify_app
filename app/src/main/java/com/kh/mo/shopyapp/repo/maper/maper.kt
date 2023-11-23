@@ -3,7 +3,9 @@ package com.kh.mo.shopyapp.repo.maper
 import com.kh.mo.shopyapp.model.response.allproducts.AllProductsResponse
 import com.kh.mo.shopyapp.model.response.barnds.BrandsResponse
 import com.kh.mo.shopyapp.model.response.barnds.SmartCollection
+import com.kh.mo.shopyapp.model.response.draft_order.DraftOrderResponse
 import com.kh.mo.shopyapp.model.response.maincategory.MainCategoryResponse
+import com.kh.mo.shopyapp.model.ui.DraftOrder
 import com.kh.mo.shopyapp.model.ui.allproducts.Products
 import com.kh.mo.shopyapp.model.ui.maincategory.CustomCollection
 
@@ -38,5 +40,13 @@ fun AllProductsResponse.convertToAllProducts():List<Products>{
             status = it.status
         )
     }
+
+}
+
+fun DraftOrderResponse.convertDraftOrderResponseToDraftOrder():DraftOrder{
+    return DraftOrder(
+        this.draft_order!!.id,
+        this.draft_order.customer.id
+    )
 
 }

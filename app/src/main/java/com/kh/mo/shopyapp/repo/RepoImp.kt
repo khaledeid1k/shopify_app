@@ -5,14 +5,17 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.kh.mo.shopyapp.local.LocalSource
 import com.kh.mo.shopyapp.model.entity.CustomerEntity
+import com.kh.mo.shopyapp.model.request.DraftOrderRequest
 import com.kh.mo.shopyapp.model.request.UserData
 import com.kh.mo.shopyapp.model.response.ads.DiscountCodeResponse
 import com.kh.mo.shopyapp.model.response.allproducts.AllProductsResponse
 import com.kh.mo.shopyapp.model.response.barnds.BrandsResponse
 import com.kh.mo.shopyapp.model.response.maincategory.MainCategoryResponse
+import com.kh.mo.shopyapp.model.ui.DraftOrder
 import com.kh.mo.shopyapp.model.ui.Review
 import com.kh.mo.shopyapp.remote.ApiState
 import com.kh.mo.shopyapp.remote.RemoteSource
+import com.kh.mo.shopyapp.repo.maper.convertDraftOrderResponseToDraftOrder
 import com.kh.mo.shopyapp.repo.mapper.convertCustomerResponseToCustomerEntity
 import com.kh.mo.shopyapp.repo.mapper.convertLoginToUserData
 import com.kh.mo.shopyapp.repo.mapper.convertUserDataToCustomerData
@@ -60,6 +63,24 @@ class RepoImp private constructor(
     override suspend fun logout() { remoteSource.logout() }
 
     override fun checkIsUserLogin()=remoteSource.checkIsUserLogin()
+    override suspend fun createFavoriteDraft(draftOrderRequest: DraftOrderRequest): Flow<ApiState<DraftOrder>> {
+        return flow {
+            emit(ApiState.Loading)
+            val favorite =   remoteSource.createFavoriteDraft(draftOrderRequest)
+            if (!favorite.isSuccessful) {
+                emit(ApiState.Failure(favorite.body().toString()))
+            } else {
+                favorite.body()?.let { responseBody ->
+                    emit(ApiState.Success(responseBody.convertDraftOrderResponseToDraftOrder()))
+                } ?: run {
+                    emit(ApiState.Failure("Api Error"))
+                }
+            }
+        }.catch {
+            emit(ApiState.Failure(it.message!!))
+        }
+
+    }
 
 
     override suspend fun createCustomer(userData: UserData): Flow<ApiState<CustomerEntity>> {

@@ -8,11 +8,13 @@ import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.kh.mo.shopyapp.model.request.CustomerDataRequest
 import com.kh.mo.shopyapp.model.request.CustomerRequest
+import com.kh.mo.shopyapp.model.request.DraftOrderRequest
 import com.kh.mo.shopyapp.model.request.UserData
 import com.kh.mo.shopyapp.model.response.allproducts.AllProductsResponse
 import com.kh.mo.shopyapp.model.response.barnds.BrandsResponse
 import com.kh.mo.shopyapp.model.response.create_customer.CustomerResponse
 import com.kh.mo.shopyapp.model.response.currency.Rates
+import com.kh.mo.shopyapp.model.response.draft_order.DraftOrderResponse
 import com.kh.mo.shopyapp.model.response.login.Login
 import com.kh.mo.shopyapp.model.response.maincategory.MainCategoryResponse
 import com.kh.mo.shopyapp.remote.service.Network
@@ -77,9 +79,10 @@ class RemoteSourceImp private constructor() : RemoteSource {
     override suspend fun logout() {
          firebaseAuth.signOut()
     }
-    override fun checkIsUserLogin()=firebaseAuth.currentUser!=null
-
-
+    override fun checkIsUserLogin()= firebaseAuth.currentUser!=null
+    override suspend fun createFavoriteDraft(draftOrderRequest: DraftOrderRequest): Response<DraftOrderResponse> {
+       return network.createFavoriteDraft(draftOrderRequest)
+    }
 
 
     override suspend fun createCustomer(customerDataRequest: CustomerDataRequest): Response<CustomerResponse> {

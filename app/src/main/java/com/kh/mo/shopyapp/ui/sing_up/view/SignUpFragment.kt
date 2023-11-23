@@ -1,6 +1,7 @@
 package com.kh.mo.shopyapp.ui.sing_up.view
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
@@ -11,6 +12,9 @@ import com.kh.mo.shopyapp.R
 import com.kh.mo.shopyapp.databinding.FragmentSignUpBinding
 import com.kh.mo.shopyapp.model.entity.CustomerEntity
 import com.kh.mo.shopyapp.model.entity.Validation
+import com.kh.mo.shopyapp.model.request.CustomerDraftRequest
+import com.kh.mo.shopyapp.model.request.DraftOrderDetailsRequest
+import com.kh.mo.shopyapp.model.request.DraftOrderRequest
 import com.kh.mo.shopyapp.model.request.UserData
 import com.kh.mo.shopyapp.remote.ApiState
 import com.kh.mo.shopyapp.ui.base.BaseFragment
@@ -23,6 +27,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding, SignUpViewModel>() {
 
     override val layoutIdFragment: Int = R.layout.fragment_sign_up
     override fun getViewModelClass() = SignUpViewModel::class.java
+    lateinit var customerEntity: CustomerEntity
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -34,6 +39,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding, SignUpViewModel>() {
         observeCreateCustomerResult()
         observeSaveCustomerInFireBaseResult()
         navigateToSingIn()
+        observeCreateFavoriteDraft()
     }
 
 
@@ -68,7 +74,6 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding, SignUpViewModel>() {
         }
 
     }
-
     private fun checkEmailValueValidation() {
 
         checkValueValidation(
@@ -78,7 +83,6 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding, SignUpViewModel>() {
         }
 
     }
-
     private fun checkPasswordValidation() {
         checkValueValidation(
             binding.passwordValue,
@@ -87,7 +91,6 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding, SignUpViewModel>() {
         }
 
     }
-
     private fun checkConfirmPasswordValidation() {
         checkValueValidation(
             binding.confirmPasswordValue,
@@ -99,7 +102,6 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding, SignUpViewModel>() {
             )
         }
     }
-
     private fun checkDataValidation(createUser: (userData: UserData) -> Unit) {
         binding.singUpB.setOnClickListener {
             binding.userNameValue.text?.trim().toString().let { userNameValue ->
@@ -149,23 +151,11 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding, SignUpViewModel>() {
             viewModel.createUser(it)
         }
     }
-
-
-    private fun observeCreateCustomerResult() {
-        lifecycleScope.launch {
-            viewModel.createCustomer.collect {
-                when (it) {
-                    is ApiState.Failure -> {}
-                    ApiState.Loading -> {}
-                    is ApiState.Success -> {
-                        storeInFirebase(it.data)
-                    }
-                }
-            }
-        }
+    private fun createFavoriteDraft(customerId:Long){
+        viewModel.createFavoriteDraft(
+            DraftOrderRequest(DraftOrderDetailsRequest(customer= CustomerDraftRequest(customerId))))
     }
-
-    private fun storeInFirebase(data: CustomerEntity) {
+    private fun singUpWithFireBase(data: CustomerEntity) {
         viewModel.singUpWithFireBase(
             UserData(
                 email = data.email,
@@ -174,11 +164,41 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding, SignUpViewModel>() {
         )
     }
 
+    private fun observeCreateCustomerResult() {
+        lifecycleScope.launch {
+            viewModel.createCustomer.collect {
+                when (it) {
+                    is ApiState.Failure -> {}
+                    ApiState.Loading -> {}
+                    is ApiState.Success -> {
+                        customerEntity=it.data
+                        createFavoriteDraft(it.data.id)
+
+
+                    }
+                }
+            }
+        }
+    }
+    private fun observeCreateFavoriteDraft() {
+        lifecycleScope.launch {
+            viewModel.createFavoriteDraft.collect{
+                when(it){
+                    is ApiState.Failure -> { Log.d("Failure", "observeCreateFavoriteDraft: ${it.msg}") }
+                    ApiState.Loading -> {}
+                    is ApiState.Success -> { singUpWithFireBase(customerEntity)}
+                }
+            }
+        }
+
+
+
+    }
     private fun observeSaveCustomerInFireBaseResult() {
         lifecycleScope.launch {
             viewModel.saveCustomerFireBase.collect {
                 when (it) {
-                    is ApiState.Failure -> {}
+                    is ApiState.Failure -> { Log.d("Failure", "observeCreateFavoriteDraft: ${it.msg}") }
                     ApiState.Loading -> {}
                     is ApiState.Success -> {
                         navigateToHome()
@@ -189,6 +209,9 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding, SignUpViewModel>() {
             }
         }
     }
+
+
+
 
     private fun navigateToHome() {
         Toast.makeText(requireContext(), "Sing Up Successfully ", Toast.LENGTH_SHORT).show()
