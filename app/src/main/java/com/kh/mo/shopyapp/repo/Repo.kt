@@ -18,13 +18,12 @@ import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 
 interface Repo {
-    suspend fun storeCustomerInFireBase(userId: Long, userData: UserData): Flow<ApiState<String>>
-    suspend fun singUpWithFireBase(userData: UserData): Flow<ApiState<String>>    
+    suspend fun singUpWithFireBase(userData: UserData): Flow<ApiState<String>>
     suspend fun singInWithFireBase(userData: UserData): Flow<ApiState<String>>
     suspend fun logout()
     fun checkIsUserLogin():Boolean
      suspend fun createFavoriteDraft(draftOrderRequest: DraftOrderRequest):Flow<ApiState<DraftOrder>>
-
+    suspend fun saveFavoriteDraftIdInFireBase(customerId:Long,favoriteDraft:Long): Flow<ApiState<String>>
     suspend fun createCustomer(userData: UserData): Flow<ApiState<CustomerEntity>>
     suspend fun singInCustomer(email: String): Flow<ApiState<UserData>>
     suspend fun checkCustomerExists(customerId: String): Flow<ApiState<UserData>>

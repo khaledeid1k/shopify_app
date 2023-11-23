@@ -31,21 +31,16 @@ class RemoteSourceImp private constructor() : RemoteSource {
     private val firebaseAuth = FirebaseAuth.getInstance()
     private val firebaseFireStore=FirebaseFirestore.getInstance()
 
-    override suspend fun storeCustomerInFireBase(userId: Long, userData: UserData) = flow {
-        emit(ApiState.Loading)
+    override suspend fun saveFavoriteDraftIdInFireBase(customerId:Long,favoriteDraft:Long): Task<Void> {
         val documentReference: DocumentReference =firebaseFireStore.collection(
             Constants.collectionPath
-        ).document(userId.toString())
+        ).document(customerId.toString())
         val user: HashMap<String, String> = HashMap()
-        user[Constants.email] = userData.email
-        user[Constants.password] = userData.password
-        try {
-            documentReference.set(user).await()
-            emit(ApiState.Success("Sign up Successfully "))
-        } catch (exception: Exception) {
-            emit(ApiState.Failure("An error occurred: ${exception.message}"))
-        }
+        user[Constants.DRAFT_FAVORITE_ID] = favoriteDraft.toString()
+       return  documentReference.set(user)
+
     }
+
     override suspend fun checkCustomerExists(customerId: String) = flow {
         var email = ""
         var password = ""
@@ -55,8 +50,8 @@ class RemoteSourceImp private constructor() : RemoteSource {
                 .document(customerId)
         val documentSnapshot = collection.get().await()
         if (documentSnapshot.exists()) {
-            email = documentSnapshot.getString(Constants.email).toString()
-            password = documentSnapshot.getString(Constants.password).toString()
+//            email = documentSnapshot.getString(Constants.email).toString()
+//            password = documentSnapshot.getString(Constants.password).toString()
 
         }
         emit(ApiState.Success(UserData(email = email, password = password)))

@@ -39,9 +39,6 @@ class RepoImp private constructor(
         }
     }
 
-    override suspend fun storeCustomerInFireBase(userId: Long, userData: UserData) =
-        remoteSource.storeCustomerInFireBase(userId, userData)
-
     override suspend fun singUpWithFireBase(userData: UserData) =
         flow {
             emit(ApiState.Loading)
@@ -81,6 +78,17 @@ class RepoImp private constructor(
         }
 
     }
+
+    override suspend fun saveFavoriteDraftIdInFireBase(customerId:Long,favoriteDraft:Long)=
+        flow {
+            emit(ApiState.Loading)
+            remoteSource.saveFavoriteDraftIdInFireBase(customerId, favoriteDraft).await()
+            emit(ApiState.Success("Sign up Successfully "))
+        }.catch {
+            emit(ApiState.Failure("An error occurred: ${it.message}"))
+        }
+
+
 
 
     override suspend fun createCustomer(userData: UserData): Flow<ApiState<CustomerEntity>> {

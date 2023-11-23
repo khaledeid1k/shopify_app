@@ -35,11 +35,15 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding, SignUpViewModel>() {
         checkEmailValueValidation()
         checkPasswordValidation()
         checkConfirmPasswordValidation()
-        createUser()
+
+        createCustomer()
+
+        observeCreateFavoriteDraft()
+        observeSaveFavoriteDraftIdInFireBase()
         observeCreateCustomerResult()
         observeSaveCustomerInFireBaseResult()
+
         navigateToSingIn()
-        observeCreateFavoriteDraft()
     }
 
 
@@ -146,14 +150,10 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding, SignUpViewModel>() {
     }
 
 
-    private fun createUser() {
+    private fun createCustomer() {
         checkDataValidation {
             viewModel.createUser(it)
         }
-    }
-    private fun createFavoriteDraft(customerId:Long){
-        viewModel.createFavoriteDraft(
-            DraftOrderRequest(DraftOrderDetailsRequest(customer= CustomerDraftRequest(customerId))))
     }
     private fun singUpWithFireBase(data: CustomerEntity) {
         viewModel.singUpWithFireBase(
@@ -162,6 +162,10 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding, SignUpViewModel>() {
                 password = binding.passwordValue.text?.trim().toString()
             )
         )
+    }
+    private fun createFavoriteDraft(customerId:Long){
+        viewModel.createFavoriteDraft(
+            DraftOrderRequest(DraftOrderDetailsRequest(customer= CustomerDraftRequest(customerId))))
     }
 
     private fun observeCreateCustomerResult() {
@@ -180,20 +184,6 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding, SignUpViewModel>() {
             }
         }
     }
-    private fun observeCreateFavoriteDraft() {
-        lifecycleScope.launch {
-            viewModel.createFavoriteDraft.collect{
-                when(it){
-                    is ApiState.Failure -> { Log.d("Failure", "observeCreateFavoriteDraft: ${it.msg}") }
-                    ApiState.Loading -> {}
-                    is ApiState.Success -> { singUpWithFireBase(customerEntity)}
-                }
-            }
-        }
-
-
-
-    }
     private fun observeSaveCustomerInFireBaseResult() {
         lifecycleScope.launch {
             viewModel.saveCustomerFireBase.collect {
@@ -206,6 +196,34 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding, SignUpViewModel>() {
 
                 }
 
+            }
+        }
+    }
+    private fun observeCreateFavoriteDraft() {
+        lifecycleScope.launch {
+            viewModel.createFavoriteDraft.collect{
+                when(it){
+                    is ApiState.Failure -> { Log.d("Failure", "observeCreateFavoriteDraft: ${it.msg}") }
+                    ApiState.Loading -> {}
+                    is ApiState.Success -> {
+                        val draftOrder = it.data
+                        viewModel.saveFavoriteDraftIdInFireBase(draftOrder.customerID,draftOrder.draftId)
+                      }
+                }
+            }
+        }
+
+    }
+    private fun observeSaveFavoriteDraftIdInFireBase() {
+        lifecycleScope.launch {
+            viewModel.favoriteDraftIdInFireBase.collect {
+                when (it) {
+                    is ApiState.Failure -> {}
+                    is ApiState.Loading -> {}
+                    is ApiState.Success -> {
+                        singUpWithFireBase(customerEntity)
+                    }
+                }
             }
         }
     }

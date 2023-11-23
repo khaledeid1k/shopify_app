@@ -27,6 +27,27 @@ class SignUpViewModel(private val repo: Repo) : ViewModel() {
     private val _createFavoriteDraft = MutableStateFlow<ApiState<DraftOrder>>(ApiState.Loading)
     val createFavoriteDraft: StateFlow<ApiState<DraftOrder>> = _createFavoriteDraft
 
+    private val _favoriteDraftIdInFireBase = MutableStateFlow<ApiState<String>>(ApiState.Loading)
+    val favoriteDraftIdInFireBase: StateFlow<ApiState<String>> = _favoriteDraftIdInFireBase
+
+
+    fun createUser(userData: UserData) {
+        viewModelScope.launch {
+            repo.createCustomer(userData).collect {
+                when (it) {
+                    is ApiState.Failure -> {
+                        _createCustomer.value = ApiState.Failure(it.msg)
+                    }
+                    is ApiState.Loading -> {
+                        _createCustomer.value = ApiState.Loading
+                    }
+                    is ApiState.Success -> {
+                        _createCustomer.value = ApiState.Success(it.data)
+                    }
+                }
+            }
+        }
+    }
     fun singUpWithFireBase(userData: UserData) {
         viewModelScope.launch {
             repo.singUpWithFireBase(userData).collect {
@@ -47,25 +68,6 @@ class SignUpViewModel(private val repo: Repo) : ViewModel() {
 
         }
     }
-
-    fun createUser(userData: UserData) {
-        viewModelScope.launch {
-            repo.createCustomer(userData).collect {
-                when (it) {
-                    is ApiState.Failure -> {
-                        _createCustomer.value = ApiState.Failure(it.msg)
-                    }
-                    is ApiState.Loading -> {
-                        _createCustomer.value = ApiState.Loading
-                    }
-                    is ApiState.Success -> {
-                        _createCustomer.value = ApiState.Success(it.data)
-                    }
-                }
-            }
-        }
-    }
-
     fun createFavoriteDraft(draftOrderRequest: DraftOrderRequest){
         viewModelScope.launch {
             Log.d("TAG", "createFavoriteDraft: $draftOrderRequest")
@@ -81,7 +83,20 @@ class SignUpViewModel(private val repo: Repo) : ViewModel() {
             }
         }
     }
+    fun saveFavoriteDraftIdInFireBase(customerId:Long,favoriteDraft:Long){
+        viewModelScope.launch {
+            repo.saveFavoriteDraftIdInFireBase(customerId,favoriteDraft).collect{
+                when(it){
+                    is ApiState.Failure -> {_favoriteDraftIdInFireBase.value=ApiState.Failure(it.msg)}
+                    is ApiState.Loading -> {_favoriteDraftIdInFireBase.value=ApiState.Loading }
+                    is ApiState.Success ->{_favoriteDraftIdInFireBase.value=ApiState.Success(it.data)}
+                }
+            }
+        }
+
+    }
     fun validateUserName(userName: String) = repo.validateUserName(userName)
+
 
     fun validateEmail(email: String): Validation = repo.validateEmail(email)
 

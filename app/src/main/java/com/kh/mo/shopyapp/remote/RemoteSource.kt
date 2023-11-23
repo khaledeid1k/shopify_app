@@ -33,7 +33,7 @@ interface RemoteSource {
     ): Response<DiscountCodeResponse>
 
     suspend fun getProductsOfSpecificBrand(brandName: String): Response<AllProductsResponse>
-    suspend fun storeCustomerInFireBase(userId: Long, userData: UserData): Flow<ApiState<String>>
+    suspend fun saveFavoriteDraftIdInFireBase(customerId:Long,favoriteDraft:Long): Task<Void>
     suspend fun checkCustomerExists(customerId: String): Flow<ApiState<UserData>>
     suspend fun createCustomer(customerDataRequest: CustomerDataRequest): Response<CustomerResponse>
     suspend fun singInCustomer(email: String): Response<Login>
