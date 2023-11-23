@@ -73,4 +73,7 @@
     <string name="login_first">سجل الدخول اولا</string>
     <string name="not_logged_in_message">انت بحاجه لتسجيل الدخول لكي ترى طلبات والعديدات من المميزات الاخرى</string>
     <string name="settings">الاعدادات</string>
+    <string name="wish_list">قائمة الرغبات</string>
+    <string name="no_saved_addresses">لا يوجد عنواين محفوظة</string>
+    <string name="not_saved_addresses_message">لنبدأ باضافة عنوان توصيل طلباتك اليه</string>
 </resources>
