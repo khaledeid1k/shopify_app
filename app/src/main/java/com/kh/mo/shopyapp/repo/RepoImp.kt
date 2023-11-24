@@ -10,6 +10,7 @@ import com.kh.mo.shopyapp.model.response.ads.DiscountCodeResponse
 import com.kh.mo.shopyapp.model.response.allproducts.AllProductsResponse
 import com.kh.mo.shopyapp.model.response.barnds.BrandsResponse
 import com.kh.mo.shopyapp.model.response.maincategory.MainCategoryResponse
+import com.kh.mo.shopyapp.model.response.order.OrdersResponse
 import com.kh.mo.shopyapp.model.ui.DraftOrder
 import com.kh.mo.shopyapp.model.ui.Review
 import com.kh.mo.shopyapp.remote.ApiState
@@ -374,6 +375,23 @@ class RepoImp private constructor(
             }
         }.catch {
             emit(ApiState.Failure(it.message.toString()))
+        }
+    }
+
+    override suspend fun getOrdersByCustomerID(customerId: Long): Flow<ApiState<OrdersResponse>> {
+        return flow {
+            emit(ApiState.Loading)
+            val customerOrders =
+                remoteSource.getOrdersByCustomerID(customerId)
+            if (customerOrders.isSuccessful) {
+                remoteSource.getOrdersByCustomerID(customerId).body()
+                    ?.let { emit(ApiState.Success(it)) }
+            } else {
+                emit(ApiState.Failure(customerOrders.message()))
+            }
+
+        }.catch {
+            emit(ApiState.Failure(it.message!!))
         }
     }
 

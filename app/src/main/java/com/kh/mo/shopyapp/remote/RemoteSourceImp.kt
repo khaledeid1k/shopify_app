@@ -11,12 +11,14 @@ import com.kh.mo.shopyapp.model.request.CustomerRequest
 import com.kh.mo.shopyapp.model.request.DraftOrderRequest
 import com.kh.mo.shopyapp.model.request.UserData
 import com.kh.mo.shopyapp.model.response.allproducts.AllProductsResponse
+import com.kh.mo.shopyapp.model.response.allproducts.ImageResponse
 import com.kh.mo.shopyapp.model.response.barnds.BrandsResponse
 import com.kh.mo.shopyapp.model.response.create_customer.CustomerResponse
 import com.kh.mo.shopyapp.model.response.currency.Rates
 import com.kh.mo.shopyapp.model.response.draft_order.DraftOrderResponse
 import com.kh.mo.shopyapp.model.response.login.Login
 import com.kh.mo.shopyapp.model.response.maincategory.MainCategoryResponse
+import com.kh.mo.shopyapp.model.response.order.OrdersResponse
 import com.kh.mo.shopyapp.remote.service.Network
 import com.kh.mo.shopyapp.utils.Constants
 import com.kh.mo.shopyapp.utils.getCurrentDate
@@ -180,6 +182,15 @@ class RemoteSourceImp private constructor() : RemoteSource {
 
     override suspend fun getAddressesOfCustomer(customerId: Long) =
         Network.retrofitService.getAddressesOfCustomer(customerId)
+
+    override suspend fun getOrdersByCustomerID(customerId: Long): Response<OrdersResponse> {
+        return Network.retrofitService.getOrdersByCustomerID(customerId)
+    }
+
+    override suspend fun getImageOrders(productId: Long): Response<ImageResponse> {
+        return Network.retrofitService.getImageOrders(productId)
+    }
+
     companion object {
         @Volatile
         private var instance: RemoteSourceImp? = null

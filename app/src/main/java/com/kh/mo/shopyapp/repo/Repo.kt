@@ -9,10 +9,12 @@ import com.kh.mo.shopyapp.model.response.ads.DiscountCodeResponse
 import com.kh.mo.shopyapp.model.response.allproducts.AllProductsResponse
 import com.kh.mo.shopyapp.model.response.barnds.BrandsResponse
 import com.kh.mo.shopyapp.model.response.maincategory.MainCategoryResponse
+import com.kh.mo.shopyapp.model.response.order.OrdersResponse
 import com.kh.mo.shopyapp.model.ui.DraftOrder
 import com.kh.mo.shopyapp.model.ui.Review
 import com.kh.mo.shopyapp.remote.ApiState
 import kotlinx.coroutines.flow.Flow
+import retrofit2.Response
 
 interface Repo {
     suspend fun singUpWithFireBase(userData: UserData): Flow<ApiState<String>>
@@ -41,4 +43,6 @@ interface Repo {
     suspend fun filterProductsBySubCollection(collectionId:Long,productType:String): Flow<ApiState<AllProductsResponse>>
 
     suspend fun getAddressesOfCustomer(customerId: Long): Flow<ApiState<List<Address>>>
+    suspend fun getOrdersByCustomerID(customerId: Long):Flow<ApiState<OrdersResponse>>
+
 }
