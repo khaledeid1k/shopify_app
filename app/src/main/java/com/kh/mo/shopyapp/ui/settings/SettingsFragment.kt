@@ -5,7 +5,7 @@ import android.view.View
 import com.kh.mo.shopyapp.R
 import com.kh.mo.shopyapp.databinding.FragmentSettingsBinding
 import com.kh.mo.shopyapp.model.ui.SettingsModel
-import com.kh.mo.shopyapp.ui.address.AddressFragment
+import com.kh.mo.shopyapp.ui.address.list.AddressFragment
 import com.kh.mo.shopyapp.ui.base.BaseFragment
 import com.kh.mo.shopyapp.ui.profile.viewmodel.ProfileViewModel
 

@@ -88,4 +88,5 @@
     <string name="delete_address">حذف</string>
     <string name="cancel">الغاء</string>
     <string name="delete_address_confirm">هل انت متاكد انك تريد حذف هذا العنوان\n انتبه لايمكن حذف العنوان الرئيسي</string>
+    <string name="something_went_wrong_please_try_again_later">حدث خطأ ما برجاء المحاولة في وقت لاحق</string>
 </resources>

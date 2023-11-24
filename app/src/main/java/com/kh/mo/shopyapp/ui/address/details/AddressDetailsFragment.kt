@@ -156,7 +156,7 @@ class AddressDetailsFragment :
                     Log.i(TAG, "addUpdateAddressStateListener: failure: ${apiState.msg}")
                     Toast.makeText(
                         requireContext(),
-                        "something went wrong please try again later",
+                        getString(R.string.something_went_wrong_please_try_again_later),
                         Toast.LENGTH_SHORT
                     ).show()
                     binding.progressBar.visibility = View.GONE
