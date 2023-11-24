@@ -89,4 +89,9 @@
     <string name="cancel">الغاء</string>
     <string name="delete_address_confirm">هل انت متاكد انك تريد حذف هذا العنوان\n انتبه لايمكن حذف العنوان الرئيسي</string>
     <string name="something_went_wrong_please_try_again_later">حدث خطأ ما برجاء المحاولة في وقت لاحق</string>
+    <string name="permission_needed">بحاجة الى الاذن</string>
+    <string name="location_permission_needed_message">نستطيع مساعدتك في تحديد موقعك الحالي ولكن نحتاج الاذن للوصول الى خدمه تحديد المواقع</string>
+    <string name="open_setting">فتح الاعدادات</string>
+    <string name="location_disabled">تحديد الموقع غير مفعل</string>
+    <string name="location_disabled_message">من فضل شغل تحديد الموقع للوصول الى موقعك الحالي</string>
 </resources>
