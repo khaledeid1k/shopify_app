@@ -70,6 +70,11 @@
     <string name="x">x</string>
     <string name="add_address">اضف عنوان</string>
     <string name="username">اسم المستخدم</string>
+    <string name="price">السعر</string>
+    <string name="from">من</string>
+    <string name="to">الى</string>
+    <string name="save">حفظ</string>
+    <string name="filter">تحديد</string>
     <string name="login_first">سجل الدخول اولا</string>
     <string name="not_logged_in_message">انت بحاجه لتسجيل الدخول لكي ترى طلبات والعديدات من المميزات الاخرى</string>
     <string name="settings">الاعدادات</string>
@@ -79,4 +84,8 @@
     <string name="country">الدولة</string>
     <string name="address_tag">تمميز العنوان</string>
     <string name="default_address">(الرئيسي)</string>
+    <string name="update_address">تحديث العنوان</string>
+    <string name="delete_address">حذف</string>
+    <string name="cancel">الغاء</string>
+    <string name="delete_address_confirm">هل انت متاكد انك تريد حذف هذا العنوان\n انتبه لايمكن حذف العنوان الرئيسي</string>
 </resources>

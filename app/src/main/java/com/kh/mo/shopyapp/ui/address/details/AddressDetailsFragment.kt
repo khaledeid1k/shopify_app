@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.navigation.Navigation
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.kh.mo.shopyapp.R
 import com.kh.mo.shopyapp.databinding.FragmentAddressDetailsBinding
 import com.kh.mo.shopyapp.model.ui.Address
@@ -35,7 +36,7 @@ class AddressDetailsFragment :
             lifecycleOwner = this@AddressDetailsFragment
             address = addressArgs
         }
-        setupConfirmBtn()
+        setupBtns()
         addTextWatchers()
         addAddressStateListener()
     }
@@ -49,16 +50,19 @@ class AddressDetailsFragment :
         updatedAddress = addressArgs.copy()
     }
 
-    private fun setupConfirmBtn() {
-        binding.confirmBtn.apply {
+    private fun setupBtns() {
+        binding.apply {
             if (sourceArgs == "settings") {
-                text = resources.getString(R.string.update_address)
+                confirmBtn.text = resources.getString(R.string.update_address)
+                negativeBtn.text = resources.getString(R.string.delete_address)
                 disableConfirmBtn()
             } else {
-                text = resources.getString(R.string.add_address)
+                confirmBtn.text = resources.getString(R.string.add_address)
+                negativeBtn.text = resources.getString(R.string.cancel)
                 enableConfirmBtn()
             }
         }
+        addClickListener()
     }
 
     private fun enableConfirmBtn() {
@@ -66,7 +70,6 @@ class AddressDetailsFragment :
             isEnabled = true
             backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.orange)
         }
-        addClickListener()
     }
 
     private fun disableConfirmBtn() {
@@ -76,6 +79,7 @@ class AddressDetailsFragment :
                 ContextCompat.getColorStateList(requireContext(), R.color.dark_gray)
         }
     }
+
     private fun addTextWatchers() {
         binding.apply {
             countryET.addTextChangedListener {
@@ -124,8 +128,8 @@ class AddressDetailsFragment :
     }
 
     private fun addClickListener() {
-        binding.confirmBtn.setOnClickListener {
-            if (sourceArgs == "settings") {
+        if (sourceArgs == "settings") {
+            binding.confirmBtn.setOnClickListener {
                 addressStateFlow.value.let { address ->
                     Log.i(TAG, "addClickListener: updating address $address")
                     viewModel.updateAddress(
@@ -135,16 +139,19 @@ class AddressDetailsFragment :
                     )
                     addUpdateAddressStateListener()
                 }
-
-            } else {
-
             }
+            binding.negativeBtn.setOnClickListener {
+                showDeleteAddressDialog()
+            }
+
+        } else {
+
         }
     }
 
     private fun addUpdateAddressStateListener() {
-        collectLatestFlowOnLifecycle(viewModel.updateAddressState) {apiState ->
-            when(apiState) {
+        collectLatestFlowOnLifecycle(viewModel.updateAddressState) { apiState ->
+            when (apiState) {
                 is ApiState.Failure -> {
                     Log.i(TAG, "addUpdateAddressStateListener: failure: ${apiState.msg}")
                     Toast.makeText(
@@ -155,10 +162,12 @@ class AddressDetailsFragment :
                     binding.progressBar.visibility = View.GONE
                     enableConfirmBtn()
                 }
+
                 is ApiState.Loading -> {
                     binding.progressBar.visibility = View.VISIBLE
                     disableConfirmBtn()
                 }
+
                 is ApiState.Success -> {
                     Toast.makeText(
                         requireContext(),
@@ -168,6 +177,61 @@ class AddressDetailsFragment :
                     Navigation.findNavController(_view).navigateUp()
                 }
             }
+        }
+    }
+
+    private fun addDeleteAddressStateListener() {
+        collectLatestFlowOnLifecycle(viewModel.deleteAddressState) { apiState ->
+            when (apiState) {
+                is ApiState.Failure -> {
+                    Log.i(TAG, "addDeleteAddressStateListener: failure: ${apiState.msg}")
+                    Toast.makeText(
+                        requireContext(),
+                        "something went wrong please try again later",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    binding.progressBar.visibility = View.GONE
+                    enableConfirmBtn()
+                }
+
+                is ApiState.Loading -> {
+                    binding.progressBar.visibility = View.VISIBLE
+                    disableConfirmBtn()
+                }
+
+                is ApiState.Success -> {
+                    Toast.makeText(
+                        requireContext(),
+                        "address deleted successfully",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    Navigation.findNavController(_view).navigateUp()
+                }
+            }
+        }
+    }
+
+    private fun showDeleteAddressDialog() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(resources.getString(R.string.delete_address))
+            .setMessage(getString(R.string.delete_address_confirm))
+            .setNegativeButton(resources.getString(R.string.cancel)) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .setPositiveButton(resources.getString(R.string.confirm)) { dialog, _ ->
+                handleDeleteAction()
+                dialog.dismiss()
+            }
+            .show()
+    }
+
+    private fun handleDeleteAction() {
+        addressStateFlow.value.let {address ->
+            viewModel.deleteAddress(
+                customerId = address.customerId,
+                addressId = address.id
+            )
+            addDeleteAddressStateListener()
         }
     }
 }

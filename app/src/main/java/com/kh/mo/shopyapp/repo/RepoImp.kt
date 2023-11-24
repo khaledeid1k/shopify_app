@@ -409,6 +409,23 @@ class RepoImp private constructor(
         }
     }
 
+    override suspend fun deleteAddressOfCustomer(
+        customerId: Long,
+        addressId: Long
+    ): Flow<ApiState<Int>> {
+        return flow {
+            emit(ApiState.Loading)
+            remoteSource.deleteAddressOfCustomer(
+                customerId,
+                addressId
+            )
+            emit(ApiState.Success(1))
+        }.catch {
+            Log.i(TAG, "updateAddressOfCustomer: excep ${it}")
+            emit(ApiState.Failure(it.message.toString()))
+        }
+    }
+
     companion object {
         @Volatile
         private var instance: RepoImp? = null
