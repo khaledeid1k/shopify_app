@@ -78,6 +78,9 @@
         <action
             android:id="@+id/action_profileFragment_to_settingsFragment"
             app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_orderFragment"
+            app:destination="@id/orderFragment" />
     </fragment>
     <fragment
         android:id="@+id/brandProductsFragment"
@@ -127,4 +130,9 @@
         android:id="@+id/addressFragment"
         android:name="com.kh.mo.shopyapp.ui.address.AddressFragment"
         android:label="AddressFragment" />
+    <fragment
+        android:id="@+id/orderFragment"
+        android:name="com.kh.mo.shopyapp.ui.order.view.OrderFragment"
+        android:label="fragment_order"
+        tools:layout="@layout/fragment_order" />
 </navigation>

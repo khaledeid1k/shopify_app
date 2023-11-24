@@ -1,6 +1,5 @@
 package com.kh.mo.shopyapp.repo.mapper
 
-import com.kh.mo.shopyapp.model.ui.Address
 import com.kh.mo.shopyapp.model.entity.CustomerEntity
 import com.kh.mo.shopyapp.model.request.CustomerDataRequest
 import com.kh.mo.shopyapp.model.request.UserData
@@ -12,9 +11,12 @@ import com.kh.mo.shopyapp.model.response.create_customer.CustomerResponse
 import com.kh.mo.shopyapp.model.response.draft_order.DraftOrderResponse
 import com.kh.mo.shopyapp.model.response.login.Login
 import com.kh.mo.shopyapp.model.response.maincategory.MainCategoryResponse
+import com.kh.mo.shopyapp.model.response.order.OrdersResponse
+import com.kh.mo.shopyapp.model.ui.Address
 import com.kh.mo.shopyapp.model.ui.DraftOrder
 import com.kh.mo.shopyapp.model.ui.allproducts.Products
 import com.kh.mo.shopyapp.model.ui.maincategory.CustomCollection
+import com.kh.mo.shopyapp.model.ui.order.Order
 
 fun CustomerResponse.convertCustomerResponseToCustomerEntity(): CustomerEntity {
     return CustomerEntity(
@@ -48,24 +50,25 @@ fun AddressResponse.convertToAddressEntity() =
         phone = this.phone,
         state = this.province
     )
-fun BrandsResponse.convertToSmartCollection():List<SmartCollection>{
+
+fun BrandsResponse.convertToSmartCollection(): List<SmartCollection> {
 
     return this.smartCollections.map {
 
-        SmartCollection(it.title,it.image)
+        SmartCollection(it.title, it.image)
     }
 
 }
 
-fun MainCategoryResponse.convertToCustomCollection():List<CustomCollection>{
+fun MainCategoryResponse.convertToCustomCollection(): List<CustomCollection> {
 
     return this.customCollections?.map {
-        CustomCollection(it?.image,it?.title,it?.id)
+        CustomCollection(it?.image, it?.title, it?.id)
     } ?: emptyList()
 }
 
 
-fun AllProductsResponse.convertToAllProducts():List<Products>{
+fun AllProductsResponse.convertToAllProducts(): List<Products> {
 
     return this.products.map {
         Products(
@@ -88,4 +91,13 @@ fun DraftOrderResponse.convertDraftOrderResponseToDraftOrder(): DraftOrder {
         this.draft_order.customer.id
     )
 
+
+}
+
+fun OrdersResponse.convertToOrders(): List<Order> {
+    return this.orders?.map {
+        Order(
+            it.currency, it.totalPrice, it.customerResponse, it.lineItems,it.subtotalPrice
+        )
+    } ?: emptyList()
 }
