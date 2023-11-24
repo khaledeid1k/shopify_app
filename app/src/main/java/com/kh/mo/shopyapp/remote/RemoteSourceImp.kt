@@ -188,6 +188,9 @@ class RemoteSourceImp private constructor() : RemoteSource {
         updatedAddress: AddressUpdateRequest
     ) = Network.retrofitService.updateAddressOfCustomer(customerId, addressId, updatedAddress)
 
+    override suspend fun deleteAddressOfCustomer(customerId: Long, addressId: Long) =
+        Network.retrofitService.deleteAddressOfCustomer(customerId, addressId)
+
     companion object {
         @Volatile
         private var instance: RemoteSourceImp? = null

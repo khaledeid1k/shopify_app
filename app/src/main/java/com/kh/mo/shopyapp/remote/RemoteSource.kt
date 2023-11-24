@@ -18,6 +18,7 @@ import com.kh.mo.shopyapp.model.response.login.Login
 import com.kh.mo.shopyapp.model.response.maincategory.MainCategoryResponse
 import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
+import retrofit2.http.Path
 
 interface RemoteSource {
 
@@ -50,4 +51,8 @@ interface RemoteSource {
         addressId: Long,
         updatedAddress: AddressUpdateRequest
     ): Response<AddressResponse>
+    suspend fun deleteAddressOfCustomer(
+        customerId: Long,
+        addressId: Long
+    )
 }
