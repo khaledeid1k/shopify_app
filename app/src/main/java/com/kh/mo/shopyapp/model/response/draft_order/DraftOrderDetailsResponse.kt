@@ -19,7 +19,6 @@ data class DraftOrderDetailsResponse(
     val order_id: Any?,
     val payment_terms: Any?,
     val shipping_address: Any?,
-    val shipping_line: Any?,
     val status: String?,
     val subtotal_price: String?,
     val tags: String?,

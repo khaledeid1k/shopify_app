@@ -4,6 +4,7 @@ import android.util.Log
 import com.kh.mo.shopyapp.local.LocalSource
 import com.kh.mo.shopyapp.model.ui.Address
 import com.kh.mo.shopyapp.model.entity.CustomerEntity
+import com.kh.mo.shopyapp.model.entity.LineItemEntity
 import com.kh.mo.shopyapp.model.request.DraftOrderRequest
 import com.kh.mo.shopyapp.model.request.UserData
 import com.kh.mo.shopyapp.model.response.ads.DiscountCodeResponse
@@ -64,13 +65,16 @@ class RepoImp private constructor(
                 emit(ApiState.Failure(favorite.body().toString()))
             } else {
                 favorite.body()?.let { responseBody ->
+                    Log.d(TAG, "createFavoriteDraft: $responseBody")
                     emit(ApiState.Success(responseBody.convertDraftOrderResponseToDraftOrder()))
+
                 } ?: run {
                     emit(ApiState.Failure("Api Error"))
                 }
             }
         }.catch {
-            emit(ApiState.Failure(it.message!!))
+            emit(ApiState.Failure(it.message.toString()))
+            Log.d(TAG, "createFavoriteDraft: ${it.message.toString()}")
         }
 
     }
@@ -375,6 +379,34 @@ class RepoImp private constructor(
         }.catch {
             emit(ApiState.Failure(it.message.toString()))
         }
+    }
+
+    override suspend fun getAllLinetItems(): List<LineItemEntity>{
+        return localSource.getAllLinetItems()
+    }
+
+    override suspend fun deleteLinetItems(productId: Long) {
+        localSource.deleteLinetItems(productId)
+    }
+
+    override suspend fun saveLinetItems(lineItemEntity: LineItemEntity) {
+        localSource.saveLinetItems(lineItemEntity)
+    }
+
+    override fun saveFavoriteDraftId(draftId: Long) {
+        localSource.saveFavoriteDraftId(draftId)
+    }
+
+    override fun saveCustomerId(customerId: Long) {
+        localSource.saveCustomerId(customerId)
+    }
+
+    override fun getFavoriteDraftId(): Long {
+        return localSource.getFavoriteDraftId()
+    }
+
+    override fun getCustomerId(): Long {
+      return  localSource.getCustomerId()
     }
 
     companion object {

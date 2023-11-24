@@ -12,4 +12,9 @@ object Constants {
     const val CURRENCY_DOCUMENT_ID = "CurrencyCollectionID"
     const val ProductInfoFragment = "ProductInfoFragment"
     const val ProductDetailsFragment = "ProductDetailsFragment"
+    const val DATA_BASE="DATA_BASE"
+    const val PREFERENCE_NAME = "PREFERENCE_NAME"
+    const val CUSTOMER_ID = "CUSTOMER_ID"
+    const val DRAFT_ID = "DRAFT_ID"
+
 }

@@ -84,24 +84,30 @@ class SignUpViewModel(private val repo: Repo) : ViewModel() {
         }
     }
     fun saveFavoriteDraftIdInFireBase(customerId:Long,favoriteDraft:Long){
+
+
         viewModelScope.launch {
+            saveCustomerIdAndFavoriteDraftId(customerId, favoriteDraft)
             repo.saveFavoriteDraftIdInFireBase(customerId,favoriteDraft).collect{
                 when(it){
                     is ApiState.Failure -> {_favoriteDraftIdInFireBase.value=ApiState.Failure(it.msg)}
                     is ApiState.Loading -> {_favoriteDraftIdInFireBase.value=ApiState.Loading }
-                    is ApiState.Success ->{_favoriteDraftIdInFireBase.value=ApiState.Success(it.data)}
+                    is ApiState.Success ->{
+                        _favoriteDraftIdInFireBase.value=ApiState.Success(it.data)
+                    }
                 }
             }
         }
 
     }
+
+    fun saveCustomerIdAndFavoriteDraftId(customerId:Long,favoriteDraft:Long){
+        repo.saveCustomerId(customerId)
+        repo.saveFavoriteDraftId(favoriteDraft)
+    }
     fun validateUserName(userName: String) = repo.validateUserName(userName)
-
-
     fun validateEmail(email: String): Validation = repo.validateEmail(email)
-
     fun validatePassword(password: String) = repo.validatePassword(password)
-
     fun validateConfirmPassword(password: String, rePassword: String) =
         repo.validateConfirmPassword(password, rePassword)
 

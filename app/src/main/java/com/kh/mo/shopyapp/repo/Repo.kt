@@ -2,6 +2,7 @@ package com.kh.mo.shopyapp.repo
 
 import com.kh.mo.shopyapp.model.ui.Address
 import com.kh.mo.shopyapp.model.entity.CustomerEntity
+import com.kh.mo.shopyapp.model.entity.LineItemEntity
 import com.kh.mo.shopyapp.model.entity.Validation
 import com.kh.mo.shopyapp.model.request.DraftOrderRequest
 import com.kh.mo.shopyapp.model.request.UserData
@@ -41,4 +42,13 @@ interface Repo {
     suspend fun filterProductsBySubCollection(collectionId:Long,productType:String): Flow<ApiState<AllProductsResponse>>
 
     suspend fun getAddressesOfCustomer(customerId: Long): Flow<ApiState<List<Address>>>
+
+    suspend fun getAllLinetItems(): List<LineItemEntity>
+    suspend fun deleteLinetItems(productId:Long)
+    suspend fun saveLinetItems(lineItemEntity: LineItemEntity)
+    fun saveFavoriteDraftId(draftId:Long )
+    fun saveCustomerId(customerId:Long )
+    fun  getFavoriteDraftId( ):Long
+    fun getCustomerId( ):Long
+
 }

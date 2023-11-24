@@ -2,6 +2,7 @@ package com.kh.mo.shopyapp.repo.mapper
 
 import com.kh.mo.shopyapp.model.ui.Address
 import com.kh.mo.shopyapp.model.entity.CustomerEntity
+import com.kh.mo.shopyapp.model.entity.LineItemEntity
 import com.kh.mo.shopyapp.model.request.CustomerDataRequest
 import com.kh.mo.shopyapp.model.request.UserData
 import com.kh.mo.shopyapp.model.response.address.AddressResponse
@@ -48,24 +49,25 @@ fun AddressResponse.convertToAddressEntity() =
         phone = this.phone,
         state = this.province
     )
-fun BrandsResponse.convertToSmartCollection():List<SmartCollection>{
+
+fun BrandsResponse.convertToSmartCollection(): List<SmartCollection> {
 
     return this.smartCollections.map {
 
-        SmartCollection(it.title,it.image)
+        SmartCollection(it.title, it.image)
     }
 
 }
 
-fun MainCategoryResponse.convertToCustomCollection():List<CustomCollection>{
+fun MainCategoryResponse.convertToCustomCollection(): List<CustomCollection> {
 
     return this.customCollections?.map {
-        CustomCollection(it?.image,it?.title,it?.id)
+        CustomCollection(it?.image, it?.title, it?.id)
     } ?: emptyList()
 }
 
 
-fun AllProductsResponse.convertToAllProducts():List<Products>{
+fun AllProductsResponse.convertToAllProducts(): List<Products> {
 
     return this.products.map {
         Products(
@@ -89,3 +91,15 @@ fun DraftOrderResponse.convertDraftOrderResponseToDraftOrder(): DraftOrder {
     )
 
 }
+
+
+fun DraftOrderResponse.convertDraftOrderResponseToLineItemEntity(): LineItemEntity {
+    return draft_order!!.line_items!![0].let{
+        LineItemEntity(
+            product_id= it.product_id!!,
+            variant_id=  it.variant_id!!
+        )
+    }
+    }
+
+

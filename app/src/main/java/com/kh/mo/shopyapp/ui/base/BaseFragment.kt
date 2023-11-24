@@ -47,7 +47,7 @@ abstract class BaseFragment<DB : ViewDataBinding, VM : ViewModel> : Fragment() {
             BaseViewModelFactory(
                 RepoImp.getRepoImpInstance(
                     RemoteSourceImp.getRemoteSourceImpInstance(),
-                    LocalSourceImp.getLocalSourceImpInstance()
+                    LocalSourceImp.getLocalSourceImpInstance(requireContext())
 
                 )
             )
