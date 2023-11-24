@@ -13,13 +13,13 @@
         android:layout_marginStart="@dimen/_10sdp"
         android:src="@drawable/back"
 
-        app:layout_constraintBottom_toBottomOf="@+id/search_text_input_layout"
-        app:layout_constraintEnd_toStartOf="@+id/search_text_input_layout"
+        app:layout_constraintBottom_toBottomOf="@+id/favorites_list"
+        app:layout_constraintEnd_toStartOf="@+id/favorites_list"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/search_text_input_layout" />
+        app:layout_constraintTop_toTopOf="@+id/favorites_list" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/search_text_input_layout"
+        android:id="@+id/favorites_list"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginVertical="@dimen/_10sdp"
@@ -53,13 +53,13 @@
         android:layout_marginEnd="@dimen/_10sdp"
         android:src="@drawable/filter"
 
-        app:layout_constraintBottom_toBottomOf="@+id/search_text_input_layout"
+        app:layout_constraintBottom_toBottomOf="@+id/favorites_list"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/search_text_input_layout"
-        app:layout_constraintTop_toTopOf="@+id/search_text_input_layout" />
+        app:layout_constraintStart_toEndOf="@+id/favorites_list"
+        app:layout_constraintTop_toTopOf="@+id/favorites_list" />
 
     <androidx.recyclerview.widget.RecyclerView
-        app:layout_constraintTop_toBottomOf="@+id/search_text_input_layout"
+        app:layout_constraintTop_toBottomOf="@+id/favorites_list"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_margin="@dimen/_10sdp"

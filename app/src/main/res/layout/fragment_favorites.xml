@@ -23,7 +23,7 @@
             android:layout_marginTop="@dimen/_20sdp" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/search_text_input_layout"
+            android:id="@+id/favorites_list"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:hintEnabled="false"
@@ -33,7 +33,9 @@
             app:layout_constraintTop_toBottomOf="@+id/favourite_text"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:spanCount="2"
-            tools:listitem="@layout/item_favorite"></androidx.recyclerview.widget.RecyclerView>
+            tools:listitem="@layout/item_favorite">
+
+        </androidx.recyclerview.widget.RecyclerView>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -15,6 +15,7 @@ import com.kh.mo.shopyapp.model.response.draft_order.DraftOrderResponse
 import com.kh.mo.shopyapp.model.response.login.Login
 import com.kh.mo.shopyapp.model.response.maincategory.MainCategoryResponse
 import com.kh.mo.shopyapp.model.ui.DraftOrder
+import com.kh.mo.shopyapp.model.ui.Favorite
 import com.kh.mo.shopyapp.model.ui.allproducts.Product
 import com.kh.mo.shopyapp.model.ui.maincategory.CustomCollection
 
@@ -161,3 +162,11 @@ fun List<FavoriteEntity>.convertFavoritesEntityToDraftOrderRequest(customerId: L
     )
 
 }
+
+fun List<FavoriteEntity>.convertFavoritesEntityToFavorites(): List<Favorite> {
+    return map {
+        Favorite(it.id,it.image.src,it.title, it.variants[0].price!!)
+    }
+
+}
+

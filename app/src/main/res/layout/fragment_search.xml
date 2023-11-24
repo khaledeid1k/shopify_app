@@ -16,7 +16,7 @@
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="@dimen/_20sdp"/>
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/search_text_input_layout"
+        android:id="@+id/favorites_list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:hintEnabled="false"
