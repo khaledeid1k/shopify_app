@@ -42,6 +42,7 @@ class MapFragment : BaseFragment<FragmentMapBinding, MapViewModel>() {
 
         initMap()
         addMapEventReceiver()
+        binding.currentLocationBtn.setOnClickListener { handleLocationStateAndMarkCurrentLocation() }
     }
 
     private fun initMap() {
