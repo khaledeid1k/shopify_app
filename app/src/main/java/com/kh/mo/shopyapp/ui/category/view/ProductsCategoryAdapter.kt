@@ -4,6 +4,8 @@ import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.databinding.library.baseAdapters.BR.listener
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
@@ -13,10 +15,9 @@ import com.kh.mo.shopyapp.R
 import com.kh.mo.shopyapp.databinding.ItemProductBinding
 import com.kh.mo.shopyapp.model.ui.allproducts.Product
 
-class SubCategoriesAdapter(private var context: Context,val onclickFavorite:(position:Int)->Unit):
-    ListAdapter<Product, SubCategoriesAdapter.SubCategoriseVH>(RecyclerDiffUtilSubCategoriesItem()) {
+class ProductsCategoryAdapter(private val onclickFavorite:ProductsCategoryListener):
+    ListAdapter<Product, ProductsCategoryAdapter.SubCategoriseVH>(ProductsDiffUtil()) {
     private lateinit var binding: ItemProductBinding
-
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SubCategoriseVH {
@@ -28,39 +29,44 @@ class SubCategoriesAdapter(private var context: Context,val onclickFavorite:(pos
 
     override fun onBindViewHolder(holder: SubCategoriseVH, position: Int) {
         val currentItem = getItem(position)
-        holder.onBind(currentItem)
+        holder.onBind(currentItem,onclickFavorite)
 
-        binding.imageFav.setOnClickListener {
-            onclickFavorite(position)
+
         }
-    }
 
-    inner class SubCategoriseVH(private var binding: ItemProductBinding): ViewHolder(binding.root){
-        fun onBind(currentItem: Product) {
+
+
+    inner class SubCategoriseVH( val binding: ItemProductBinding) :
+        ViewHolder(binding.root) {
+        fun onBind(currentItem: Product, productsCategoryListener: ProductsCategoryListener) {
             binding.apply {
-                tvNameProductItem.text = currentItem.title
-                Glide.with(context)
-                    .load(currentItem.image?.src)
-                    .placeholder(R.drawable.placeholder_products)
-                    .into(imageProductItem)
-                tvPriceProductItem.text=currentItem.variants?.get(0)?.price.toString()
-                Log.i("HomeFragment", currentItem.image?.src.toString())
-
+                item = currentItem
+                listener = productsCategoryListener
             }
-
         }
-    }
-}
-class RecyclerDiffUtilSubCategoriesItem : DiffUtil.ItemCallback<Product>() {
-    override fun areItemsTheSame(
-        oldItem: Product, newItem: Product
-    ): Boolean {
-        return oldItem == newItem
+
+
+
     }
 
-    override fun areContentsTheSame(
-        oldItem: Product, newItem: Product
-    ): Boolean {
-        return oldItem == newItem
+    interface ProductsCategoryListener {
+
+        fun onClickFavouriteIcon(product: Product)
     }
+
+
+    class ProductsDiffUtil : DiffUtil.ItemCallback<Product>() {
+        override fun areItemsTheSame(oldItem: Product, newItem: Product): Boolean {
+            return oldItem.id == newItem.id
+        }
+
+        override fun areContentsTheSame(oldItem: Product, newItem: Product): Boolean {
+            return oldItem.isFavorite == newItem.isFavorite
+        }
+
+    }
+
+
+
 }
+

@@ -39,9 +39,9 @@ interface Repo {
         discountCodeId: String
     ): Flow<ApiState<DiscountCodeResponse>>
     suspend fun getProductsOfSpecificBrand(brandName:String): Flow<ApiState<AllProductsResponse>>
-    suspend fun getAllProducts(): Flow<ApiState<AllProductsResponse>>
+    suspend fun getAllProducts(): Flow<ApiState<List<Product>>>
     suspend fun getProductsByCollection(collectionId:Long): Flow<ApiState<List<Product>>>
-    suspend fun filterProductsBySubCollection(collectionId:Long,productType:String): Flow<ApiState<AllProductsResponse>>
+    suspend fun filterProductsBySubCollection(collectionId:Long,productType:String): Flow<ApiState<List<Product>>>
     suspend fun getAddressesOfCustomer(customerId: Long): Flow<ApiState<List<Address>>>
 
     suspend fun getAllLinetItems(): List<LineItemEntity>

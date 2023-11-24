@@ -37,10 +37,6 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding, SignUpViewModel>() {
         checkConfirmPasswordValidation()
 
         createCustomer()
-        viewModel.createUser(UserData(
-            userName = "asda", email = "rrrr@gmail.com", password = "123456"
-        ))
-
         observeCreateFavoriteDraft()
         observeSaveFavoriteDraftIdInFireBase()
         observeCreateCustomerResult()
@@ -162,8 +158,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding, SignUpViewModel>() {
         viewModel.singUpWithFireBase(
             UserData(
                 email = data.email,
-                password ="123456"
-                    //binding.passwordValue.text?.trim().toString()
+                password =binding.passwordValue.text?.trim().toString()
             )
         )
     }

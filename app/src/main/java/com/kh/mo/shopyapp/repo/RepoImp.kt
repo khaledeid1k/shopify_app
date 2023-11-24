@@ -289,7 +289,7 @@ class RepoImp private constructor(
         }
     }
 
-    override suspend fun getAllProducts(): Flow<ApiState<AllProductsResponse>> {
+    override suspend fun getAllProducts(): Flow<ApiState<List<Product>>> {
         return flow {
 
             emit(ApiState.Loading)
@@ -297,7 +297,10 @@ class RepoImp private constructor(
                 remoteSource.getAllProducts()
             if (allProducts.isSuccessful) {
                 remoteSource.getAllProducts().body()
-                    ?.let { emit(ApiState.Success(it)) }
+                    ?.let { emit(ApiState.Success(it.convertToAllProducts()
+                        .map { product->
+                            changeProductFavoriteValue(product)
+                        })) }
             } else {
                 emit(ApiState.Failure(allProducts.message()))
             }
@@ -330,14 +333,17 @@ class RepoImp private constructor(
     override suspend fun filterProductsBySubCollection(
         collectionId: Long,
         productType: String
-    ): Flow<ApiState<AllProductsResponse>> {
+    ): Flow<ApiState<List<Product>>> {
         return flow {
             emit(ApiState.Loading)
             val productsSubCategory =
                 remoteSource.filterProductsBySubCollection(collectionId,productType)
             if (productsSubCategory.isSuccessful) {
                 remoteSource.filterProductsBySubCollection(collectionId,productType).body()
-                    ?.let { emit(ApiState.Success(it)) }
+                    ?.let { emit(ApiState.Success(it.convertToAllProducts()
+                        .map { product->
+                            changeProductFavoriteValue(product)
+                        })) }
             } else {
                 emit(ApiState.Failure(productsSubCategory.message()))
             }
@@ -446,6 +452,17 @@ class RepoImp private constructor(
       return  localSource.getCustomerId()
     }
 
+    private suspend fun changeProductFavoriteValue(product: Product): Product {
+        checkProductInFavorite(product.id).collect {
+            if (it is ApiState.Success) {
+                if (it.data != 0) {
+                    product.isFavorite = true
+                }
+            }
+        }
+        return product
+    }
+
     companion object {
         @Volatile
         private var instance: RepoImp? = null
@@ -457,18 +474,6 @@ class RepoImp private constructor(
 
             }
         }
-    }
-
-
-    private suspend fun changeProductFavoriteValue(product: Product): Product {
-        checkProductInFavorite(product.id).collect {
-            if (it is ApiState.Success) {
-                if (it.data != 0) {
-                    product.isFavorite = true
-                }
-            }
-        }
-        return product
     }
 }
 

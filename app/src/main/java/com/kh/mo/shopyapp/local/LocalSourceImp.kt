@@ -57,7 +57,7 @@ class LocalSourceImp private constructor(context: Context):LocalSource {
     }
 
     override suspend fun checkProductInFavorite(productId: Long): Int {
-       return checkProductInFavorite(productId)
+       return shopyDao.checkProductInFavorite(productId)
     }
 
     override fun saveCustomerId(customerId:Long ) {

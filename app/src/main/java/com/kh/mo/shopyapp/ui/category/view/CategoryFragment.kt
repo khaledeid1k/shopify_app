@@ -17,6 +17,7 @@ import com.kh.mo.shopyapp.model.ui.allproducts.Product
 import com.kh.mo.shopyapp.remote.ApiState
 import com.kh.mo.shopyapp.ui.base.BaseFragment
 import com.kh.mo.shopyapp.ui.category.viewmodel.CategoryViewModel
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 
@@ -24,7 +25,7 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding, CategoryViewModel
     private val TAG = "TAG CategoryFragment"
     override val layoutIdFragment = R.layout.fragment_category
     override fun getViewModelClass() = CategoryViewModel::class.java
-    private lateinit var subCategoriesAdapter: SubCategoriesAdapter
+    private lateinit var productsCategoryAdapter: ProductsCategoryAdapter
     private var categoryName = ""
     private var productType = ""
     private var collectionId: Long = 0L
@@ -40,8 +41,7 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding, CategoryViewModel
         collectionId = CategoryFragmentArgs.fromBundle(requireArguments()).collectionId
 
 
-        Log.i(TAG, collectionId.toString())
-        Log.i(TAG, categoryName)
+
 
         viewModel.getCollectionProducts(collectionId)
         viewModel.filterProductsBySubCollection(collectionId, productType)
@@ -151,15 +151,16 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding, CategoryViewModel
 
     private fun getSubCategories() {
         lifecycleScope.launch {
-            viewModel.product.collect {
-                when (it) {
+            viewModel.product.collect { apiState ->
+                when (apiState) {
                     is ApiState.Failure -> {}
                     is ApiState.Loading -> {}
                     is ApiState.Success -> {
-                        val data = it.data.distinctBy { it.productType }
-                        binding.firstSubcategory.setText(data.get(0).productType)
-                        binding.secondSubcategory.setText(data.get(1).productType)
-                        binding.thirdSubcategory.setText(data.get(2).productType)
+                        Log.d(TAG, "getSubCategories: ${apiState.data}")
+                        val data = apiState.data.distinctBy { it.productType }
+                        binding.firstSubcategory.text = data[0].productType
+                        binding.secondSubcategory.text = data[1].productType
+                        binding.thirdSubcategory.text = data[2].productType
                     }
                 }
             }
@@ -175,6 +176,7 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding, CategoryViewModel
                     is ApiState.Success -> {
                         addAdapterToCategories(it.data)
                         productList = it.data
+                        Log.d(TAG, "getCollectionProducts: ${it.data}")
 
                     }
                 }
@@ -191,6 +193,7 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding, CategoryViewModel
                     is ApiState.Failure -> {}
                     is ApiState.Loading -> {}
                     is ApiState.Success -> {
+                        Log.d(TAG, "filterProductsBySubCollection: ${it.data}")
                         addAdapterToCategories(it.data)
 
 
@@ -204,11 +207,9 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding, CategoryViewModel
 
 
     fun addAdapterToCategories(list: List<Product>){
-        subCategoriesAdapter = SubCategoriesAdapter(requireContext()){
-
-        }
-        subCategoriesAdapter.submitList(list)
-        binding.recyclerProductsCategory.adapter = subCategoriesAdapter
+        productsCategoryAdapter = ProductsCategoryAdapter(viewModel)
+        productsCategoryAdapter.submitList(list)
+        binding.recyclerProductsCategory.adapter = productsCategoryAdapter
     }
 
 }

@@ -8,22 +8,28 @@ import com.kh.mo.shopyapp.model.ui.allproducts.Product
 import com.kh.mo.shopyapp.remote.ApiState
 import com.kh.mo.shopyapp.repo.Repo
 import com.kh.mo.shopyapp.repo.mapper.convertToAllProducts
+import com.kh.mo.shopyapp.ui.category.view.ProductsCategoryAdapter
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import java.text.FieldPosition
 
-class CategoryViewModel(private var _irepo: Repo) : ViewModel() {
+class CategoryViewModel(private var _irepo: Repo) : ViewModel(),
+    ProductsCategoryAdapter.ProductsCategoryListener {
     private val TAG = "TAG CategoryViewModel"
     private val _product = MutableStateFlow<ApiState<List<Product>>>(ApiState.Loading)
     val product: StateFlow<ApiState<List<Product>>> = _product
 
+
     private val _productCollection = MutableStateFlow<ApiState<List<Product>>>(ApiState.Loading)
     val productCollection: StateFlow<ApiState<List<Product>>> = _productCollection
 
-    private val _filterProductCollection = MutableStateFlow<ApiState<List<Product>>>(ApiState.Loading)
+    private val _filterProductCollection =
+        MutableStateFlow<ApiState<List<Product>>>(ApiState.Loading)
     val filterProductCollection: StateFlow<ApiState<List<Product>>> = _filterProductCollection
-
 
 
     init {
@@ -31,24 +37,10 @@ class CategoryViewModel(private var _irepo: Repo) : ViewModel() {
 
     }
 
-    fun getSubCategories() {
+    private fun getSubCategories() {
         viewModelScope.launch(Dispatchers.IO) {
             _irepo.getAllProducts().collect {
-                when (it) {
-                    is ApiState.Failure -> {
-                        Log.i(TAG, "products:Fail")
-                    }
-
-                    is ApiState.Loading -> {
-                        _product.value = ApiState.Loading
-                        Log.i(TAG, "products:Loading")
-                    }
-
-                    is ApiState.Success -> {
-                        Result.success(it.data)
-                        _product.value = ApiState.Success(it.data.convertToAllProducts())
-                    }
-                }
+                _product.value=it
             }
         }
     }
@@ -56,47 +48,48 @@ class CategoryViewModel(private var _irepo: Repo) : ViewModel() {
     fun getCollectionProducts(collectionId: Long) {
         viewModelScope.launch(Dispatchers.IO) {
             _irepo.getProductsByCollection(collectionId).collect {
-                _productCollection.value=it
+                _productCollection.value = it
             }
         }
     }
 
 
-    fun filterProductsBySubCollection(collectionId: Long,productType:String) {
+    fun filterProductsBySubCollection(collectionId: Long, productType: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            _irepo.filterProductsBySubCollection(collectionId,productType).collect {
-                when (it) {
-                    is ApiState.Failure -> {
-                        Log.i(TAG, "products:Fail")
-                    }
-
-                    is ApiState.Loading -> {
-                        _filterProductCollection.value = ApiState.Loading
-                        Log.i(TAG, "products:Loading")
-                    }
-
-                    is ApiState.Success -> {
-                        Result.success(it.data)
-                        _filterProductCollection.value = ApiState.Success(it.data.convertToAllProducts())
-
-                    }
-                }
+            _irepo.filterProductsBySubCollection(collectionId, productType).collect {
+                _filterProductCollection.value = it
             }
         }
     }
 
-    fun saveFavorite(product: Product){
+    private fun saveFavorite(product: Product) {
         viewModelScope.launch {
             _irepo.saveFavorite(product)
         }
     }
 
-    fun deleteFavorite(productId: Long){
+    private fun deleteFavorite(productId: Long) {
         viewModelScope.launch {
             _irepo.deleteFavorite(productId)
         }
     }
 
+    override fun onClickFavouriteIcon(product: Product) {
+        viewModelScope.launch {
+            _irepo.checkProductInFavorite(product.id).collect {
+                if (it is ApiState.Success) {
+                    if (it.data != 0) {
+                        deleteFavorite(product.id)
+
+                    }else{
+                        saveFavorite(product)
+                    }
+                }
+            }
+        }
+
+
+    }
 
 
 }
