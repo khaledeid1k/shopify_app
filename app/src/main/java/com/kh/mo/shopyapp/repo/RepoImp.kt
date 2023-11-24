@@ -392,6 +392,26 @@ class RepoImp private constructor(
         }
     }
 
+    override suspend fun backUpDraftFavorite(draftOrderRequest: DraftOrderRequest,draftFavoriteId: Long): Flow<ApiState<String>> {
+        return flow {
+            emit(ApiState.Loading)
+            val backUpDraftFavorite =remoteSource.backUpDraftFavorite(draftOrderRequest,draftFavoriteId)
+            if (!backUpDraftFavorite.isSuccessful) {
+                emit(ApiState.Failure(backUpDraftFavorite.body().toString()))
+            } else {
+                backUpDraftFavorite.body()?.let {
+                    emit(ApiState.Success("back Up Data successfully "))
+
+                } ?: run {
+                    emit(ApiState.Failure("Api Error"))
+                }
+            }
+        }.catch {
+            emit(ApiState.Failure(it.message.toString()))
+            Log.d(TAG, "createFavoriteDraft: ${it.message.toString()}")
+        }
+    }
+
     override suspend fun getAllLinetItems(): List<LineItemEntity>{
         return localSource.getAllLinetItems()
     }

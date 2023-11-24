@@ -10,12 +10,14 @@ import com.kh.mo.shopyapp.model.request.UserData
 import com.kh.mo.shopyapp.model.response.ads.DiscountCodeResponse
 import com.kh.mo.shopyapp.model.response.allproducts.AllProductsResponse
 import com.kh.mo.shopyapp.model.response.barnds.BrandsResponse
+import com.kh.mo.shopyapp.model.response.draft_order.DraftOrderResponse
 import com.kh.mo.shopyapp.model.response.maincategory.MainCategoryResponse
 import com.kh.mo.shopyapp.model.ui.DraftOrder
 import com.kh.mo.shopyapp.model.ui.Review
 import com.kh.mo.shopyapp.model.ui.allproducts.Product
 import com.kh.mo.shopyapp.remote.ApiState
 import kotlinx.coroutines.flow.Flow
+import retrofit2.Response
 
 interface Repo {
     suspend fun singUpWithFireBase(userData: UserData): Flow<ApiState<String>>
@@ -43,6 +45,7 @@ interface Repo {
     suspend fun getProductsByCollection(collectionId:Long): Flow<ApiState<List<Product>>>
     suspend fun filterProductsBySubCollection(collectionId:Long,productType:String): Flow<ApiState<List<Product>>>
     suspend fun getAddressesOfCustomer(customerId: Long): Flow<ApiState<List<Address>>>
+    suspend fun backUpDraftFavorite(draftOrderRequest: DraftOrderRequest,draftFavoriteId: Long): Flow<ApiState<String>>
 
     suspend fun getAllLinetItems(): List<LineItemEntity>
     suspend fun deleteLinetItems(productId:Long)

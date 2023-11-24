@@ -14,6 +14,7 @@ import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -58,4 +59,9 @@ interface Services {
     suspend fun getAddressesOfCustomer(
         @Path("customerId") customerId: Long
     ): Response<AddressesResponse>
+
+    @PUT("draft_orders/{draftFavoriteId}.json")
+    suspend fun backUpDraftFavorite(@Body draftOrderRequest: DraftOrderRequest,
+        @Path("draftFavoriteId") draftFavoriteId: Long
+    ): Response<DraftOrderResponse>
 }

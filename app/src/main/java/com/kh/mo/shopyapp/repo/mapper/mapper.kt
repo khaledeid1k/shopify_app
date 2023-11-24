@@ -1,9 +1,8 @@
 package com.kh.mo.shopyapp.repo.mapper
 
 import com.kh.mo.shopyapp.model.entity.*
+import com.kh.mo.shopyapp.model.request.*
 import com.kh.mo.shopyapp.model.ui.Address
-import com.kh.mo.shopyapp.model.request.CustomerDataRequest
-import com.kh.mo.shopyapp.model.request.UserData
 import com.kh.mo.shopyapp.model.response.address.AddressResponse
 import com.kh.mo.shopyapp.model.response.allproducts.AllProductsResponse
 import com.kh.mo.shopyapp.model.response.allproducts.ImageResponse
@@ -108,24 +107,29 @@ fun DraftOrderResponse.convertDraftOrderResponseToLineItemEntity(): LineItemEnti
 
 fun Product.convertProductToFavoriteEntity(): FavoriteEntity {
     return FavoriteEntity(
-        id, images.convertImagesToImagesEntity(),
+        id,
+        images.convertImagesToImagesEntity(),
         productType,
         image.convertImageToImageEntity(),
         title,
-        variants.convertVariantsToVariantsEntity()
-        , options.convertOptionsToOptionsEntity(), vendor, status
+        variants.convertVariantsToVariantsEntity(),
+        options.convertOptionsToOptionsEntity(),
+        vendor,
+        status
     )
 }
 
-fun List<ImageResponse>.convertImagesToImagesEntity():List<ImageEntity>{
+fun List<ImageResponse>.convertImagesToImagesEntity(): List<ImageEntity> {
     return map {
         it.convertImageToImageEntity()
     }
 }
-fun ImageResponse.convertImageToImageEntity():ImageEntity{
+
+fun ImageResponse.convertImageToImageEntity(): ImageEntity {
     return ImageEntity(src)
 }
-fun List<VariantResponse>.convertVariantsToVariantsEntity():List<VariantEntity> {
+
+fun List<VariantResponse>.convertVariantsToVariantsEntity(): List<VariantEntity> {
     return map {
         VariantEntity(
             it.id,
@@ -136,10 +140,24 @@ fun List<VariantResponse>.convertVariantsToVariantsEntity():List<VariantEntity> 
         )
     }
 }
-fun List<OptionResponse>.convertOptionsToOptionsEntity():List<OptionEntity> {
+
+fun List<OptionResponse>.convertOptionsToOptionsEntity(): List<OptionEntity> {
     return map {
         OptionEntity(
             it.values
         )
     }
+}
+
+
+fun List<FavoriteEntity>.convertFavoritesEntityToDraftOrderRequest(customerId: Long): DraftOrderRequest {
+  return  DraftOrderRequest(
+        DraftOrderDetailsRequest(
+            map {
+                LineItems(product_id = it.id.toString(), variant_id = it.variants[0].id)
+            },
+            CustomerDraftRequest(customerId)
+        )
+    )
+
 }

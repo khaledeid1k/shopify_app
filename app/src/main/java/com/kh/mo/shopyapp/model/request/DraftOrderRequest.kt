@@ -22,7 +22,7 @@ data class LineItems(
     val price: Double = 0.0,
     val title: String? = null,
     val product_id: String = "",
-    val variant_id: Int? ,
+    val variant_id: Long? ,
 
     )
 

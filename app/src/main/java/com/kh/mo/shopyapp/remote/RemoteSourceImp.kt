@@ -79,6 +79,10 @@ class RemoteSourceImp private constructor() : RemoteSource {
        return network.createFavoriteDraft(draftOrderRequest)
     }
 
+    override suspend fun backUpDraftFavorite(draftOrderRequest: DraftOrderRequest,draftFavoriteId: Long): Response<DraftOrderResponse> {
+        return network.backUpDraftFavorite(draftOrderRequest,draftFavoriteId)
+    }
+
 
     override suspend fun createCustomer(customerDataRequest: CustomerDataRequest): Response<CustomerResponse> {
         return network.createCustomer(CustomerRequest(customerDataRequest))

@@ -16,6 +16,7 @@ import com.kh.mo.shopyapp.model.response.login.Login
 import com.kh.mo.shopyapp.model.response.maincategory.MainCategoryResponse
 import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
+import retrofit2.http.Path
 
 interface RemoteSource {
 
@@ -24,8 +25,7 @@ interface RemoteSource {
     suspend fun logout()
     fun checkIsUserLogin():Boolean
     suspend fun createFavoriteDraft(draftOrderRequest: DraftOrderRequest): Response<DraftOrderResponse>
-
-    suspend fun getAllBrands(): Response<BrandsResponse>
+    suspend fun backUpDraftFavorite(draftOrderRequest: DraftOrderRequest,draftFavoriteId: Long): Response<DraftOrderResponse>    suspend fun getAllBrands(): Response<BrandsResponse>
     suspend fun getMainCategories(): Response<MainCategoryResponse>
     suspend fun getDiscountCode(
         priceRuleId: String,
