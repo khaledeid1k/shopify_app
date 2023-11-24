@@ -1,12 +1,14 @@
 package com.kh.mo.shopyapp.repo.mapper
 
+import com.kh.mo.shopyapp.model.entity.*
 import com.kh.mo.shopyapp.model.ui.Address
-import com.kh.mo.shopyapp.model.entity.CustomerEntity
-import com.kh.mo.shopyapp.model.entity.LineItemEntity
 import com.kh.mo.shopyapp.model.request.CustomerDataRequest
 import com.kh.mo.shopyapp.model.request.UserData
 import com.kh.mo.shopyapp.model.response.address.AddressResponse
 import com.kh.mo.shopyapp.model.response.allproducts.AllProductsResponse
+import com.kh.mo.shopyapp.model.response.allproducts.ImageResponse
+import com.kh.mo.shopyapp.model.response.allproducts.OptionResponse
+import com.kh.mo.shopyapp.model.response.allproducts.VariantResponse
 import com.kh.mo.shopyapp.model.response.barnds.BrandsResponse
 import com.kh.mo.shopyapp.model.response.barnds.SmartCollection
 import com.kh.mo.shopyapp.model.response.create_customer.CustomerResponse
@@ -14,7 +16,7 @@ import com.kh.mo.shopyapp.model.response.draft_order.DraftOrderResponse
 import com.kh.mo.shopyapp.model.response.login.Login
 import com.kh.mo.shopyapp.model.response.maincategory.MainCategoryResponse
 import com.kh.mo.shopyapp.model.ui.DraftOrder
-import com.kh.mo.shopyapp.model.ui.allproducts.Products
+import com.kh.mo.shopyapp.model.ui.allproducts.Product
 import com.kh.mo.shopyapp.model.ui.maincategory.CustomCollection
 
 fun CustomerResponse.convertCustomerResponseToCustomerEntity(): CustomerEntity {
@@ -67,10 +69,11 @@ fun MainCategoryResponse.convertToCustomCollection(): List<CustomCollection> {
 }
 
 
-fun AllProductsResponse.convertToAllProducts(): List<Products> {
+fun AllProductsResponse.convertToAllProducts(): List<Product> {
 
     return this.products.map {
-        Products(
+        Product(
+            id = it.id,
             images = it.images,
             productType = it.productType,
             image = it.image,
@@ -94,12 +97,49 @@ fun DraftOrderResponse.convertDraftOrderResponseToDraftOrder(): DraftOrder {
 
 
 fun DraftOrderResponse.convertDraftOrderResponseToLineItemEntity(): LineItemEntity {
-    return draft_order!!.line_items!![0].let{
+    return draft_order!!.line_items!![0].let {
         LineItemEntity(
-            product_id= it.product_id!!,
-            variant_id=  it.variant_id!!
+            product_id = it.product_id!!,
+            variant_id = it.variant_id!!
         )
     }
+}
+
+
+fun Product.convertProductToFavoriteEntity(): FavoriteEntity {
+    return FavoriteEntity(
+        id, images.convertImagesToImagesEntity(),
+        productType,
+        image.convertImageToImageEntity(),
+        title,
+        variants.convertVariantsToVariantsEntity()
+        , options.convertOptionsToOptionsEntity(), vendor, status
+    )
+}
+
+fun List<ImageResponse>.convertImagesToImagesEntity():List<ImageEntity>{
+    return map {
+        it.convertImageToImageEntity()
     }
-
-
+}
+fun ImageResponse.convertImageToImageEntity():ImageEntity{
+    return ImageEntity(src)
+}
+fun List<VariantResponse>.convertVariantsToVariantsEntity():List<VariantEntity> {
+    return map {
+        VariantEntity(
+            it.id,
+            it.price,
+            it.productId,
+            it.title,
+            it.weightUnit
+        )
+    }
+}
+fun List<OptionResponse>.convertOptionsToOptionsEntity():List<OptionEntity> {
+    return map {
+        OptionEntity(
+            it.values
+        )
+    }
+}

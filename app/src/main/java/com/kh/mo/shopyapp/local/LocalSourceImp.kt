@@ -7,6 +7,7 @@ import com.kh.mo.shopyapp.local.dp.sharedPref.customerId
 import com.kh.mo.shopyapp.local.dp.sharedPref.favoriteDraftId
 import com.kh.mo.shopyapp.local.validation.AuthInputValidatorImpl
 import com.kh.mo.shopyapp.local.validation.ValidationSateImpl
+import com.kh.mo.shopyapp.model.entity.FavoriteEntity
 import com.kh.mo.shopyapp.model.entity.LineItemEntity
 import com.kh.mo.shopyapp.model.entity.Validation
 
@@ -41,6 +42,22 @@ class LocalSourceImp private constructor(context: Context):LocalSource {
 
     override suspend fun saveLinetItems(lineItemEntity: LineItemEntity) {
        shopyDao.saveLinetItems(lineItemEntity)
+    }
+
+    override suspend fun getAllFavorites(): List<FavoriteEntity>? {
+       return shopyDao.getAllFavorites()
+    }
+
+    override suspend fun deleteFavorite(productId: Long) {
+        shopyDao.deleteFavorite(productId)
+    }
+
+    override suspend fun saveFavorite(favoriteEntity: FavoriteEntity) {
+       shopyDao.saveFavorite(favoriteEntity)
+    }
+
+    override suspend fun checkProductInFavorite(productId: Long): Int {
+       return checkProductInFavorite(productId)
     }
 
     override fun saveCustomerId(customerId:Long ) {

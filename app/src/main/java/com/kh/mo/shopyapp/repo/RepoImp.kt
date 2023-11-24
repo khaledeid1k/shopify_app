@@ -4,6 +4,7 @@ import android.util.Log
 import com.kh.mo.shopyapp.local.LocalSource
 import com.kh.mo.shopyapp.model.ui.Address
 import com.kh.mo.shopyapp.model.entity.CustomerEntity
+import com.kh.mo.shopyapp.model.entity.FavoriteEntity
 import com.kh.mo.shopyapp.model.entity.LineItemEntity
 import com.kh.mo.shopyapp.model.request.DraftOrderRequest
 import com.kh.mo.shopyapp.model.request.UserData
@@ -13,6 +14,7 @@ import com.kh.mo.shopyapp.model.response.barnds.BrandsResponse
 import com.kh.mo.shopyapp.model.response.maincategory.MainCategoryResponse
 import com.kh.mo.shopyapp.model.ui.DraftOrder
 import com.kh.mo.shopyapp.model.ui.Review
+import com.kh.mo.shopyapp.model.ui.allproducts.Product
 import com.kh.mo.shopyapp.remote.ApiState
 import com.kh.mo.shopyapp.remote.RemoteSource
 import com.kh.mo.shopyapp.repo.mapper.*
@@ -305,14 +307,17 @@ class RepoImp private constructor(
         }
     }
 
-    override suspend fun getProductsByCollection(collectionId: Long): Flow<ApiState<AllProductsResponse>> {
+    override suspend fun getProductsByCollection(collectionId: Long): Flow<ApiState<List<Product>>> {
         return flow {
             emit(ApiState.Loading)
             val productsCategory =
                 remoteSource.getProductsByCollection(collectionId)
             if (productsCategory.isSuccessful) {
                 remoteSource.getProductsByCollection(collectionId).body()
-                    ?.let { emit(ApiState.Success(it)) }
+                    ?.let { emit(ApiState.Success(it.convertToAllProducts()
+                        .map { product->
+                            changeProductFavoriteValue(product)
+                        })) }
             } else {
                 emit(ApiState.Failure(productsCategory.message()))
             }
@@ -393,6 +398,38 @@ class RepoImp private constructor(
         localSource.saveLinetItems(lineItemEntity)
     }
 
+    override suspend fun getAllFavorites(): Flow<ApiState<List<FavoriteEntity>>> {
+        return flow {
+            emit(ApiState.Loading)
+                localSource.getAllFavorites()?.let {
+                    emit(ApiState.Success(it))
+                }?:   emit(ApiState.Failure("No exit Data"))
+
+        }.catch {
+            emit(ApiState.Failure(it.message!!))
+        }
+
+    }
+
+    override suspend fun deleteFavorite(productId: Long) {
+        localSource.deleteFavorite(productId)
+    }
+
+    override suspend fun saveFavorite(product: Product) {
+        localSource.saveFavorite(product.convertProductToFavoriteEntity())
+    }
+
+    override suspend fun checkProductInFavorite(productId: Long): Flow<ApiState<Int>> {
+
+        return flow {
+            emit(ApiState.Loading)
+            emit(ApiState.Success(localSource.checkProductInFavorite(productId)))
+        }.catch {
+            emit(ApiState.Failure(it.message!!))
+        }
+
+    }
+
     override fun saveFavoriteDraftId(draftId: Long) {
         localSource.saveFavoriteDraftId(draftId)
     }
@@ -420,6 +457,18 @@ class RepoImp private constructor(
 
             }
         }
+    }
+
+
+    private suspend fun changeProductFavoriteValue(product: Product): Product {
+        checkProductInFavorite(product.id).collect {
+            if (it is ApiState.Success) {
+                if (it.data != 0) {
+                    product.isFavorite = true
+                }
+            }
+        }
+        return product
     }
 }
 

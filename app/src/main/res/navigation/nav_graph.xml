@@ -47,7 +47,7 @@
         android:label="ProductFragment">
         <argument
             android:name="productDetails"
-            app:argType="com.kh.mo.shopyapp.model.ui.allproducts.Products" />
+            app:argType="com.kh.mo.shopyapp.model.ui.allproducts.Product" />
     </fragment>
     <fragment
         android:id="@+id/homeFragment"

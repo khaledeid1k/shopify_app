@@ -60,11 +60,11 @@
 
             <ImageView
                 android:id="@+id/image_fav"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:src="@drawable/ic_favorite"
+                tools:src="@drawable/uncheck_favorite"
                 android:background="@drawable/round_rate"
                 android:layout_margin="@dimen/_5sdp"
                 android:padding="@dimen/_4sdp" />

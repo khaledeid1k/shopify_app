@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kh.mo.shopyapp.model.response.barnds.SmartCollection
 import com.kh.mo.shopyapp.model.ui.AdModel
-import com.kh.mo.shopyapp.model.ui.allproducts.Products
+import com.kh.mo.shopyapp.model.ui.allproducts.Product
 import com.kh.mo.shopyapp.model.ui.maincategory.CustomCollection
 import com.kh.mo.shopyapp.remote.ApiState
 import com.kh.mo.shopyapp.repo.Repo
@@ -28,8 +28,8 @@ class HomeViewModel(private var _irepo: Repo) : ViewModel() {
     private val _mainCategories = MutableStateFlow<ApiState<List<CustomCollection>>>(ApiState.Loading)
     val mainCategories: StateFlow<ApiState<List<CustomCollection>>> = _mainCategories
 
-    private val _productsBrand = MutableStateFlow<ApiState<List<Products>>>(ApiState.Loading)
-    val productsBrand: StateFlow<ApiState<List<Products>>> = _productsBrand
+    private val _productBrand = MutableStateFlow<ApiState<List<Product>>>(ApiState.Loading)
+    val productBrand: StateFlow<ApiState<List<Product>>> = _productBrand
 
     init{
         getAllBrands()
@@ -92,12 +92,12 @@ class HomeViewModel(private var _irepo: Repo) : ViewModel() {
                         Log.i("ss0", "productBrand: Fail")
                     }
                     is ApiState.Loading -> {
-                        _productsBrand.value = ApiState.Loading
+                        _productBrand.value = ApiState.Loading
                         Log.i("ss0", "productBrand:Loading")
                     }
                     is ApiState.Success -> {
                         success(it.data)
-                        _productsBrand.value = ApiState.Success(it.data.convertToAllProducts())
+                        _productBrand.value = ApiState.Success(it.data.convertToAllProducts())
                         Log.i("ss0", "productBrand:Success")
 
                     }

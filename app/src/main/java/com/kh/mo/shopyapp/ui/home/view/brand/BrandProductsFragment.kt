@@ -1,22 +1,14 @@
 package com.kh.mo.shopyapp.ui.home.view.brand
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.kh.mo.shopyapp.R
 import com.kh.mo.shopyapp.databinding.FragmentBrandProductsBinding
-import com.kh.mo.shopyapp.local.LocalSourceImp
 import com.kh.mo.shopyapp.remote.ApiState
-import com.kh.mo.shopyapp.remote.RemoteSourceImp
-import com.kh.mo.shopyapp.repo.RepoImp
 import com.kh.mo.shopyapp.ui.base.BaseFragment
-import com.kh.mo.shopyapp.ui.base.BaseViewModelFactory
 import com.kh.mo.shopyapp.ui.home.viewmodel.HomeViewModel
 import kotlinx.coroutines.launch
 
@@ -45,7 +37,7 @@ class BrandProductsFragment : BaseFragment<FragmentBrandProductsBinding,HomeView
 
     private fun getProductsOfBrand() {
         lifecycleScope.launch {
-            viewModel.productsBrand.collect {
+            viewModel.productBrand.collect {
                 when(it){
                     is ApiState.Failure ->{}
                     ApiState.Loading -> {}

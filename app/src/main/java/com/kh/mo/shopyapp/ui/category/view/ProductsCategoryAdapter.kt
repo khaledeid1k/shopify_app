@@ -7,14 +7,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import androidx.room.util.convertUUIDToByte
+import coil.load
 import com.bumptech.glide.Glide
 import com.kh.mo.shopyapp.R
 import com.kh.mo.shopyapp.databinding.ItemProductBinding
-import com.kh.mo.shopyapp.model.ui.allproducts.Products
+import com.kh.mo.shopyapp.model.ui.allproducts.Product
 
-class SubCategoriesAdapter(private var context: Context):
-    ListAdapter<Products, SubCategoriesAdapter.SubCategoriseVH>(RecyclerDiffUtilSubCategoriesItem()) {
+class SubCategoriesAdapter(private var context: Context,val onclickFavorite:(position:Int)->Unit):
+    ListAdapter<Product, SubCategoriesAdapter.SubCategoriseVH>(RecyclerDiffUtilSubCategoriesItem()) {
     private lateinit var binding: ItemProductBinding
 
 
@@ -29,10 +29,14 @@ class SubCategoriesAdapter(private var context: Context):
     override fun onBindViewHolder(holder: SubCategoriseVH, position: Int) {
         val currentItem = getItem(position)
         holder.onBind(currentItem)
+
+        binding.imageFav.setOnClickListener {
+            onclickFavorite(position)
+        }
     }
 
     inner class SubCategoriseVH(private var binding: ItemProductBinding): ViewHolder(binding.root){
-        fun onBind(currentItem: Products) {
+        fun onBind(currentItem: Product) {
             binding.apply {
                 tvNameProductItem.text = currentItem.title
                 Glide.with(context)
@@ -47,15 +51,15 @@ class SubCategoriesAdapter(private var context: Context):
         }
     }
 }
-class RecyclerDiffUtilSubCategoriesItem : DiffUtil.ItemCallback<Products>() {
+class RecyclerDiffUtilSubCategoriesItem : DiffUtil.ItemCallback<Product>() {
     override fun areItemsTheSame(
-        oldItem: Products, newItem: Products
+        oldItem: Product, newItem: Product
     ): Boolean {
         return oldItem == newItem
     }
 
     override fun areContentsTheSame(
-        oldItem: Products, newItem: Products
+        oldItem: Product, newItem: Product
     ): Boolean {
         return oldItem == newItem
     }

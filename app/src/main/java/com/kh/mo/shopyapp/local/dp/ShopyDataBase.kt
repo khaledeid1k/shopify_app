@@ -1,13 +1,13 @@
 package com.kh.mo.shopyapp.local.dp
 
 import android.content.Context
-import androidx.room.Database
-import androidx.room.Room
-import androidx.room.RoomDatabase
+import androidx.room.*
+import com.kh.mo.shopyapp.model.entity.FavoriteEntity
 import com.kh.mo.shopyapp.model.entity.LineItemEntity
 import com.kh.mo.shopyapp.utils.Constants.DATA_BASE
 
-@Database(entities = [LineItemEntity::class], version = 1)
+@Database(entities = [LineItemEntity::class,FavoriteEntity::class], version = 1)
+@TypeConverters(Converter::class)
 abstract class ShopyDataBase : RoomDatabase(){
     abstract fun shopyDao(): ShopyDao
     companion object{

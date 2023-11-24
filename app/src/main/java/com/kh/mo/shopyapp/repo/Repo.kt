@@ -2,6 +2,7 @@ package com.kh.mo.shopyapp.repo
 
 import com.kh.mo.shopyapp.model.ui.Address
 import com.kh.mo.shopyapp.model.entity.CustomerEntity
+import com.kh.mo.shopyapp.model.entity.FavoriteEntity
 import com.kh.mo.shopyapp.model.entity.LineItemEntity
 import com.kh.mo.shopyapp.model.entity.Validation
 import com.kh.mo.shopyapp.model.request.DraftOrderRequest
@@ -12,6 +13,7 @@ import com.kh.mo.shopyapp.model.response.barnds.BrandsResponse
 import com.kh.mo.shopyapp.model.response.maincategory.MainCategoryResponse
 import com.kh.mo.shopyapp.model.ui.DraftOrder
 import com.kh.mo.shopyapp.model.ui.Review
+import com.kh.mo.shopyapp.model.ui.allproducts.Product
 import com.kh.mo.shopyapp.remote.ApiState
 import kotlinx.coroutines.flow.Flow
 
@@ -38,14 +40,19 @@ interface Repo {
     ): Flow<ApiState<DiscountCodeResponse>>
     suspend fun getProductsOfSpecificBrand(brandName:String): Flow<ApiState<AllProductsResponse>>
     suspend fun getAllProducts(): Flow<ApiState<AllProductsResponse>>
-    suspend fun getProductsByCollection(collectionId:Long): Flow<ApiState<AllProductsResponse>>
+    suspend fun getProductsByCollection(collectionId:Long): Flow<ApiState<List<Product>>>
     suspend fun filterProductsBySubCollection(collectionId:Long,productType:String): Flow<ApiState<AllProductsResponse>>
-
     suspend fun getAddressesOfCustomer(customerId: Long): Flow<ApiState<List<Address>>>
 
     suspend fun getAllLinetItems(): List<LineItemEntity>
     suspend fun deleteLinetItems(productId:Long)
     suspend fun saveLinetItems(lineItemEntity: LineItemEntity)
+
+    suspend fun getAllFavorites(): Flow<ApiState<List<FavoriteEntity>>>
+    suspend fun deleteFavorite(productId:Long)
+    suspend fun saveFavorite(product: Product)
+    suspend fun checkProductInFavorite(productId: Long): Flow<ApiState<Int>>
+
     fun saveFavoriteDraftId(draftId:Long )
     fun saveCustomerId(customerId:Long )
     fun  getFavoriteDraftId( ):Long

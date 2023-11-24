@@ -3,7 +3,7 @@ package com.kh.mo.shopyapp.model.entity
 import androidx.annotation.NonNull
 import androidx.room.Entity
 
-@Entity(tableName = "Line_Items", primaryKeys = ["product_id"])
+@Entity(tableName = "line_items_table", primaryKeys = ["product_id"])
 data class LineItemEntity(
     @NonNull
     val product_id: Long ,
