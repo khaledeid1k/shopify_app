@@ -43,6 +43,10 @@ fun Double.toEUR(toEURRate: Double): Double {
     return this * toEURRate
 }
 
+fun Double.toUSD(usdToEgp: Double): Double {
+    return this / usdToEgp
+}
+
 fun Double.roundTwoDecimals(): Double {
     return BigDecimal(this).setScale(2, RoundingMode.HALF_UP).toDouble()
 }
