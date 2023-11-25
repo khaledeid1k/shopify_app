@@ -3,9 +3,9 @@ package com.kh.mo.shopyapp.repo.mapper
 import com.kh.mo.shopyapp.model.entity.CustomerEntity
 import com.kh.mo.shopyapp.model.request.CustomerDataRequest
 import com.kh.mo.shopyapp.model.request.UserData
+import com.kh.mo.shopyapp.model.response.orderdetails.OrderDetailsResponse
 import com.kh.mo.shopyapp.model.response.address.AddressResponse
 import com.kh.mo.shopyapp.model.response.allproducts.AllProductsResponse
-import com.kh.mo.shopyapp.model.response.allproducts.ImageResponse
 import com.kh.mo.shopyapp.model.response.allproducts.ProductResponse
 import com.kh.mo.shopyapp.model.response.barnds.BrandsResponse
 import com.kh.mo.shopyapp.model.response.barnds.SmartCollection
@@ -13,12 +13,14 @@ import com.kh.mo.shopyapp.model.response.create_customer.CustomerResponse
 import com.kh.mo.shopyapp.model.response.draft_order.DraftOrderResponse
 import com.kh.mo.shopyapp.model.response.login.Login
 import com.kh.mo.shopyapp.model.response.maincategory.MainCategoryResponse
+import com.kh.mo.shopyapp.model.response.order.OrderResponse
 import com.kh.mo.shopyapp.model.response.order.OrdersResponse
 import com.kh.mo.shopyapp.model.ui.Address
 import com.kh.mo.shopyapp.model.ui.DraftOrder
-import com.kh.mo.shopyapp.model.ui.allproducts.Products
+import com.kh.mo.shopyapp.model.ui.allproducts.Product
 import com.kh.mo.shopyapp.model.ui.maincategory.CustomCollection
 import com.kh.mo.shopyapp.model.ui.order.Image
+import com.kh.mo.shopyapp.model.ui.order.LineItem
 import com.kh.mo.shopyapp.model.ui.order.Order
 
 fun CustomerResponse.convertCustomerResponseToCustomerEntity(): CustomerEntity {
@@ -71,10 +73,10 @@ fun MainCategoryResponse.convertToCustomCollection(): List<CustomCollection> {
 }
 
 
-fun AllProductsResponse.convertToAllProducts(): List<Products> {
+fun AllProductsResponse.convertToAllProducts(): List<Product> {
 
     return this.products.map {
-        Products(
+        Product(
             images = it.images,
             productType = it.productType,
             image = it.image,
@@ -101,6 +103,18 @@ fun OrdersResponse.convertToOrders(): List<Order> {
     return this.orders?.map {
         Order(
             it.currency, it.totalPrice, it.customerResponse, it.lineItems,it.subtotalPrice,it.id)
+    } ?: emptyList()
+}
+fun OrderResponse.convertToLineItem(): List<LineItem> {
+    return this.lineItems?.map {
+        LineItem(
+            it.quantity, it.title, it.price,it.id)
+    } ?: emptyList()
+}
+fun OrderDetailsResponse.convertToLineItem(): List<LineItem> {
+    return this.order?.lineItems?.map {
+        LineItem(
+            it.quantity, it.title, it.price,it.id)
     } ?: emptyList()
 }
 fun ProductResponse.convertToImage(): List<Image> {

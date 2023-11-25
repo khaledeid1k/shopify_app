@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.Navigation
 import com.kh.mo.shopyapp.R
 import com.kh.mo.shopyapp.databinding.FragmentCategoryBinding
 import com.kh.mo.shopyapp.databinding.FragmentOrderBinding
@@ -56,7 +57,10 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderViewModel>() {
                         Log.i(TAG,data.toString())
                         viewModel.getImageOrder(data.get(0).lineItems?.get(0)?.productId!!)
                         getImage()
-                        orderAdapter = OrderAdapter(requireContext() )
+                        orderAdapter = OrderAdapter(requireContext()) {
+                            val action=OrderFragmentDirections.actionOrderFragmentToOrderDetailsFragment(it)
+                            Navigation.findNavController(requireView()).navigate(action)
+                        }
                         orderAdapter.submitList(data)
                         binding.recyclerOrders.adapter = orderAdapter
 

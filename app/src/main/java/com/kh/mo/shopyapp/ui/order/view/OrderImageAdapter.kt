@@ -1,7 +1,6 @@
 package com.kh.mo.shopyapp.ui.order.view
 
 import android.content.Context
-import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -11,13 +10,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.kh.mo.shopyapp.R
 import com.kh.mo.shopyapp.databinding.ItemOrderBinding
-import com.kh.mo.shopyapp.home.view.BrandsAdapter
-import com.kh.mo.shopyapp.model.response.barnds.SmartCollection
+import com.kh.mo.shopyapp.model.ui.order.Image
 import com.kh.mo.shopyapp.model.ui.order.Order
-import com.kh.mo.shopyapp.model.ui.order.OrderAndImage
 
-class OrderAdapter(var context: Context,private val onClick:(Long) -> Unit) :
-    ListAdapter<Order, OrderAdapter.OrdersVH>(RecyclerDiffUtilOrdersItem()) {
+class OrderImageAdapter (var context: Context) :
+    ListAdapter<Image, OrderImageAdapter.OrdersVH>(RecyclerDiffUtilImageOrdersItem()) {
     private lateinit var binding: ItemOrderBinding
 
 
@@ -39,35 +36,32 @@ class OrderAdapter(var context: Context,private val onClick:(Long) -> Unit) :
     inner class OrdersVH(var binding: ItemOrderBinding) : RecyclerView.ViewHolder(binding.root) {
 
 
-        fun onBind(currentItem: Order) {
+        fun onBind(currentItem: Image) {
             Log.i("OrderFragmentAdapter","test")
             binding.apply {
 
-                tvProductNameOrder.text = currentItem.id.toString()
-                tvProductDateOrder.text=currentItem.customerResponse?.createdAt
-                tvProductPriceOrder.text=currentItem.subtotalPrice+"EGP"
-                tvProductSizeOrder.text=currentItem.lineItems?.get(0)?.quantity.toString()+"x"
-                binding.imageProductOrder.setImageResource(R.drawable.placeholder_products)
+                Glide.with(context)
+                    .load(currentItem.src)
+                    .placeholder(R.drawable.placeholder_products)
+                    .into(imageProductOrder)
 
-            }
-            itemView.setOnClickListener{
-                onClick(currentItem.id!!)
             }
 
         }
     }
 }
 
-class RecyclerDiffUtilOrdersItem : DiffUtil.ItemCallback<Order>() {
+class RecyclerDiffUtilImageOrdersItem : DiffUtil.ItemCallback<Image>() {
     override fun areItemsTheSame(
-        oldItem: Order, newItem: Order
+        oldItem: Image, newItem: Image
     ): Boolean {
         return oldItem == newItem
     }
 
     override fun areContentsTheSame(
-        oldItem: Order, newItem: Order
+        oldItem: Image, newItem: Image
     ): Boolean {
         return oldItem == newItem
     }
+
 }
