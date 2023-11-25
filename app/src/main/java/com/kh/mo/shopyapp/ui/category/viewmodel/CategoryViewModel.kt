@@ -3,7 +3,7 @@ package com.kh.mo.shopyapp.ui.category.viewmodel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kh.mo.shopyapp.model.ui.allproducts.Products
+import com.kh.mo.shopyapp.model.ui.allproducts.Product
 import com.kh.mo.shopyapp.remote.ApiState
 import com.kh.mo.shopyapp.repo.Repo
 import com.kh.mo.shopyapp.repo.mapper.convertToAllProducts
@@ -14,14 +14,14 @@ import kotlinx.coroutines.launch
 
 class CategoryViewModel(private var _irepo: Repo) : ViewModel() {
     private val TAG = "TAG CategoryViewModel"
-    private val _products = MutableStateFlow<ApiState<List<Products>>>(ApiState.Loading)
-    val products: StateFlow<ApiState<List<Products>>> = _products
+    private val _product = MutableStateFlow<ApiState<List<Product>>>(ApiState.Loading)
+    val product: StateFlow<ApiState<List<Product>>> = _product
 
-    private val _productsCollection = MutableStateFlow<ApiState<List<Products>>>(ApiState.Loading)
-    val productsCollection: StateFlow<ApiState<List<Products>>> = _productsCollection
+    private val _productCollection = MutableStateFlow<ApiState<List<Product>>>(ApiState.Loading)
+    val productCollection: StateFlow<ApiState<List<Product>>> = _productCollection
 
-    private val _filterProductsCollection = MutableStateFlow<ApiState<List<Products>>>(ApiState.Loading)
-    val filterProductsCollection: StateFlow<ApiState<List<Products>>> = _filterProductsCollection
+    private val _filterProductCollection = MutableStateFlow<ApiState<List<Product>>>(ApiState.Loading)
+    val filterProductCollection: StateFlow<ApiState<List<Product>>> = _filterProductCollection
 
     init {
         getSubCategories()
@@ -37,13 +37,13 @@ class CategoryViewModel(private var _irepo: Repo) : ViewModel() {
                     }
 
                     is ApiState.Loading -> {
-                        _products.value = ApiState.Loading
+                        _product.value = ApiState.Loading
                         Log.i(TAG, "products:Loading")
                     }
 
                     is ApiState.Success -> {
                         Result.success(it.data)
-                        _products.value = ApiState.Success(it.data.convertToAllProducts())
+                        _product.value = ApiState.Success(it.data.convertToAllProducts())
                     }
                 }
             }
@@ -59,13 +59,13 @@ class CategoryViewModel(private var _irepo: Repo) : ViewModel() {
                     }
 
                     is ApiState.Loading -> {
-                        _productsCollection.value = ApiState.Loading
+                        _productCollection.value = ApiState.Loading
                         Log.i(TAG, "products:Loading")
                     }
 
                     is ApiState.Success -> {
                         Result.success(it.data)
-                        _productsCollection.value = ApiState.Success(it.data.convertToAllProducts())
+                        _productCollection.value = ApiState.Success(it.data.convertToAllProducts())
                     }
                 }
             }
@@ -82,13 +82,13 @@ class CategoryViewModel(private var _irepo: Repo) : ViewModel() {
                     }
 
                     is ApiState.Loading -> {
-                        _filterProductsCollection.value = ApiState.Loading
+                        _filterProductCollection.value = ApiState.Loading
                         Log.i(TAG, "products:Loading")
                     }
 
                     is ApiState.Success -> {
                         Result.success(it.data)
-                        _filterProductsCollection.value = ApiState.Success(it.data.convertToAllProducts())
+                        _filterProductCollection.value = ApiState.Success(it.data.convertToAllProducts())
 
                     }
                 }

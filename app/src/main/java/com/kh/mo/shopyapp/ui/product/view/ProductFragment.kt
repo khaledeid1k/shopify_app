@@ -5,7 +5,7 @@ import android.view.View
 import com.google.android.material.tabs.TabLayoutMediator
 import com.kh.mo.shopyapp.R
 import com.kh.mo.shopyapp.databinding.FragmentProductBinding
-import com.kh.mo.shopyapp.model.ui.allproducts.Products
+import com.kh.mo.shopyapp.model.ui.allproducts.Product
 import com.kh.mo.shopyapp.ui.base.BaseFragment
 import com.kh.mo.shopyapp.ui.product.viewmodel.ProductViewModel
 
@@ -39,7 +39,7 @@ class ProductFragment : BaseFragment<FragmentProductBinding, ProductViewModel>()
     }
 
 
-    private fun initProductPageAdapter(receiveProduct: Products) {
+    private fun initProductPageAdapter(receiveProduct: Product) {
         val productFragmentPageAdapter = ProductFragmentPageAdapter(
             receiveProduct,
             requireActivity().supportFragmentManager, lifecycle
