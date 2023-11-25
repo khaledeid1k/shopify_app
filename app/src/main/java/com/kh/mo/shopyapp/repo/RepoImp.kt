@@ -41,7 +41,7 @@ class RepoImp private constructor(
 
     override suspend fun updateCurrencyRates() {
         remoteSource.getCurrencyRate()
-
+    }
     override suspend fun getListOfSpecificProductsIds( productsIds: List<Long>):Flow<ApiState<List<FavoriteEntity>>>
     {
         return flow {
@@ -399,7 +399,7 @@ class RepoImp private constructor(
                 remoteSource.filterProductsBySubCollection(collectionId,productType)
             if (productsSubCategory.isSuccessful) {
                 remoteSource.filterProductsBySubCollection(collectionId,productType).body()
-                    ?.let { emit(ApiState.Success(it)) }
+                    ?.let { emit(ApiState.Success(it.convertToAllProducts())) }
             } else {
                 emit(ApiState.Failure(productsSubCategory.message()))
             }
