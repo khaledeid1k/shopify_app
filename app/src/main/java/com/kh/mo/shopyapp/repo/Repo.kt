@@ -7,6 +7,7 @@ import com.kh.mo.shopyapp.model.response.ads.DiscountCodeResponse
 import com.kh.mo.shopyapp.model.response.allproducts.AllProductsResponse
 import com.kh.mo.shopyapp.model.response.allproducts.ProductResponse
 import com.kh.mo.shopyapp.model.response.barnds.BrandsResponse
+import com.kh.mo.shopyapp.model.response.currency.Rates
 import com.kh.mo.shopyapp.model.response.maincategory.MainCategoryResponse
 import com.kh.mo.shopyapp.model.response.order.OrdersResponse
 import com.kh.mo.shopyapp.model.response.orderdetails.OrderDetailsResponse
@@ -18,7 +19,7 @@ import com.kh.mo.shopyapp.remote.ApiState
 import kotlinx.coroutines.flow.Flow
 
 interface Repo {
-    suspend fun updateCurrencyRates()
+
     suspend fun getListOfSpecificProductsIds(productsIds: List<Long>): Flow<ApiState<List<FavoriteEntity>>>
     suspend fun getProductsIdForDraftFavorite(draftFavoriteId: Long): Flow<ApiState<List<Long>>>
     suspend fun singUpWithFireBase(userData: UserData): Flow<ApiState<String>>

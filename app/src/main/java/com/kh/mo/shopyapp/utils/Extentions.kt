@@ -32,16 +32,16 @@ fun TextInputEditText.getText(textValue: (text: String) -> Unit) {
     })
 }
 
-fun Double.toEGP(toEGPRate: Double): Double {
-    return this * toEGPRate
+fun Double.toEGP(usdToEgpRate: Double): Double {
+    return this * usdToEgpRate
 }
 
-fun Double.toGBP(toGBPRate: Double): Double {
-    return this * toGBPRate
+fun Double.toGBP(usdToGbpRate: Double): Double {
+    return this * usdToGbpRate
 }
 
-fun Double.toEUR(toEURRate: Double): Double {
-    return this * toEURRate
+fun Double.toEUR(usdToEurRate: Double): Double {
+    return this * usdToEurRate
 }
 
 fun Double.toUSD(usdToEgp: Double): Double {

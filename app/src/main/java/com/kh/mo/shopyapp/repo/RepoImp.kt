@@ -4,19 +4,20 @@ import android.util.Log
 import com.kh.mo.shopyapp.local.LocalSource
 import com.kh.mo.shopyapp.model.entity.CustomerEntity
 import com.kh.mo.shopyapp.model.entity.FavoriteEntity
-import com.kh.mo.shopyapp.model.entity.LineItemEntity
 import com.kh.mo.shopyapp.model.request.DraftOrderRequest
 import com.kh.mo.shopyapp.model.request.UserData
-import com.kh.mo.shopyapp.model.response.orderdetails.OrderDetailsResponse
 import com.kh.mo.shopyapp.model.response.ads.DiscountCodeResponse
 import com.kh.mo.shopyapp.model.response.allproducts.AllProductsResponse
 import com.kh.mo.shopyapp.model.response.allproducts.ProductResponse
 import com.kh.mo.shopyapp.model.response.barnds.BrandsResponse
+import com.kh.mo.shopyapp.model.response.currency.Rates
 import com.kh.mo.shopyapp.model.response.maincategory.MainCategoryResponse
-import com.kh.mo.shopyapp.model.ui.Address
 import com.kh.mo.shopyapp.model.response.order.OrdersResponse
+import com.kh.mo.shopyapp.model.response.orderdetails.OrderDetailsResponse
+import com.kh.mo.shopyapp.model.ui.Address
 import com.kh.mo.shopyapp.model.ui.DraftOrder
 import com.kh.mo.shopyapp.model.ui.Review
+import com.kh.mo.shopyapp.model.ui.SupportedCurrencies
 import com.kh.mo.shopyapp.model.ui.allproducts.Product
 import com.kh.mo.shopyapp.remote.ApiState
 import com.kh.mo.shopyapp.remote.RemoteSource
@@ -30,6 +31,10 @@ import com.kh.mo.shopyapp.repo.mapper.convertToAddressRequest
 import com.kh.mo.shopyapp.repo.mapper.convertToAllProducts
 import com.kh.mo.shopyapp.repo.mapper.convertUserDataToCustomerData
 import com.kh.mo.shopyapp.utils.Constants
+import com.kh.mo.shopyapp.utils.roundTwoDecimals
+import com.kh.mo.shopyapp.utils.toEUR
+import com.kh.mo.shopyapp.utils.toGBP
+import com.kh.mo.shopyapp.utils.toUSD
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
@@ -41,11 +46,13 @@ class RepoImp private constructor(
 ) : Repo {
     private val TAG = "TAG RepoImp"
 
-    override suspend fun updateCurrencyRates() {
-        Log.i(TAG, "updateCurrencyRates: ${remoteSource.getCurrencyRate()}")
+    private suspend fun getLatestCurrencyRates(): Rates {
+        val currencyRates = remoteSource.getCurrencyRate()
+        Log.i(TAG, "updateCurrencyRates: $currencyRates")
+        return currencyRates
     }
-    override suspend fun getListOfSpecificProductsIds( productsIds: List<Long>):Flow<ApiState<List<FavoriteEntity>>>
-    {
+
+    override suspend fun getListOfSpecificProductsIds(productsIds: List<Long>): Flow<ApiState<List<FavoriteEntity>>> {
         return flow {
 
             emit(ApiState.Loading)
@@ -56,7 +63,8 @@ class RepoImp private constructor(
             if (draftFavorite.isSuccessful) {
                 draftFavorite.body()
                     ?.let {
-                        emit(ApiState.Success(it.convertAllProductsResponseToProductsIds())) }
+                        emit(ApiState.Success(it.convertAllProductsResponseToProductsIds()))
+                    }
             } else {
                 emit(ApiState.Failure(draftFavorite.message()))
             }
@@ -86,7 +94,6 @@ class RepoImp private constructor(
     }
 
 
-
     override suspend fun singUpWithFireBase(userData: UserData) =
         flow {
             emit(ApiState.Loading)
@@ -96,7 +103,7 @@ class RepoImp private constructor(
             emit(ApiState.Failure("An error occurred: ${it.message}"))
         }
 
-    override suspend fun singInWithFireBase(userData: UserData)=
+    override suspend fun singInWithFireBase(userData: UserData) =
         flow {
             emit(ApiState.Loading)
             remoteSource.singInWithFireBase(userData).await()
@@ -105,13 +112,15 @@ class RepoImp private constructor(
             emit(ApiState.Failure("An error occurred: ${it.message}"))
         }
 
-    override suspend fun logout() { remoteSource.logout() }
+    override suspend fun logout() {
+        remoteSource.logout()
+    }
 
-    override fun checkIsUserLogin()=remoteSource.checkIsUserLogin()
+    override fun checkIsUserLogin() = remoteSource.checkIsUserLogin()
     override suspend fun createFavoriteDraft(draftOrderRequest: DraftOrderRequest): Flow<ApiState<DraftOrder>> {
         return flow {
             emit(ApiState.Loading)
-            val favorite =   remoteSource.createFavoriteDraft(draftOrderRequest)
+            val favorite = remoteSource.createFavoriteDraft(draftOrderRequest)
             if (!favorite.isSuccessful) {
                 emit(ApiState.Failure(favorite.body().toString()))
             } else {
@@ -129,7 +138,7 @@ class RepoImp private constructor(
 
     }
 
-    override suspend fun saveFavoriteDraftIdInFireBase(customerId:Long,favoriteDraft:Long)=
+    override suspend fun saveFavoriteDraftIdInFireBase(customerId: Long, favoriteDraft: Long) =
         flow {
             emit(ApiState.Loading)
             remoteSource.saveFavoriteDraftIdInFireBase(customerId, favoriteDraft).await()
@@ -137,8 +146,6 @@ class RepoImp private constructor(
         }.catch {
             emit(ApiState.Failure("An error occurred: ${it.message}"))
         }
-
-
 
 
     override suspend fun createCustomer(userData: UserData): Flow<ApiState<CustomerEntity>> {
@@ -179,18 +186,17 @@ class RepoImp private constructor(
 
     override suspend fun getDraftFavoriteId(customerId: String) =
         flow {
-            var favoriteId:String?=""
+            var favoriteId: String? = ""
             emit(ApiState.Loading)
-            remoteSource.getDraftFavoriteId (customerId).addOnSuccessListener {
-                if(it.exists()){
-                    favoriteId=   it.data?.get(Constants.DRAFT_FAVORITE_ID) as String?
+            remoteSource.getDraftFavoriteId(customerId).addOnSuccessListener {
+                if (it.exists()) {
+                    favoriteId = it.data?.get(Constants.DRAFT_FAVORITE_ID) as String?
                 }
             }.await()
             emit(ApiState.Success(favoriteId))
         }.catch {
             emit(ApiState.Failure("An error occurred: ${it.message}"))
         }
-
 
 
     override fun validateUserName(userName: String) = localSource.validateUserName(userName)
@@ -358,10 +364,14 @@ class RepoImp private constructor(
                 remoteSource.getAllProducts()
             if (allProducts.isSuccessful) {
                 remoteSource.getAllProducts().body()
-                    ?.let { emit(ApiState.Success(it.convertToAllProducts()
-                        .map { product->
-                            changeProductFavoriteValue(product)
-                        })) }
+                    ?.let {
+                        emit(
+                            ApiState.Success(it.convertToAllProducts()
+                                .map { product ->
+                                    changeProductFavoriteValue(product)
+                                })
+                        )
+                    }
             } else {
                 emit(ApiState.Failure(allProducts.message()))
             }
@@ -378,10 +388,22 @@ class RepoImp private constructor(
                 remoteSource.getProductsByCollection(collectionId)
             if (productsCategory.isSuccessful) {
                 remoteSource.getProductsByCollection(collectionId).body()
-                    ?.let { emit(ApiState.Success(it.convertToAllProducts()
-                        .map { product->
-                            changeProductFavoriteValue(product)
-                        })) }
+                    ?.let {
+                        val list = it.convertToAllProducts()
+                            .map { product ->
+                                changeProductFavoriteValue(product)
+                            }
+                        list.forEach {product ->
+                            product.variants.forEach {variant ->
+                                variant.price = variant.price?.let {price ->
+                                    checkCurrencyUnitAndCalculatePrice(price)
+                                }
+                            }
+                        }
+                        emit(
+                            ApiState.Success(list)
+                        )
+                    }
             } else {
                 emit(ApiState.Failure(productsCategory.message()))
             }
@@ -398,9 +420,9 @@ class RepoImp private constructor(
         return flow {
             emit(ApiState.Loading)
             val productsSubCategory =
-                remoteSource.filterProductsBySubCollection(collectionId,productType)
+                remoteSource.filterProductsBySubCollection(collectionId, productType)
             if (productsSubCategory.isSuccessful) {
-                remoteSource.filterProductsBySubCollection(collectionId,productType).body()
+                remoteSource.filterProductsBySubCollection(collectionId, productType).body()
                     ?.let { emit(ApiState.Success(it.convertToAllProducts())) }
             } else {
                 emit(ApiState.Failure(productsSubCategory.message()))
@@ -548,10 +570,14 @@ class RepoImp private constructor(
         }
     }
 
-    override suspend fun backUpDraftFavorite(draftOrderRequest: DraftOrderRequest,draftFavoriteId: Long): Flow<ApiState<String>> {
+    override suspend fun backUpDraftFavorite(
+        draftOrderRequest: DraftOrderRequest,
+        draftFavoriteId: Long
+    ): Flow<ApiState<String>> {
         return flow {
             emit(ApiState.Loading)
-            val backUpDraftFavorite =remoteSource.backUpDraftFavorite(draftOrderRequest,draftFavoriteId)
+            val backUpDraftFavorite =
+                remoteSource.backUpDraftFavorite(draftOrderRequest, draftFavoriteId)
             if (!backUpDraftFavorite.isSuccessful) {
                 emit(ApiState.Failure(backUpDraftFavorite.body().toString()))
             } else {
@@ -568,8 +594,8 @@ class RepoImp private constructor(
         }
     }
 
-    override suspend fun getAllFavorites(): Flow<List<FavoriteEntity>>{
-        return       localSource.getAllFavorites()
+    override suspend fun getAllFavorites(): Flow<List<FavoriteEntity>> {
+        return localSource.getAllFavorites()
 
     }
 
@@ -577,7 +603,7 @@ class RepoImp private constructor(
         localSource.deleteFavorite(productId)
     }
 
-    override suspend fun saveFavorite(favoriteEntity: FavoriteEntity):Long {
+    override suspend fun saveFavorite(favoriteEntity: FavoriteEntity): Long {
         return localSource.saveFavorite(favoriteEntity)
     }
 
@@ -605,7 +631,7 @@ class RepoImp private constructor(
     }
 
     override fun getCustomerId(): Long {
-      return  localSource.getCustomerId()
+        return localSource.getCustomerId()
     }
 
     private suspend fun changeProductFavoriteValue(product: Product): Product {
@@ -645,7 +671,7 @@ class RepoImp private constructor(
         }
     }
 
-    override suspend fun getOrderById(id:Long): Flow<ApiState<OrderDetailsResponse>> {
+    override suspend fun getOrderById(id: Long): Flow<ApiState<OrderDetailsResponse>> {
         return flow {
             emit(ApiState.Loading)
             val order =
@@ -676,6 +702,35 @@ class RepoImp private constructor(
 
         }.catch {
             emit(ApiState.Failure(it.message!!))
+        }
+    }
+
+    private suspend fun checkCurrencyUnitAndCalculatePrice(price: String): String {
+        val rates = getLatestCurrencyRates()
+        return when (getCurrencyUnit()) {
+            SupportedCurrencies.USD.value -> {
+                price.toDouble()
+                    .toUSD(rates.EGP.toDouble())
+                    .roundTwoDecimals().toString() + " \u0024"
+            }
+
+            SupportedCurrencies.EUR.value -> {
+                price.toDouble()
+                    .toUSD(rates.EGP.toDouble())
+                    .toEUR(rates.EUR.toDouble())
+                    .roundTwoDecimals().toString() + " \u20AC"
+            }
+
+            SupportedCurrencies.GBP.value -> {
+                price.toDouble()
+                    .toUSD(rates.EGP.toDouble())
+                    .toGBP(rates.GBP.toDouble())
+                    .roundTwoDecimals().toString() + " \u00A3"
+            }
+
+            else -> {
+                "$price \u0045\u00A3"
+            }
         }
     }
 
