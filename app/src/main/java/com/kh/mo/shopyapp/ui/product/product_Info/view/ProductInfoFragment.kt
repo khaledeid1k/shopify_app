@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.View
 import com.kh.mo.shopyapp.R
 import com.kh.mo.shopyapp.databinding.FragmentProductInfoBinding
-import com.kh.mo.shopyapp.model.ui.allproducts.Products
+import com.kh.mo.shopyapp.model.ui.allproducts.Product
 import com.kh.mo.shopyapp.ui.base.BaseFragment
 import com.kh.mo.shopyapp.ui.product.product_Info.viewmodel.ProductInfoViewModel
 import com.kh.mo.shopyapp.utils.Constants
@@ -21,7 +21,7 @@ class ProductInfoFragment :BaseFragment<FragmentProductInfoBinding,ProductInfoVi
 
     fun sada(){
 
-        val product = arguments?.getParcelable<Products>(Constants.ProductInfoFragment)
+        val product = arguments?.getParcelable<Product>(Constants.ProductInfoFragment)
 
         binding.listSize.adapter=ProductSizeAdapter(product?.options?.get(0)?.values)
         binding.listColor.adapter=ProductColorsAdapter(product?.options?.get(1)?.values)
@@ -30,7 +30,7 @@ class ProductInfoFragment :BaseFragment<FragmentProductInfoBinding,ProductInfoVi
 
     companion object {
         @JvmStatic
-        fun newInstance(product: Products) = ProductInfoFragment().apply {
+        fun newInstance(product: Product) = ProductInfoFragment().apply {
             arguments = Bundle().apply {
                 putParcelable(Constants.ProductInfoFragment, product)
             }

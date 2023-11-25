@@ -9,7 +9,7 @@ import com.kh.mo.shopyapp.model.response.allproducts.VariantResponse
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class Products(
+data class Product(
     @SerializedName("images")
     val images: List<ImageResponse>,
     @SerializedName("product_type")
