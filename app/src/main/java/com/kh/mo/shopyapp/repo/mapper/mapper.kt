@@ -5,6 +5,8 @@ import com.kh.mo.shopyapp.model.request.CustomerDataRequest
 import com.kh.mo.shopyapp.model.request.UserData
 import com.kh.mo.shopyapp.model.response.address.AddressResponse
 import com.kh.mo.shopyapp.model.response.allproducts.AllProductsResponse
+import com.kh.mo.shopyapp.model.response.allproducts.ImageResponse
+import com.kh.mo.shopyapp.model.response.allproducts.ProductResponse
 import com.kh.mo.shopyapp.model.response.barnds.BrandsResponse
 import com.kh.mo.shopyapp.model.response.barnds.SmartCollection
 import com.kh.mo.shopyapp.model.response.create_customer.CustomerResponse
@@ -16,6 +18,7 @@ import com.kh.mo.shopyapp.model.ui.Address
 import com.kh.mo.shopyapp.model.ui.DraftOrder
 import com.kh.mo.shopyapp.model.ui.allproducts.Products
 import com.kh.mo.shopyapp.model.ui.maincategory.CustomCollection
+import com.kh.mo.shopyapp.model.ui.order.Image
 import com.kh.mo.shopyapp.model.ui.order.Order
 
 fun CustomerResponse.convertCustomerResponseToCustomerEntity(): CustomerEntity {
@@ -97,7 +100,11 @@ fun DraftOrderResponse.convertDraftOrderResponseToDraftOrder(): DraftOrder {
 fun OrdersResponse.convertToOrders(): List<Order> {
     return this.orders?.map {
         Order(
-            it.currency, it.totalPrice, it.customerResponse, it.lineItems,it.subtotalPrice
-        )
+            it.currency, it.totalPrice, it.customerResponse, it.lineItems,it.subtotalPrice,it.id)
     } ?: emptyList()
+}
+fun ProductResponse.convertToImage(): List<Image> {
+    return this.images.map {
+        Image(it.src)
+    }
 }

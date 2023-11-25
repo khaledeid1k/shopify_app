@@ -9,5 +9,7 @@ data class Order(
     val currentTotalPrice: String?,
     val customerResponse: CustomerResponse?,
     val lineItems: List<LineItemResponse>?,
-    val subtotalPrice: String?
+    val subtotalPrice: String?,
+    val id: Long?
+
 )

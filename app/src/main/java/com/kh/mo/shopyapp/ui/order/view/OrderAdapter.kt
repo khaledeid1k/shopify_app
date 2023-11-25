@@ -1,16 +1,20 @@
 package com.kh.mo.shopyapp.ui.order.view
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.kh.mo.shopyapp.R
 import com.kh.mo.shopyapp.databinding.ItemOrderBinding
 import com.kh.mo.shopyapp.home.view.BrandsAdapter
 import com.kh.mo.shopyapp.model.response.barnds.SmartCollection
 import com.kh.mo.shopyapp.model.ui.order.Order
+import com.kh.mo.shopyapp.model.ui.order.OrderAndImage
 
 class OrderAdapter(var context: Context) :
     ListAdapter<Order, OrderAdapter.OrdersVH>(RecyclerDiffUtilOrdersItem()) {
@@ -38,16 +42,13 @@ class OrderAdapter(var context: Context) :
         fun onBind(currentItem: Order) {
             Log.i("OrderFragmentAdapter","test")
             binding.apply {
-                tvProductNameOrder.text = currentItem.lineItems?.get(0)?.title
-                tvProductDateOrder.text=currentItem.customerResponse?.createdAt
-                tvProductPriceOrder.text=currentItem.subtotalPrice
-                tvProductSizeOrder.text=currentItem.lineItems?.get(0)?.quantity.toString()+"x"
 
-//                Glide.with(context)
-//                    .load(currentItem.image?.src)
-//                    .placeholder(R.drawable.placeholder_products)
-//                    .into(imageBrandItem)
-                Log.i("OrderFragmentAdapter", currentItem.lineItems?.get(0)?.title.toString())
+                tvProductNameOrder.text = currentItem.id.toString()
+                tvProductDateOrder.text=currentItem.customerResponse?.createdAt
+                tvProductPriceOrder.text=currentItem.subtotalPrice+"EGP"
+                tvProductSizeOrder.text=currentItem.lineItems?.get(0)?.quantity.toString()+"x"
+                binding.imageProductOrder.setImageResource(R.drawable.placeholder_products)
+
             }
 
         }

@@ -24,6 +24,9 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderViewModel>() {
     override val layoutIdFragment = R.layout.fragment_order
     override fun getViewModelClass() = OrderViewModel::class.java
     private lateinit var orderAdapter: OrderAdapter
+    private var image=""
+   // private lateinit var orderImageAdapter: OrderImageAdapter
+
     private var customerID:Long=7590081495324L
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -31,7 +34,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderViewModel>() {
         Log.i(TAG,"OnView")
         viewModel.getOrders(customerID)
         getAllOrders()
-
+        //getImage()
 
 
     }
@@ -45,14 +48,17 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderViewModel>() {
                     }
                     is ApiState.Loading -> {
                         Log.i(TAG,"Loading")
-
                     }
                     is ApiState.Success -> {
                         val data = it.data
-                        orderAdapter = OrderAdapter(requireContext())
+
+
+                        Log.i(TAG,data.toString())
+                        viewModel.getImageOrder(data.get(0).lineItems?.get(0)?.productId!!)
+                        getImage()
+                        orderAdapter = OrderAdapter(requireContext() )
                         orderAdapter.submitList(data)
                         binding.recyclerOrders.adapter = orderAdapter
-                        Log.i(TAG,data.toString())
 
                     }
                 }
@@ -60,5 +66,33 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderViewModel>() {
 
         }
 
+    }
+
+    fun getImage(){
+        lifecycleScope.launch {
+            viewModel.imageOrders.collect {
+                when (it) {
+                    is ApiState.Failure -> {
+                        Log.i(TAG,"Fail")
+                    }
+                    is ApiState.Loading -> {
+                        Log.i(TAG,"Loading")
+
+                    }
+                    is ApiState.Success -> {
+                        val data = it.data
+                        image=data.get(0).src
+                        Log.i(TAG,image)
+//                        orderImageAdapter = OrderImageAdapter(requireContext())
+//                        orderImageAdapter.submitList(data)
+//                        binding.recyclerOrders.adapter = orderImageAdapter
+//                        Log.i(TAG,data.toString())
+
+
+                    }
+                }
+            }
+
+        }
     }
 }
