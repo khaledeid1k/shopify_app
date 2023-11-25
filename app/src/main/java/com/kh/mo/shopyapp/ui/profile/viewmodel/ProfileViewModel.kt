@@ -32,10 +32,9 @@ class ProfileViewModel(private val repo: Repo) : ViewModel() {
     private fun getAllFavorites(success: (DraftOrderRequest) -> Unit) {
         viewModelScope.launch {
             repo.getAllFavorites().collect {
-                if (it is ApiState.Success) {
-                    success(it.data.convertFavoritesEntityToDraftOrderRequest(getCustomerId()))
+                    success(it.convertFavoritesEntityToDraftOrderRequest(getCustomerId()))
 
-                }
+
 
             }
         }

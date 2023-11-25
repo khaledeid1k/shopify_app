@@ -23,7 +23,7 @@ class FavoritesFragment : BaseFragment<FragmentFavoritesBinding, FavoritesViewMo
         getAllFavorites()
     }
 
-    fun inti(){
+    private fun inti(){
         binding.favoritesList.adapter=favoritesAdapter
     }
 

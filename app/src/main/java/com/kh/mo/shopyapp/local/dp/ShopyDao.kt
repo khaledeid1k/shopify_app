@@ -6,21 +6,13 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.kh.mo.shopyapp.model.entity.FavoriteEntity
 import com.kh.mo.shopyapp.model.entity.LineItemEntity
+import kotlinx.coroutines.flow.Flow
+
 @Dao
 interface ShopyDao {
 
-    @Query("SELECT * FROM line_items_table")
-    suspend fun getAllLinetItems(): List<LineItemEntity>
-
-    @Query("DELETE FROM line_items_table WHERE product_id = :productId")
-    suspend fun deleteLinetItems(productId:Long)
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun saveLinetItems(lineItemEntity:LineItemEntity)
-
-
     @Query("SELECT * FROM favorite_table")
-    suspend fun getAllFavorites(): List<FavoriteEntity>
+     fun getAllFavorites(): Flow<List<FavoriteEntity>>
 
     @Query("DELETE FROM favorite_table WHERE productId = :productId")
     suspend fun deleteFavorite(productId:Long)

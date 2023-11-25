@@ -81,11 +81,9 @@ interface Repo {
     ): Flow<ApiState<Address>>
     suspend fun backUpDraftFavorite(draftOrderRequest: DraftOrderRequest,draftFavoriteId: Long): Flow<ApiState<String>>
 
-    suspend fun getAllLinetItems(): List<LineItemEntity>
-    suspend fun deleteLinetItems(productId:Long)
-    suspend fun saveLinetItems(lineItemEntity: LineItemEntity)
 
-    suspend fun getAllFavorites(): Flow<ApiState<List<FavoriteEntity>>>
+
+    suspend fun getAllFavorites(): Flow<List<FavoriteEntity>>
     suspend fun deleteFavorite(productId:Long)
     suspend fun saveFavorite(favoriteEntity: FavoriteEntity):Long
     suspend fun checkProductInFavorite(productId: Long): Flow<ApiState<Int>>
