@@ -54,7 +54,7 @@ class RemoteSourceImp private constructor() : RemoteSource {
                 .document(customerId).get()
     }
 
-    override suspend fun getListOfSpecificProductsIds( productsIds: List<Long>):Response<AllProductsResponse> {
+    override suspend fun getListOfSpecificProductsIds( productsIds: String):Response<AllProductsResponse> {
         return  network.getListOfSpecificProductsIds(productsIds)
     }
 

@@ -15,6 +15,7 @@ import com.kh.mo.shopyapp.ui.profile.viewmodel.ProfileViewModel
 import com.kh.mo.shopyapp.ui.sing_in.view.SignInFragmentDirections
 import com.kh.mo.shopyapp.utils.makeGone
 import com.kh.mo.shopyapp.utils.makeVisible
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class SettingsFragment : BaseFragment<FragmentSettingsBinding, ProfileViewModel>() {
@@ -49,16 +50,17 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, ProfileViewModel>
         viewModel.backUpDraftFavorite()
         observerUploadData()
     }
-    private fun observerUploadData(){
+
+    private fun observerUploadData() {
         lifecycleScope.launch {
             viewModel.backUpDraftFavorite.collect {
-                when(it){
-                    is ApiState.Failure ->{
-                  //      binding.loading.makeGone()
+                when (it) {
+                    is ApiState.Failure -> {
+                        //      binding.loading.makeGone()
                     }
-                   is  ApiState.Loading -> {
-                       binding.loading.makeVisible()
-                        }
+                    is ApiState.Loading -> {
+                        binding.loading.makeVisible()
+                    }
                     is ApiState.Success -> {
                         binding.loading.makeGone()
                         Toast.makeText(requireContext(), "Upload Done", Toast.LENGTH_SHORT).show()
@@ -71,6 +73,28 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, ProfileViewModel>
 
     private fun sync() {
         viewModel.retrieveDraftFavorite()
+        observerSyncData()
+    }
+
+    fun observerSyncData() {
+        lifecycleScope.launch {
+            viewModel.retrieveDraftFavorite.collect {
+                when (it) {
+                    is ApiState.Failure -> {}
+                    ApiState.Loading -> {binding.loading.makeVisible()}
+                    is ApiState.Success -> {
+                        viewModel.saveProducts(it.data) { result ->
+                            if (result > 0) {
+                                binding.loading.makeGone()
+                                Toast.makeText(requireContext(), "Sync Done", Toast.LENGTH_SHORT).show()
+
+                            }
+                        }
+                    }
+                }
+            }
+
+        }
     }
 
 

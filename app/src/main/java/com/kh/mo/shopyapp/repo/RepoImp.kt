@@ -42,7 +42,7 @@ class RepoImp private constructor(
     override suspend fun updateCurrencyRates() {
         remoteSource.getCurrencyRate()
     }
-    override suspend fun getListOfSpecificProductsIds( productsIds: List<Long>):Flow<ApiState<List<FavoriteEntity>>>
+    override suspend fun getListOfSpecificProductsIds( productsIds: String):Flow<ApiState<List<FavoriteEntity>>>
     {
         return flow {
 

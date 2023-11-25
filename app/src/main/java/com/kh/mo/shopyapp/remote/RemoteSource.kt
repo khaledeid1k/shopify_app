@@ -23,7 +23,7 @@ import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 
 interface RemoteSource {
-    suspend fun getListOfSpecificProductsIds( productsIds: List<Long>):Response<AllProductsResponse>
+    suspend fun getListOfSpecificProductsIds( productsIds: String):Response<AllProductsResponse>
     suspend fun getProductsIdForDraftFavorite(draftFavoriteId: Long): Response<DraftOrderResponse>
     suspend fun singUpWithFireBase(userData: UserData): Task<AuthResult>
     suspend fun singInWithFireBase(userData: UserData): Task<AuthResult>

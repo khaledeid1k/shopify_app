@@ -22,7 +22,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface Repo {
     suspend fun updateCurrencyRates()
-    suspend fun getListOfSpecificProductsIds( productsIds: List<Long>):Flow<ApiState<List<FavoriteEntity>>>
+    suspend fun getListOfSpecificProductsIds( productsIds: String):Flow<ApiState<List<FavoriteEntity>>>
     suspend fun getProductsIdForDraftFavorite(draftFavoriteId: Long): Flow<ApiState<List<Long>>>
     suspend fun singUpWithFireBase(userData: UserData): Flow<ApiState<String>>
     suspend fun singInWithFireBase(userData: UserData): Flow<ApiState<String>>

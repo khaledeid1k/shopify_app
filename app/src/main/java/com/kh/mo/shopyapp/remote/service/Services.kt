@@ -75,7 +75,7 @@ interface Services {
     ): Response<DraftOrderResponse>
 
     @GET("products.json")
-    suspend fun getListOfSpecificProductsIds(@Query("ids") productsIds: List<Long>):Response<AllProductsResponse>
+    suspend fun getListOfSpecificProductsIds(@Query("ids") productsIds: String):Response<AllProductsResponse>
 
 
     @PUT("customers/{customerId}/addresses/{addressId}")

@@ -23,8 +23,9 @@ class ProfileViewModel(private val repo: Repo) : ViewModel() {
     private val _backUpDraftFavorite = MutableStateFlow<ApiState<String>>(ApiState.Loading)
     val backUpDraftFavorite: StateFlow<ApiState<String>> = _backUpDraftFavorite
 
-    private val _retrieveDraftFavorite= MutableStateFlow<ApiState<String>>(ApiState.Loading)
-    val retrieveDraftFavorite: StateFlow<ApiState<String>> = _retrieveDraftFavorite
+    private val _retrieveDraftFavorite =
+        MutableStateFlow<ApiState<List<FavoriteEntity>>>(ApiState.Loading)
+    val retrieveDraftFavorite: StateFlow<ApiState<List<FavoriteEntity>>> = _retrieveDraftFavorite
 
 
     private fun getCustomerId() = repo.getCustomerId()
@@ -32,8 +33,7 @@ class ProfileViewModel(private val repo: Repo) : ViewModel() {
     private fun getAllFavorites(success: (DraftOrderRequest) -> Unit) {
         viewModelScope.launch {
             repo.getAllFavorites().collect {
-                    success(it.convertFavoritesEntityToDraftOrderRequest(getCustomerId()))
-
+                success(it.convertFavoritesEntityToDraftOrderRequest(getCustomerId()))
 
 
             }
@@ -44,7 +44,7 @@ class ProfileViewModel(private val repo: Repo) : ViewModel() {
         getAllFavorites {
             viewModelScope.launch {
                 repo.backUpDraftFavorite(it, getFavoriteDraftId()).collect {
-                    _backUpDraftFavorite.value=it
+                    _backUpDraftFavorite.value = it
                 }
             }
         }
@@ -52,46 +52,33 @@ class ProfileViewModel(private val repo: Repo) : ViewModel() {
     }
 
 
-    private fun saveProducts(favoritesEntity:List<FavoriteEntity>,isSuccessfully:(Long)->Unit){
+    fun saveProducts(favoritesEntity: List<FavoriteEntity>, isSuccessfully: (Long) -> Unit) {
         viewModelScope.launch {
             favoritesEntity.map {
                 Log.d(TAG, "saveProductsaaaaaaaaaa:$it")
-                val result= repo.saveFavorite(it)
+                val result = repo.saveFavorite(it)
 
-               isSuccessfully(result)
+                isSuccessfully(result)
 
             }
 
         }
     }
-    private fun getListOfSpecificProductsByIds(productsIds: List<Long>){
-        viewModelScope.launch {
-                repo.getListOfSpecificProductsIds(productsIds).collect{
-                  when(it){
-                      is ApiState.Failure -> {
-                          _retrieveDraftFavorite.value=ApiState.Failure("Failure")
-                      }
-                      ApiState.Loading -> {
-                          _retrieveDraftFavorite.value=ApiState.Loading
-                      }
-                      is ApiState.Success -> {
-                              saveProducts(it.data){result->
-                                  if(result>0)
-                                  _retrieveDraftFavorite.value=ApiState.Success("Done")
-                                  Log.d(TAG, "getListOfSpecificProductsIds: saveProducts Done${result}")
-                              }
 
-                      }
-                  }
-                }
+    private fun getListOfSpecificProductsByIds(productsIds: List<Long>) {
+        viewModelScope.launch {
+            repo.getListOfSpecificProductsIds(productsIds.joinToString(",")).collect {
+                _retrieveDraftFavorite.value = it
             }
+        }
 
     }
 
-     fun retrieveDraftFavorite(){
+
+    fun retrieveDraftFavorite() {
         viewModelScope.launch {
-            repo.getProductsIdForDraftFavorite(getFavoriteDraftId()).collect{
-                if (it is ApiState.Success){
+            repo.getProductsIdForDraftFavorite(getFavoriteDraftId()).collect {
+                if (it is ApiState.Success) {
                     getListOfSpecificProductsByIds(it.data)
                     Log.d(TAG, "retrieveDraftFavorite: ${it.data}")
 
@@ -100,7 +87,7 @@ class ProfileViewModel(private val repo: Repo) : ViewModel() {
         }
     }
 
-    fun logOut(){
+    fun logOut() {
         viewModelScope.launch {
             repo.logout()
         }
