@@ -397,7 +397,7 @@ class RepoImp private constructor(
                 remoteSource.filterProductsBySubCollection(collectionId,productType)
             if (productsSubCategory.isSuccessful) {
                 remoteSource.filterProductsBySubCollection(collectionId,productType).body()
-                    ?.let { emit(ApiState.Success(it)) }
+                    ?.let { emit(ApiState.Success(it.convertToAllProducts())) }
             } else {
                 emit(ApiState.Failure(productsSubCategory.message()))
             }

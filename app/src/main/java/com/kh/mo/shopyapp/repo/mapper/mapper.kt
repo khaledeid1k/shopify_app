@@ -2,11 +2,6 @@ package com.kh.mo.shopyapp.repo.mapper
 
 import com.kh.mo.shopyapp.model.entity.*
 import com.kh.mo.shopyapp.model.request.*
-import com.kh.mo.shopyapp.model.ui.Address
-import com.kh.mo.shopyapp.model.entity.CustomerEntity
-import com.kh.mo.shopyapp.model.request.AddressRequest
-import com.kh.mo.shopyapp.model.request.CustomerDataRequest
-import com.kh.mo.shopyapp.model.request.UserData
 import com.kh.mo.shopyapp.model.response.address.AddressResponse
 import com.kh.mo.shopyapp.model.response.allproducts.AllProductsResponse
 import com.kh.mo.shopyapp.model.response.allproducts.ImageResponse
@@ -18,8 +13,8 @@ import com.kh.mo.shopyapp.model.response.create_customer.CustomerResponse
 import com.kh.mo.shopyapp.model.response.draft_order.DraftOrderResponse
 import com.kh.mo.shopyapp.model.response.login.Login
 import com.kh.mo.shopyapp.model.response.maincategory.MainCategoryResponse
-import com.kh.mo.shopyapp.model.ui.Address
 import com.kh.mo.shopyapp.model.response.osm.NominatimResponse
+import com.kh.mo.shopyapp.model.ui.Address
 import com.kh.mo.shopyapp.model.ui.DraftOrder
 import com.kh.mo.shopyapp.model.ui.Favorite
 import com.kh.mo.shopyapp.model.ui.allproducts.Product
