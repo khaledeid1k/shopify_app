@@ -28,6 +28,11 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
             Navigation.findNavController(view)
                 .navigate(R.id.action_profileFragment_to_settingsFragment)
         }
+        binding.tvAllMyOrders.setOnClickListener {
+            Navigation.findNavController(view)
+                .navigate(R.id.action_profileFragment_to_orderFragment
+                )
+        }
         observeUserData()
 
 

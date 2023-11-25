@@ -2,11 +2,13 @@ package com.kh.mo.shopyapp.repo.mapper
 
 import com.kh.mo.shopyapp.model.entity.*
 import com.kh.mo.shopyapp.model.request.*
+import com.kh.mo.shopyapp.model.response.orderdetails.OrderDetailsResponse
 import com.kh.mo.shopyapp.model.response.address.AddressResponse
 import com.kh.mo.shopyapp.model.response.allproducts.AllProductsResponse
 import com.kh.mo.shopyapp.model.response.allproducts.ImageResponse
 import com.kh.mo.shopyapp.model.response.allproducts.OptionResponse
 import com.kh.mo.shopyapp.model.response.allproducts.VariantResponse
+import com.kh.mo.shopyapp.model.response.allproducts.ProductResponse
 import com.kh.mo.shopyapp.model.response.barnds.BrandsResponse
 import com.kh.mo.shopyapp.model.response.barnds.SmartCollection
 import com.kh.mo.shopyapp.model.response.create_customer.CustomerResponse
@@ -15,10 +17,14 @@ import com.kh.mo.shopyapp.model.response.login.Login
 import com.kh.mo.shopyapp.model.response.maincategory.MainCategoryResponse
 import com.kh.mo.shopyapp.model.response.osm.NominatimResponse
 import com.kh.mo.shopyapp.model.ui.Address
+import com.kh.mo.shopyapp.model.response.order.OrderResponse
 import com.kh.mo.shopyapp.model.ui.DraftOrder
 import com.kh.mo.shopyapp.model.ui.Favorite
 import com.kh.mo.shopyapp.model.ui.allproducts.Product
 import com.kh.mo.shopyapp.model.ui.maincategory.CustomCollection
+import com.kh.mo.shopyapp.model.ui.order.Image
+import com.kh.mo.shopyapp.model.ui.order.LineItem
+import com.kh.mo.shopyapp.model.ui.order.Order
 
 fun CustomerResponse.convertCustomerResponseToCustomerEntity(): CustomerEntity {
     return CustomerEntity(
@@ -129,6 +135,31 @@ fun DraftOrderResponse.convertDraftOrderResponseToDraftOrder(): DraftOrder {
         this.draft_order.customer.id
     )
 
+
+}
+
+fun OrdersResponse.convertToOrders(): List<Order> {
+    return this.orders?.map {
+        Order(
+            it.currency, it.totalPrice, it.customerResponse, it.lineItems,it.subtotalPrice,it.id)
+    } ?: emptyList()
+}
+fun OrderResponse.convertToLineItem(): List<LineItem> {
+    return this.lineItems?.map {
+        LineItem(
+            it.quantity, it.title, it.price,it.id)
+    } ?: emptyList()
+}
+fun OrderDetailsResponse.convertToLineItem(): List<LineItem> {
+    return this.order?.lineItems?.map {
+        LineItem(
+            it.quantity, it.title, it.price,it.id)
+    } ?: emptyList()
+}
+fun ProductResponse.convertToImage(): List<Image> {
+    return this.images.map {
+        Image(it.src)
+    }
 }
 
 

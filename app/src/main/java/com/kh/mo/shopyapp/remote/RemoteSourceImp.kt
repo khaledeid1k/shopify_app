@@ -12,7 +12,9 @@ import com.kh.mo.shopyapp.model.request.CustomerDataRequest
 import com.kh.mo.shopyapp.model.request.CustomerRequest
 import com.kh.mo.shopyapp.model.request.DraftOrderRequest
 import com.kh.mo.shopyapp.model.request.UserData
+import com.kh.mo.shopyapp.model.response.orderdetails.OrderDetailsResponse
 import com.kh.mo.shopyapp.model.response.allproducts.AllProductsResponse
+import com.kh.mo.shopyapp.model.response.allproducts.ProductResponse
 import com.kh.mo.shopyapp.model.response.barnds.BrandsResponse
 import com.kh.mo.shopyapp.model.response.create_customer.CustomerResponse
 import com.kh.mo.shopyapp.model.response.currency.Rates
@@ -20,6 +22,7 @@ import com.kh.mo.shopyapp.model.response.draft_order.DraftOrderResponse
 import com.kh.mo.shopyapp.model.response.login.Login
 import com.kh.mo.shopyapp.model.response.maincategory.MainCategoryResponse
 import com.kh.mo.shopyapp.model.response.osm.NominatimResponse
+import com.kh.mo.shopyapp.model.response.order.OrdersResponse
 import com.kh.mo.shopyapp.remote.service.Network
 import com.kh.mo.shopyapp.utils.Constants
 import com.kh.mo.shopyapp.utils.formatCurrentDate
@@ -220,6 +223,19 @@ class RemoteSourceImp private constructor() : RemoteSource {
 
     override suspend fun addAddressToCustomer(customerId: Long, address: AddressRequest) =
         Network.retrofitService.addAddressToCustomer(customerId, address)
+
+
+    override suspend fun getOrdersByCustomerID(customerId: Long): Response<OrdersResponse> {
+        return Network.retrofitService.getOrdersByCustomerID(customerId)
+    }
+
+    override suspend fun getOrderByID(orderId: Long): Response<OrderDetailsResponse> {
+        return Network.retrofitService.getOrderByID(orderId)
+    }
+
+    override suspend fun getImageOrders(productId: Long): Response<ProductResponse> {
+        return Network.retrofitService.getImageOrders(productId)
+    }
 
     companion object {
         @Volatile

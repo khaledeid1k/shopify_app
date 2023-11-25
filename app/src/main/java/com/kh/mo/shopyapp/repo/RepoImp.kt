@@ -7,11 +7,14 @@ import com.kh.mo.shopyapp.model.entity.FavoriteEntity
 import com.kh.mo.shopyapp.model.entity.LineItemEntity
 import com.kh.mo.shopyapp.model.request.DraftOrderRequest
 import com.kh.mo.shopyapp.model.request.UserData
+import com.kh.mo.shopyapp.model.response.orderdetails.OrderDetailsResponse
 import com.kh.mo.shopyapp.model.response.ads.DiscountCodeResponse
 import com.kh.mo.shopyapp.model.response.allproducts.AllProductsResponse
+import com.kh.mo.shopyapp.model.response.allproducts.ProductResponse
 import com.kh.mo.shopyapp.model.response.barnds.BrandsResponse
 import com.kh.mo.shopyapp.model.response.maincategory.MainCategoryResponse
 import com.kh.mo.shopyapp.model.ui.Address
+import com.kh.mo.shopyapp.model.response.order.OrdersResponse
 import com.kh.mo.shopyapp.model.ui.DraftOrder
 import com.kh.mo.shopyapp.model.ui.Review
 import com.kh.mo.shopyapp.model.ui.allproducts.Product
@@ -622,6 +625,57 @@ class RepoImp private constructor(
 
     override suspend fun setCurrencyUnit(unit: String) {
         localSource.setCurrencyUnit(unit)
+    }
+
+    override suspend fun getOrdersByCustomerID(customerId: Long): Flow<ApiState<OrdersResponse>> {
+        return flow {
+            emit(ApiState.Loading)
+            val customerOrders =
+                remoteSource.getOrdersByCustomerID(customerId)
+            if (customerOrders.isSuccessful) {
+                remoteSource.getOrdersByCustomerID(customerId).body()
+                    ?.let { emit(ApiState.Success(it)) }
+            } else {
+                emit(ApiState.Failure(customerOrders.message()))
+            }
+
+        }.catch {
+            emit(ApiState.Failure(it.message!!))
+        }
+    }
+
+    override suspend fun getOrderById(id:Long): Flow<ApiState<OrderDetailsResponse>> {
+        return flow {
+            emit(ApiState.Loading)
+            val order =
+                remoteSource.getOrderByID(id)
+            if (order.isSuccessful) {
+                remoteSource.getOrderByID(id).body()
+                    ?.let { emit(ApiState.Success(it)) }
+            } else {
+                emit(ApiState.Failure(order.message()))
+            }
+
+        }.catch {
+            emit(ApiState.Failure(it.message!!))
+        }
+    }
+
+    override suspend fun getImageOrders(productId: Long): Flow<ApiState<ProductResponse>> {
+        return flow {
+            emit(ApiState.Loading)
+            val imageOrders =
+                remoteSource.getImageOrders(productId)
+            if (imageOrders.isSuccessful) {
+                remoteSource.getImageOrders(productId).body()
+                    ?.let { emit(ApiState.Success(it)) }
+            } else {
+                emit(ApiState.Failure(imageOrders.message()))
+            }
+
+        }.catch {
+            emit(ApiState.Failure(it.message!!))
+        }
     }
 
     companion object {
