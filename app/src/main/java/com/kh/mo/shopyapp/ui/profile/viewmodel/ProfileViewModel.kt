@@ -112,5 +112,11 @@ class ProfileViewModel(private val repo: Repo) : ViewModel() {
         }
     }
 
+    fun logOut(){
+        viewModelScope.launch {
+            repo.logout()
+        }
+    }
+
 
 }

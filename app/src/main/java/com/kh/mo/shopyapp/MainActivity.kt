@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    fun  disappearAndShowBottomNavigation(){
+    private fun  disappearAndShowBottomNavigation(){
 
         controller.addOnDestinationChangedListener { _, navDestination, _ ->
             if (navDestination.id == R.id.homeFragment ||
@@ -47,5 +47,13 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onBackPressed() {
+
+        if (controller.currentDestination?.id == R.id.signInFragment) {
+            finish()
+        } else {
+            super.onBackPressed()
+        }
+    }
 
 }

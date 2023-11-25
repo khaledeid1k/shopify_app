@@ -177,14 +177,15 @@ class RepoImp private constructor(
 
     override suspend fun getDraftFavoriteId(customerId: String) =
         flow {
-            var favoriteId:String?=""
+            var favoriteId=""
             emit(ApiState.Loading)
             remoteSource.getDraftFavoriteId (customerId).addOnSuccessListener {
                 if(it.exists()){
-                    favoriteId=   it.data?.get(Constants.DRAFT_FAVORITE_ID) as String?
+                    favoriteId=   it.data?.get(Constants.DRAFT_FAVORITE_ID) as String
                 }
             }.await()
-            emit(ApiState.Success(favoriteId))
+            if(favoriteId.isEmpty()){emit(ApiState.Failure("Account Not exist"))}
+            else{emit(ApiState.Success(favoriteId)) }
         }.catch {
             emit(ApiState.Failure("An error occurred: ${it.message}"))
         }

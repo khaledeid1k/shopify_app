@@ -35,6 +35,9 @@
     <string name="dollar_currency">$</string>
     <string name="checkout">Checkout</string>
     <string name="address">Address</string>
+    <string name="log_out">log Out</string>
+    <string name="upload">Upload</string>
+    <string name="sync">Sync</string>
     <string name="edit">Edit</string>
     <string name="Products">Products</string>
     <string name="confirm">Confirm</string>
