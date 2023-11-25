@@ -34,9 +34,11 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, ProfileViewModel>
 
 
     private fun upload() {
+        viewModel.backUpDraftFavorite()
     }
 
     private fun sync() {
+        viewModel.retrieveDraftFavorite()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -208,7 +208,7 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding, CategoryViewModel
 
     fun addAdapterToCategories(list: List<Product>){
         productsCategoryAdapter = ProductsCategoryAdapter(viewModel)
-        productsCategoryAdapter.submitList(list)
+        productsCategoryAdapter.setItems(list)
         binding.recyclerProductsCategory.adapter = productsCategoryAdapter
     }
 
