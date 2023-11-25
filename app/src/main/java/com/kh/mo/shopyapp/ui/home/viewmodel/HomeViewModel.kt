@@ -34,7 +34,6 @@ class HomeViewModel(private var _irepo: Repo) : ViewModel() {
     init{
         getAllBrands()
         getMainCategories()
-        getLatestCurrencyRates()
     }
 
     fun getAllBrands() {
@@ -115,12 +114,6 @@ class HomeViewModel(private var _irepo: Repo) : ViewModel() {
                     is ApiState.Success -> Log.i(TAG, "getCoupon: ${it.data.discountCode?.code}")
                 }
             }
-        }
-    }
-
-    private fun getLatestCurrencyRates() {
-        viewModelScope.launch(Dispatchers.IO) {
-            _irepo.updateCurrencyRates()
         }
     }
 }

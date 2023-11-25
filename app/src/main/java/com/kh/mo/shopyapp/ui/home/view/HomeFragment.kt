@@ -66,7 +66,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
         val totalPages = adsList.size
         lifecycleScope.launch(Dispatchers.Main) {
-            while (isActive) {
+            repeat(adsList.size * 2) {
                 binding.couponPager.apply {
                     delay(3000)
                     binding.couponPager.apply {

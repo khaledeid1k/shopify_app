@@ -40,7 +40,7 @@ data class VariantResponse(
     @SerializedName("position")
     val position: Int?,
     @SerializedName("price")
-    val price: String?,
+    var price: String?,
     @SerializedName("product_id")
     val productId: Long?,
     @SerializedName("requires_shipping")
