@@ -20,7 +20,9 @@ import com.kh.mo.shopyapp.model.ui.allproducts.Product
 import com.kh.mo.shopyapp.ui.base.BaseDataDiffUtil
 import com.kh.mo.shopyapp.ui.product.product_reviews.view.ReviewsAdapter
 
-class ProductsCategoryAdapter(private val onclickFavorite:ProductsCategoryListener):
+class ProductsCategoryAdapter(private val onclickFavorite:ProductsCategoryListener,
+                              private   val onClickCategory:(Int)->Unit
+):
     RecyclerView.Adapter<ProductsCategoryAdapter.SubCategoriseVH>() {
     private var products: List<Product> = emptyList()
 
@@ -38,7 +40,9 @@ class ProductsCategoryAdapter(private val onclickFavorite:ProductsCategoryListen
     override fun onBindViewHolder(holder: SubCategoriseVH, position: Int) {
         val currentItem = products[position]
         holder.onBind(currentItem,onclickFavorite)
-
+       holder.itemView.setOnClickListener {
+           onClickCategory(position)
+       }
 
         }
 
