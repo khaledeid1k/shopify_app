@@ -623,8 +623,9 @@ class RepoImp private constructor(
         return localSource.getCurrencyUnit()
     }
 
-    override suspend fun setCurrencyUnit(unit: String) {
+    override suspend fun setCurrencyUnit(unit: String): String {
         localSource.setCurrencyUnit(unit)
+        return getCurrencyUnit()
     }
 
     override suspend fun getOrdersByCustomerID(customerId: Long): Flow<ApiState<OrdersResponse>> {

@@ -100,4 +100,5 @@
     <string name="usd_currency">(USD) الدولار الامريكي</string>
     <string name="gbp_currency">(GBP) الجنية الاسترليني</string>
     <string name="eur_currency">(EUR) اليورو</string>
+    <string name="change_currency_to">"تم تغيير العملة الى "</string>
 </resources>

@@ -99,7 +99,7 @@ interface Repo {
     fun getFavoriteDraftId(): Long
     fun getCustomerId(): Long
     suspend fun getCurrencyUnit(): String
-    suspend fun setCurrencyUnit(unit: String)
+    suspend fun setCurrencyUnit(unit: String): String
     suspend fun getOrdersByCustomerID(customerId: Long): Flow<ApiState<OrdersResponse>>
     suspend fun getOrderById(id: Long): Flow<ApiState<OrderDetailsResponse>>
     suspend fun getImageOrders(productId: Long): Flow<ApiState<ProductResponse>>

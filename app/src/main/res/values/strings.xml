@@ -99,4 +99,5 @@
     <string name="usd_currency">United State Dollar (USD)</string>
     <string name="gbp_currency">Pound Sterling (GBP)</string>
     <string name="eur_currency">Euro (EUR)</string>
-    </resources>
+    <string name="change_currency_to">"currency changed to "</string>
+</resources>
