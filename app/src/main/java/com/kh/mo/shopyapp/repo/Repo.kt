@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 
 interface Repo {
+    suspend fun updateCurrencyRates()
     suspend fun singUpWithFireBase(userData: UserData): Flow<ApiState<String>>
     suspend fun singInWithFireBase(userData: UserData): Flow<ApiState<String>>
     suspend fun logout()

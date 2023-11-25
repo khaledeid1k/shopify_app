@@ -34,12 +34,9 @@ class RepoImp private constructor(
 ) : Repo {
     private val TAG = "TAG RepoImp"
 
-    init {
-        GlobalScope.launch(Dispatchers.IO) {
-            Log.i(TAG, "currencyRates: ${remoteSource.getCurrencyRate()}")
-        }
+    override suspend fun updateCurrencyRates() {
+        remoteSource.getCurrencyRate()
     }
-
     override suspend fun singUpWithFireBase(userData: UserData) =
         flow {
             emit(ApiState.Loading)
