@@ -13,7 +13,6 @@ import com.kh.mo.shopyapp.model.request.CustomerRequest
 import com.kh.mo.shopyapp.model.request.DraftOrderRequest
 import com.kh.mo.shopyapp.model.request.UserData
 import com.kh.mo.shopyapp.model.response.allproducts.AllProductsResponse
-import com.kh.mo.shopyapp.model.response.allproducts.ProductResponse
 import com.kh.mo.shopyapp.model.response.barnds.BrandsResponse
 import com.kh.mo.shopyapp.model.response.create_customer.CustomerResponse
 import com.kh.mo.shopyapp.model.response.currency.Rates
@@ -23,9 +22,9 @@ import com.kh.mo.shopyapp.model.response.maincategory.MainCategoryResponse
 import com.kh.mo.shopyapp.model.response.osm.NominatimResponse
 import com.kh.mo.shopyapp.remote.service.Network
 import com.kh.mo.shopyapp.utils.Constants
-import com.kh.mo.shopyapp.utils.getCurrentDate
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.flow
+import com.kh.mo.shopyapp.utils.formatCurrentDate
+import com.kh.mo.shopyapp.utils.isHoursPassed
+import com.kh.mo.shopyapp.utils.parseDate
 import kotlinx.coroutines.tasks.await
 import retrofit2.Response
 
@@ -108,12 +107,15 @@ class RemoteSourceImp private constructor() : RemoteSource {
 
     override suspend fun isCurrencyDbUpdated(): Boolean {
         val documentSnapshot = getCurrencyDocument().get().await()
-        if (documentSnapshot.exists()) {
-            val currentDate = getCurrentDate()
-            Log.i(TAG, "isCurrencyDbUpdated: ${documentSnapshot.getString("date") == currentDate}")
-            return documentSnapshot.getString("date") == currentDate
+        return try {
+            val storedDate = documentSnapshot.getString("date")?.let { parseDate(it) }
+            val isOutOfDate = !isHoursPassed(storedDate)
+            Log.i(TAG, "isCurrencyDbUpdated: $isOutOfDate")
+            isOutOfDate
+        } catch (e: Exception) {
+            Log.i(TAG, "isCurrencyDbUpdated: exception ${e.message}")
+            false
         }
-        return false
     }
 
     private fun getCurrencyDocument(): DocumentReference {
@@ -133,9 +135,9 @@ class RemoteSourceImp private constructor() : RemoteSource {
         return null
     }
 
-    private suspend fun updateCurrencyRatesDB(rates: Rates) {
+    private fun updateCurrencyRatesDB(rates: Rates) {
         val updatedRates = mapOf(
-            "date" to getCurrentDate(),
+            "date" to formatCurrentDate(),
             "EGP" to rates.EGP,
             "GBP" to rates.GBP,
             "EUR" to rates.EUR,

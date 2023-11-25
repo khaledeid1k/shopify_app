@@ -94,4 +94,9 @@
     <string name="location_disabled">Location Disabled</string>
     <string name="location_disabled_message">Please turn on Location access to find your current location</string>
     <string name="set_default_address">Set as default address</string>
+    <string name="currency">Currency</string>
+    <string name="egp_currency">Egypt Pound (EGP)</string>
+    <string name="usd_currency">United State Dollar (USD)</string>
+    <string name="gbp_currency">Pound Sterling (GBP)</string>
+    <string name="eur_currency">Euro (EUR)</string>
 </resources>

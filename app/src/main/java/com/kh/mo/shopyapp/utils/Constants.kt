@@ -17,5 +17,9 @@ object Constants {
     const val PREFERENCE_NAME = "PREFERENCE_NAME"
     const val CUSTOMER_ID = "CUSTOMER_ID"
     const val DRAFT_ID = "DRAFT_ID"
-
+    const val CURRENCY_ID = "currency_id"
+    const val USD_ID = "USD"
+    const val EGP_ID = "EGP"
+    const val EUR_ID = "EUR"
+    const val GBP_ID = "GBP"
 }

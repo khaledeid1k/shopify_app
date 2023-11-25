@@ -35,15 +35,3 @@ fun isHoursPassed(storedDate: Date?): Boolean {
     println("current date: ${formatCurrentDate(Date(currentTimeMillis))}")
     return timeDifference >= 1 * 60 * 60 * 1000
 }
-
-fun main() {
-    val storedDateString = "2023-11-25 10:00:00"
-    val storedDate = parseDate(storedDateString)
-    if (isHoursPassed(storedDate)) {
-        println(true)
-        println("set date to: ${formatCurrentDate()}")
-    } else {
-        println(false)
-    }
-    //println(isHoursPassed(storedDate))
-}
