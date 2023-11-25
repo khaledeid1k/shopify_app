@@ -1,4 +1,4 @@
-package com.kh.mo.shopyapp.ui.address
+package com.kh.mo.shopyapp.ui.address.list
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -13,18 +13,18 @@ import com.kh.mo.shopyapp.model.ui.Address
 class AddressAdapter(private val context: Context, private val listener: (Address) -> Unit) :
     ListAdapter<Address, AddressAdapter.ViewHolder>(AddressDiffUtils()) {
     lateinit var binding: ItemLocationBinding
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AddressAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater: LayoutInflater =
             parent.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         binding = ItemLocationBinding.inflate(inflater, parent, false)
         return ViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: AddressAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
         binding.apply {
             addressNameValueTxtV.text = item.name
-            isDefaultAddressTxtV.visibility = if(item.default) View.VISIBLE else View.GONE
+            isDefaultAddressTxtV.visibility = if(item.default == true) View.VISIBLE else View.GONE
             addressValueTxtV.text =
                 "${item.city} ${item.state} ${item.country}\n${item.phone}\n${item.address}"
             addressItemCard.setOnClickListener { listener(item) }

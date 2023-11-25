@@ -14,7 +14,6 @@ object Network {
         .baseUrl(BuildConfig.baseURL)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
-
     val retrofitService: Services by lazy {
         retrofit.create(Services::class.java)
     }
@@ -25,5 +24,13 @@ object Network {
         .build()
     val currencyService: CurrencyService by lazy {
         currencyRetrofit.create(CurrencyService::class.java)
+    }
+
+    private val nominatimRetrofit: Retrofit = Retrofit.Builder()
+        .baseUrl(Constants.NOMINATIM_BASE_URL)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+    val nominatimService: OSMService by lazy {
+        nominatimRetrofit.create(OSMService::class.java)
     }
 }

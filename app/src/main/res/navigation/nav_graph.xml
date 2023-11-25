@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/signInFragment">
+    app:startDestination="@id/homeFragment">
 
     <fragment
         android:id="@+id/signUpFragment"
@@ -114,6 +114,9 @@
         <action
             android:id="@+id/action_settingsFragment_to_addressDetailsFragment"
             app:destination="@id/addressDetailsFragment" />
+        <action
+            android:id="@+id/action_settingsFragment_to_mapFragment"
+            app:destination="@id/mapFragment" />
     </fragment>
     <fragment
         android:id="@+id/addressDetailsFragment"
@@ -122,9 +125,24 @@
         <argument
             android:name="address"
             app:argType="com.kh.mo.shopyapp.model.ui.Address" />
+        <argument
+            android:name="source"
+            app:argType="string" />
     </fragment>
     <dialog
         android:id="@+id/addressFragment"
-        android:name="com.kh.mo.shopyapp.ui.address.AddressFragment"
+        android:name="com.kh.mo.shopyapp.ui.address.list.AddressFragment"
         android:label="AddressFragment" />
+    <fragment
+        android:id="@+id/mapFragment"
+        android:name="com.kh.mo.shopyapp.ui.address.map.MapFragment"
+        android:label="MapFragment" >
+        <argument
+            android:name="userId"
+            app:argType="long" />
+        <action
+            android:id="@+id/action_mapFragment_to_addressDetailsFragment"
+            app:destination="@id/addressDetailsFragment"
+            app:popUpTo="@id/settingsFragment" />
+    </fragment>
 </navigation>

@@ -1,4 +1,4 @@
-package com.kh.mo.shopyapp.ui.address
+package com.kh.mo.shopyapp.ui.address.list
 
 import android.util.Log
 import androidx.lifecycle.ViewModel

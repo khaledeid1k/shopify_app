@@ -2,7 +2,6 @@ package com.kh.mo.shopyapp.repo
 
 import android.util.Log
 import com.kh.mo.shopyapp.local.LocalSource
-import com.kh.mo.shopyapp.model.ui.Address
 import com.kh.mo.shopyapp.model.entity.CustomerEntity
 import com.kh.mo.shopyapp.model.entity.FavoriteEntity
 import com.kh.mo.shopyapp.model.entity.LineItemEntity
@@ -12,11 +11,18 @@ import com.kh.mo.shopyapp.model.response.ads.DiscountCodeResponse
 import com.kh.mo.shopyapp.model.response.allproducts.AllProductsResponse
 import com.kh.mo.shopyapp.model.response.barnds.BrandsResponse
 import com.kh.mo.shopyapp.model.response.maincategory.MainCategoryResponse
+import com.kh.mo.shopyapp.model.ui.Address
 import com.kh.mo.shopyapp.model.ui.DraftOrder
 import com.kh.mo.shopyapp.model.ui.Review
 import com.kh.mo.shopyapp.model.ui.allproducts.Product
 import com.kh.mo.shopyapp.remote.ApiState
 import com.kh.mo.shopyapp.remote.RemoteSource
+import com.kh.mo.shopyapp.repo.mapper.convertCustomerResponseToCustomerEntity
+import com.kh.mo.shopyapp.repo.mapper.convertDraftOrderResponseToDraftOrder
+import com.kh.mo.shopyapp.repo.mapper.convertLoginToUserData
+import com.kh.mo.shopyapp.repo.mapper.convertToAddress
+import com.kh.mo.shopyapp.repo.mapper.convertToAddressRequest
+import com.kh.mo.shopyapp.repo.mapper.convertUserDataToCustomerData
 import com.kh.mo.shopyapp.repo.mapper.*
 import com.kh.mo.shopyapp.utils.Constants
 import kotlinx.coroutines.Dispatchers
@@ -33,11 +39,7 @@ class RepoImp private constructor(
 ) : Repo {
     private val TAG = "TAG RepoImp"
 
-    init {
-        GlobalScope.launch(Dispatchers.IO) {
-            Log.i(TAG, "currencyRates: ${remoteSource.getCurrencyRate()}")
-        }
-    }
+
     override suspend fun getListOfSpecificProductsIds( productsIds: List<Long>):Flow<ApiState<List<FavoriteEntity>>>
     {
         return flow {
@@ -112,7 +114,6 @@ class RepoImp private constructor(
                 favorite.body()?.let { responseBody ->
                     Log.d(TAG, "createFavoriteDraft: $responseBody")
                     emit(ApiState.Success(responseBody.convertDraftOrderResponseToDraftOrder()))
-
                 } ?: run {
                     emit(ApiState.Failure("Api Error"))
                 }
@@ -396,10 +397,7 @@ class RepoImp private constructor(
                 remoteSource.filterProductsBySubCollection(collectionId,productType)
             if (productsSubCategory.isSuccessful) {
                 remoteSource.filterProductsBySubCollection(collectionId,productType).body()
-                    ?.let { emit(ApiState.Success(it.convertToAllProducts()
-                        .map { product->
-                            changeProductFavoriteValue(product)
-                        })) }
+                    ?.let { emit(ApiState.Success(it)) }
             } else {
                 emit(ApiState.Failure(productsSubCategory.message()))
             }
@@ -436,7 +434,7 @@ class RepoImp private constructor(
                 response.body()?.let { addressRespone ->
                     emit(ApiState.Success(
                         addressRespone.addressResponses.map {
-                            it.convertToAddressEntity()
+                            it.convertToAddress()
                         }
                     ))
                 } ?: emit(ApiState.Failure("Null Response"))
@@ -444,6 +442,104 @@ class RepoImp private constructor(
                 emit(ApiState.Failure(response.message()))
             }
         }.catch {
+            emit(ApiState.Failure(it.message.toString()))
+        }
+    }
+
+    override suspend fun updateAddressOfCustomer(
+        customerId: Long,
+        addressId: Long,
+        updatedAddress: Address
+    ): Flow<ApiState<Address>> {
+        return flow {
+            emit(ApiState.Loading)
+            val response =
+                remoteSource.updateAddressOfCustomer(
+                    customerId,
+                    addressId,
+                    updatedAddress.convertToAddressRequest()
+                )
+            if (response.isSuccessful) {
+                response.body()?.let { address ->
+                    emit(
+                        ApiState.Success(
+                            (address.convertToAddress())
+                        )
+                    )
+                } ?: emit(ApiState.Failure("Null Response"))
+            } else {
+                Log.i(TAG, "updateAddressOfCustomer: faild ${response}")
+                emit(ApiState.Failure(response.message()))
+            }
+        }.catch {
+            Log.i(TAG, "updateAddressOfCustomer: excep ${it}")
+            emit(ApiState.Failure(it.message.toString()))
+        }
+    }
+
+    override suspend fun deleteAddressOfCustomer(
+        customerId: Long,
+        addressId: Long
+    ): Flow<ApiState<Int>> {
+        return flow {
+            emit(ApiState.Loading)
+            remoteSource.deleteAddressOfCustomer(
+                customerId,
+                addressId
+            )
+            emit(ApiState.Success(1))
+        }.catch {
+            Log.i(TAG, "updateAddressOfCustomer: excep ${it}")
+            emit(ApiState.Failure(it.message.toString()))
+        }
+    }
+
+    override suspend fun getAddressDetails(
+        latitude: Double,
+        longitude: Double
+    ): Flow<ApiState<Address>> {
+        return flow {
+            emit(ApiState.Loading)
+            val response = remoteSource.getAddressDetails(latitude, longitude)
+
+            if (response.isSuccessful) {
+                response.body()?.let {
+                    emit(ApiState.Success(it.convertToAddress()))
+                } ?: emit(ApiState.Failure("Null response"))
+            } else {
+                emit(ApiState.Failure(response.message()))
+            }
+        }.catch {
+            emit(ApiState.Failure(it.message.toString()))
+        }
+    }
+
+    override suspend fun addAddressToCustomer(
+        customerId: Long,
+        address: Address
+    ): Flow<ApiState<Address>> {
+        return flow {
+            emit(ApiState.Loading)
+            Log.i(TAG, "addAddressToCustomer: ${address.convertToAddressRequest()}")
+            val response =
+                remoteSource.addAddressToCustomer(
+                    customerId,
+                    address.convertToAddressRequest()
+                )
+            if (response.isSuccessful) {
+                response.body()?.let { address ->
+                    emit(
+                        ApiState.Success(
+                            (address.convertToAddress())
+                        )
+                    )
+                } ?: emit(ApiState.Failure("Null Response"))
+            } else {
+                Log.i(TAG, "addAddressToCustomer: failed ${response}")
+                emit(ApiState.Failure(response.message()))
+            }
+        }.catch {
+            Log.i(TAG, "addAddressToCustomer: excep ${it}")
             emit(ApiState.Failure(it.message.toString()))
         }
     }

@@ -138,4 +138,7 @@ dependencies {
 
     // Pager Dots Indicator
     implementation("com.tbuonomo:dotsindicator:4.2")
+
+    // Open Street Map
+    implementation 'org.osmdroid:osmdroid-android:6.1.14'
 }

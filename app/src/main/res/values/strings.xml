@@ -83,4 +83,15 @@
     <string name="country">Country</string>
     <string name="address_tag">Address tag</string>
     <string name="default_address">(Default)</string>
+    <string name="update_address">Update Address</string>
+    <string name="delete_address">Delete</string>
+    <string name="cancel">Cancel</string>
+    <string name="delete_address_confirm">Are you sure you want to delete this address?\nCaution default address can\'t be deleted</string>
+    <string name="something_went_wrong_please_try_again_later">something went wrong please try again later</string>
+    <string name="permission_needed">Permission Needed</string>
+    <string name="location_permission_needed_message">We can help identify you current location but we need Location Permission</string>
+    <string name="open_setting">Open Settings</string>
+    <string name="location_disabled">Location Disabled</string>
+    <string name="location_disabled_message">Please turn on Location access to find your current location</string>
+    <string name="set_default_address">Set as default address</string>
 </resources>

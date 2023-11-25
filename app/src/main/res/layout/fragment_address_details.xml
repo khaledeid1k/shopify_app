@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="address"
             type="com.kh.mo.shopyapp.model.ui.Address" />
@@ -13,6 +14,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:context=".ui.payment.AddPaymentFragment">
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/addressTxtV" />
 
         <TextView
             android:id="@+id/addressTxtV"
@@ -38,9 +48,9 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/countryET"
                 android:layout_width="match_parent"
-                android:text="@{address.country}"
                 android:layout_height="wrap_content"
-                android:inputType="text" />
+                android:inputType="text"
+                android:text="@{address.country}" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -58,8 +68,8 @@
                 android:id="@+id/stateET"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@{address.state}"
-                android:inputType="text" />
+                android:inputType="text"
+                android:text="@{address.state}" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -77,8 +87,8 @@
                 android:id="@+id/cityET"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@{address.city}"
-                android:inputType="text" />
+                android:inputType="text"
+                android:text="@{address.city}" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -96,8 +106,8 @@
                 android:id="@+id/addressTagET"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@{address.name}"
-                android:inputType="text" />
+                android:inputType="text"
+                android:text="@{address.name}" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -114,8 +124,8 @@
                 android:id="@+id/phoneNumberET"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@{address.phone}"
-                android:inputType="number" />
+                android:inputType="number"
+                android:text="@{address.phone}" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -133,8 +143,8 @@
                 android:id="@+id/streetNameET"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@{address.address}"
-                android:inputType="text" />
+                android:inputType="text"
+                android:text="@{address.address}" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -152,10 +162,27 @@
                 android:id="@+id/markLocationET"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@{address.markLocation}"
-                android:inputType="text" />
+                android:inputType="text"
+                android:text="@{address.markLocation}" />
 
         </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/set_default_address"
+            app:layout_constraintStart_toStartOf="@id/negativeBtn"
+            style="@style/sub_title"
+            app:layout_constraintTop_toTopOf="@id/defaultAddressSwitch"
+            app:layout_constraintBottom_toBottomOf="@id/defaultAddressSwitch"/>
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/defaultAddressSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:checked="true"
+            app:layout_constraintEnd_toEndOf="@id/confirmBtn"
+            app:layout_constraintTop_toBottomOf="@id/markLocationTxtF"/>
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/confirmBtn"
@@ -163,6 +190,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginVertical="@dimen/_16sdp"
+            android:layout_marginEnd="@dimen/_16ssp"
             android:layout_marginBottom="@dimen/_16sdp"
             android:background="@drawable/round_corners"
             android:backgroundTint="?attr/colorPrimary"
@@ -170,12 +198,24 @@
             android:drawablePadding="@dimen/_16sdp"
             android:padding="@dimen/_8sdp"
             android:paddingStart="@dimen/_16sdp"
-            android:text="@string/add_address"
             android:textAllCaps="false"
             android:textColor="?attr/colorBackgroundFloating"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/markLocationTxtF" />
+            app:layout_constraintTop_toBottomOf="@id/defaultAddressSwitch"
+            tools:text="@string/update_address" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/negativeBtn"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_14sdp"
+            tools:text="Delete"
+            android:textAllCaps="false"
+            app:cornerRadius="@dimen/_10sdp"
+            app:layout_constraintTop_toTopOf="@id/confirmBtn"
+            app:layout_constraintStart_toStartOf="parent"/>
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline"

@@ -1,8 +1,10 @@
 package com.kh.mo.shopyapp.remote.service
 
+import com.kh.mo.shopyapp.model.request.AddressRequest
 import com.kh.mo.shopyapp.model.request.CustomerRequest
-import com.kh.mo.shopyapp.model.request.DraftOrderRequest
+import com.kh.mo.shopyapp.model.response.address.AddressResponse
 import com.kh.mo.shopyapp.model.response.address.AddressesResponse
+import com.kh.mo.shopyapp.model.request.DraftOrderRequest
 import com.kh.mo.shopyapp.model.response.ads.DiscountCodeResponse
 import com.kh.mo.shopyapp.model.response.allproducts.AllProductsResponse
 import com.kh.mo.shopyapp.model.response.allproducts.ProductResponse
@@ -13,6 +15,7 @@ import com.kh.mo.shopyapp.model.response.login.Login
 import com.kh.mo.shopyapp.model.response.maincategory.MainCategoryResponse
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.PUT
@@ -74,4 +77,23 @@ interface Services {
     @GET("products.json")
     suspend fun getListOfSpecificProductsIds(@Query("ids") productsIds: List<Long>):Response<AllProductsResponse>
 
+
+    @PUT("customers/{customerId}/addresses/{addressId}")
+    suspend fun updateAddressOfCustomer(
+        @Path("customerId") customerId: Long,
+        @Path("addressId") addressId: Long,
+        @Body updatedAddress: AddressRequest
+    ): Response<AddressResponse>
+
+    @DELETE("customers/{customerId}/addresses/{addressId}")
+    suspend fun deleteAddressOfCustomer(
+        @Path("customerId") customerId: Long,
+        @Path("addressId") addressId: Long
+    )
+
+    @POST("customers/{customerId}/addresses.json")
+    suspend fun addAddressToCustomer(
+        @Path("customerId") customerId: Long,
+        @Body address: AddressRequest
+    ): Response<AddressResponse>
 }

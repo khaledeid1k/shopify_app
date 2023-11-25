@@ -1,4 +1,4 @@
-package com.kh.mo.shopyapp.ui.address
+package com.kh.mo.shopyapp.ui.address.list
 
 import android.os.Bundle
 import android.util.Log
@@ -36,11 +36,18 @@ class AddressFragment : BottomSheetDialogFragment() {
     val userId: MutableStateFlow<Long?> = MutableStateFlow(null)
     var mView: View? = null
     private val listener: (Address) -> Unit = { address ->
-        mView?.let{_view ->
-            val action = SettingsFragmentDirections.actionSettingsFragmentToAddressDetailsFragment(address)
+        mView?.let { _view ->
+            val action = SettingsFragmentDirections.actionSettingsFragmentToAddressDetailsFragment(
+                address,
+                "settings"
+            )
             Navigation.findNavController(_view).navigate(action)
             this.dismiss()
-        }
+        } ?: Toast.makeText(
+            requireContext(),
+            getString(R.string.something_went_wrong_please_try_again_later),
+            Toast.LENGTH_SHORT
+        ).show()
     }
 
     override fun onCreateView(
@@ -63,9 +70,17 @@ class AddressFragment : BottomSheetDialogFragment() {
         init()
         observerUserId()
         binding.openMapBtn.setOnClickListener {
-            Toast.makeText(requireContext(), "openmap", Toast.LENGTH_SHORT).show()
+            mView?.let { _view ->
+                val action = SettingsFragmentDirections.actionSettingsFragmentToMapFragment(userId.value?:0L)
+                Navigation.findNavController(_view)
+                    .navigate(action)
+                this.dismiss()
+            } ?: Toast.makeText(
+                requireContext(),
+                getString(R.string.something_went_wrong_please_try_again_later),
+                Toast.LENGTH_SHORT
+            ).show()
         }
-
     }
 
     private fun init() {

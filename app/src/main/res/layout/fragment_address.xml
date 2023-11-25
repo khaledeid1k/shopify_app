@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/_8sdp"
-        tools:context=".ui.address.AddressFragment">
+        tools:context=".ui.address.list.AddressFragment">
 
         <TextView
             android:id="@+id/addressesTxtV"
