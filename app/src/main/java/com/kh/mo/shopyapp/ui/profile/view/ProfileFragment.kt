@@ -30,11 +30,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
         }
         observeUserData()
 
-        binding.userNameTV.setOnClickListener {
-            lifecycleScope.launch {
-                viewModel.retrieveDraftFavorite()
-            }
-        }
+
     }
 
     private fun observeUserData() {
