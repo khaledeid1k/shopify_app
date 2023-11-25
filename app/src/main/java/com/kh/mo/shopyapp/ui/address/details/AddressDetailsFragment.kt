@@ -102,9 +102,21 @@ class AddressDetailsFragment :
                 addressStateFlow.value = updatedAddress
             }
 
-            phoneNumberET.addTextChangedListener {
-                updatedAddress.phone = it.toString()
-                addressStateFlow.value = updatedAddress
+            phoneNumberET.apply {
+                if (this.text.isNullOrEmpty()) {
+                    phoneNumberTxtF.error = "required"
+                    disableConfirmBtn()
+                }
+                addTextChangedListener {
+                    if (it.isNullOrEmpty()) {
+                        phoneNumberTxtF.error = "required"
+                        disableConfirmBtn()
+                    } else {
+                        phoneNumberTxtF.isErrorEnabled = false
+                        updatedAddress.phone = it.toString()
+                        addressStateFlow.value = updatedAddress
+                    }
+                }
             }
 
             streetNameET.addTextChangedListener {
@@ -145,7 +157,18 @@ class AddressDetailsFragment :
             }
 
         } else {
+            binding.apply {
+                confirmBtn.setOnClickListener {
+                    addressStateFlow.value.let {address ->
+                        viewModel.addAddressToCustomer(address.customerId, address)
+                        observeAddAddressState()
+                    }
+                }
 
+                negativeBtn.setOnClickListener {
+                    Navigation.findNavController(_view).navigateUp()
+                }
+            }
         }
     }
 
@@ -232,6 +255,37 @@ class AddressDetailsFragment :
                 addressId = address.id
             )
             addDeleteAddressStateListener()
+        }
+    }
+
+    private fun observeAddAddressState() {
+        collectLatestFlowOnLifecycle(viewModel.addAddressState) {state ->
+            when(state) {
+                is ApiState.Failure -> {
+                    Log.i(TAG, "observeAddAddressState: failure: ${state.msg}")
+                    Toast.makeText(
+                        requireContext(),
+                        "something went wrong please try again later",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    binding.progressBar.visibility = View.GONE
+                    enableConfirmBtn()
+                }
+
+                is ApiState.Loading -> {
+                    binding.progressBar.visibility = View.VISIBLE
+                    disableConfirmBtn()
+                }
+
+                is ApiState.Success -> {
+                    Toast.makeText(
+                        requireContext(),
+                        "address added successfully",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    Navigation.findNavController(_view).navigateUp()
+                }
+            }
         }
     }
 }

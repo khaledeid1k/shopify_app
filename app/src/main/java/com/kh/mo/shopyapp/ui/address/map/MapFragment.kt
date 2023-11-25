@@ -6,15 +6,19 @@ import android.location.LocationManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.app.ActivityCompat
 import androidx.core.graphics.drawable.toBitmap
+import androidx.navigation.Navigation
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.kh.mo.shopyapp.R
 import com.kh.mo.shopyapp.databinding.FragmentMapBinding
+import com.kh.mo.shopyapp.remote.ApiState
 import com.kh.mo.shopyapp.ui.base.BaseFragment
 import org.osmdroid.api.IMapController
 import org.osmdroid.config.Configuration
@@ -30,7 +34,7 @@ import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 
 class MapFragment : BaseFragment<FragmentMapBinding, MapViewModel>() {
     private val TAG = "TAG MapFragment"
-
+    private lateinit var _view: View
     override val layoutIdFragment = R.layout.fragment_map
     private lateinit var mapController: IMapController
     private lateinit var mMyLocationOverlay: MyLocationNewOverlay
@@ -40,6 +44,7 @@ class MapFragment : BaseFragment<FragmentMapBinding, MapViewModel>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        _view = view
         initMap()
         addMapEventReceiver()
         binding.currentLocationBtn.setOnClickListener { handleLocationStateAndMarkCurrentLocation() }
@@ -180,7 +185,9 @@ class MapFragment : BaseFragment<FragmentMapBinding, MapViewModel>() {
     private fun addMapEventReceiver() {
         val mapEventsReceiver = object : MapEventsReceiver {
             override fun singleTapConfirmedHelper(p: GeoPoint): Boolean {
-
+                Log.i(TAG, "taped location point $p")
+                viewModel.getAddressDetails(p.latitude, p.longitude)
+                observeAddressDetailsState()
                 return true
             }
 
@@ -190,5 +197,36 @@ class MapFragment : BaseFragment<FragmentMapBinding, MapViewModel>() {
         }
         val eventOverlay = MapEventsOverlay(mapEventsReceiver)
         binding.osmMap.overlays.add(eventOverlay)
+    }
+
+    private fun observeAddressDetailsState() {
+        collectLatestFlowOnLifecycle(viewModel.addressDetailsState) { addressState ->
+            when (addressState) {
+                is ApiState.Failure -> {
+                    Log.i(
+                        TAG,
+                        "observeAddressDetailsState failure: ${addressState.msg}"
+                    )
+                    Toast.makeText(
+                        requireContext(),
+                        "something went wrong please try again later",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    binding.progressBar.visibility = View.GONE
+                }
+                is ApiState.Loading -> binding.progressBar.visibility = View.VISIBLE
+                is ApiState.Success -> {
+                    Log.i(TAG, "observeAddressDetailsState success ${addressState.data}")
+                    val userId = MapFragmentArgs.fromBundle(requireArguments()).userId
+                    addressState.data.customerId = userId
+                    val action = MapFragmentDirections.actionMapFragmentToAddressDetailsFragment(
+                        addressState.data,
+                        "map"
+                    )
+                    binding.progressBar.visibility = View.GONE
+                    Navigation.findNavController(_view).navigate(action)
+                }
+            }
+        }
     }
 }

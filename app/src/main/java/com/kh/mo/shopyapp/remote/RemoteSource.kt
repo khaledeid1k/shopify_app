@@ -1,8 +1,8 @@
 package com.kh.mo.shopyapp.remote
 
-import com.kh.mo.shopyapp.model.request.AddressUpdateRequest
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
+import com.kh.mo.shopyapp.model.request.AddressRequest
 import com.kh.mo.shopyapp.model.request.CustomerDataRequest
 import com.kh.mo.shopyapp.model.request.DraftOrderRequest
 import com.kh.mo.shopyapp.model.request.UserData
@@ -16,9 +16,9 @@ import com.kh.mo.shopyapp.model.response.currency.Rates
 import com.kh.mo.shopyapp.model.response.draft_order.DraftOrderResponse
 import com.kh.mo.shopyapp.model.response.login.Login
 import com.kh.mo.shopyapp.model.response.maincategory.MainCategoryResponse
+import com.kh.mo.shopyapp.model.response.osm.NominatimResponse
 import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
-import retrofit2.http.Path
 
 interface RemoteSource {
 
@@ -49,10 +49,21 @@ interface RemoteSource {
     suspend fun updateAddressOfCustomer(
         customerId: Long,
         addressId: Long,
-        updatedAddress: AddressUpdateRequest
+        updatedAddress: AddressRequest
     ): Response<AddressResponse>
     suspend fun deleteAddressOfCustomer(
         customerId: Long,
         addressId: Long
     )
+    suspend fun getAddressDetails(
+        latitude: Double,
+        longitude: Double,
+        language: String = "en"
+    ): Response<NominatimResponse>
+
+    suspend fun addAddressToCustomer(
+        customerId: Long,
+        address: AddressRequest,
+
+    ): Response<AddressResponse>
 }

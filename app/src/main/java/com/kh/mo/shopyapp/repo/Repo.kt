@@ -2,8 +2,10 @@ package com.kh.mo.shopyapp.repo
 
 import com.kh.mo.shopyapp.model.entity.CustomerEntity
 import com.kh.mo.shopyapp.model.entity.Validation
+import com.kh.mo.shopyapp.model.request.AddressRequest
 import com.kh.mo.shopyapp.model.request.DraftOrderRequest
 import com.kh.mo.shopyapp.model.request.UserData
+import com.kh.mo.shopyapp.model.response.address.AddressResponse
 import com.kh.mo.shopyapp.model.response.ads.DiscountCodeResponse
 import com.kh.mo.shopyapp.model.response.allproducts.AllProductsResponse
 import com.kh.mo.shopyapp.model.response.barnds.BrandsResponse
@@ -13,6 +15,7 @@ import com.kh.mo.shopyapp.model.ui.DraftOrder
 import com.kh.mo.shopyapp.model.ui.Review
 import com.kh.mo.shopyapp.remote.ApiState
 import kotlinx.coroutines.flow.Flow
+import retrofit2.Response
 
 interface Repo {
     suspend fun singUpWithFireBase(userData: UserData): Flow<ApiState<String>>
@@ -59,4 +62,14 @@ interface Repo {
         customerId: Long,
         addressId: Long
     ): Flow<ApiState<Int>>
+
+    suspend fun getAddressDetails(
+        latitude: Double,
+        longitude: Double
+    ): Flow<ApiState<Address>>
+
+    suspend fun addAddressToCustomer(
+        customerId: Long,
+        address: Address
+    ): Flow<ApiState<Address>>
 }

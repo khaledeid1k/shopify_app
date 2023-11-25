@@ -1,5 +1,6 @@
 package com.kh.mo.shopyapp.ui.address.details
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kh.mo.shopyapp.model.ui.Address
@@ -21,6 +22,10 @@ class AddressDetailsViewModel(private val repo: Repo) : ViewModel() {
         MutableStateFlow(ApiState.Loading)
     val deleteAddressState: MutableStateFlow<ApiState<Int>>
         get() = _deleteAddressState
+    private val _addAddressState: MutableStateFlow<ApiState<Address>> =
+        MutableStateFlow(ApiState.Loading)
+    val addAddressState: MutableStateFlow<ApiState<Address>>
+        get() = _addAddressState
 
     fun updateAddress(
         customerId: Long,
@@ -41,6 +46,17 @@ class AddressDetailsViewModel(private val repo: Repo) : ViewModel() {
         viewModelScope.launch(Dispatchers.IO) {
             repo.deleteAddressOfCustomer(customerId, addressId).collectLatest {
                 _deleteAddressState.value = it
+            }
+        }
+    }
+
+    fun addAddressToCustomer(
+        customerId: Long,
+        address: Address
+    ) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repo.addAddressToCustomer(customerId, address).collectLatest {
+                _addAddressState.value = it
             }
         }
     }

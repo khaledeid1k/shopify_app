@@ -2,7 +2,7 @@ package com.kh.mo.shopyapp.repo.mapper
 
 import com.kh.mo.shopyapp.model.ui.Address
 import com.kh.mo.shopyapp.model.entity.CustomerEntity
-import com.kh.mo.shopyapp.model.request.AddressUpdateRequest
+import com.kh.mo.shopyapp.model.request.AddressRequest
 import com.kh.mo.shopyapp.model.request.CustomerDataRequest
 import com.kh.mo.shopyapp.model.request.UserData
 import com.kh.mo.shopyapp.model.response.address.AddressResponse
@@ -13,8 +13,9 @@ import com.kh.mo.shopyapp.model.response.create_customer.CustomerResponse
 import com.kh.mo.shopyapp.model.response.draft_order.DraftOrderResponse
 import com.kh.mo.shopyapp.model.response.login.Login
 import com.kh.mo.shopyapp.model.response.maincategory.MainCategoryResponse
+import com.kh.mo.shopyapp.model.response.osm.NominatimResponse
 import com.kh.mo.shopyapp.model.ui.DraftOrder
-import com.kh.mo.shopyapp.model.ui.allproducts.Products
+import com.kh.mo.shopyapp.model.ui.allproducts.Product
 import com.kh.mo.shopyapp.model.ui.maincategory.CustomCollection
 
 fun CustomerResponse.convertCustomerResponseToCustomerEntity(): CustomerEntity {
@@ -38,7 +39,7 @@ fun Login.convertLoginToUserData(): UserData {
     }
 }
 
-fun AddressResponse.convertToAddressEntity() =
+fun AddressResponse.convertToAddress() =
     Address(
         customerId = customerId,
         id = this.id,
@@ -49,11 +50,26 @@ fun AddressResponse.convertToAddressEntity() =
         default = this.default ?: false,
         name = this.name,
         phone = this.phone,
-        state = this.province
+        state = this.province,
+        stateCode = this.provinceCode ?: "",
+        zip = this.zip
     )
 
-fun Address.convertToUpdateRequestAddress() =
-    AddressUpdateRequest(
+fun NominatimResponse.convertToAddress() =
+    Address(
+        address = this.displayName,
+        city = this.address?.city,
+        country = this.address?.country,
+        name = this.type,
+        phone = "",
+        state = this.address?.region,
+        zip = this.address?.postcode?.toLong(),
+        default = false,
+        stateCode = this.address?.ISO?.split("-")?.get(1) ?: ""
+    )
+
+fun Address.convertToAddressRequest() =
+    AddressRequest(
         AddressResponse(
             this.address,
             this.markLocation,
@@ -63,9 +79,12 @@ fun Address.convertToUpdateRequestAddress() =
             id = this.id,
             name = this.name,
             phone = this.phone,
-            province = this.state
+            zip = this.zip,
+            province = "",
+            provinceCode = this.stateCode
         )
     )
+
 fun BrandsResponse.convertToSmartCollection():List<SmartCollection>{
 
     return this.smartCollections.map {
@@ -82,11 +101,10 @@ fun MainCategoryResponse.convertToCustomCollection():List<CustomCollection>{
     } ?: emptyList()
 }
 
-
-fun AllProductsResponse.convertToAllProducts():List<Products>{
+fun AllProductsResponse.convertToAllProducts():List<Product>{
 
     return this.products.map {
-        Products(
+        Product(
             images = it.images,
             productType = it.productType,
             image = it.image,

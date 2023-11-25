@@ -5,14 +5,16 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Address(
-    val customerId: Long,
-    val id: Long,
+    var customerId: Long = 0L,
+    val id: Long = 0L,
     var address: String?,
-    var markLocation: String?="",
+    var markLocation: String? = "",
     var city: String?,
     var country: String?,
     var default: Boolean?,
     var name: String?,
     var phone: String?,
     var state: String?,
+    var zip: Long?,
+    var stateCode: String = ""
 ) : Parcelable

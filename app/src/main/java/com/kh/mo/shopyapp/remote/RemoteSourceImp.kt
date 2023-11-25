@@ -6,7 +6,7 @@ import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
-import com.kh.mo.shopyapp.model.request.AddressUpdateRequest
+import com.kh.mo.shopyapp.model.request.AddressRequest
 import com.kh.mo.shopyapp.model.request.CustomerDataRequest
 import com.kh.mo.shopyapp.model.request.CustomerRequest
 import com.kh.mo.shopyapp.model.request.DraftOrderRequest
@@ -18,6 +18,7 @@ import com.kh.mo.shopyapp.model.response.currency.Rates
 import com.kh.mo.shopyapp.model.response.draft_order.DraftOrderResponse
 import com.kh.mo.shopyapp.model.response.login.Login
 import com.kh.mo.shopyapp.model.response.maincategory.MainCategoryResponse
+import com.kh.mo.shopyapp.model.response.osm.NominatimResponse
 import com.kh.mo.shopyapp.remote.service.Network
 import com.kh.mo.shopyapp.utils.Constants
 import com.kh.mo.shopyapp.utils.getCurrentDate
@@ -30,15 +31,18 @@ class RemoteSourceImp private constructor() : RemoteSource {
     private val TAG = "TAG RemoteSourceImp"
     private val network = Network.retrofitService
     private val firebaseAuth = FirebaseAuth.getInstance()
-    private val firebaseFireStore=FirebaseFirestore.getInstance()
+    private val firebaseFireStore = FirebaseFirestore.getInstance()
 
-    override suspend fun saveFavoriteDraftIdInFireBase(customerId:Long,favoriteDraft:Long): Task<Void> {
-        val documentReference: DocumentReference =firebaseFireStore.collection(
+    override suspend fun saveFavoriteDraftIdInFireBase(
+        customerId: Long,
+        favoriteDraft: Long
+    ): Task<Void> {
+        val documentReference: DocumentReference = firebaseFireStore.collection(
             Constants.collectionPath
         ).document(customerId.toString())
         val user: HashMap<String, String> = HashMap()
         user[Constants.DRAFT_FAVORITE_ID] = favoriteDraft.toString()
-       return  documentReference.set(user)
+        return documentReference.set(user)
 
     }
 
@@ -67,17 +71,20 @@ class RemoteSourceImp private constructor() : RemoteSource {
             userData.email, userData.password
         )
     }
+
     override suspend fun singInWithFireBase(userData: UserData): Task<AuthResult> {
         return firebaseAuth.signInWithEmailAndPassword(
             userData.email, userData.password
         )
     }
+
     override suspend fun logout() {
-         firebaseAuth.signOut()
+        firebaseAuth.signOut()
     }
-    override fun checkIsUserLogin()= firebaseAuth.currentUser!=null
+
+    override fun checkIsUserLogin() = firebaseAuth.currentUser != null
     override suspend fun createFavoriteDraft(draftOrderRequest: DraftOrderRequest): Response<DraftOrderResponse> {
-       return network.createFavoriteDraft(draftOrderRequest)
+        return network.createFavoriteDraft(draftOrderRequest)
     }
 
 
@@ -173,7 +180,7 @@ class RemoteSourceImp private constructor() : RemoteSource {
         collectionId: Long,
         productType: String
     ): Response<AllProductsResponse> {
-        return Network.retrofitService.filterProductsBySubCollection(collectionId,productType)
+        return Network.retrofitService.filterProductsBySubCollection(collectionId, productType)
     }
 
     override suspend fun getDiscountCode(priceRuleId: String, discountCodeId: String) =
@@ -185,11 +192,31 @@ class RemoteSourceImp private constructor() : RemoteSource {
     override suspend fun updateAddressOfCustomer(
         customerId: Long,
         addressId: Long,
-        updatedAddress: AddressUpdateRequest
+        updatedAddress: AddressRequest
     ) = Network.retrofitService.updateAddressOfCustomer(customerId, addressId, updatedAddress)
 
     override suspend fun deleteAddressOfCustomer(customerId: Long, addressId: Long) =
         Network.retrofitService.deleteAddressOfCustomer(customerId, addressId)
+
+    override suspend fun getAddressDetails(
+        latitude: Double,
+        longitude: Double,
+        language: String
+    ): Response<NominatimResponse> {
+        val fullDetailsResponse =
+            Network.nominatimService.getAddressDetails(latitude, longitude, zoom = 18)
+        if (fullDetailsResponse.isSuccessful) {
+            val cityResponse =
+                Network.nominatimService.getAddressDetails(latitude, longitude, zoom = 10)
+            if (cityResponse.isSuccessful) {
+                fullDetailsResponse.body()?.address?.city = cityResponse.body()?.address?.city
+            }
+        }
+        return fullDetailsResponse
+    }
+
+    override suspend fun addAddressToCustomer(customerId: Long, address: AddressRequest) =
+        Network.retrofitService.addAddressToCustomer(customerId, address)
 
     companion object {
         @Volatile

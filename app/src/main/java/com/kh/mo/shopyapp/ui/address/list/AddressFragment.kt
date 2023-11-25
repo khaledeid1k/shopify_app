@@ -71,8 +71,9 @@ class AddressFragment : BottomSheetDialogFragment() {
         observerUserId()
         binding.openMapBtn.setOnClickListener {
             mView?.let { _view ->
+                val action = SettingsFragmentDirections.actionSettingsFragmentToMapFragment(userId.value?:0L)
                 Navigation.findNavController(_view)
-                    .navigate(R.id.action_settingsFragment_to_mapFragment)
+                    .navigate(action)
                 this.dismiss()
             } ?: Toast.makeText(
                 requireContext(),

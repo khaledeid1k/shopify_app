@@ -2,7 +2,6 @@ package com.kh.mo.shopyapp.repo
 
 import android.util.Log
 import com.kh.mo.shopyapp.local.LocalSource
-import com.kh.mo.shopyapp.model.ui.Address
 import com.kh.mo.shopyapp.model.entity.CustomerEntity
 import com.kh.mo.shopyapp.model.request.DraftOrderRequest
 import com.kh.mo.shopyapp.model.request.UserData
@@ -10,15 +9,16 @@ import com.kh.mo.shopyapp.model.response.ads.DiscountCodeResponse
 import com.kh.mo.shopyapp.model.response.allproducts.AllProductsResponse
 import com.kh.mo.shopyapp.model.response.barnds.BrandsResponse
 import com.kh.mo.shopyapp.model.response.maincategory.MainCategoryResponse
+import com.kh.mo.shopyapp.model.ui.Address
 import com.kh.mo.shopyapp.model.ui.DraftOrder
 import com.kh.mo.shopyapp.model.ui.Review
 import com.kh.mo.shopyapp.remote.ApiState
 import com.kh.mo.shopyapp.remote.RemoteSource
-import com.kh.mo.shopyapp.repo.mapper.*
 import com.kh.mo.shopyapp.repo.mapper.convertCustomerResponseToCustomerEntity
+import com.kh.mo.shopyapp.repo.mapper.convertDraftOrderResponseToDraftOrder
 import com.kh.mo.shopyapp.repo.mapper.convertLoginToUserData
-import com.kh.mo.shopyapp.repo.mapper.convertToAddressEntity
-import com.kh.mo.shopyapp.repo.mapper.convertToUpdateRequestAddress
+import com.kh.mo.shopyapp.repo.mapper.convertToAddress
+import com.kh.mo.shopyapp.repo.mapper.convertToAddressRequest
 import com.kh.mo.shopyapp.repo.mapper.convertUserDataToCustomerData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -49,7 +49,7 @@ class RepoImp private constructor(
             emit(ApiState.Failure("An error occurred: ${it.message}"))
         }
 
-    override suspend fun singInWithFireBase(userData: UserData)=
+    override suspend fun singInWithFireBase(userData: UserData) =
         flow {
             emit(ApiState.Loading)
             remoteSource.singInWithFireBase(userData).await()
@@ -58,13 +58,15 @@ class RepoImp private constructor(
             emit(ApiState.Failure("An error occurred: ${it.message}"))
         }
 
-    override suspend fun logout() { remoteSource.logout() }
+    override suspend fun logout() {
+        remoteSource.logout()
+    }
 
-    override fun checkIsUserLogin()=remoteSource.checkIsUserLogin()
+    override fun checkIsUserLogin() = remoteSource.checkIsUserLogin()
     override suspend fun createFavoriteDraft(draftOrderRequest: DraftOrderRequest): Flow<ApiState<DraftOrder>> {
         return flow {
             emit(ApiState.Loading)
-            val favorite =   remoteSource.createFavoriteDraft(draftOrderRequest)
+            val favorite = remoteSource.createFavoriteDraft(draftOrderRequest)
             if (!favorite.isSuccessful) {
                 emit(ApiState.Failure(favorite.body().toString()))
             } else {
@@ -80,7 +82,7 @@ class RepoImp private constructor(
 
     }
 
-    override suspend fun saveFavoriteDraftIdInFireBase(customerId:Long,favoriteDraft:Long)=
+    override suspend fun saveFavoriteDraftIdInFireBase(customerId: Long, favoriteDraft: Long) =
         flow {
             emit(ApiState.Loading)
             remoteSource.saveFavoriteDraftIdInFireBase(customerId, favoriteDraft).await()
@@ -88,8 +90,6 @@ class RepoImp private constructor(
         }.catch {
             emit(ApiState.Failure("An error occurred: ${it.message}"))
         }
-
-
 
 
     override suspend fun createCustomer(userData: UserData): Flow<ApiState<CustomerEntity>> {
@@ -330,9 +330,9 @@ class RepoImp private constructor(
         return flow {
             emit(ApiState.Loading)
             val productsSubCategory =
-                remoteSource.filterProductsBySubCollection(collectionId,productType)
+                remoteSource.filterProductsBySubCollection(collectionId, productType)
             if (productsSubCategory.isSuccessful) {
-                remoteSource.filterProductsBySubCollection(collectionId,productType).body()
+                remoteSource.filterProductsBySubCollection(collectionId, productType).body()
                     ?.let { emit(ApiState.Success(it)) }
             } else {
                 emit(ApiState.Failure(productsSubCategory.message()))
@@ -370,7 +370,7 @@ class RepoImp private constructor(
                 response.body()?.let { addressRespone ->
                     emit(ApiState.Success(
                         addressRespone.addressResponses.map {
-                            it.convertToAddressEntity()
+                            it.convertToAddress()
                         }
                     ))
                 } ?: emit(ApiState.Failure("Null Response"))
@@ -390,12 +390,16 @@ class RepoImp private constructor(
         return flow {
             emit(ApiState.Loading)
             val response =
-                remoteSource.updateAddressOfCustomer(customerId, addressId, updatedAddress.convertToUpdateRequestAddress())
+                remoteSource.updateAddressOfCustomer(
+                    customerId,
+                    addressId,
+                    updatedAddress.convertToAddressRequest()
+                )
             if (response.isSuccessful) {
                 response.body()?.let { address ->
                     emit(
                         ApiState.Success(
-                            (address.convertToAddressEntity())
+                            (address.convertToAddress())
                         )
                     )
                 } ?: emit(ApiState.Failure("Null Response"))
@@ -422,6 +426,56 @@ class RepoImp private constructor(
             emit(ApiState.Success(1))
         }.catch {
             Log.i(TAG, "updateAddressOfCustomer: excep ${it}")
+            emit(ApiState.Failure(it.message.toString()))
+        }
+    }
+
+    override suspend fun getAddressDetails(
+        latitude: Double,
+        longitude: Double
+    ): Flow<ApiState<Address>> {
+        return flow {
+            emit(ApiState.Loading)
+            val response = remoteSource.getAddressDetails(latitude, longitude)
+
+            if (response.isSuccessful) {
+                response.body()?.let {
+                    emit(ApiState.Success(it.convertToAddress()))
+                } ?: emit(ApiState.Failure("Null response"))
+            } else {
+                emit(ApiState.Failure(response.message()))
+            }
+        }.catch {
+            emit(ApiState.Failure(it.message.toString()))
+        }
+    }
+
+    override suspend fun addAddressToCustomer(
+        customerId: Long,
+        address: Address
+    ): Flow<ApiState<Address>> {
+        return flow {
+            emit(ApiState.Loading)
+            Log.i(TAG, "addAddressToCustomer: ${address.convertToAddressRequest()}")
+            val response =
+                remoteSource.addAddressToCustomer(
+                    customerId,
+                    address.convertToAddressRequest()
+                )
+            if (response.isSuccessful) {
+                response.body()?.let { address ->
+                    emit(
+                        ApiState.Success(
+                            (address.convertToAddress())
+                        )
+                    )
+                } ?: emit(ApiState.Failure("Null Response"))
+            } else {
+                Log.i(TAG, "addAddressToCustomer: failed ${response}")
+                emit(ApiState.Failure(response.message()))
+            }
+        }.catch {
+            Log.i(TAG, "addAddressToCustomer: excep ${it}")
             emit(ApiState.Failure(it.message.toString()))
         }
     }

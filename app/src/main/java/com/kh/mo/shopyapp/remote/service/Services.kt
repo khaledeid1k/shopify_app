@@ -1,6 +1,6 @@
 package com.kh.mo.shopyapp.remote.service
 
-import com.kh.mo.shopyapp.model.request.AddressUpdateRequest
+import com.kh.mo.shopyapp.model.request.AddressRequest
 import com.kh.mo.shopyapp.model.request.CustomerRequest
 import com.kh.mo.shopyapp.model.response.address.AddressResponse
 import com.kh.mo.shopyapp.model.response.address.AddressesResponse
@@ -67,7 +67,7 @@ interface Services {
     suspend fun updateAddressOfCustomer(
         @Path("customerId") customerId: Long,
         @Path("addressId") addressId: Long,
-        @Body updatedAddress: AddressUpdateRequest
+        @Body updatedAddress: AddressRequest
     ): Response<AddressResponse>
 
     @DELETE("customers/{customerId}/addresses/{addressId}")
@@ -75,4 +75,10 @@ interface Services {
         @Path("customerId") customerId: Long,
         @Path("addressId") addressId: Long
     )
+
+    @POST("customers/{customerId}/addresses.json")
+    suspend fun addAddressToCustomer(
+        @Path("customerId") customerId: Long,
+        @Body address: AddressRequest
+    ): Response<AddressResponse>
 }
