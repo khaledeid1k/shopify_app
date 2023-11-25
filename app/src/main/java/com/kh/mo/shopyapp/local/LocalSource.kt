@@ -12,10 +12,6 @@ interface LocalSource {
     fun validateEmail(email: String): Validation
     fun validateUserName(userName: String): Validation
 
-    suspend fun getAllLinetItems(): List<LineItemEntity>
-    suspend fun deleteLinetItems(productId: Long)
-    suspend fun saveLinetItems(lineItemEntity: LineItemEntity)
-
     suspend fun getAllFavorites(): Flow<List<FavoriteEntity>>
     suspend fun deleteFavorite(productId: Long)
     suspend fun saveFavorite(favoriteEntity: FavoriteEntity): Long

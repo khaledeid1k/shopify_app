@@ -2,19 +2,13 @@ package com.kh.mo.shopyapp.ui.order.view
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import com.kh.mo.shopyapp.R
-import com.kh.mo.shopyapp.databinding.FragmentCategoryBinding
 import com.kh.mo.shopyapp.databinding.FragmentOrderBinding
 import com.kh.mo.shopyapp.remote.ApiState
 import com.kh.mo.shopyapp.ui.base.BaseFragment
-import com.kh.mo.shopyapp.ui.category.view.SubCategoriesAdapter
-import com.kh.mo.shopyapp.ui.category.viewmodel.CategoryViewModel
 import com.kh.mo.shopyapp.ui.order.viewmodel.OrderViewModel
 import kotlinx.coroutines.launch
 
