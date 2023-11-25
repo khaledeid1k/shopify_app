@@ -2,19 +2,31 @@ package com.kh.mo.shopyapp.ui.settings
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.kh.mo.shopyapp.R
 import com.kh.mo.shopyapp.databinding.FragmentSettingsBinding
 import com.kh.mo.shopyapp.model.ui.SettingsModel
+import com.kh.mo.shopyapp.remote.ApiState
 import com.kh.mo.shopyapp.ui.address.list.AddressFragment
 import com.kh.mo.shopyapp.ui.base.BaseFragment
 import com.kh.mo.shopyapp.ui.profile.viewmodel.ProfileViewModel
 import com.kh.mo.shopyapp.ui.sing_in.view.SignInFragmentDirections
+import com.kh.mo.shopyapp.utils.makeGone
+import com.kh.mo.shopyapp.utils.makeVisible
+import kotlinx.coroutines.launch
 
 class SettingsFragment : BaseFragment<FragmentSettingsBinding, ProfileViewModel>() {
     private val TAG = "TAG SettingsFragment"
     private lateinit var _view: View
     override val layoutIdFragment = R.layout.fragment_settings
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        _view = view
+        setSettingsList()
+    }
 
     override fun getViewModelClass() = ProfileViewModel::class.java
 
@@ -35,18 +47,32 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, ProfileViewModel>
 
     private fun upload() {
         viewModel.backUpDraftFavorite()
+        observerUploadData()
+    }
+    private fun observerUploadData(){
+        lifecycleScope.launch {
+            viewModel.backUpDraftFavorite.collect {
+                when(it){
+                    is ApiState.Failure ->{
+                  //      binding.loading.makeGone()
+                    }
+                   is  ApiState.Loading -> {
+                       binding.loading.makeVisible()
+                        }
+                    is ApiState.Success -> {
+                        binding.loading.makeGone()
+                        Toast.makeText(requireContext(), "Upload Done", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+            }
+        }
     }
 
     private fun sync() {
         viewModel.retrieveDraftFavorite()
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        _view = view
-        setSettingsList()
-    }
 
     private fun setSettingsList() {
         val settingList = listOf(

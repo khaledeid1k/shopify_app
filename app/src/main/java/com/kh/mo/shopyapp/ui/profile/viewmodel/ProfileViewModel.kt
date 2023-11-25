@@ -44,19 +44,7 @@ class ProfileViewModel(private val repo: Repo) : ViewModel() {
         getAllFavorites {
             viewModelScope.launch {
                 repo.backUpDraftFavorite(it, getFavoriteDraftId()).collect {
-                    when (it) {
-                        is ApiState.Failure -> {
-                            _backUpDraftFavorite.value=ApiState.Failure("Failure")
-
-                        }
-                        ApiState.Loading -> {
-                            _backUpDraftFavorite.value=ApiState.Loading
-                        }
-                        is ApiState.Success -> {
-                            _retrieveDraftFavorite.value=ApiState.Success(it.data)
-
-                        }
-                    }
+                    _backUpDraftFavorite.value=it
                 }
             }
         }
