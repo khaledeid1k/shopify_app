@@ -94,5 +94,6 @@ interface Repo {
     fun saveCustomerId(customerId:Long )
     fun  getFavoriteDraftId( ):Long
     fun getCustomerId( ):Long
-
+    suspend fun getCurrencyUnit(): String
+    suspend fun setCurrencyUnit(unit: String)
 }

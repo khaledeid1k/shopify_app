@@ -636,6 +636,14 @@ class RepoImp private constructor(
         return product
     }
 
+    override suspend fun getCurrencyUnit(): String {
+        return localSource.getCurrencyUnit()
+    }
+
+    override suspend fun setCurrencyUnit(unit: String) {
+        localSource.setCurrencyUnit(unit)
+    }
+
     companion object {
         @Volatile
         private var instance: RepoImp? = null

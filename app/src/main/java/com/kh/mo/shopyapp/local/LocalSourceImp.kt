@@ -3,6 +3,7 @@ package com.kh.mo.shopyapp.local
 import android.content.Context
 import com.kh.mo.shopyapp.local.dp.ShopyDataBase
 import com.kh.mo.shopyapp.local.dp.sharedPref.SharedPreferencesShopy
+import com.kh.mo.shopyapp.local.dp.sharedPref.currencyUnit
 import com.kh.mo.shopyapp.local.dp.sharedPref.customerId
 import com.kh.mo.shopyapp.local.dp.sharedPref.favoriteDraftId
 import com.kh.mo.shopyapp.local.validation.AuthInputValidatorImpl
@@ -77,6 +78,15 @@ class LocalSourceImp private constructor(context: Context):LocalSource {
        return sharedPreferencesShopy.favoriteDraftId
 
     }
+
+    override fun getCurrencyUnit(): String {
+        return sharedPreferencesShopy.currencyUnit
+    }
+
+    override fun setCurrencyUnit(unit: String) {
+        sharedPreferencesShopy.currencyUnit = unit
+    }
+
     companion object {
         @Volatile
         private var instance: LocalSourceImp? = null
