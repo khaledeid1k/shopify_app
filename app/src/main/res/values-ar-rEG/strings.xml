@@ -95,4 +95,9 @@
     <string name="location_disabled">تحديد الموقع غير مفعل</string>
     <string name="location_disabled_message">من فضل شغل تحديد الموقع للوصول الى موقعك الحالي</string>
     <string name="set_default_address">اجعلة الموقع الرئيسي</string>
+    <string name="currency">العملة</string>
+    <string name="egp_currency">(EGP) الجنية المصري</string>
+    <string name="usd_currency">(USD) الدولار الامريكي</string>
+    <string name="gbp_currency">(GBP) الجنية الاسترليني</string>
+    <string name="eur_currency">(EUR) اليورو</string>
 </resources>
