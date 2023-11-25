@@ -17,20 +17,19 @@ import com.kh.mo.shopyapp.model.ui.Review
 import com.kh.mo.shopyapp.model.ui.allproducts.Product
 import com.kh.mo.shopyapp.remote.ApiState
 import com.kh.mo.shopyapp.remote.RemoteSource
+import com.kh.mo.shopyapp.repo.mapper.convertAllProductsResponseToProductsIds
 import com.kh.mo.shopyapp.repo.mapper.convertCustomerResponseToCustomerEntity
 import com.kh.mo.shopyapp.repo.mapper.convertDraftOrderResponseToDraftOrder
+import com.kh.mo.shopyapp.repo.mapper.convertDraftOrderResponseToProductsIds
 import com.kh.mo.shopyapp.repo.mapper.convertLoginToUserData
 import com.kh.mo.shopyapp.repo.mapper.convertToAddress
 import com.kh.mo.shopyapp.repo.mapper.convertToAddressRequest
+import com.kh.mo.shopyapp.repo.mapper.convertToAllProducts
 import com.kh.mo.shopyapp.repo.mapper.convertUserDataToCustomerData
-import com.kh.mo.shopyapp.repo.mapper.*
 import com.kh.mo.shopyapp.utils.Constants
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
 class RepoImp private constructor(
@@ -40,7 +39,7 @@ class RepoImp private constructor(
     private val TAG = "TAG RepoImp"
 
     override suspend fun updateCurrencyRates() {
-        remoteSource.getCurrencyRate()
+        Log.i(TAG, "updateCurrencyRates: ${remoteSource.getCurrencyRate()}")
     }
     override suspend fun getListOfSpecificProductsIds( productsIds: List<Long>):Flow<ApiState<List<FavoriteEntity>>>
     {
