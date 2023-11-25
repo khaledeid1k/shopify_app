@@ -2,17 +2,16 @@ package com.kh.mo.shopyapp.remote.service
 
 import com.kh.mo.shopyapp.model.request.CustomerRequest
 import com.kh.mo.shopyapp.model.request.DraftOrderRequest
+import com.kh.mo.shopyapp.model.response.orderdetails.OrderDetailsResponse
 import com.kh.mo.shopyapp.model.response.address.AddressesResponse
 import com.kh.mo.shopyapp.model.response.ads.DiscountCodeResponse
 import com.kh.mo.shopyapp.model.response.allproducts.AllProductsResponse
-import com.kh.mo.shopyapp.model.response.allproducts.ImageResponse
 import com.kh.mo.shopyapp.model.response.allproducts.ProductResponse
 import com.kh.mo.shopyapp.model.response.barnds.BrandsResponse
 import com.kh.mo.shopyapp.model.response.create_customer.CustomerResponse
 import com.kh.mo.shopyapp.model.response.draft_order.DraftOrderResponse
 import com.kh.mo.shopyapp.model.response.login.Login
 import com.kh.mo.shopyapp.model.response.maincategory.MainCategoryResponse
-import com.kh.mo.shopyapp.model.response.order.OrderResponse
 import com.kh.mo.shopyapp.model.response.order.OrdersResponse
 import retrofit2.Response
 import retrofit2.http.Body
@@ -66,7 +65,7 @@ interface Services {
     @GET("orders.json")
     suspend fun getOrdersByCustomerID(@Query("customer_id") customerId: Long): Response<OrdersResponse>
     @GET("orders/{order_id}.json")
-    suspend fun getOrderByID(@Path("order_id") orderId: Long): Response<OrderResponse>
+    suspend fun getOrderByID(@Path("order_id") orderId: Long): Response<OrderDetailsResponse>
 
     @GET("products/{product_id}/images.json")
     suspend fun getImageOrders(@Path("product_id") product_id: Long): Response<ProductResponse>

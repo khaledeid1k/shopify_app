@@ -5,10 +5,10 @@ import com.google.firebase.auth.AuthResult
 import com.kh.mo.shopyapp.model.request.CustomerDataRequest
 import com.kh.mo.shopyapp.model.request.DraftOrderRequest
 import com.kh.mo.shopyapp.model.request.UserData
+import com.kh.mo.shopyapp.model.response.orderdetails.OrderDetailsResponse
 import com.kh.mo.shopyapp.model.response.address.AddressesResponse
 import com.kh.mo.shopyapp.model.response.ads.DiscountCodeResponse
 import com.kh.mo.shopyapp.model.response.allproducts.AllProductsResponse
-import com.kh.mo.shopyapp.model.response.allproducts.ImageResponse
 import com.kh.mo.shopyapp.model.response.allproducts.ProductResponse
 import com.kh.mo.shopyapp.model.response.barnds.BrandsResponse
 import com.kh.mo.shopyapp.model.response.create_customer.CustomerResponse
@@ -16,11 +16,9 @@ import com.kh.mo.shopyapp.model.response.currency.Rates
 import com.kh.mo.shopyapp.model.response.draft_order.DraftOrderResponse
 import com.kh.mo.shopyapp.model.response.login.Login
 import com.kh.mo.shopyapp.model.response.maincategory.MainCategoryResponse
-import com.kh.mo.shopyapp.model.response.order.OrderResponse
 import com.kh.mo.shopyapp.model.response.order.OrdersResponse
 import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
-import retrofit2.http.Query
 
 interface RemoteSource {
 
@@ -49,7 +47,7 @@ interface RemoteSource {
     suspend fun filterProductsBySubCollection(collectionId: Long,productType:String): Response<AllProductsResponse>
     suspend fun getAddressesOfCustomer(customerId: Long): Response<AddressesResponse>
     suspend fun getOrdersByCustomerID(customerId: Long): Response<OrdersResponse>
-    suspend fun getOrderByID(orderId: Long): Response<OrderResponse>
+    suspend fun getOrderByID(orderId: Long): Response<OrderDetailsResponse>
     suspend fun getImageOrders(productId: Long): Response<ProductResponse>
 
 
