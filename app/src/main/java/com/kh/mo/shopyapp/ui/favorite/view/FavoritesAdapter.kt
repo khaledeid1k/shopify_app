@@ -8,9 +8,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kh.mo.shopyapp.R
 import com.kh.mo.shopyapp.databinding.ItemFavoriteBinding
 import com.kh.mo.shopyapp.model.ui.Favorite
+import com.kh.mo.shopyapp.model.ui.allproducts.Product
 import com.kh.mo.shopyapp.ui.base.BaseDataDiffUtil
 
-class FavoritesAdapter : RecyclerView.Adapter<FavoritesAdapter.FavoritesViewHolder>() {
+class FavoritesAdapter(val favoritesAdapterListener:FavoritesAdapterListener) : RecyclerView.Adapter<FavoritesAdapter.FavoritesViewHolder>() {
 
     private var favorites: List<Favorite> = emptyList()
 
@@ -27,15 +28,19 @@ class FavoritesAdapter : RecyclerView.Adapter<FavoritesAdapter.FavoritesViewHold
 
     override fun onBindViewHolder(holder: FavoritesViewHolder, position: Int) {
         val favorite = favorites[position]
-        holder.bind(favorite)
+        holder.bind(favorite,favoritesAdapterListener)
     }
 
     override fun getItemCount()=favorites.size
 
     class FavoritesViewHolder (private val binding: ItemFavoriteBinding):
         RecyclerView.ViewHolder(binding.root){
-        fun bind(favorite: Favorite) {
-            binding.item = favorite
+        fun bind(favorite: Favorite,favoritesAdapterListener:FavoritesAdapterListener) {
+            binding.apply {
+                item = favorite
+                listener=favoritesAdapterListener
+            }
+
         }
     }
 
@@ -54,6 +59,9 @@ class FavoritesAdapter : RecyclerView.Adapter<FavoritesAdapter.FavoritesViewHold
 
 
 
+    interface FavoritesAdapterListener {
 
+        fun deleteFavorite(productId: Long)
+    }
 
 }
