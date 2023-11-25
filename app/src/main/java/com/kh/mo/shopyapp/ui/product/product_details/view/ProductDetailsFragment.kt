@@ -25,9 +25,9 @@ class ProductDetailsFragment : BaseFragment<FragmentDetailsBinding, ProductDetai
         val product = arguments?.getParcelable<Product>(Constants.ProductDetailsFragment)
         binding.apply {
             with(product) {
-                brandValue.text = this?.vendor ?: ""
-                weightUnitValue.text = this?.variants?.get(0)?.weightUnit ?: ""
-                categoryValue.text = this?.productType ?: ""
+                brandValue.text = this?.vendor
+                weightUnitValue.text = this?.variants?.get(0)?.weightUnit
+                categoryValue.text = this?.productType
                 statusValue.text = this?.status
             }
         }

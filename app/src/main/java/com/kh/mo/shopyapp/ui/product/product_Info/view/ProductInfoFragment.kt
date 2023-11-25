@@ -16,10 +16,10 @@ class ProductInfoFragment :BaseFragment<FragmentProductInfoBinding,ProductInfoVi
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        sada()
+        receiveProduct()
     }
 
-    fun sada(){
+    private fun receiveProduct(){
 
         val product = arguments?.getParcelable<Product>(Constants.ProductInfoFragment)
 

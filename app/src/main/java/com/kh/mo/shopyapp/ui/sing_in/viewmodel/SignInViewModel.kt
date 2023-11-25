@@ -31,6 +31,8 @@ class SignInViewModel(private val repo: Repo) : ViewModel() {
                     }
                     is ApiState.Success -> {
                         _singIn.value = ApiState.Success(it.data)
+                        saveCustomerId(it.data.id)
+                        getDraftFavoriteId(it.data.id)
                     }
                 }
             }
@@ -62,5 +64,23 @@ class SignInViewModel(private val repo: Repo) : ViewModel() {
 
     fun validatePassword(password: String) = repo.validatePassword(password)
 
+    private fun saveCustomerId(customerId:Long){
+        repo.saveCustomerId(customerId)
+    }
 
+    private fun saveFavoriteDraftId(favoriteDraft:Long){
+        repo.saveFavoriteDraftId(favoriteDraft)
+    }
+    private fun getDraftFavoriteId(customerId: Long) {
+        viewModelScope.launch {
+            repo.getDraftFavoriteId(customerId.toString()).collect{
+                if(it is ApiState.Success){
+                    it.data?.let {favoriteId->
+                        saveFavoriteDraftId(favoriteId.toLong())
+                    }
+
+                }
+            }
+        }
+    }
 }

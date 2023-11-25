@@ -5,6 +5,7 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.kh.mo.shopyapp.model.request.AddressRequest
 import com.kh.mo.shopyapp.model.request.CustomerDataRequest
@@ -12,6 +13,7 @@ import com.kh.mo.shopyapp.model.request.CustomerRequest
 import com.kh.mo.shopyapp.model.request.DraftOrderRequest
 import com.kh.mo.shopyapp.model.request.UserData
 import com.kh.mo.shopyapp.model.response.allproducts.AllProductsResponse
+import com.kh.mo.shopyapp.model.response.allproducts.ProductResponse
 import com.kh.mo.shopyapp.model.response.barnds.BrandsResponse
 import com.kh.mo.shopyapp.model.response.create_customer.CustomerResponse
 import com.kh.mo.shopyapp.model.response.currency.Rates
@@ -46,23 +48,18 @@ class RemoteSourceImp private constructor() : RemoteSource {
 
     }
 
-    override suspend fun checkCustomerExists(customerId: String) = flow {
-        var email = ""
-        var password = ""
-        emit(ApiState.Loading)
-        val collection =
-            firebaseFireStore.collection(Constants.collectionPath)
-                .document(customerId)
-        val documentSnapshot = collection.get().await()
-        if (documentSnapshot.exists()) {
-//            email = documentSnapshot.getString(Constants.email).toString()
-//            password = documentSnapshot.getString(Constants.password).toString()
+    override suspend fun getDraftFavoriteId(customerId: String): Task<DocumentSnapshot> {
 
-        }
-        emit(ApiState.Success(UserData(email = email, password = password)))
+         return   firebaseFireStore.collection(Constants.collectionPath)
+                .document(customerId).get()
+    }
 
-    }.catch {
-        emit(ApiState.Failure(it.message.toString()))
+    override suspend fun getListOfSpecificProductsIds( productsIds: List<Long>):Response<AllProductsResponse> {
+        return  network.getListOfSpecificProductsIds(productsIds)
+    }
+
+    override suspend fun getProductsIdForDraftFavorite(draftFavoriteId: Long): Response<DraftOrderResponse> {
+        return network.getProductsIdForDraftFavorite(draftFavoriteId)
     }
 
 
@@ -85,6 +82,10 @@ class RemoteSourceImp private constructor() : RemoteSource {
     override fun checkIsUserLogin() = firebaseAuth.currentUser != null
     override suspend fun createFavoriteDraft(draftOrderRequest: DraftOrderRequest): Response<DraftOrderResponse> {
         return network.createFavoriteDraft(draftOrderRequest)
+    }
+
+    override suspend fun backUpDraftFavorite(draftOrderRequest: DraftOrderRequest,draftFavoriteId: Long): Response<DraftOrderResponse> {
+        return network.backUpDraftFavorite(draftOrderRequest,draftFavoriteId)
     }
 
 

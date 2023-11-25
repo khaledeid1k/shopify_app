@@ -7,6 +7,7 @@ import com.kh.mo.shopyapp.ui.address.list.AddressViewModel
 import com.kh.mo.shopyapp.ui.address.details.AddressDetailsViewModel
 import com.kh.mo.shopyapp.ui.address.map.MapViewModel
 import com.kh.mo.shopyapp.ui.category.viewmodel.CategoryViewModel
+import com.kh.mo.shopyapp.ui.favorite.viewmodel.FavoritesViewModel
 import com.kh.mo.shopyapp.ui.home.viewmodel.HomeViewModel
 import com.kh.mo.shopyapp.ui.product.product_Info.viewmodel.ProductInfoViewModel
 import com.kh.mo.shopyapp.ui.product.product_details.viewmodel.ProductDetailsViewModel
@@ -31,6 +32,7 @@ class BaseViewModelFactory(private val repo: Repo) : ViewModelProvider.Factory {
             AddressDetailsViewModel::class.java -> AddressDetailsViewModel(repo) as T
             ProductReviewsViewModel::class.java -> ProductReviewsViewModel(repo) as T
             MapViewModel::class.java -> MapViewModel(repo) as T
+            FavoritesViewModel::class.java -> FavoritesViewModel(repo) as T
             else -> throw Throwable("Unsupported view model")
         }
     }

@@ -88,7 +88,7 @@ class AddressFragment : BottomSheetDialogFragment() {
             BaseViewModelFactory(
                 RepoImp.getRepoImpInstance(
                     RemoteSourceImp.getRemoteSourceImpInstance(),
-                    LocalSourceImp.getLocalSourceImpInstance()
+                    LocalSourceImp.getLocalSourceImpInstance(requireContext())
 
                 )
             )

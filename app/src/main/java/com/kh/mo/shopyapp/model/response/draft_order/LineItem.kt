@@ -10,7 +10,7 @@ data class LineItem(
     val id: Long?,
     val name: String?,
     val price: String?,
-    val product_id: Any?,
+    val product_id: Long?,
     val properties: List<Any>?,
     val quantity: Int?,
     val requires_shipping: Boolean?,
@@ -18,7 +18,7 @@ data class LineItem(
     val tax_lines: List<TaxLineX>?,
     val taxable: Boolean?,
     val title: String?,
-    val variant_id: Any?,
+    val variant_id: Long?,
     val variant_title: Any?,
     val vendor: Any?
 )

@@ -4,6 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <variable
+            name="item"
+            type="com.kh.mo.shopyapp.model.ui.allproducts.Product" />
+        <variable
+            name="listener"
+            type="com.kh.mo.shopyapp.ui.category.view.ProductsCategoryAdapter.ProductsCategoryListener" />
 
     </data>
 
@@ -21,6 +27,7 @@
             android:layout_height="match_parent">
 
             <ImageView
+                setImageUrl="@{item.image.src}"
                 android:id="@+id/image_product_item"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_130sdp"
@@ -37,6 +44,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="T-Shirt"
+                android:text="@{item.title}"
                 style="@style/sub_title"
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_10sdp"
@@ -49,6 +57,7 @@
             <TextView
                 android:id="@+id/tv_price_product_item"
                 style="@style/sub_title"
+                android:text="@{item.variants.get(0).price.toString()}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/_10sdp"
@@ -57,17 +66,20 @@
                 app:layout_constraintTop_toBottomOf="@+id/tv_name_product_item"
                 android:textStyle="bold"
                 tools:text="25$" />
-
-            <ImageView
+            <CheckBox
+                isFavorite="@{item.isFavorite}"
                 android:id="@+id/image_fav"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:src="@drawable/ic_favorite"
                 android:background="@drawable/round_rate"
                 android:layout_margin="@dimen/_5sdp"
-                android:padding="@dimen/_4sdp" />
+                android:padding="@dimen/_4sdp"
+                android:button="@drawable/selector_favourite_item"
+                android:onClick="@{()->listener.onClickFavouriteIcon(item)}"
+                />
+
 
             <ImageView
                 android:id="@+id/image_cart"
