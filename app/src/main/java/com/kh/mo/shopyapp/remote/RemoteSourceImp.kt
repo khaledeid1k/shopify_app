@@ -5,6 +5,7 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.kh.mo.shopyapp.model.request.CustomerDataRequest
 import com.kh.mo.shopyapp.model.request.CustomerRequest
@@ -41,24 +42,14 @@ class RemoteSourceImp private constructor() : RemoteSource {
 
     }
 
-    override suspend fun checkCustomerExists(customerId: String) = flow {
-        var email = ""
-        var password = ""
-        emit(ApiState.Loading)
-        val collection =
-            firebaseFireStore.collection(Constants.collectionPath)
-                .document(customerId)
-        val documentSnapshot = collection.get().await()
-        if (documentSnapshot.exists()) {
-//            email = documentSnapshot.getString(Constants.email).toString()
-//            password = documentSnapshot.getString(Constants.password).toString()
+    override suspend fun getDraftFavoriteId(customerId: String): Task<DocumentSnapshot> {
 
-        }
-        emit(ApiState.Success(UserData(email = email, password = password)))
+         return   firebaseFireStore.collection(Constants.collectionPath)
+                .document(customerId).get()
 
-    }.catch {
-        emit(ApiState.Failure(it.message.toString()))
+
     }
+
 
 
     override suspend fun singUpWithFireBase(userData: UserData): Task<AuthResult> {

@@ -28,7 +28,7 @@ interface Repo {
     suspend fun saveFavoriteDraftIdInFireBase(customerId:Long,favoriteDraft:Long): Flow<ApiState<String>>
     suspend fun createCustomer(userData: UserData): Flow<ApiState<CustomerEntity>>
     suspend fun singInCustomer(email: String): Flow<ApiState<UserData>>
-    suspend fun checkCustomerExists(customerId: String): Flow<ApiState<UserData>>
+    suspend fun getDraftFavoriteId(customerId: String): Flow<ApiState<String?>>
     fun validatePassword(password: String): Validation
     fun validateConfirmPassword(password: String, rePassword: String): Validation
     fun validateEmail(email: String): Validation

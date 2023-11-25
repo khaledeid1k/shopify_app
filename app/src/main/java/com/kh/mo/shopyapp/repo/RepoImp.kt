@@ -18,6 +18,7 @@ import com.kh.mo.shopyapp.model.ui.allproducts.Product
 import com.kh.mo.shopyapp.remote.ApiState
 import com.kh.mo.shopyapp.remote.RemoteSource
 import com.kh.mo.shopyapp.repo.mapper.*
+import com.kh.mo.shopyapp.utils.Constants
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.Flow
@@ -129,8 +130,21 @@ class RepoImp private constructor(
         emit(ApiState.Failure(it.message!!))
     }
 
-    override suspend fun checkCustomerExists(customerId: String) =
-        remoteSource.checkCustomerExists(customerId)
+    override suspend fun getDraftFavoriteId(customerId: String) =
+        flow {
+            var favoriteId:String?=""
+            emit(ApiState.Loading)
+            remoteSource.getDraftFavoriteId (customerId).addOnSuccessListener {
+                if(it.exists()){
+                    favoriteId=   it.data?.get(Constants.DRAFT_FAVORITE_ID) as String?
+                }
+            }.await()
+            emit(ApiState.Success(favoriteId))
+        }.catch {
+            emit(ApiState.Failure("An error occurred: ${it.message}"))
+        }
+
+
 
     override fun validateUserName(userName: String) = localSource.validateUserName(userName)
     override fun reviews(): List<Review> {

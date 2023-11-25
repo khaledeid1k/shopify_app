@@ -2,6 +2,7 @@ package com.kh.mo.shopyapp.remote
 
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
+import com.google.firebase.firestore.DocumentSnapshot
 import com.kh.mo.shopyapp.model.request.CustomerDataRequest
 import com.kh.mo.shopyapp.model.request.DraftOrderRequest
 import com.kh.mo.shopyapp.model.request.UserData
@@ -34,7 +35,7 @@ interface RemoteSource {
 
     suspend fun getProductsOfSpecificBrand(brandName: String): Response<AllProductsResponse>
     suspend fun saveFavoriteDraftIdInFireBase(customerId:Long,favoriteDraft:Long): Task<Void>
-    suspend fun checkCustomerExists(customerId: String): Flow<ApiState<UserData>>
+    suspend fun getDraftFavoriteId(customerId: String): Task<DocumentSnapshot>
     suspend fun createCustomer(customerDataRequest: CustomerDataRequest): Response<CustomerResponse>
     suspend fun singInCustomer(email: String): Response<Login>
     suspend fun getCurrencyRate(): Rates
