@@ -97,4 +97,6 @@
     <string name="location_disabled">Location Disabled</string>
     <string name="location_disabled_message">Please turn on Location access to find your current location</string>
     <string name="set_default_address">Set as default address</string>
+    <string name="warning">"Warning "</string>
+    <string name="warning_meesage">"make sure you upload data to server before log out "</string>
 </resources>

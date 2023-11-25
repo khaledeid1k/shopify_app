@@ -13,6 +13,7 @@ import com.kh.mo.shopyapp.ui.address.list.AddressFragment
 import com.kh.mo.shopyapp.ui.base.BaseFragment
 import com.kh.mo.shopyapp.ui.profile.viewmodel.ProfileViewModel
 import com.kh.mo.shopyapp.ui.sing_in.view.SignInFragmentDirections
+import com.kh.mo.shopyapp.utils.createDialog
 import com.kh.mo.shopyapp.utils.makeGone
 import com.kh.mo.shopyapp.utils.makeVisible
 import kotlinx.coroutines.flow.collect
@@ -41,8 +42,13 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, ProfileViewModel>
     }
 
     private fun logOut() {
-        viewModel.logOut()
-        navigateToLoginScreen()
+        createDialog(context = requireContext(),
+            title = getString(R.string.warning),
+            message = getString(R.string.warning_meesage),
+
+            sure = {  viewModel.logOut()
+                navigateToLoginScreen()}, cancel = {})
+
     }
 
 
