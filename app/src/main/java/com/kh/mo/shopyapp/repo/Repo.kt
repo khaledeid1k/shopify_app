@@ -7,8 +7,11 @@ import com.kh.mo.shopyapp.model.request.DraftOrderRequest
 import com.kh.mo.shopyapp.model.request.UserData
 import com.kh.mo.shopyapp.model.response.ads.DiscountCodeResponse
 import com.kh.mo.shopyapp.model.response.allproducts.AllProductsResponse
+import com.kh.mo.shopyapp.model.response.allproducts.ImageResponse
+import com.kh.mo.shopyapp.model.response.allproducts.ProductResponse
 import com.kh.mo.shopyapp.model.response.barnds.BrandsResponse
 import com.kh.mo.shopyapp.model.response.maincategory.MainCategoryResponse
+import com.kh.mo.shopyapp.model.response.order.OrderResponse
 import com.kh.mo.shopyapp.model.response.order.OrdersResponse
 import com.kh.mo.shopyapp.model.ui.DraftOrder
 import com.kh.mo.shopyapp.model.ui.Review
@@ -44,5 +47,8 @@ interface Repo {
 
     suspend fun getAddressesOfCustomer(customerId: Long): Flow<ApiState<List<Address>>>
     suspend fun getOrdersByCustomerID(customerId: Long):Flow<ApiState<OrdersResponse>>
+    suspend fun getOrderById(id: Long): Flow<ApiState<OrderResponse>>
+    suspend fun getImageOrders(productId: Long): Flow<ApiState<ProductResponse>>
+
 
 }
