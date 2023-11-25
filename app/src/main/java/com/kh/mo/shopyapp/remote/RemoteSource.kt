@@ -9,6 +9,7 @@ import com.kh.mo.shopyapp.model.request.UserData
 import com.kh.mo.shopyapp.model.response.address.AddressesResponse
 import com.kh.mo.shopyapp.model.response.ads.DiscountCodeResponse
 import com.kh.mo.shopyapp.model.response.allproducts.AllProductsResponse
+import com.kh.mo.shopyapp.model.response.allproducts.ProductResponse
 import com.kh.mo.shopyapp.model.response.barnds.BrandsResponse
 import com.kh.mo.shopyapp.model.response.create_customer.CustomerResponse
 import com.kh.mo.shopyapp.model.response.currency.Rates
@@ -20,7 +21,8 @@ import retrofit2.Response
 import retrofit2.http.Path
 
 interface RemoteSource {
-
+    suspend fun getListOfSpecificProductsIds( productsIds: List<Long>):Response<AllProductsResponse>
+    suspend fun getProductsIdForDraftFavorite(draftFavoriteId: Long): Response<DraftOrderResponse>
     suspend fun singUpWithFireBase(userData: UserData): Task<AuthResult>
     suspend fun singInWithFireBase(userData: UserData): Task<AuthResult>
     suspend fun logout()

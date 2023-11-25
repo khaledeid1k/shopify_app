@@ -38,6 +38,48 @@ class RepoImp private constructor(
             Log.i(TAG, "currencyRates: ${remoteSource.getCurrencyRate()}")
         }
     }
+    override suspend fun getListOfSpecificProductsIds( productsIds: List<Long>):Flow<ApiState<List<FavoriteEntity>>>
+    {
+        return flow {
+
+            emit(ApiState.Loading)
+            val draftFavorite =
+                remoteSource.getListOfSpecificProductsIds(productsIds)
+            Log.d(TAG, "asdasdasdasd: ${draftFavorite.body()}")
+
+            if (draftFavorite.isSuccessful) {
+                draftFavorite.body()
+                    ?.let {
+                        emit(ApiState.Success(it.convertAllProductsResponseToProductsIds())) }
+            } else {
+                emit(ApiState.Failure(draftFavorite.message()))
+            }
+
+        }.catch {
+            emit(ApiState.Failure(it.message!!))
+        }
+    }
+
+    override suspend fun getProductsIdForDraftFavorite(draftFavoriteId: Long): Flow<ApiState<List<Long>>> {
+
+        return flow {
+
+            emit(ApiState.Loading)
+            val draftFavorite =
+                remoteSource.getProductsIdForDraftFavorite(draftFavoriteId)
+            if (draftFavorite.isSuccessful) {
+                draftFavorite.body()
+                    ?.let { emit(ApiState.Success(it.convertDraftOrderResponseToProductsIds())) }
+            } else {
+                emit(ApiState.Failure(draftFavorite.message()))
+            }
+
+        }.catch {
+            emit(ApiState.Failure(it.message!!))
+        }
+    }
+
+
 
     override suspend fun singUpWithFireBase(userData: UserData) =
         flow {
@@ -455,8 +497,8 @@ class RepoImp private constructor(
         localSource.deleteFavorite(productId)
     }
 
-    override suspend fun saveFavorite(product: Product) {
-        localSource.saveFavorite(product.convertProductToFavoriteEntity())
+    override suspend fun saveFavorite(favoriteEntity: FavoriteEntity):Long {
+        return localSource.saveFavorite(favoriteEntity)
     }
 
     override suspend fun checkProductInFavorite(productId: Long): Flow<ApiState<Int>> {

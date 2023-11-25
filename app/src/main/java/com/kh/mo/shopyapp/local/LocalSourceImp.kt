@@ -52,8 +52,8 @@ class LocalSourceImp private constructor(context: Context):LocalSource {
         shopyDao.deleteFavorite(productId)
     }
 
-    override suspend fun saveFavorite(favoriteEntity: FavoriteEntity) {
-       shopyDao.saveFavorite(favoriteEntity)
+    override suspend fun saveFavorite(favoriteEntity: FavoriteEntity):Long {
+      return shopyDao.saveFavorite(favoriteEntity)
     }
 
     override suspend fun checkProductInFavorite(productId: Long): Int {

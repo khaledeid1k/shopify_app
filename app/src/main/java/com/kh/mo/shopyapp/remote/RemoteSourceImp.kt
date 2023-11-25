@@ -12,6 +12,7 @@ import com.kh.mo.shopyapp.model.request.CustomerRequest
 import com.kh.mo.shopyapp.model.request.DraftOrderRequest
 import com.kh.mo.shopyapp.model.request.UserData
 import com.kh.mo.shopyapp.model.response.allproducts.AllProductsResponse
+import com.kh.mo.shopyapp.model.response.allproducts.ProductResponse
 import com.kh.mo.shopyapp.model.response.barnds.BrandsResponse
 import com.kh.mo.shopyapp.model.response.create_customer.CustomerResponse
 import com.kh.mo.shopyapp.model.response.currency.Rates
@@ -46,10 +47,15 @@ class RemoteSourceImp private constructor() : RemoteSource {
 
          return   firebaseFireStore.collection(Constants.collectionPath)
                 .document(customerId).get()
-
-
     }
 
+    override suspend fun getListOfSpecificProductsIds( productsIds: List<Long>):Response<AllProductsResponse> {
+        return  network.getListOfSpecificProductsIds(productsIds)
+    }
+
+    override suspend fun getProductsIdForDraftFavorite(draftFavoriteId: Long): Response<DraftOrderResponse> {
+        return network.getProductsIdForDraftFavorite(draftFavoriteId)
+    }
 
 
     override suspend fun singUpWithFireBase(userData: UserData): Task<AuthResult> {

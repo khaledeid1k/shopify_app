@@ -22,7 +22,7 @@ interface LocalSource {
 
     suspend fun getAllFavorites(): List<FavoriteEntity>?
     suspend fun deleteFavorite(productId:Long)
-    suspend fun saveFavorite(favoriteEntity: FavoriteEntity)
+    suspend fun saveFavorite(favoriteEntity: FavoriteEntity):Long
     suspend fun checkProductInFavorite(productId: Long): Int
 
 

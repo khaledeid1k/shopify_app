@@ -1,14 +1,12 @@
 package com.kh.mo.shopyapp.repo
 
+import com.kh.mo.shopyapp.model.entity.*
 import com.kh.mo.shopyapp.model.ui.Address
-import com.kh.mo.shopyapp.model.entity.CustomerEntity
-import com.kh.mo.shopyapp.model.entity.FavoriteEntity
-import com.kh.mo.shopyapp.model.entity.LineItemEntity
-import com.kh.mo.shopyapp.model.entity.Validation
 import com.kh.mo.shopyapp.model.request.DraftOrderRequest
 import com.kh.mo.shopyapp.model.request.UserData
 import com.kh.mo.shopyapp.model.response.ads.DiscountCodeResponse
 import com.kh.mo.shopyapp.model.response.allproducts.AllProductsResponse
+import com.kh.mo.shopyapp.model.response.allproducts.ProductResponse
 import com.kh.mo.shopyapp.model.response.barnds.BrandsResponse
 import com.kh.mo.shopyapp.model.response.draft_order.DraftOrderResponse
 import com.kh.mo.shopyapp.model.response.maincategory.MainCategoryResponse
@@ -18,8 +16,11 @@ import com.kh.mo.shopyapp.model.ui.allproducts.Product
 import com.kh.mo.shopyapp.remote.ApiState
 import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
+import retrofit2.http.Path
 
 interface Repo {
+    suspend fun getListOfSpecificProductsIds( productsIds: List<Long>):Flow<ApiState<List<FavoriteEntity>>>
+    suspend fun getProductsIdForDraftFavorite(draftFavoriteId: Long): Flow<ApiState<List<Long>>>
     suspend fun singUpWithFireBase(userData: UserData): Flow<ApiState<String>>
     suspend fun singInWithFireBase(userData: UserData): Flow<ApiState<String>>
     suspend fun logout()
@@ -53,7 +54,7 @@ interface Repo {
 
     suspend fun getAllFavorites(): Flow<ApiState<List<FavoriteEntity>>>
     suspend fun deleteFavorite(productId:Long)
-    suspend fun saveFavorite(product: Product)
+    suspend fun saveFavorite(favoriteEntity: FavoriteEntity):Long
     suspend fun checkProductInFavorite(productId: Long): Flow<ApiState<Int>>
 
     fun saveFavoriteDraftId(draftId:Long )

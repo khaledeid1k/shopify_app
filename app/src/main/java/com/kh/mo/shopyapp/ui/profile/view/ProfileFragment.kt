@@ -2,12 +2,14 @@ package com.kh.mo.shopyapp.ui.profile.view
 
 import android.os.Bundle
 import android.view.View
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import com.kh.mo.shopyapp.R
 import com.kh.mo.shopyapp.databinding.FragmentProfileBinding
 import com.kh.mo.shopyapp.model.request.UserData
 import com.kh.mo.shopyapp.ui.base.BaseFragment
 import com.kh.mo.shopyapp.ui.profile.viewmodel.ProfileViewModel
+import kotlinx.coroutines.launch
 
 
 class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>() {
@@ -27,6 +29,12 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
                 .navigate(R.id.action_profileFragment_to_settingsFragment)
         }
         observeUserData()
+
+        binding.userNameTV.setOnClickListener {
+            lifecycleScope.launch {
+                viewModel.retrieveDraftFavorite()
+            }
+        }
     }
 
     private fun observeUserData() {

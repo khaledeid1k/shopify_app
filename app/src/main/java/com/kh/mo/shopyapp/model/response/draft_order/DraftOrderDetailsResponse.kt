@@ -12,7 +12,7 @@ data class DraftOrderDetailsResponse(
     val id: Long,
     val invoice_sent_at: Any?,
     val invoice_url: String?,
-    val line_items: List<LineItem>?,
+    val line_items: List<LineItem>,
     val name: String?,
     val note: Any?,
     val note_attributes: List<Any>?,

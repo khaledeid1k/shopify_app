@@ -5,6 +5,7 @@ import com.kh.mo.shopyapp.model.request.DraftOrderRequest
 import com.kh.mo.shopyapp.model.response.address.AddressesResponse
 import com.kh.mo.shopyapp.model.response.ads.DiscountCodeResponse
 import com.kh.mo.shopyapp.model.response.allproducts.AllProductsResponse
+import com.kh.mo.shopyapp.model.response.allproducts.ProductResponse
 import com.kh.mo.shopyapp.model.response.barnds.BrandsResponse
 import com.kh.mo.shopyapp.model.response.create_customer.CustomerResponse
 import com.kh.mo.shopyapp.model.response.draft_order.DraftOrderResponse
@@ -64,4 +65,13 @@ interface Services {
     suspend fun backUpDraftFavorite(@Body draftOrderRequest: DraftOrderRequest,
         @Path("draftFavoriteId") draftFavoriteId: Long
     ): Response<DraftOrderResponse>
+
+    @GET("draft_orders/{draftFavoriteId}.json")
+    suspend fun getProductsIdForDraftFavorite(
+        @Path("draftFavoriteId") draftFavoriteId: Long
+    ): Response<DraftOrderResponse>
+
+    @GET("products.json")
+    suspend fun getListOfSpecificProductsIds(@Query("ids") productsIds: List<Long>):Response<AllProductsResponse>
+
 }

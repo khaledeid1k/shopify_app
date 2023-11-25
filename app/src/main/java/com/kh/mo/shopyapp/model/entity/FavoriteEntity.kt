@@ -4,10 +4,10 @@ import androidx.annotation.NonNull
 import androidx.room.Entity
 
 
-@Entity(tableName = "favorite_table", primaryKeys = ["id"])
+@Entity(tableName = "favorite_table", primaryKeys = ["productId"])
 data class FavoriteEntity(
     @NonNull
-    val id: Long,
+    val productId: Long,
     val images: List<ImageEntity>,
     val productType: String,
     val image: ImageEntity,

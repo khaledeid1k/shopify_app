@@ -2,7 +2,6 @@ package com.kh.mo.shopyapp.repo.mapper
 
 import com.kh.mo.shopyapp.model.entity.*
 import com.kh.mo.shopyapp.model.request.*
-import com.kh.mo.shopyapp.model.ui.Address
 import com.kh.mo.shopyapp.model.response.address.AddressResponse
 import com.kh.mo.shopyapp.model.response.allproducts.AllProductsResponse
 import com.kh.mo.shopyapp.model.response.allproducts.ImageResponse
@@ -14,6 +13,7 @@ import com.kh.mo.shopyapp.model.response.create_customer.CustomerResponse
 import com.kh.mo.shopyapp.model.response.draft_order.DraftOrderResponse
 import com.kh.mo.shopyapp.model.response.login.Login
 import com.kh.mo.shopyapp.model.response.maincategory.MainCategoryResponse
+import com.kh.mo.shopyapp.model.ui.Address
 import com.kh.mo.shopyapp.model.ui.DraftOrder
 import com.kh.mo.shopyapp.model.ui.Favorite
 import com.kh.mo.shopyapp.model.ui.allproducts.Product
@@ -155,7 +155,7 @@ fun List<FavoriteEntity>.convertFavoritesEntityToDraftOrderRequest(customerId: L
   return  DraftOrderRequest(
         DraftOrderDetailsRequest(
             map {
-                LineItems(product_id = it.id.toString(), variant_id = it.variants[0].id)
+                LineItems(product_id = it.productId.toString(), variant_id = it.variants[0].id)
             },
             CustomerDraftRequest(customerId)
         )
@@ -165,8 +165,27 @@ fun List<FavoriteEntity>.convertFavoritesEntityToDraftOrderRequest(customerId: L
 
 fun List<FavoriteEntity>.convertFavoritesEntityToFavorites(): List<Favorite> {
     return map {
-        Favorite(it.id,it.image.src,it.title, it.variants[0].price!!)
+        Favorite(it.productId,it.image.src,it.title, it.variants[0].price!!)
     }
 
 }
 
+fun DraftOrderResponse.convertDraftOrderResponseToProductsIds(): List<Long> {
+   return draft_order.line_items.map { it.product_id!! }
+}
+
+fun AllProductsResponse.convertAllProductsResponseToProductsIds(): List<FavoriteEntity> {
+    return products.map {
+        FavoriteEntity(
+            it.id,
+            it.images.convertImagesToImagesEntity() ,
+            it.productType,
+            ImageEntity(it.image.src.toString()),
+            it.title,
+            it.variants.map { v->
+                VariantEntity(v.id,v.price,v.productId,v.title,v.weightUnit)
+            } ,
+            it.options.convertOptionsToOptionsEntity(),
+            it.vendor,it.status)
+    }
+}
