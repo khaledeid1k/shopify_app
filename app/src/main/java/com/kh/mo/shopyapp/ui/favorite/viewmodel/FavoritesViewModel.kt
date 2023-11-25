@@ -23,17 +23,11 @@ class FavoritesViewModel(private val repo:Repo):ViewModel() {
     private fun getAllFavorites(){
         viewModelScope.launch {
             repo.getAllFavorites().collect{
-                when(it){
-                    is ApiState.Failure -> {}
-                    ApiState.Loading -> {}
-                    is ApiState.Success -> {
-                        _favorites.value=it.data.convertFavoritesEntityToFavorites()
-                    }
+                        _favorites.value=it.convertFavoritesEntityToFavorites()
                 }
 
 
-
             }
-        }
+
     }
 }

@@ -10,6 +10,7 @@ import com.kh.mo.shopyapp.local.validation.ValidationSateImpl
 import com.kh.mo.shopyapp.model.entity.FavoriteEntity
 import com.kh.mo.shopyapp.model.entity.LineItemEntity
 import com.kh.mo.shopyapp.model.entity.Validation
+import kotlinx.coroutines.flow.Flow
 
 class LocalSourceImp private constructor(context: Context):LocalSource {
     private val validationSateImpl= ValidationSateImpl(AuthInputValidatorImpl())
@@ -32,19 +33,8 @@ class LocalSourceImp private constructor(context: Context):LocalSource {
     override fun validateUserName(userName: String): Validation =
         validationSateImpl.validateUserName(userName)
 
-    override suspend fun getAllLinetItems(): List<LineItemEntity> {
-       return shopyDao.getAllLinetItems()
-    }
 
-    override suspend fun deleteLinetItems(productId: Long) {
-        shopyDao.deleteLinetItems(productId)
-    }
-
-    override suspend fun saveLinetItems(lineItemEntity: LineItemEntity) {
-       shopyDao.saveLinetItems(lineItemEntity)
-    }
-
-    override suspend fun getAllFavorites(): List<FavoriteEntity>? {
+    override suspend fun getAllFavorites():Flow<List<FavoriteEntity>>{
        return shopyDao.getAllFavorites()
     }
 

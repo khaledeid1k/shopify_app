@@ -39,7 +39,9 @@ class RepoImp private constructor(
 ) : Repo {
     private val TAG = "TAG RepoImp"
 
-
+    override suspend fun updateCurrencyRates() {
+        remoteSource.getCurrencyRate()
+    }
     override suspend fun getListOfSpecificProductsIds( productsIds: List<Long>):Flow<ApiState<List<FavoriteEntity>>>
     {
         return flow {
@@ -564,28 +566,8 @@ class RepoImp private constructor(
         }
     }
 
-    override suspend fun getAllLinetItems(): List<LineItemEntity>{
-        return localSource.getAllLinetItems()
-    }
-
-    override suspend fun deleteLinetItems(productId: Long) {
-        localSource.deleteLinetItems(productId)
-    }
-
-    override suspend fun saveLinetItems(lineItemEntity: LineItemEntity) {
-        localSource.saveLinetItems(lineItemEntity)
-    }
-
-    override suspend fun getAllFavorites(): Flow<ApiState<List<FavoriteEntity>>> {
-        return flow {
-            emit(ApiState.Loading)
-                localSource.getAllFavorites()?.let {
-                    emit(ApiState.Success(it))
-                }?:   emit(ApiState.Failure("No exit Data"))
-
-        }.catch {
-            emit(ApiState.Failure(it.message!!))
-        }
+    override suspend fun getAllFavorites(): Flow<List<FavoriteEntity>>{
+        return       localSource.getAllFavorites()
 
     }
 

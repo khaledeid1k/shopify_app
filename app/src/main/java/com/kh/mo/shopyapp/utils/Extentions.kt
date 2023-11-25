@@ -2,6 +2,7 @@ package com.kh.mo.shopyapp.utils
 
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.View
 import com.google.android.material.textfield.TextInputEditText
 import java.math.BigDecimal
 import java.math.RoundingMode
@@ -45,4 +46,12 @@ fun Double.toEUR(toEURRate: Double): Double {
 
 fun Double.roundTwoDecimals(): Double {
     return BigDecimal(this).setScale(2, RoundingMode.HALF_UP).toDouble()
+}
+
+fun View.makeVisible() {
+    this.visibility = View.VISIBLE
+}
+
+fun View.makeGone() {
+    this.visibility = View.GONE
 }

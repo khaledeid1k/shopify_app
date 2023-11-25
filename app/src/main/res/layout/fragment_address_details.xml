@@ -12,7 +12,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         tools:context=".ui.payment.AddPaymentFragment">
 
         <ProgressBar
@@ -179,7 +179,7 @@
         <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/defaultAddressSwitch"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:checked="true"
             app:layout_constraintEnd_toEndOf="@id/confirmBtn"
             app:layout_constraintTop_toBottomOf="@id/markLocationTxtF"/>
@@ -200,7 +200,6 @@
             android:paddingStart="@dimen/_16sdp"
             android:textAllCaps="false"
             android:textColor="?attr/colorBackgroundFloating"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/defaultAddressSwitch"
             tools:text="@string/update_address" />

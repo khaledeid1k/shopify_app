@@ -16,6 +16,12 @@ fun formatCurrentDate(date: Date): String {
     return sdf.format(date)
 }
 
+fun formatCurrentDate(): String {
+    val currentTimeMillis = System.currentTimeMillis()
+    val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH)
+    return sdf.format(Date(currentTimeMillis))
+}
+
 fun parseDate(storedDate: String): Date? {
     val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH)
     return sdf.parse(storedDate)
@@ -31,7 +37,13 @@ fun isHoursPassed(storedDate: Date?): Boolean {
 }
 
 fun main() {
-    val storedDateString = "2023-11-23 16:5:00"
+    val storedDateString = "2023-11-25 10:00:00"
     val storedDate = parseDate(storedDateString)
-    println(isHoursPassed(storedDate))
+    if (isHoursPassed(storedDate)) {
+        println(true)
+        println("set date to: ${formatCurrentDate()}")
+    } else {
+        println(false)
+    }
+    //println(isHoursPassed(storedDate))
 }
