@@ -81,7 +81,8 @@ fun Address.convertToAddressRequest() =
             phone = this.phone,
             zip = this.zip,
             province = "",
-            provinceCode = this.stateCode
+            provinceCode = this.stateCode,
+            default = this.default
         )
     )
 

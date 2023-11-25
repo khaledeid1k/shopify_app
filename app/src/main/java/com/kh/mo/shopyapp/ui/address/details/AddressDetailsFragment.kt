@@ -35,6 +35,7 @@ class AddressDetailsFragment :
         binding.apply {
             lifecycleOwner = this@AddressDetailsFragment
             address = addressArgs
+            defaultAddressSwitch.isChecked = addressArgs.default == true
         }
         setupBtns()
         addTextWatchers()
@@ -128,6 +129,11 @@ class AddressDetailsFragment :
                 updatedAddress.markLocation = it.toString()
                 addressStateFlow.value = updatedAddress
             }
+
+            defaultAddressSwitch.setOnCheckedChangeListener { _, isChecked ->
+                updatedAddress.default = isChecked
+                addressStateFlow.value = updatedAddress
+            }
         }
     }
 
@@ -192,6 +198,7 @@ class AddressDetailsFragment :
                 }
 
                 is ApiState.Success -> {
+                    Log.i(TAG, "addUpdateAddressStateListener: success ${apiState.data}")
                     Toast.makeText(
                         requireContext(),
                         "address updated successfully",

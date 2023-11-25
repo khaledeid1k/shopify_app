@@ -93,4 +93,5 @@
     <string name="open_setting">Open Settings</string>
     <string name="location_disabled">Location Disabled</string>
     <string name="location_disabled_message">Please turn on Location access to find your current location</string>
+    <string name="set_default_address">Set as default address</string>
 </resources>

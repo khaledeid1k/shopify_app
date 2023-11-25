@@ -94,4 +94,5 @@
     <string name="open_setting">فتح الاعدادات</string>
     <string name="location_disabled">تحديد الموقع غير مفعل</string>
     <string name="location_disabled_message">من فضل شغل تحديد الموقع للوصول الى موقعك الحالي</string>
+    <string name="set_default_address">اجعلة الموقع الرئيسي</string>
 </resources>

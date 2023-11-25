@@ -31,11 +31,10 @@
 
             <TextView
                 android:id="@+id/isDefaultAddressTxtV"
-                style="@style/sub_title"
+                style="@style/small_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
-                android:textSize="@dimen/_16ssp"
                 app:layout_constraintStart_toEndOf="@id/addressNameValueTxtV"
                 app:layout_constraintTop_toTopOf="@id/addressNameValueTxtV"
                 app:layout_constraintBottom_toBottomOf="@id/addressNameValueTxtV"
