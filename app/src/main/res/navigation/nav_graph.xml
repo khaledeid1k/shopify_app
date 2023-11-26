@@ -177,5 +177,6 @@
         <argument
             android:name="orderId"
             app:argType="long" />
+
     </fragment>
 </navigation>

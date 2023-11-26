@@ -1,6 +1,7 @@
 package com.kh.mo.shopyapp.ui.orderdetails.view
 
 import android.content.Context
+import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -14,45 +15,35 @@ import com.kh.mo.shopyapp.model.ui.order.LineItem
 import com.kh.mo.shopyapp.model.ui.order.Order
 import com.kh.mo.shopyapp.ui.order.view.OrderAdapter
 
-class OrderDetailsAdapter(var context: Context) :
+class OrderDetailsAdapter(var context: Context,private var uri:Uri) :
     ListAdapter<LineItem, OrderDetailsAdapter.OrdersVH>(RecyclerDiffUtilOrdersItem()) {
     private lateinit var binding: ItemOrderBinding
+    private val TAG = "TAG OrderDetailsAdapter"
+
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OrdersVH {
         val inflater: LayoutInflater =
             parent.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         binding = ItemOrderBinding.inflate(inflater, parent, false)
-        Log.i("OrderFragmentAdapter","test1")
         return OrdersVH(binding)
     }
 
     override fun onBindViewHolder(holder: OrdersVH, position: Int) {
         val currentItem = getItem(position)
         holder.onBind(currentItem)
-        Log.i("OrderFragmentAdapter","test1")
-
     }
 
     inner class OrdersVH(var binding: ItemOrderBinding) : RecyclerView.ViewHolder(binding.root) {
-
-
         fun onBind(currentItem: LineItem) {
             Log.i("OrderFragmentAdapter","test")
             binding.apply {
-
-//                tvProductNameOrder.text = currentItem.id.toString()
-//                tvProductDateOrder.text=currentItem.customerResponse?.createdAt
-//                tvProductPriceOrder.text=currentItem.subtotalPrice+"EGP"
-//                tvProductSizeOrder.text=currentItem.lineItems?.get(0)?.quantity.toString()+"x"
-//                binding.imageProductOrder.setImageResource(R.drawable.placeholder_products)
                 tvProductNameOrder.text = currentItem.title
                 //tvProductDateOrder.text=currentItem.
                 tvProductPriceOrder.text=currentItem.price+"EGP"
                 tvProductSizeOrder.text="${currentItem.quantity}x"
-
-                binding.imageProductOrder.setImageResource(R.drawable.placeholder_products)
-                //Glide.with(context).load(currentItem.)
+                Log.i(TAG,currentItem.productId.toString())
+                Glide.with(context).load(uri).into(binding.imageProductOrder)
 
             }
 
