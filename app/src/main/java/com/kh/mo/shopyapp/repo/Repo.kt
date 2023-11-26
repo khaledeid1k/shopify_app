@@ -89,5 +89,6 @@ interface Repo {
     suspend fun getOrdersByCustomerID(customerId: Long): Flow<ApiState<OrdersResponse>>
     suspend fun getOrderById(id: Long): Flow<ApiState<OrderDetailsResponse>>
     suspend fun getImageOrders(productId: Long): Flow<ApiState<ProductResponse>>
-
+    suspend fun setLanguage(language: String)
+    suspend fun getCurrentLanguage(): String
 }

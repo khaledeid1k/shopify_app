@@ -11,8 +11,10 @@ import androidx.navigation.fragment.findNavController
 import com.kh.mo.shopyapp.R
 import com.kh.mo.shopyapp.databinding.FragmentSettingsBinding
 import com.kh.mo.shopyapp.model.ui.CurrencySettingModel
+import com.kh.mo.shopyapp.model.ui.LanguageSettingModel
 import com.kh.mo.shopyapp.model.ui.SettingsModel
 import com.kh.mo.shopyapp.model.ui.SupportedCurrencies
+import com.kh.mo.shopyapp.model.ui.SupportedLanguages
 import com.kh.mo.shopyapp.remote.ApiState
 import com.kh.mo.shopyapp.ui.address.list.AddressFragment
 import com.kh.mo.shopyapp.ui.base.BaseFragment
@@ -39,10 +41,11 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, ProfileViewModel>
     private val listener: (Int) -> Unit = { position ->
         when (position) {
             0 -> showAddresses()
-            1 -> sync()
-            2 -> upload()
-            3 -> logOut()
-            4->showCurrencies()
+            1 -> showCurrencies()
+            2 -> showLanguages()
+            3 -> sync()
+            4 -> upload()
+            5 -> logOut()
         }
     }
 
@@ -51,8 +54,10 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, ProfileViewModel>
             title = getString(R.string.warning),
             message = getString(R.string.warning_meesage),
 
-            sure = {  viewModel.logOut()
-                navigateToLoginScreen()}, cancel = {})
+            sure = {
+                viewModel.logOut()
+                navigateToLoginScreen()
+            }, cancel = {})
 
     }
 
@@ -67,13 +72,15 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, ProfileViewModel>
             viewModel.backUpDraftFavorite.collect {
                 when (it) {
                     is ApiState.Failure -> {
-                              binding.loading.makeGone()
+                        binding.loading.makeGone()
                         binding.loadingOverlay.makeGone()
                     }
+
                     is ApiState.Loading -> {
                         binding.loading.makeVisible()
                         binding.loadingOverlay.makeVisible()
                     }
+
                     is ApiState.Success -> {
                         binding.loading.makeGone()
                         binding.loadingOverlay.makeGone()
@@ -95,12 +102,16 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, ProfileViewModel>
             viewModel.retrieveDraftFavorite.collect {
                 when (it) {
                     is ApiState.Failure -> {}
-                    ApiState.Loading -> {binding.loading.makeVisible()}
+                    ApiState.Loading -> {
+                        binding.loading.makeVisible()
+                    }
+
                     is ApiState.Success -> {
                         viewModel.saveProducts(it.data) { result ->
                             if (result > 0) {
                                 binding.loading.makeGone()
-                                Toast.makeText(requireContext(), "Sync Done", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(requireContext(), "Sync Done", Toast.LENGTH_SHORT)
+                                    .show()
 
                             }
                         }
@@ -115,11 +126,11 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, ProfileViewModel>
     private fun setSettingsList() {
         val settingList = listOf(
             SettingsModel(resources.getString(R.string.address), R.drawable.ic_location),
+            SettingsModel(resources.getString(R.string.currency), R.drawable.ic_currency),
+            SettingsModel(resources.getString(R.string.language), R.drawable.ic_language),
             SettingsModel(resources.getString(R.string.sync), R.drawable.sync),
             SettingsModel(resources.getString(R.string.upload), R.drawable.upload),
-            SettingsModel(resources.getString(R.string.log_out), R.drawable.logout),
-            SettingsModel(resources.getString(R.string.currency), R.drawable.ic_currency),
-            SettingsModel(resources.getString(R.string.language), R.drawable.ic_language)
+            SettingsModel(resources.getString(R.string.log_out), R.drawable.logout)
         )
         val settingAdapter = SettingAdapter(settingList, listener)
         binding.settingRecyclerV.adapter = settingAdapter
@@ -128,7 +139,7 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, ProfileViewModel>
     private fun showAddresses() {
         val dialog = AddressFragment()
         dialog.show(requireActivity().supportFragmentManager, dialog.tag)
-        dialog.userId.value = viewModel.userData.value?.id
+        dialog.userId.value = viewModel.getCustomerId()
         dialog.mView = _view
     }
 
@@ -152,10 +163,22 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, ProfileViewModel>
 
     private fun getSupportedCurrencyList(): List<CurrencySettingModel> {
         return listOf(
-            CurrencySettingModel(resources.getString(R.string.egp_currency), SupportedCurrencies.EGP),
-            CurrencySettingModel(resources.getString(R.string.usd_currency), SupportedCurrencies.USD),
-            CurrencySettingModel(resources.getString(R.string.eur_currency), SupportedCurrencies.EUR),
-            CurrencySettingModel(resources.getString(R.string.gbp_currency), SupportedCurrencies.GBP)
+            CurrencySettingModel(
+                resources.getString(R.string.egp_currency),
+                SupportedCurrencies.EGP
+            ),
+            CurrencySettingModel(
+                resources.getString(R.string.usd_currency),
+                SupportedCurrencies.USD
+            ),
+            CurrencySettingModel(
+                resources.getString(R.string.eur_currency),
+                SupportedCurrencies.EUR
+            ),
+            CurrencySettingModel(
+                resources.getString(R.string.gbp_currency),
+                SupportedCurrencies.GBP
+            )
         )
     }
 
@@ -163,16 +186,61 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, ProfileViewModel>
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.currencyPreference.collectLatest { currencyUnit ->
-                    Log.i(TAG, "currency unit set to: $currencyUnit")
                     val list = getSupportedCurrencyList().map {
                         if (it.key.value == currencyUnit)
                             it.copy(isThePreference = true)
                         else
                             it.copy(isThePreference = false)
                     }
-                    Log.i(TAG, "observerCurrencyUnitOnDialog: $list")
                     dialog.currencyUnitList = list
                     dialog.isListUpdated.value = true
+                }
+            }
+        }
+    }
+
+    private fun showLanguages() {
+        viewModel.getCurrentLanguage()
+        val dialog = LanguageBottomSheet(getSupportedLanguageList()) {
+            Toast.makeText(
+                requireContext(),
+                getString(R.string.change_language_to) + it.title, Toast.LENGTH_SHORT
+            ).show()
+            viewModel.setLanguagePreference(it.key.value)
+            //requireActivity().recreate()
+        }
+        dialog.show(requireActivity().supportFragmentManager, "22")
+        observerLanguageOnDialog(dialog)
+    }
+
+    private fun getSupportedLanguageList(): List<LanguageSettingModel> {
+        return listOf(
+            LanguageSettingModel(resources.getString(R.string.english), SupportedLanguages.ENGLISH),
+            LanguageSettingModel(resources.getString(R.string.arabic), SupportedLanguages.ARABIC)
+        )
+    }
+
+    private fun observerLanguageOnDialog(dialog: LanguageBottomSheet) {
+        var firstTime = true
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.languagePreference.collect {language ->
+                    if (firstTime) {
+                        Log.i(TAG, "observerLanguageOnDialog: firstTime? $firstTime")
+                        val list = getSupportedLanguageList().map {
+                            if (it.key.value == language)
+                                it.copy(isThePreference = true)
+                            else
+                                it.copy(isThePreference = false)
+                        }
+                        dialog.languageList = list
+                        dialog.isListUpdated.value = true
+                        firstTime = false
+                        Log.i(TAG, "observerLanguageOnDialog: change value to $firstTime")
+                    } else {
+                        dialog.dismiss()
+                        requireActivity().recreate()
+                    }
                 }
             }
         }

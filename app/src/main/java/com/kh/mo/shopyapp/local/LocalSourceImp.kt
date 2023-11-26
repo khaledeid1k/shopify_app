@@ -11,9 +11,11 @@ import com.kh.mo.shopyapp.local.validation.ValidationSateImpl
 import com.kh.mo.shopyapp.model.entity.FavoriteEntity
 import com.kh.mo.shopyapp.model.entity.LineItemEntity
 import com.kh.mo.shopyapp.model.entity.Validation
+import com.yariksoffice.lingver.Lingver
 import kotlinx.coroutines.flow.Flow
+import java.util.Locale
 
-class LocalSourceImp private constructor(context: Context):LocalSource {
+class LocalSourceImp private constructor(val context: Context):LocalSource {
     private val validationSateImpl= ValidationSateImpl(AuthInputValidatorImpl())
    private val shopyDao=ShopyDataBase.getShopyDataBaseDataBaseInstance(context).shopyDao()
     private val sharedPreferencesShopy =    SharedPreferencesShopy(context).customPreference()
@@ -75,6 +77,14 @@ class LocalSourceImp private constructor(context: Context):LocalSource {
 
     override fun setCurrencyUnit(unit: String) {
         sharedPreferencesShopy.currencyUnit = unit
+    }
+
+    override fun changeLanguage(language: String) {
+        Lingver.getInstance().setLocale(context, language)
+    }
+
+    override fun getCurrentLanguage(): String {
+        return Locale.getDefault().language
     }
 
     companion object {

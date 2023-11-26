@@ -15,27 +15,31 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/image_profile"
-            android:layout_width="@dimen/_100sdp"
-            android:layout_height="@dimen/_100sdp"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_50sdp"
             android:layout_margin="@dimen/_10sdp"
+            android:src="@drawable/ic_profile"
+            app:civ_border_color="#000000"
+            app:civ_border_width="@dimen/_2sdp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:src="@drawable/ic_launcher_background" />
+            app:layout_constraintBottom_toBottomOf="@id/emailTV"
+            app:layout_constraintTop_toTopOf="@id/userNameTV" />
 
         <TextView
             android:id="@+id/userNameTV"
-            style="@style/main_title"
-            android:layout_width="0dp"
+            style="@style/sub_title"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginStart="@dimen/_8sdp"
+            android:layout_marginTop="@dimen/_24sdp"
+            android:maxLines="1"
             app:layout_constraintStart_toEndOf="@+id/image_profile"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Hanaa Hany" />
 
         <TextView
             android:id="@+id/emailTV"
-            style="@style/sub_title"
+            style="@style/small_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_5sdp"

@@ -731,6 +731,14 @@ class RepoImp private constructor(
         }
     }
 
+    override suspend fun setLanguage(language: String) {
+        localSource.changeLanguage(language)
+    }
+
+    override suspend fun getCurrentLanguage(): String {
+        return localSource.getCurrentLanguage()
+    }
+
     companion object {
         @Volatile
         private var instance: RepoImp? = null

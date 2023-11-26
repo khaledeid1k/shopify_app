@@ -30,7 +30,10 @@ class ProfileViewModel(private val repo: Repo) : ViewModel() {
     private val _currencyPreference = MutableStateFlow("")
     val currencyPreference: StateFlow<String> = _currencyPreference
 
-    private fun getCustomerId() = repo.getCustomerId()
+    private val _languagePreference = MutableStateFlow("")
+    val languagePreference: StateFlow<String> = _languagePreference
+
+    fun getCustomerId() = repo.getCustomerId()
     private fun getFavoriteDraftId() = repo.getFavoriteDraftId()
     private fun getAllFavorites(success: (DraftOrderRequest) -> Unit,
                                 failure: () -> Unit) {
@@ -108,6 +111,18 @@ class ProfileViewModel(private val repo: Repo) : ViewModel() {
     fun updateCurrencyPreference(unit: String) {
         viewModelScope.launch(Dispatchers.IO) {
             _currencyPreference.value = repo.setCurrencyUnit(unit)
+        }
+    }
+
+    fun setLanguagePreference(language: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repo.setLanguage(language)
+        }
+    }
+
+    fun getCurrentLanguage() {
+        viewModelScope.launch(Dispatchers.IO) {
+            _languagePreference.value = repo.getCurrentLanguage()
         }
     }
 }

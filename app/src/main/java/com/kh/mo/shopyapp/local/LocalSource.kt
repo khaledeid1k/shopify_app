@@ -19,4 +19,6 @@ interface LocalSource {
     fun getCustomerId(): Long
     fun getCurrencyUnit(): String
     fun setCurrencyUnit(unit: String)
+    fun changeLanguage(language: String)
+    fun getCurrentLanguage(): String
 }
