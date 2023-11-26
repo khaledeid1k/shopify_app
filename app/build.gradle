@@ -141,4 +141,7 @@ dependencies {
 
     // Open Street Map
     implementation 'org.osmdroid:osmdroid-android:6.1.14'
+
+    // Language change
+    implementation "com.github.YarikSOffice:lingver:1.3.0"
 }
