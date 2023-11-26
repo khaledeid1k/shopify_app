@@ -7,7 +7,7 @@ import com.kh.mo.shopyapp.model.response.order.LineItemResponse
 data class Order(
     val currency: String?,
     val currentTotalPrice: String?,
-    val customerResponse: CustomerResponse?,
+    val customer: CustomerResponse?,
     val lineItems: List<LineItemResponse>?,
     val subtotalPrice: String?,
     val id: Long?
