@@ -3,11 +3,9 @@ package com.kh.mo.shopyapp.ui.order.viewmodel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kh.mo.shopyapp.model.ui.order.Image
-import com.kh.mo.shopyapp.model.ui.order.Order
+import com.kh.mo.shopyapp.model.ui.orderdetails.Order
 import com.kh.mo.shopyapp.remote.ApiState
 import com.kh.mo.shopyapp.repo.Repo
-import com.kh.mo.shopyapp.repo.mapper.convertToImage
 import com.kh.mo.shopyapp.repo.mapper.convertToOrders
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,12 +16,6 @@ class OrderViewModel(private var _irepo: Repo) : ViewModel() {
     private val TAG = "TAG OrderViewModel"
     private val _orders = MutableStateFlow<ApiState<List<Order>>>(ApiState.Loading)
     val orders: StateFlow<ApiState<List<Order>>> = _orders
-
-
-
-
-
-
     init {
         getOrders()
 
