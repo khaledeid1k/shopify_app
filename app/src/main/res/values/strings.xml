@@ -100,4 +100,5 @@
     <string name="gbp_currency">Pound Sterling (GBP)</string>
     <string name="eur_currency">Euro (EUR)</string>
     <string name="change_currency_to">"currency changed to "</string>
+    <string name="language">Language</string>
 </resources>

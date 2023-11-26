@@ -42,7 +42,8 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, ProfileViewModel>
     private fun setSettingsList() {
         val settingList = listOf(
             SettingsModel(resources.getString(R.string.address), R.drawable.ic_location),
-            SettingsModel(resources.getString(R.string.currency), R.drawable.ic_currency)
+            SettingsModel(resources.getString(R.string.currency), R.drawable.ic_currency),
+            SettingsModel(resources.getString(R.string.language), R.drawable.ic_language)
         )
         val settingAdapter = SettingAdapter(settingList, listener)
         binding.settingRecyclerV.adapter = settingAdapter
