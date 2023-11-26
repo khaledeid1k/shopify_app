@@ -63,12 +63,15 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, ProfileViewModel>
                 when (it) {
                     is ApiState.Failure -> {
                               binding.loading.makeGone()
+                        binding.loadingOverlay.makeGone()
                     }
                     is ApiState.Loading -> {
                         binding.loading.makeVisible()
+                        binding.loadingOverlay.makeVisible()
                     }
                     is ApiState.Success -> {
                         binding.loading.makeGone()
+                        binding.loadingOverlay.makeGone()
                         Toast.makeText(requireContext(), "Upload Done", Toast.LENGTH_SHORT).show()
                     }
                 }
