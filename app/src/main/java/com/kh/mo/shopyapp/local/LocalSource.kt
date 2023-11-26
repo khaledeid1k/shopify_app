@@ -14,7 +14,7 @@ interface LocalSource {
 
 
 
-    suspend fun getAllFavorites(): Flow<List<FavoriteEntity>>
+    suspend fun getAllFavorites(customerId: Long): Flow<List<FavoriteEntity>>
     suspend fun deleteFavorite(productId:Long)
     suspend fun saveFavorite(favoriteEntity: FavoriteEntity):Long
     suspend fun checkProductInFavorite(productId: Long): Int

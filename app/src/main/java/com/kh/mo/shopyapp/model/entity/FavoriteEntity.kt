@@ -8,6 +8,7 @@ import androidx.room.Entity
 data class FavoriteEntity(
     @NonNull
     val productId: Long,
+    val customerId:Long,
     val images: List<ImageEntity>,
     val productType: String,
     val image: ImageEntity,

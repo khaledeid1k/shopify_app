@@ -54,7 +54,7 @@ class RepoImp private constructor(
             if (draftFavorite.isSuccessful) {
                 draftFavorite.body()
                     ?.let {
-                        emit(ApiState.Success(it.convertAllProductsResponseToProductsIds())) }
+                        emit(ApiState.Success(it.convertAllProductsResponseToProductsIds(getCustomerId()))) }
             } else {
                 emit(ApiState.Failure(draftFavorite.message()))
             }
@@ -571,7 +571,7 @@ class RepoImp private constructor(
     }
 
     override suspend fun getAllFavorites(): Flow<List<FavoriteEntity>>{
-        return       localSource.getAllFavorites()
+        return localSource.getAllFavorites(getCustomerId())
 
     }
 
