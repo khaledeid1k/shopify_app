@@ -365,7 +365,7 @@ class RepoImp private constructor(
             val allProducts =
                 remoteSource.getAllProducts()
             if (allProducts.isSuccessful) {
-                remoteSource.getAllProducts().body()
+                allProducts.body()
                     ?.let { emit(ApiState.Success(it.convertToAllProducts()
                         .map { product->
                             changeProductFavoriteValue(product)

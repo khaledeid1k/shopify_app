@@ -261,7 +261,7 @@ fun AllProductsResponse.convertAllProductsResponseToProductsIds(customerId: Long
 fun FavoriteEntity.convertFavoriteEntityToProduct():Product{
     return Product(productId,images.map { ProductImage(it.src) },
         productType, ProductImage(image.src),title,variants.map { ProductVariant(
-            it.id!!,it.price!!, it.productId!!, it.title!!,it.weightUnit!!) },
+            it.id?:0L,it.price.toString(), it.productId?:0L, it.title.toString(),it.weightUnit.toString()) },
     options.map { ProductOption(it.values) },vendor.toString(),status.toString())
 
 }

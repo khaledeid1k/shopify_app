@@ -45,8 +45,11 @@ class FavoritesViewModel(private val repo:Repo):ViewModel(),
      fun getSingleFavorite(productId: Long){
           viewModelScope.launch {
              repo.getSingleFavorite(productId).collect {
-                 _singleFavorites.emit(it.convertFavoriteEntityToProduct())
-             }
+                 it?.let {fav->
+                     _singleFavorites.emit(fav.convertFavoriteEntityToProduct())
+                 }
+                 }
+
          }
      }
 
