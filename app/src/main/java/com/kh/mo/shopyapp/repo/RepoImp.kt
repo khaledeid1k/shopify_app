@@ -391,13 +391,13 @@ class RepoImp private constructor(
                             .map { product ->
                                 changeProductFavoriteValue(product)
                             }
-                        list.forEach {product ->
+                        /*list.forEach {product ->
                             product.variants.forEach {variant ->
                                 variant.price = variant.price?.let {price ->
                                     checkCurrencyUnitAndCalculatePrice(price)
                                 }
                             }
-                        }
+                        }*/
                         emit(
                             ApiState.Success(list)
                         )
