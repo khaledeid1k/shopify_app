@@ -131,7 +131,7 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding, CategoryViewModel
                 } else {
                     minPrice = "0"
                 }
-                products.variants[0].price!!.toDouble() in minPrice.toDouble()..maxPrice.toDouble()
+                products.variants[0].price!!.split(" ")[0].toDouble() in minPrice.toDouble()..maxPrice.toDouble()
             }
             if (filteredPrice.isEmpty()) {
                 binding.lottiNoProduct.visibility = LottieAnimationView.VISIBLE
@@ -150,7 +150,7 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding, CategoryViewModel
 
     }
 
-
+    //2
     private fun getSubCategories() {
         lifecycleScope.launch {
             viewModel.product.collect { apiState ->
@@ -168,7 +168,7 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding, CategoryViewModel
             }
         }
     }
-
+//3
     private fun getCollectionProducts() {
         lifecycleScope.launch {
             viewModel.productCollection.collect {
@@ -187,7 +187,7 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding, CategoryViewModel
 
         }
     }
-
+//1
     private fun filterProductsBySubCollection() {
         lifecycleScope.launch {
             viewModel.filterProductCollection.collect {

@@ -1,5 +1,6 @@
 package com.kh.mo.shopyapp.ui.category.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kh.mo.shopyapp.model.ui.allproducts.Product
@@ -50,6 +51,7 @@ class CategoryViewModel(private var _irepo: Repo) : ViewModel(),
 
 
     fun filterProductsBySubCollection(collectionId: Long, productType: String) {
+        Log.i(TAG, "filterProductsBySubCollection: $collectionId, $productType")
         viewModelScope.launch(Dispatchers.IO) {
             _irepo.filterProductsBySubCollection(collectionId, productType).collect {
                 _filterProductCollection.value = it
