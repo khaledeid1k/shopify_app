@@ -6,9 +6,11 @@ import androidx.lifecycle.viewModelScope
 import com.kh.mo.shopyapp.model.entity.FavoriteEntity
 import com.kh.mo.shopyapp.model.request.DraftOrderRequest
 import com.kh.mo.shopyapp.model.request.UserData
+import com.kh.mo.shopyapp.model.ui.order.Order
 import com.kh.mo.shopyapp.remote.ApiState
 import com.kh.mo.shopyapp.repo.Repo
 import com.kh.mo.shopyapp.repo.mapper.convertFavoritesEntityToDraftOrderRequest
+import com.kh.mo.shopyapp.repo.mapper.convertToOrders
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -30,8 +32,16 @@ class ProfileViewModel(private val repo: Repo) : ViewModel() {
     private val _currencyPreference = MutableStateFlow("")
     val currencyPreference: StateFlow<String> = _currencyPreference
 
+    private val _orders = MutableStateFlow<ApiState<List<Order>>>(ApiState.Loading)
+    val orders: StateFlow<ApiState<List<Order>>> = _orders
+
     private fun getCustomerId() = repo.getCustomerId()
     private fun getFavoriteDraftId() = repo.getFavoriteDraftId()
+    init {
+        getOrders()
+
+    }
+
     private fun getAllFavorites(success: (DraftOrderRequest) -> Unit,
                                 failure: () -> Unit) {
         viewModelScope.launch {
@@ -110,4 +120,13 @@ class ProfileViewModel(private val repo: Repo) : ViewModel() {
             _currencyPreference.value = repo.setCurrencyUnit(unit)
         }
     }
-}
+    fun getOrders() {
+        viewModelScope.launch(Dispatchers.IO) {
+            repo.getOrdersByCustomerID( repo.getCustomerId()).collect {
+               if(it is  ApiState.Success  ) {
+                        _orders.value = ApiState.Success(it.data.convertToOrders())
+                    }
+                }
+            }
+        }
+    }
