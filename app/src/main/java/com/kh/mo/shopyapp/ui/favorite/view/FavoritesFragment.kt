@@ -22,7 +22,7 @@ import kotlinx.coroutines.launch
 
 class FavoritesFragment : BaseFragment<FragmentFavoritesBinding, FavoritesViewModel>() {
     private lateinit var favoritesAdapter : FavoritesAdapter
-    lateinit var  job: Job
+     var  job: Job?=null
     override val layoutIdFragment=R.layout.fragment_favorites
 
     override fun getViewModelClass()=FavoritesViewModel::class.java
@@ -71,7 +71,7 @@ class FavoritesFragment : BaseFragment<FragmentFavoritesBinding, FavoritesViewMo
 
     override fun onPause() {
         super.onPause()
-            job.cancel()
+            job?.cancel()
 
     }
 

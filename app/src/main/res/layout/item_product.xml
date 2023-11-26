@@ -41,14 +41,16 @@
 
             <TextView
                 android:id="@+id/tv_name_product_item"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 tools:text="T-Shirt"
                 android:text="@{item.title}"
                 style="@style/sub_title"
-                android:layout_marginEnd="@dimen/_10sdp"
+                android:textAlignment="center"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:layout_marginHorizontal="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_10sdp"
-                android:layout_marginStart="@dimen/_20sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/image_product_item" />
