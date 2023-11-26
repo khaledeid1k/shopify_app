@@ -9,10 +9,6 @@ import com.bumptech.glide.Glide
 import com.kh.mo.shopyapp.R
 import kotlin.random.Random
 
-@BindingAdapter("setDollarSign")
-fun TextView.setDollarSign(price: String?) {
-    this.text="$${price?.toDouble()?.toInt()}"
-}
 
 
 @BindingAdapter("setImageUrl")
