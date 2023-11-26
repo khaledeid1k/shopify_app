@@ -62,7 +62,7 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, ProfileViewModel>
             viewModel.backUpDraftFavorite.collect {
                 when (it) {
                     is ApiState.Failure -> {
-                        //      binding.loading.makeGone()
+                              binding.loading.makeGone()
                     }
                     is ApiState.Loading -> {
                         binding.loading.makeVisible()
@@ -82,7 +82,7 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, ProfileViewModel>
         observerSyncData()
     }
 
-    fun observerSyncData() {
+    private fun observerSyncData() {
         lifecycleScope.launch {
             viewModel.retrieveDraftFavorite.collect {
                 when (it) {

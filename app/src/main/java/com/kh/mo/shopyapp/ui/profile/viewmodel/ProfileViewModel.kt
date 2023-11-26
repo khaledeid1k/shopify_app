@@ -30,24 +30,29 @@ class ProfileViewModel(private val repo: Repo) : ViewModel() {
 
     private fun getCustomerId() = repo.getCustomerId()
     private fun getFavoriteDraftId() = repo.getFavoriteDraftId()
-    private fun getAllFavorites(success: (DraftOrderRequest) -> Unit) {
+    private fun getAllFavorites(success: (DraftOrderRequest) -> Unit,
+                                failure: () -> Unit) {
         viewModelScope.launch {
             repo.getAllFavorites().collect {
-                success(it.convertFavoritesEntityToDraftOrderRequest(getCustomerId()))
-
+                if (it.isNotEmpty()) {
+                    success(it.convertFavoritesEntityToDraftOrderRequest(getCustomerId()))
+                }else{failure()}
 
             }
         }
     }
 
     fun backUpDraftFavorite() {
-        getAllFavorites {
+        getAllFavorites( {
             viewModelScope.launch {
                 repo.backUpDraftFavorite(it, getFavoriteDraftId()).collect {
                     _backUpDraftFavorite.value = it
                 }
             }
+        },{
+            _backUpDraftFavorite.value=ApiState.Failure("No Data To Upload")
         }
+        )
 
     }
 
@@ -55,7 +60,6 @@ class ProfileViewModel(private val repo: Repo) : ViewModel() {
     fun saveProducts(favoritesEntity: List<FavoriteEntity>, isSuccessfully: (Long) -> Unit) {
         viewModelScope.launch {
             favoritesEntity.map {
-                Log.d(TAG, "saveProductsaaaaaaaaaa:$it")
                 val result = repo.saveFavorite(it)
 
                 isSuccessfully(result)
