@@ -35,8 +35,8 @@ class LocalSourceImp private constructor(context: Context):LocalSource {
         validationSateImpl.validateUserName(userName)
 
 
-    override suspend fun getAllFavorites():Flow<List<FavoriteEntity>>{
-       return shopyDao.getAllFavorites()
+    override suspend fun getAllFavorites(customerId: Long):Flow<List<FavoriteEntity>>{
+       return shopyDao.getAllFavorites(customerId)
     }
 
     override suspend fun deleteFavorite(productId: Long) {

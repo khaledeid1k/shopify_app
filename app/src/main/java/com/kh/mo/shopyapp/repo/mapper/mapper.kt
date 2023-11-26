@@ -164,19 +164,13 @@ fun ProductResponse.convertToImage(): List<Image> {
 }
 
 
-fun DraftOrderResponse.convertDraftOrderResponseToLineItemEntity(): LineItemEntity {
-    return draft_order!!.line_items!![0].let {
-        LineItemEntity(
-            product_id = it.product_id!!,
-            variant_id = it.variant_id!!
-        )
-    }
-}
 
 
-fun Product.convertProductToFavoriteEntity(): FavoriteEntity {
+
+fun Product.convertProductToFavoriteEntity(customerId: Long): FavoriteEntity {
     return FavoriteEntity(
         id,
+        customerId,
         images.convertImagesToImagesEntity(),
         productType,
         image.convertImageToImageEntity(),
@@ -242,10 +236,11 @@ fun DraftOrderResponse.convertDraftOrderResponseToProductsIds(): List<Long> {
    return draft_order.line_items.map { it.product_id!! }
 }
 
-fun AllProductsResponse.convertAllProductsResponseToProductsIds(): List<FavoriteEntity> {
+fun AllProductsResponse.convertAllProductsResponseToProductsIds(customerId: Long): List<FavoriteEntity> {
     return products.map {
         FavoriteEntity(
             it.id,
+            customerId,
             it.images.convertImagesToImagesEntity() ,
             it.productType,
             ImageEntity(it.image.src.toString()),

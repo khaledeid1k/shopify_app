@@ -35,6 +35,9 @@
     <string name="dollar_currency">$</string>
     <string name="checkout">Checkout</string>
     <string name="address">Address</string>
+    <string name="log_out">log Out</string>
+    <string name="upload">Upload</string>
+    <string name="sync">Sync</string>
     <string name="edit">Edit</string>
     <string name="Products">Products</string>
     <string name="confirm">Confirm</string>
@@ -94,6 +97,8 @@
     <string name="location_disabled">Location Disabled</string>
     <string name="location_disabled_message">Please turn on Location access to find your current location</string>
     <string name="set_default_address">Set as default address</string>
+    <string name="warning">"Warning "</string>
+    <string name="warning_meesage">"make sure you upload data to server before log out "</string>
     <string name="currency">Currency</string>
     <string name="egp_currency">Egypt Pound (EGP)</string>
     <string name="usd_currency">United State Dollar (USD)</string>

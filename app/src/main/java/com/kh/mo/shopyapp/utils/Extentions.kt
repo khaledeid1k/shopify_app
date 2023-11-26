@@ -1,9 +1,12 @@
 package com.kh.mo.shopyapp.utils
 
+import android.content.Context
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
+import com.kh.mo.shopyapp.R
 import java.math.BigDecimal
 import java.math.RoundingMode
 
@@ -58,4 +61,25 @@ fun View.makeVisible() {
 
 fun View.makeGone() {
     this.visibility = View.GONE
+}
+
+fun createDialog(title:String="", message:String="", view: View?=null,
+                 context: Context, sure:()->Unit, cancel:()->Unit){
+
+        MaterialAlertDialogBuilder(context)
+            .setTitle(title)
+            .setMessage(message)
+            .setView(view)
+            .setNegativeButton(context.getString(R.string.cancel)) { dialog, _ ->
+                cancel()
+                dialog.dismiss()
+
+            }
+            .setPositiveButton(context.getString(R.string.done)) { dialog, _ ->
+                sure()
+                dialog.dismiss()
+
+            }
+            .show()
+
 }

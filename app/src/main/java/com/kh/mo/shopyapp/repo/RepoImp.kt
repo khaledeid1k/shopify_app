@@ -51,8 +51,8 @@ class RepoImp private constructor(
         Log.i(TAG, "updateCurrencyRates: $currencyRates")
         return currencyRates
     }
-
-    override suspend fun getListOfSpecificProductsIds(productsIds: List<Long>): Flow<ApiState<List<FavoriteEntity>>> {
+    override suspend fun getListOfSpecificProductsIds( productsIds: String):Flow<ApiState<List<FavoriteEntity>>>
+    {
         return flow {
 
             emit(ApiState.Loading)
@@ -63,8 +63,7 @@ class RepoImp private constructor(
             if (draftFavorite.isSuccessful) {
                 draftFavorite.body()
                     ?.let {
-                        emit(ApiState.Success(it.convertAllProductsResponseToProductsIds()))
-                    }
+                        emit(ApiState.Success(it.convertAllProductsResponseToProductsIds(getCustomerId()))) }
             } else {
                 emit(ApiState.Failure(draftFavorite.message()))
             }
@@ -94,6 +93,7 @@ class RepoImp private constructor(
     }
 
 
+
     override suspend fun singUpWithFireBase(userData: UserData) =
         flow {
             emit(ApiState.Loading)
@@ -103,7 +103,7 @@ class RepoImp private constructor(
             emit(ApiState.Failure("An error occurred: ${it.message}"))
         }
 
-    override suspend fun singInWithFireBase(userData: UserData) =
+    override suspend fun singInWithFireBase(userData: UserData)=
         flow {
             emit(ApiState.Loading)
             remoteSource.singInWithFireBase(userData).await()
@@ -112,15 +112,13 @@ class RepoImp private constructor(
             emit(ApiState.Failure("An error occurred: ${it.message}"))
         }
 
-    override suspend fun logout() {
-        remoteSource.logout()
-    }
+    override suspend fun logout() { remoteSource.logout() }
 
-    override fun checkIsUserLogin() = remoteSource.checkIsUserLogin()
+    override fun checkIsUserLogin()=remoteSource.checkIsUserLogin()
     override suspend fun createFavoriteDraft(draftOrderRequest: DraftOrderRequest): Flow<ApiState<DraftOrder>> {
         return flow {
             emit(ApiState.Loading)
-            val favorite = remoteSource.createFavoriteDraft(draftOrderRequest)
+            val favorite =   remoteSource.createFavoriteDraft(draftOrderRequest)
             if (!favorite.isSuccessful) {
                 emit(ApiState.Failure(favorite.body().toString()))
             } else {
@@ -138,7 +136,7 @@ class RepoImp private constructor(
 
     }
 
-    override suspend fun saveFavoriteDraftIdInFireBase(customerId: Long, favoriteDraft: Long) =
+    override suspend fun saveFavoriteDraftIdInFireBase(customerId:Long,favoriteDraft:Long)=
         flow {
             emit(ApiState.Loading)
             remoteSource.saveFavoriteDraftIdInFireBase(customerId, favoriteDraft).await()
@@ -146,6 +144,8 @@ class RepoImp private constructor(
         }.catch {
             emit(ApiState.Failure("An error occurred: ${it.message}"))
         }
+
+
 
 
     override suspend fun createCustomer(userData: UserData): Flow<ApiState<CustomerEntity>> {
@@ -186,17 +186,19 @@ class RepoImp private constructor(
 
     override suspend fun getDraftFavoriteId(customerId: String) =
         flow {
-            var favoriteId: String? = ""
+            var favoriteId=""
             emit(ApiState.Loading)
-            remoteSource.getDraftFavoriteId(customerId).addOnSuccessListener {
-                if (it.exists()) {
-                    favoriteId = it.data?.get(Constants.DRAFT_FAVORITE_ID) as String?
+            remoteSource.getDraftFavoriteId (customerId).addOnSuccessListener {
+                if(it.exists()){
+                    favoriteId=   it.data?.get(Constants.DRAFT_FAVORITE_ID) as String
                 }
             }.await()
-            emit(ApiState.Success(favoriteId))
+            if(favoriteId.isEmpty()){emit(ApiState.Failure("Account Not exist"))}
+            else{emit(ApiState.Success(favoriteId)) }
         }.catch {
             emit(ApiState.Failure("An error occurred: ${it.message}"))
         }
+
 
 
     override fun validateUserName(userName: String) = localSource.validateUserName(userName)
@@ -364,14 +366,10 @@ class RepoImp private constructor(
                 remoteSource.getAllProducts()
             if (allProducts.isSuccessful) {
                 remoteSource.getAllProducts().body()
-                    ?.let {
-                        emit(
-                            ApiState.Success(it.convertToAllProducts()
-                                .map { product ->
-                                    changeProductFavoriteValue(product)
-                                })
-                        )
-                    }
+                    ?.let { emit(ApiState.Success(it.convertToAllProducts()
+                        .map { product->
+                            changeProductFavoriteValue(product)
+                        })) }
             } else {
                 emit(ApiState.Failure(allProducts.message()))
             }
@@ -420,10 +418,13 @@ class RepoImp private constructor(
         return flow {
             emit(ApiState.Loading)
             val productsSubCategory =
-                remoteSource.filterProductsBySubCollection(collectionId, productType)
+                remoteSource.filterProductsBySubCollection(collectionId,productType)
             if (productsSubCategory.isSuccessful) {
-                remoteSource.filterProductsBySubCollection(collectionId, productType).body()
-                    ?.let { emit(ApiState.Success(it.convertToAllProducts())) }
+                remoteSource.filterProductsBySubCollection(collectionId,productType).body()
+                    ?.let { emit(ApiState.Success(it.convertToAllProducts()
+                        .map { product->
+                            changeProductFavoriteValue(product)
+                        })) }
             } else {
                 emit(ApiState.Failure(productsSubCategory.message()))
             }
@@ -570,14 +571,10 @@ class RepoImp private constructor(
         }
     }
 
-    override suspend fun backUpDraftFavorite(
-        draftOrderRequest: DraftOrderRequest,
-        draftFavoriteId: Long
-    ): Flow<ApiState<String>> {
+    override suspend fun backUpDraftFavorite(draftOrderRequest: DraftOrderRequest,draftFavoriteId: Long): Flow<ApiState<String>> {
         return flow {
             emit(ApiState.Loading)
-            val backUpDraftFavorite =
-                remoteSource.backUpDraftFavorite(draftOrderRequest, draftFavoriteId)
+            val backUpDraftFavorite =remoteSource.backUpDraftFavorite(draftOrderRequest,draftFavoriteId)
             if (!backUpDraftFavorite.isSuccessful) {
                 emit(ApiState.Failure(backUpDraftFavorite.body().toString()))
             } else {
@@ -594,8 +591,8 @@ class RepoImp private constructor(
         }
     }
 
-    override suspend fun getAllFavorites(): Flow<List<FavoriteEntity>> {
-        return localSource.getAllFavorites()
+    override suspend fun getAllFavorites(): Flow<List<FavoriteEntity>>{
+        return localSource.getAllFavorites(getCustomerId())
 
     }
 
@@ -603,7 +600,7 @@ class RepoImp private constructor(
         localSource.deleteFavorite(productId)
     }
 
-    override suspend fun saveFavorite(favoriteEntity: FavoriteEntity): Long {
+    override suspend fun saveFavorite(favoriteEntity: FavoriteEntity):Long {
         return localSource.saveFavorite(favoriteEntity)
     }
 
@@ -631,7 +628,7 @@ class RepoImp private constructor(
     }
 
     override fun getCustomerId(): Long {
-        return localSource.getCustomerId()
+      return  localSource.getCustomerId()
     }
 
     private suspend fun changeProductFavoriteValue(product: Product): Product {

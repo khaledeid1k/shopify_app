@@ -24,18 +24,14 @@ import com.kh.mo.shopyapp.model.response.osm.NominatimResponse
 import retrofit2.Response
 
 interface RemoteSource {
-    suspend fun getListOfSpecificProductsIds(productsIds: List<Long>): Response<AllProductsResponse>
+    suspend fun getListOfSpecificProductsIds( productsIds: String):Response<AllProductsResponse>
     suspend fun getProductsIdForDraftFavorite(draftFavoriteId: Long): Response<DraftOrderResponse>
     suspend fun singUpWithFireBase(userData: UserData): Task<AuthResult>
     suspend fun singInWithFireBase(userData: UserData): Task<AuthResult>
     suspend fun logout()
-    fun checkIsUserLogin(): Boolean
+    fun checkIsUserLogin():Boolean
     suspend fun createFavoriteDraft(draftOrderRequest: DraftOrderRequest): Response<DraftOrderResponse>
-    suspend fun backUpDraftFavorite(
-        draftOrderRequest: DraftOrderRequest,
-        draftFavoriteId: Long
-    ): Response<DraftOrderResponse>
-
+    suspend fun backUpDraftFavorite(draftOrderRequest: DraftOrderRequest,draftFavoriteId: Long): Response<DraftOrderResponse>
     suspend fun getAllBrands(): Response<BrandsResponse>
     suspend fun getMainCategories(): Response<MainCategoryResponse>
     suspend fun getDiscountCode(
@@ -44,7 +40,7 @@ interface RemoteSource {
     ): Response<DiscountCodeResponse>
 
     suspend fun getProductsOfSpecificBrand(brandName: String): Response<AllProductsResponse>
-    suspend fun saveFavoriteDraftIdInFireBase(customerId: Long, favoriteDraft: Long): Task<Void>
+    suspend fun saveFavoriteDraftIdInFireBase(customerId:Long,favoriteDraft:Long): Task<Void>
     suspend fun getDraftFavoriteId(customerId: String): Task<DocumentSnapshot>
     suspend fun createCustomer(customerDataRequest: CustomerDataRequest): Response<CustomerResponse>
     suspend fun singInCustomer(email: String): Response<Login>
@@ -52,23 +48,17 @@ interface RemoteSource {
     suspend fun isCurrencyDbUpdated(): Boolean
     suspend fun getAllProducts(): Response<AllProductsResponse>
     suspend fun getProductsByCollection(collectionId: Long): Response<AllProductsResponse>
-    suspend fun filterProductsBySubCollection(
-        collectionId: Long,
-        productType: String
-    ): Response<AllProductsResponse>
-
+    suspend fun filterProductsBySubCollection(collectionId: Long,productType:String): Response<AllProductsResponse>
     suspend fun getAddressesOfCustomer(customerId: Long): Response<AddressesResponse>
     suspend fun updateAddressOfCustomer(
         customerId: Long,
         addressId: Long,
         updatedAddress: AddressRequest
     ): Response<AddressResponse>
-
     suspend fun deleteAddressOfCustomer(
         customerId: Long,
         addressId: Long
     )
-
     suspend fun getAddressDetails(
         latitude: Double,
         longitude: Double,

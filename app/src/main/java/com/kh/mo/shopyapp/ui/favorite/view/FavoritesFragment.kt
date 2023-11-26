@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 
 
 class FavoritesFragment : BaseFragment<FragmentFavoritesBinding, FavoritesViewModel>() {
-    private val favoritesAdapter = FavoritesAdapter()
+    private lateinit var favoritesAdapter : FavoritesAdapter
     override val layoutIdFragment=R.layout.fragment_favorites
 
     override fun getViewModelClass()=FavoritesViewModel::class.java
@@ -19,6 +19,7 @@ class FavoritesFragment : BaseFragment<FragmentFavoritesBinding, FavoritesViewMo
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        favoritesAdapter=FavoritesAdapter(viewModel)
         inti()
         getAllFavorites()
     }

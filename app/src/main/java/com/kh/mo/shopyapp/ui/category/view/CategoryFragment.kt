@@ -8,7 +8,9 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.airbnb.lottie.LottieAnimationView
 import com.kh.mo.shopyapp.R
 import com.kh.mo.shopyapp.databinding.DialogFilterBinding
@@ -205,10 +207,15 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding, CategoryViewModel
         }
     }
 
+    private fun navigateToProductScreen(product: Product){
+        findNavController().navigate(    CategoryFragmentDirections.actionCategoryFragmentToProductFragment(product))
+    }
 
-    fun addAdapterToCategories(list: List<Product>){
-        productsCategoryAdapter = ProductsCategoryAdapter(viewModel)
-        productsCategoryAdapter.submitList(list)
+    fun addAdapterToCategories(products: List<Product>){
+        productsCategoryAdapter = ProductsCategoryAdapter(viewModel){
+            navigateToProductScreen(products[it])
+        }
+        productsCategoryAdapter.setItems(products)
         binding.recyclerProductsCategory.adapter = productsCategoryAdapter
     }
 

@@ -1,22 +1,16 @@
 package com.kh.mo.shopyapp.ui.category.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kh.mo.shopyapp.model.entity.FavoriteEntity
 import com.kh.mo.shopyapp.model.ui.allproducts.Product
 import com.kh.mo.shopyapp.remote.ApiState
 import com.kh.mo.shopyapp.repo.Repo
 import com.kh.mo.shopyapp.repo.mapper.convertProductToFavoriteEntity
-import com.kh.mo.shopyapp.repo.mapper.convertToAllProducts
 import com.kh.mo.shopyapp.ui.category.view.ProductsCategoryAdapter
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import java.text.FieldPosition
 
 class CategoryViewModel(private var _irepo: Repo) : ViewModel(),
     ProductsCategoryAdapter.ProductsCategoryListener {
@@ -65,7 +59,7 @@ class CategoryViewModel(private var _irepo: Repo) : ViewModel(),
 
     private fun saveFavorite(product: Product) {
         viewModelScope.launch {
-            _irepo.saveFavorite(product.convertProductToFavoriteEntity())
+            _irepo.saveFavorite(product.convertProductToFavoriteEntity(_irepo.getCustomerId()))
         }
     }
 

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/homeFragment">
+    app:startDestination="@id/signInFragment">
 
     <fragment
         android:id="@+id/signUpFragment"
@@ -12,7 +12,9 @@
         tools:layout="@layout/fragment_sign_up">
         <action
             android:id="@+id/action_signUpFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/signUpFragment"
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_signUpFragment_to_signInFragment"
             app:destination="@id/signInFragment" />
@@ -26,7 +28,9 @@
             app:destination="@id/signUpFragment" />
         <action
             android:id="@+id/action_signInFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/signInFragment"
+            app:popUpToInclusive="true" />
         <argument
             android:name="source"
             app:argType="string"
@@ -108,6 +112,9 @@
         <argument
             android:name="collectionId"
             app:argType="long" />
+        <action
+            android:id="@+id/action_categoryFragment_to_productFragment"
+            app:destination="@id/productFragment" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
@@ -120,6 +127,11 @@
         <action
             android:id="@+id/action_settingsFragment_to_mapFragment"
             app:destination="@id/mapFragment" />
+        <action
+            android:id="@+id/action_settingsFragment_to_signInFragment"
+            app:destination="@id/signInFragment"
+            app:popUpTo="@id/settingsFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/addressDetailsFragment"

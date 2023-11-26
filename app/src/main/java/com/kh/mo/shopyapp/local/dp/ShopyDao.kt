@@ -11,8 +11,8 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface ShopyDao {
 
-    @Query("SELECT * FROM favorite_table")
-     fun getAllFavorites(): Flow<List<FavoriteEntity>>
+    @Query("SELECT * FROM favorite_table WHERE customerId = :customerId")
+    fun getAllFavorites(customerId: Long): Flow<List<FavoriteEntity>>
 
     @Query("DELETE FROM favorite_table WHERE productId = :productId")
     suspend fun deleteFavorite(productId:Long)
