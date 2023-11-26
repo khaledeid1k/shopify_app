@@ -1,11 +1,8 @@
 package com.kh.mo.shopyapp.model.response.allproducts
 
 
-import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import kotlinx.parcelize.Parcelize
 
-@Parcelize
 data class VariantResponse(
     @SerializedName("barcode")
     val barcode: String?,
@@ -57,4 +54,4 @@ data class VariantResponse(
     val weight: Double?,
     @SerializedName("weight_unit")
     val weightUnit: String?
-) : Parcelable
+)

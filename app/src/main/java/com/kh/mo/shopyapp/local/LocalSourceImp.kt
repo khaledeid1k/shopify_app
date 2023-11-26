@@ -39,6 +39,10 @@ class LocalSourceImp private constructor(context: Context):LocalSource {
        return shopyDao.getAllFavorites(customerId)
     }
 
+    override fun getSingleFavorite(productId: Long): Flow<FavoriteEntity> {
+      return  shopyDao.getSingleFavorite(productId)
+    }
+
     override suspend fun deleteFavorite(productId: Long) {
         shopyDao.deleteFavorite(productId)
     }

@@ -8,7 +8,6 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.airbnb.lottie.LottieAnimationView
@@ -19,7 +18,6 @@ import com.kh.mo.shopyapp.model.ui.allproducts.Product
 import com.kh.mo.shopyapp.remote.ApiState
 import com.kh.mo.shopyapp.ui.base.BaseFragment
 import com.kh.mo.shopyapp.ui.category.viewmodel.CategoryViewModel
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 
@@ -131,7 +129,7 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding, CategoryViewModel
                 } else {
                     minPrice = "0"
                 }
-                products.variants[0].price!!.toDouble() in minPrice.toDouble()..maxPrice.toDouble()
+                products.productVariants[0].price!!.toDouble() in minPrice.toDouble()..maxPrice.toDouble()
             }
             if (filteredPrice.isEmpty()) {
                 binding.lottiNoProduct.visibility = LottieAnimationView.VISIBLE

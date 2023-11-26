@@ -1,11 +1,7 @@
 package com.kh.mo.shopyapp.model.response.allproducts
 
 
-import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import kotlinx.parcelize.Parcelize
-
-@Parcelize
 
 data class ImageResponse(
     @SerializedName("admin_graphql_api_id")
@@ -21,11 +17,5 @@ data class ImageResponse(
     @SerializedName("product_id")
     val productId: Long,
     @SerializedName("src")
-    val src: String,
-    @SerializedName("updated_at")
-    val updatedAt: String,
-    @SerializedName("variant_ids")
-    val variantIds: List<Long>,
-    @SerializedName("width")
-    val width: Int
-) : Parcelable
+    val src: String
+)

@@ -27,7 +27,7 @@
             android:layout_height="match_parent">
 
             <ImageView
-                setImageUrl="@{item.image.src}"
+                setImageUrl="@{item.productImage.src}"
                 android:id="@+id/image_product_item"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_130sdp"
@@ -57,7 +57,7 @@
             <TextView
                 android:id="@+id/tv_price_product_item"
                 style="@style/sub_title"
-                android:text="@{item.variants.get(0).price.toString()}"
+                android:text="@{item.productVariants.get(0).price.toString()}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/_10sdp"

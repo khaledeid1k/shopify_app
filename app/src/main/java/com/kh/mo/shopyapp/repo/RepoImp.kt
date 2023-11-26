@@ -391,13 +391,13 @@ class RepoImp private constructor(
                             .map { product ->
                                 changeProductFavoriteValue(product)
                             }
-                        list.forEach {product ->
-                            product.variants.forEach {variant ->
-                                variant.price = variant.price?.let {price ->
-                                    checkCurrencyUnitAndCalculatePrice(price)
-                                }
-                            }
-                        }
+//                        list.forEach {product ->
+//                            product.productVariants.forEach { variant ->
+//                                variant.price = variant.price?.let {price ->
+//                                    checkCurrencyUnitAndCalculatePrice(price)
+//                                }
+//                            }
+//                        }
                         emit(
                             ApiState.Success(list)
                         )
@@ -594,6 +594,10 @@ class RepoImp private constructor(
     override suspend fun getAllFavorites(): Flow<List<FavoriteEntity>>{
         return localSource.getAllFavorites(getCustomerId())
 
+    }
+
+    override suspend fun getSingleFavorite(productId: Long): Flow<FavoriteEntity> {
+     return   localSource.getSingleFavorite(productId)
     }
 
     override suspend fun deleteFavorite(productId: Long) {

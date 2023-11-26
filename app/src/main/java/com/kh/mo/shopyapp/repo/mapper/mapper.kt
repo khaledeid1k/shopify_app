@@ -22,6 +22,9 @@ import com.kh.mo.shopyapp.model.response.order.OrdersResponse
 import com.kh.mo.shopyapp.model.ui.DraftOrder
 import com.kh.mo.shopyapp.model.ui.Favorite
 import com.kh.mo.shopyapp.model.ui.allproducts.Product
+import com.kh.mo.shopyapp.model.ui.allproducts.ProductImage
+import com.kh.mo.shopyapp.model.ui.allproducts.ProductOption
+import com.kh.mo.shopyapp.model.ui.allproducts.ProductVariant
 import com.kh.mo.shopyapp.model.ui.maincategory.CustomCollection
 import com.kh.mo.shopyapp.model.ui.order.Image
 import com.kh.mo.shopyapp.model.ui.order.LineItem
@@ -114,15 +117,16 @@ fun MainCategoryResponse.convertToCustomCollection(): List<CustomCollection> {
 
 fun AllProductsResponse.convertToAllProducts(): List<Product> {
 
-    return this.products.map {
+    return this.products.map { it ->
         Product(
             id = it.id,
-            images = it.images,
+            productImages = it.images.map { ProductImage(it.src) },
             productType = it.productType,
-            image = it.image,
+            productImage = ProductImage(it.image.src),
             title = it.title,
-            variants = it.variants,
-            options = it.options,
+            productVariants = it.variants.map { ProductVariant(
+                it.id!!,it.price!!, it.productId!!, it.title!!,it.weightUnit!!) },
+            productOptions =it.options.map {  ProductOption(it.values)} ,
             vendor = it.vendor,
             status = it.status
         )
@@ -171,12 +175,13 @@ fun Product.convertProductToFavoriteEntity(customerId: Long): FavoriteEntity {
     return FavoriteEntity(
         id,
         customerId,
-        images.convertImagesToImagesEntity(),
+        productImages.map { ImageEntity(it.src) },
         productType,
-        image.convertImageToImageEntity(),
+        ImageEntity(productImage.src),
         title,
-        variants.convertVariantsToVariantsEntity(),
-        options.convertOptionsToOptionsEntity(),
+        productVariants.map { VariantEntity(
+            it.id,it.price, it.productId, it.title,it.weightUnit)},
+        productOptions.map { OptionEntity(it.values) },
         vendor,
         status
     )
@@ -251,4 +256,12 @@ fun AllProductsResponse.convertAllProductsResponseToProductsIds(customerId: Long
             it.options.convertOptionsToOptionsEntity(),
             it.vendor,it.status)
     }
+}
+
+fun FavoriteEntity.convertFavoriteEntityToProduct():Product{
+    return Product(productId,images.map { ProductImage(it.src) },
+        productType, ProductImage(image.src),title,variants.map { ProductVariant(
+            it.id!!,it.price!!, it.productId!!, it.title!!,it.weightUnit!!) },
+    options.map { ProductOption(it.values) },vendor.toString(),status.toString())
+
 }

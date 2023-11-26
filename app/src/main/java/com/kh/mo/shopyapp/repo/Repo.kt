@@ -76,6 +76,8 @@ interface Repo {
 
 
     suspend fun getAllFavorites(): Flow<List<FavoriteEntity>>
+    suspend fun getSingleFavorite(productId: Long): Flow<FavoriteEntity>
+
     suspend fun deleteFavorite(productId:Long)
     suspend fun saveFavorite(favoriteEntity: FavoriteEntity):Long
     suspend fun checkProductInFavorite(productId: Long): Flow<ApiState<Int>>

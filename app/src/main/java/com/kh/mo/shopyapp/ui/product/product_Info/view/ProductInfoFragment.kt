@@ -23,8 +23,8 @@ class ProductInfoFragment :BaseFragment<FragmentProductInfoBinding,ProductInfoVi
 
         val product = arguments?.getParcelable<Product>(Constants.ProductInfoFragment)
 
-        binding.listSize.adapter=ProductSizeAdapter(product?.options?.get(0)?.values)
-        binding.listColor.adapter=ProductColorsAdapter(product?.options?.get(1)?.values)
+        binding.listSize.adapter=ProductSizeAdapter(product?.productOptions?.get(0)?.values)
+        binding.listColor.adapter=ProductColorsAdapter(product?.productOptions?.get(1)?.values)
 
     }
 

@@ -8,9 +8,10 @@ import coil.load
 
 import com.kh.mo.shopyapp.databinding.ItemProductImageBinding
 import com.kh.mo.shopyapp.model.response.allproducts.ImageResponse
+import com.kh.mo.shopyapp.model.ui.allproducts.ProductImage
 
 class ProductImagesAdapter(
-    private val images: List<ImageResponse?>?
+    private val images: List<ProductImage?>?
 ) :
     RecyclerView.Adapter<ProductImagesAdapter.ViewHolder>() {
     private lateinit var binding: ItemProductImageBinding
