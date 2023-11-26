@@ -9,6 +9,7 @@ import com.kh.mo.shopyapp.model.request.UserData
 import com.kh.mo.shopyapp.model.response.ads.DiscountCodeResponse
 import com.kh.mo.shopyapp.model.response.allproducts.AllProductsResponse
 import com.kh.mo.shopyapp.model.response.allproducts.ProductResponse
+import com.kh.mo.shopyapp.model.response.allproducts.VariantResponse
 import com.kh.mo.shopyapp.model.response.barnds.BrandsResponse
 import com.kh.mo.shopyapp.model.response.currency.Rates
 import com.kh.mo.shopyapp.model.response.maincategory.MainCategoryResponse
@@ -36,8 +37,11 @@ import com.kh.mo.shopyapp.utils.toEUR
 import com.kh.mo.shopyapp.utils.toGBP
 import com.kh.mo.shopyapp.utils.toUSD
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.tasks.await
 
 class RepoImp private constructor(
@@ -51,8 +55,8 @@ class RepoImp private constructor(
         Log.i(TAG, "updateCurrencyRates: $currencyRates")
         return currencyRates
     }
-    override suspend fun getListOfSpecificProductsIds( productsIds: String):Flow<ApiState<List<FavoriteEntity>>>
-    {
+
+    override suspend fun getListOfSpecificProductsIds(productsIds: String): Flow<ApiState<List<FavoriteEntity>>> {
         return flow {
 
             emit(ApiState.Loading)
@@ -63,7 +67,14 @@ class RepoImp private constructor(
             if (draftFavorite.isSuccessful) {
                 draftFavorite.body()
                     ?.let {
-                        emit(ApiState.Success(it.convertAllProductsResponseToProductsIds(getCustomerId()))) }
+                        emit(
+                            ApiState.Success(
+                                it.convertAllProductsResponseToProductsIds(
+                                    getCustomerId()
+                                )
+                            )
+                        )
+                    }
             } else {
                 emit(ApiState.Failure(draftFavorite.message()))
             }
@@ -93,7 +104,6 @@ class RepoImp private constructor(
     }
 
 
-
     override suspend fun singUpWithFireBase(userData: UserData) =
         flow {
             emit(ApiState.Loading)
@@ -103,7 +113,7 @@ class RepoImp private constructor(
             emit(ApiState.Failure("An error occurred: ${it.message}"))
         }
 
-    override suspend fun singInWithFireBase(userData: UserData)=
+    override suspend fun singInWithFireBase(userData: UserData) =
         flow {
             emit(ApiState.Loading)
             remoteSource.singInWithFireBase(userData).await()
@@ -112,13 +122,15 @@ class RepoImp private constructor(
             emit(ApiState.Failure("An error occurred: ${it.message}"))
         }
 
-    override suspend fun logout() { remoteSource.logout() }
+    override suspend fun logout() {
+        remoteSource.logout()
+    }
 
-    override fun checkIsUserLogin()=remoteSource.checkIsUserLogin()
+    override fun checkIsUserLogin() = remoteSource.checkIsUserLogin()
     override suspend fun createFavoriteDraft(draftOrderRequest: DraftOrderRequest): Flow<ApiState<DraftOrder>> {
         return flow {
             emit(ApiState.Loading)
-            val favorite =   remoteSource.createFavoriteDraft(draftOrderRequest)
+            val favorite = remoteSource.createFavoriteDraft(draftOrderRequest)
             if (!favorite.isSuccessful) {
                 emit(ApiState.Failure(favorite.body().toString()))
             } else {
@@ -136,7 +148,7 @@ class RepoImp private constructor(
 
     }
 
-    override suspend fun saveFavoriteDraftIdInFireBase(customerId:Long,favoriteDraft:Long)=
+    override suspend fun saveFavoriteDraftIdInFireBase(customerId: Long, favoriteDraft: Long) =
         flow {
             emit(ApiState.Loading)
             remoteSource.saveFavoriteDraftIdInFireBase(customerId, favoriteDraft).await()
@@ -144,8 +156,6 @@ class RepoImp private constructor(
         }.catch {
             emit(ApiState.Failure("An error occurred: ${it.message}"))
         }
-
-
 
 
     override suspend fun createCustomer(userData: UserData): Flow<ApiState<CustomerEntity>> {
@@ -186,19 +196,21 @@ class RepoImp private constructor(
 
     override suspend fun getDraftFavoriteId(customerId: String) =
         flow {
-            var favoriteId=""
+            var favoriteId = ""
             emit(ApiState.Loading)
-            remoteSource.getDraftFavoriteId (customerId).addOnSuccessListener {
-                if(it.exists()){
-                    favoriteId=   it.data?.get(Constants.DRAFT_FAVORITE_ID) as String
+            remoteSource.getDraftFavoriteId(customerId).addOnSuccessListener {
+                if (it.exists()) {
+                    favoriteId = it.data?.get(Constants.DRAFT_FAVORITE_ID) as String
                 }
             }.await()
-            if(favoriteId.isEmpty()){emit(ApiState.Failure("Account Not exist"))}
-            else{emit(ApiState.Success(favoriteId)) }
+            if (favoriteId.isEmpty()) {
+                emit(ApiState.Failure("Account Not exist"))
+            } else {
+                emit(ApiState.Success(favoriteId))
+            }
         }.catch {
             emit(ApiState.Failure("An error occurred: ${it.message}"))
         }
-
 
 
     override fun validateUserName(userName: String) = localSource.validateUserName(userName)
@@ -365,11 +377,15 @@ class RepoImp private constructor(
             val allProducts =
                 remoteSource.getAllProducts()
             if (allProducts.isSuccessful) {
-                remoteSource.getAllProducts().body()
-                    ?.let { emit(ApiState.Success(it.convertToAllProducts()
-                        .map { product->
-                            changeProductFavoriteValue(product)
-                        })) }
+                allProducts.body()
+                    ?.let {
+                        emit(
+                            ApiState.Success(it.convertToAllProducts()
+                                .map { product ->
+                                    changeProductFavoriteValue(product)
+                                })
+                        )
+                    }
             } else {
                 emit(ApiState.Failure(allProducts.message()))
             }
@@ -391,15 +407,10 @@ class RepoImp private constructor(
                             .map { product ->
                                 changeProductFavoriteValue(product)
                             }
-                        /*list.forEach {product ->
-                            product.variants.forEach {variant ->
-                                variant.price = variant.price?.let {price ->
-                                    checkCurrencyUnitAndCalculatePrice(price)
-                                }
-                            }
-                        }*/
+                        val result = checkCurrencyUnitAndCalculatePrice(list)
+                        Log.i(TAG, "emitting result")
                         emit(
-                            ApiState.Success(list)
+                            ApiState.Success(result)
                         )
                     }
             } else {
@@ -418,13 +429,18 @@ class RepoImp private constructor(
         return flow {
             emit(ApiState.Loading)
             val productsSubCategory =
-                remoteSource.filterProductsBySubCollection(collectionId,productType)
+                remoteSource.filterProductsBySubCollection(collectionId, productType)
             if (productsSubCategory.isSuccessful) {
-                remoteSource.filterProductsBySubCollection(collectionId,productType).body()
-                    ?.let { emit(ApiState.Success(it.convertToAllProducts()
-                        .map { product->
-                            changeProductFavoriteValue(product)
-                        })) }
+                //remoteSource.filterProductsBySubCollection(collectionId, productType).body()
+                productsSubCategory.body()
+                    ?.let {
+                        emit(
+                            ApiState.Success(it.convertToAllProducts()
+                                .map { product ->
+                                    changeProductFavoriteValue(product)
+                                })
+                        )
+                    }
             } else {
                 emit(ApiState.Failure(productsSubCategory.message()))
             }
@@ -571,10 +587,14 @@ class RepoImp private constructor(
         }
     }
 
-    override suspend fun backUpDraftFavorite(draftOrderRequest: DraftOrderRequest,draftFavoriteId: Long): Flow<ApiState<String>> {
+    override suspend fun backUpDraftFavorite(
+        draftOrderRequest: DraftOrderRequest,
+        draftFavoriteId: Long
+    ): Flow<ApiState<String>> {
         return flow {
             emit(ApiState.Loading)
-            val backUpDraftFavorite =remoteSource.backUpDraftFavorite(draftOrderRequest,draftFavoriteId)
+            val backUpDraftFavorite =
+                remoteSource.backUpDraftFavorite(draftOrderRequest, draftFavoriteId)
             if (!backUpDraftFavorite.isSuccessful) {
                 emit(ApiState.Failure(backUpDraftFavorite.body().toString()))
             } else {
@@ -591,7 +611,7 @@ class RepoImp private constructor(
         }
     }
 
-    override suspend fun getAllFavorites(): Flow<List<FavoriteEntity>>{
+    override suspend fun getAllFavorites(): Flow<List<FavoriteEntity>> {
         return localSource.getAllFavorites(getCustomerId())
 
     }
@@ -600,7 +620,7 @@ class RepoImp private constructor(
         localSource.deleteFavorite(productId)
     }
 
-    override suspend fun saveFavorite(favoriteEntity: FavoriteEntity):Long {
+    override suspend fun saveFavorite(favoriteEntity: FavoriteEntity): Long {
         return localSource.saveFavorite(favoriteEntity)
     }
 
@@ -628,7 +648,7 @@ class RepoImp private constructor(
     }
 
     override fun getCustomerId(): Long {
-      return  localSource.getCustomerId()
+        return localSource.getCustomerId()
     }
 
     private suspend fun changeProductFavoriteValue(product: Product): Product {
@@ -702,9 +722,32 @@ class RepoImp private constructor(
         }
     }
 
-    private suspend fun checkCurrencyUnitAndCalculatePrice(price: String): String {
+    private suspend fun checkCurrencyUnitAndCalculatePrice(productList: List<Product>): List<Product> {
         val rates = getLatestCurrencyRates()
-        return when (getCurrencyUnit()) {
+        val currencyUnit = getCurrencyUnit()
+        val result = productList.asFlow().map { product ->
+            val variantWithCalculatedPrice =
+                calculatePriceForEachVariant(product.variants, currencyUnit, rates)
+            product.copy(variants = variantWithCalculatedPrice)
+        }.toList()
+        return result
+    }
+
+    private suspend fun calculatePriceForEachVariant(
+        variantList: List<VariantResponse>,
+        currencyUnit: String,
+        rates: Rates
+    ): List<VariantResponse> {
+        return variantList.asFlow()
+            .map { variantResponse ->
+                val calculatedPrice =
+                    variantResponse.price?.let { convertCurrency(it, currencyUnit, rates) }
+                variantResponse.copy(price = calculatedPrice)
+            }.toList()
+    }
+
+    private fun convertCurrency(price: String, currencyUnit: String, rates: Rates): String {
+        return when (currencyUnit) {
             SupportedCurrencies.USD.value -> {
                 price.toDouble()
                     .toUSD(rates.EGP.toDouble())
