@@ -39,7 +39,7 @@ class ProfileViewModel(private val repo: Repo) : ViewModel() {
     private val _orders = MutableStateFlow<ApiState<List<Order>>>(ApiState.Loading)
     val orders: StateFlow<ApiState<List<Order>>> = _orders
 
-    private fun getCustomerId() = repo.getCustomerId()
+    fun getCustomerId() = repo.getCustomerId()
     private fun getFavoriteDraftId() = repo.getFavoriteDraftId()
 
     init {
@@ -151,5 +151,4 @@ class ProfileViewModel(private val repo: Repo) : ViewModel() {
             }
         }
     }
-}
 }

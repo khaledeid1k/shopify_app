@@ -39,7 +39,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
                 )
         }
         observeUserData()
-        getAllOrders()
+        showSingleOrder()
 
 
     }
@@ -79,11 +79,6 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
     }
 
     private fun showSingleOrder() {
-
-
-    }
-
-    private fun getAllOrders() {
         lifecycleScope.launch {
             viewModel.orders.collect {
                 when (it) {
