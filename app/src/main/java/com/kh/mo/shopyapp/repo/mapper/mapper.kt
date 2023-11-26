@@ -154,7 +154,7 @@ fun OrderResponse.convertToLineItem(): List<LineItem> {
 fun OrderDetailsResponse.convertToLineItem(): List<LineItem> {
     return this.order?.lineItems?.map {
         LineItem(
-            it.quantity, it.title, it.price,it.id)
+            it.quantity, it.title, it.price,it.productId)
     } ?: emptyList()
 }
 fun ProductResponse.convertToImage(): List<Image> {

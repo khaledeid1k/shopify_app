@@ -6,9 +6,11 @@ import androidx.lifecycle.viewModelScope
 import com.kh.mo.shopyapp.model.entity.FavoriteEntity
 import com.kh.mo.shopyapp.model.request.DraftOrderRequest
 import com.kh.mo.shopyapp.model.request.UserData
+import com.kh.mo.shopyapp.model.ui.order.Order
 import com.kh.mo.shopyapp.remote.ApiState
 import com.kh.mo.shopyapp.repo.Repo
 import com.kh.mo.shopyapp.repo.mapper.convertFavoritesEntityToDraftOrderRequest
+import com.kh.mo.shopyapp.repo.mapper.convertToOrders
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -24,7 +26,8 @@ class ProfileViewModel(private val repo: Repo) : ViewModel() {
     private val _backUpDraftFavorite = MutableStateFlow<ApiState<String>>(ApiState.Loading)
     val backUpDraftFavorite: StateFlow<ApiState<String>> = _backUpDraftFavorite
 
-    private val _retrieveDraftFavorite = MutableStateFlow<ApiState<List<FavoriteEntity>>>(ApiState.Loading)
+    private val _retrieveDraftFavorite =
+        MutableStateFlow<ApiState<List<FavoriteEntity>>>(ApiState.Loading)
     val retrieveDraftFavorite: StateFlow<ApiState<List<FavoriteEntity>>> = _retrieveDraftFavorite
 
     private val _currencyPreference = MutableStateFlow("")
@@ -33,29 +36,42 @@ class ProfileViewModel(private val repo: Repo) : ViewModel() {
     private val _languagePreference = MutableStateFlow("")
     val languagePreference: StateFlow<String> = _languagePreference
 
-    fun getCustomerId() = repo.getCustomerId()
+    private val _orders = MutableStateFlow<ApiState<List<Order>>>(ApiState.Loading)
+    val orders: StateFlow<ApiState<List<Order>>> = _orders
+
+    private fun getCustomerId() = repo.getCustomerId()
     private fun getFavoriteDraftId() = repo.getFavoriteDraftId()
-    private fun getAllFavorites(success: (DraftOrderRequest) -> Unit,
-                                failure: () -> Unit) {
+
+    init {
+        getOrders()
+
+    }
+
+    private fun getAllFavorites(
+        success: (DraftOrderRequest) -> Unit,
+        failure: () -> Unit
+    ) {
         viewModelScope.launch {
             repo.getAllFavorites().collect {
                 if (it.isNotEmpty()) {
                     success(it.convertFavoritesEntityToDraftOrderRequest(getCustomerId()))
-                }else{failure()}
+                } else {
+                    failure()
+                }
 
             }
         }
     }
 
     fun backUpDraftFavorite() {
-        getAllFavorites( {
+        getAllFavorites({
             viewModelScope.launch {
                 repo.backUpDraftFavorite(it, getFavoriteDraftId()).collect {
                     _backUpDraftFavorite.value = it
                 }
             }
-        },{
-            _backUpDraftFavorite.value=ApiState.Failure("No Data To Upload")
+        }, {
+            _backUpDraftFavorite.value = ApiState.Failure("No Data To Upload")
         }
         )
 
@@ -125,4 +141,15 @@ class ProfileViewModel(private val repo: Repo) : ViewModel() {
             _languagePreference.value = repo.getCurrentLanguage()
         }
     }
+
+    fun getOrders() {
+        viewModelScope.launch(Dispatchers.IO) {
+            repo.getOrdersByCustomerID(repo.getCustomerId()).collect {
+                if (it is ApiState.Success) {
+                    _orders.value = ApiState.Success(it.data.convertToOrders())
+                }
+            }
+        }
+    }
+}
 }
