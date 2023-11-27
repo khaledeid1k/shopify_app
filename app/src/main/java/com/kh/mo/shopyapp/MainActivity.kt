@@ -80,7 +80,7 @@ class MainActivity : AppCompatActivity() {
         onNavDestinationSelected(item, controller)
     }
 }
-    private fun showRequestLoginDialog() {
+    fun showRequestLoginDialog() {
         createDialog(context = this,
             title=getString(R.string.please_login),
             message = getString(R.string.gust_message),

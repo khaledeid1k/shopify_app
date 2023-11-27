@@ -18,10 +18,6 @@ import kotlinx.coroutines.launch
 
 class ProfileViewModel(private val repo: Repo) : ViewModel() {
     private val TAG = "TAG ProfileViewModel"
-    private val _userData: MutableStateFlow<UserData?> =
-        MutableStateFlow(UserData(7588056039708, "Moaaz AbdEl-salam", "moaaz_1@gmail.com"))
-    val userData: StateFlow<UserData?>
-        get() = _userData
 
     private val _backUpDraftFavorite = MutableStateFlow<ApiState<String>>(ApiState.Loading)
     val backUpDraftFavorite: StateFlow<ApiState<String>> = _backUpDraftFavorite
@@ -39,13 +35,16 @@ class ProfileViewModel(private val repo: Repo) : ViewModel() {
     private val _orders = MutableStateFlow<ApiState<List<Order>>>(ApiState.Loading)
     val orders: StateFlow<ApiState<List<Order>>> = _orders
 
-    fun getCustomerId() = repo.getCustomerId()
-    private fun getFavoriteDraftId() = repo.getFavoriteDraftId()
-
     init {
         getOrders()
 
     }
+
+    fun getCustomerId() = repo.getCustomerId()
+    private fun getFavoriteDraftId() = repo.getFavoriteDraftId()
+    fun checkIsUserLogin() = repo.checkIsUserLogin()
+    fun getCustomerUserName() = repo.getCustomerUserName()
+    fun getCustomerEmail() = repo.getCustomerEmail()
 
     private fun getAllFavorites(
         success: (DraftOrderRequest) -> Unit,

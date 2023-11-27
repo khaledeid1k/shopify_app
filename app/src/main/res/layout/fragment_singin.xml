@@ -21,7 +21,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:background="@drawable/rounded_button"
-            android:text="Skip -> "
+            android:text="@string/skip"
             style="@style/small_title"
             android:layout_margin="@dimen/_16sdp"
             android:padding="@dimen/_5sdp"

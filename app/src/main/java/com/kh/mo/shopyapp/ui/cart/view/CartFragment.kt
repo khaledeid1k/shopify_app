@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -56,6 +57,10 @@ class CartFragment : BaseFragment<FragmentCartBinding, CartViewModel>() {
         if (viewModel.checkIsUserLogin()) {
             viewModel.getAllProductsInCart()
             observeProductListState()
+        }
+        binding.cartCheckoutBtn.setOnClickListener {
+            Navigation.findNavController(view)
+                .navigate(R.id.action_cartFragment_to_checkoutFragment)
         }
     }
 
@@ -112,9 +117,11 @@ class CartFragment : BaseFragment<FragmentCartBinding, CartViewModel>() {
             }
             .show()
     }
+
     private fun add(item: Cart) {
         viewModel.addOneToItem(item)
     }
+
     private fun sub(item: Cart) {
         viewModel.subOneFromItem(item)
     }

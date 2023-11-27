@@ -79,7 +79,7 @@
     <string name="save">حفظ</string>
     <string name="filter">تحديد</string>
     <string name="login_first">سجل الدخول اولا</string>
-    <string name="not_logged_in_message">انت بحاجه لتسجيل الدخول لكي ترى طلبات والعديدات من المميزات الاخرى</string>
+    <string name="not_logged_in_message">انت بحاجه لتسجيل الدخول لكي ترى طلباتك والعديد من المميزات الاخرى</string>
     <string name="settings">الاعدادات</string>
     <string name="wish_list">قائمة الرغبات</string>
     <string name="no_saved_addresses">لا يوجد عنواين محفوظة</string>
@@ -113,4 +113,18 @@
     <string name="total">الاجمالي</string>
     <string name="free_shipping">شحن مجاني</string>
     <string name="delete_item_confirm">هل انت متاكد انك تريد حذف هذا المنتج؟</string>
+    <string name="order_details">تفاصيل الطلب</string>
+    <string name="delivery_address">عنوان التوصيل</string>
+    <string name="order_summary">ملخص الطلب</string>
+    <string name="subtotal">الفرعي</string>
+    <string name="delivery_fee">مصاريف الشحن</string>
+    <string name="service_fee">مصاريف الخدمه</string>
+    <string name="total_discount">الخصم الكلي</string>
+    <string name="_0_00">0.00</string>
+    <string name="are_you_sure">هل انت متاكد؟</string>
+    <string name="will_delete_this_from_favorites">حذف من المفضلة </string>
+    <string name="please_login">سجل الدخول لتستخم هذه الميزه</string>
+    <string name="gust_message">تسطيع انشاء حساب لكي تضيف منتجات الى المفضلة والعديد من المميزات الاخرى</string>
+    <string name="guest">بدون حساب</string>
+    <string name="skip"><![CDATA[تخطي ->]]></string>
 </resources>

@@ -69,7 +69,11 @@
         android:id="@+id/cartFragment"
         android:name="com.kh.mo.shopyapp.ui.cart.view.CartFragment"
         android:label="fragment_cart"
-        tools:layout="@layout/fragment_cart" />
+        tools:layout="@layout/fragment_cart" >
+        <action
+            android:id="@+id/action_cartFragment_to_checkoutFragment"
+            app:destination="@id/checkoutFragment" />
+    </fragment>
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.kh.mo.shopyapp.ui.profile.view.ProfileFragment"
@@ -185,4 +189,9 @@
         android:id="@+id/searchResultFragment"
         android:name="com.kh.mo.shopyapp.ui.search.view.SearchResultFragment"
         android:label="SearchResultFragment" />
+    <fragment
+        android:id="@+id/checkoutFragment"
+        android:name="com.kh.mo.shopyapp.ui.checkout.CheckoutFragment"
+        android:label="fragment_checkout"
+        tools:layout="@layout/fragment_checkout" />
 </navigation>
