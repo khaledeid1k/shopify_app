@@ -32,7 +32,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
             Navigation.findNavController(view)
                 .navigate(R.id.action_profileFragment_to_settingsFragment)
         }
-        binding.tvAllMyOrders.setOnClickListener {
+        binding.ordersCard.setOnClickListener {
             Navigation.findNavController(view)
                 .navigate(
                     R.id.action_profileFragment_to_orderFragment
@@ -93,17 +93,19 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
                         val data = it.data
                         if (!data.isEmpty()) {
                             binding.apply {
-                                tvProductNameOrderProfile.text = data.get(0).id.toString()
-                                tvProductSizeOrderProfile.text =
-                                    data.get(0).lineItems?.get(0)?.quantity.toString() + "x"
-                                tvProductPriceOrderProfile.text = data.get(0).subtotalPrice
+                                tvCreatedAtValue.text = data.get(0).createdAt
+                                tvProductPriceOrderProfile.text = data.get(0).totalPrice+data.get(0).currency
+                                tvOrderIdValue.text=data.get(0).id.toString()
                             }
                         }else{
                             binding.apply {
-                                tvProductNameOrderProfile.text = "No orders yet"
-                                tvProductSizeOrderProfile.visibility =View.GONE
+                                tvOrderIdValue.text = "No orders yet"
+                                tvCreatedAt.visibility =View.GONE
                                 tvProductPriceOrderProfile.visibility =View.GONE
                                 tvAllMyOrders.isClickable=false
+                                tvCreatedAtValue.visibility=View.GONE
+                                tvTotal.visibility=View.GONE
+
                             }
                         }
 
