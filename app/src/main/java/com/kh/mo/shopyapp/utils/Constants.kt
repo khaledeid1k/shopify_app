@@ -5,6 +5,7 @@ object Constants {
     const val NOMINATIM_BASE_URL = "https://nominatim.openstreetmap.org/"
     const val collectionPath = "customers"
     const val DRAFT_FAVORITE_ID = "DRAFT_FAVORITE_ID"
+    const val DRAFT_CART_ID = "DRAFT_CART_ID"
     const val password = "password"
     const val ErrorEmail = "ErrorEmail"
     const val ErrorPassword = "ErrorPassword"
@@ -22,4 +23,5 @@ object Constants {
     const val EGP_ID = "EGP"
     const val EUR_ID = "EUR"
     const val GBP_ID = "GBP"
+    const val NO_CART_MESSAGE = "No Cart Found"
 }

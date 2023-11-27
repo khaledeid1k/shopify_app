@@ -35,6 +35,14 @@ var SharedPreferences.favoriteDraftId
         }
     }
 
+var SharedPreferences.cartDraftId
+    get() = getLong(Constants.DRAFT_CART_ID, -1)
+    set(value) {
+        editMe {
+            it.putLong(Constants.DRAFT_CART_ID, value)
+        }
+    }
+
 var SharedPreferences.currencyUnit: String
     get() = getString(Constants.CURRENCY_ID, Constants.EGP_ID) ?: Constants.EGP_ID
     set(value) = editMe {

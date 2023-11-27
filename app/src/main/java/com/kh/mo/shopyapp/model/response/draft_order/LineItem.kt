@@ -14,11 +14,11 @@ data class LineItem(
     val properties: List<Any>?,
     val quantity: Int?,
     val requires_shipping: Boolean?,
-    val sku: Any?,
+    val sku: String?,
     val tax_lines: List<TaxLineX>?,
     val taxable: Boolean?,
     val title: String?,
     val variant_id: Long?,
-    val variant_title: Any?,
-    val vendor: Any?
+    val variant_title: String?,
+    val vendor: String?
 )

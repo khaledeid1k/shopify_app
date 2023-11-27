@@ -3,6 +3,7 @@ package com.kh.mo.shopyapp.local
 import android.content.Context
 import com.kh.mo.shopyapp.local.dp.ShopyDataBase
 import com.kh.mo.shopyapp.local.dp.sharedPref.SharedPreferencesShopy
+import com.kh.mo.shopyapp.local.dp.sharedPref.cartDraftId
 import com.kh.mo.shopyapp.local.dp.sharedPref.currencyUnit
 import com.kh.mo.shopyapp.local.dp.sharedPref.customerId
 import com.kh.mo.shopyapp.local.dp.sharedPref.favoriteDraftId
@@ -68,6 +69,14 @@ class LocalSourceImp private constructor(val context: Context):LocalSource {
 
     override fun  getFavoriteDraftId() :Long{
        return sharedPreferencesShopy.favoriteDraftId
+
+    }
+    override fun saveCartDraftId(draftId: Long) {
+        sharedPreferencesShopy.cartDraftId = draftId
+    }
+
+    override fun getCartDraftId(): Long {
+       return sharedPreferencesShopy.cartDraftId
 
     }
 

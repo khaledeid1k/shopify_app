@@ -19,6 +19,7 @@ import com.kh.mo.shopyapp.model.response.osm.NominatimResponse
 import com.kh.mo.shopyapp.model.ui.Address
 import com.kh.mo.shopyapp.model.response.order.OrderResponse
 import com.kh.mo.shopyapp.model.response.order.OrdersResponse
+import com.kh.mo.shopyapp.model.ui.Cart
 import com.kh.mo.shopyapp.model.ui.DraftOrder
 import com.kh.mo.shopyapp.model.ui.Favorite
 import com.kh.mo.shopyapp.model.ui.allproducts.Product
@@ -252,3 +253,16 @@ fun AllProductsResponse.convertAllProductsResponseToProductsIds(customerId: Long
             it.vendor,it.status)
     }
 }
+
+fun DraftOrderResponse.convertToCartItems(): List<Cart> =
+    this.draft_order.line_items.map { item ->
+        Cart(
+            quantity = item.quantity,
+            title = item.title,
+            price = item.price,
+            productId = item.product_id,
+            variantId = item.variant_id,
+            variantTitle = item.variant_title,
+            imageSrc = ""
+        )
+    }

@@ -16,6 +16,7 @@ import com.kh.mo.shopyapp.model.response.maincategory.MainCategoryResponse
 import com.kh.mo.shopyapp.model.response.order.OrdersResponse
 import com.kh.mo.shopyapp.model.response.orderdetails.OrderDetailsResponse
 import com.kh.mo.shopyapp.model.ui.Address
+import com.kh.mo.shopyapp.model.ui.Cart
 import com.kh.mo.shopyapp.model.ui.DraftOrder
 import com.kh.mo.shopyapp.model.ui.Review
 import com.kh.mo.shopyapp.model.ui.SupportedCurrencies
@@ -30,6 +31,7 @@ import com.kh.mo.shopyapp.repo.mapper.convertLoginToUserData
 import com.kh.mo.shopyapp.repo.mapper.convertToAddress
 import com.kh.mo.shopyapp.repo.mapper.convertToAddressRequest
 import com.kh.mo.shopyapp.repo.mapper.convertToAllProducts
+import com.kh.mo.shopyapp.repo.mapper.convertToCartItems
 import com.kh.mo.shopyapp.repo.mapper.convertUserDataToCustomerData
 import com.kh.mo.shopyapp.utils.Constants
 import com.kh.mo.shopyapp.utils.roundTwoDecimals
@@ -39,6 +41,7 @@ import com.kh.mo.shopyapp.utils.toUSD
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toList
@@ -651,6 +654,9 @@ class RepoImp private constructor(
         return localSource.getCustomerId()
     }
 
+    override fun saveCartDraftId(draftId: Long) = localSource.saveCartDraftId(draftId)
+    override fun getLocalCartDraftId() = localSource.getCartDraftId()
+
     private suspend fun changeProductFavoriteValue(product: Product): Product {
         checkProductInFavorite(product.id).collect {
             if (it is ApiState.Success) {
@@ -782,6 +788,85 @@ class RepoImp private constructor(
         return localSource.getCurrentLanguage()
     }
 
+    override suspend fun getDraftCartId(customerId: String): Flow<ApiState<String?>> {
+        return flow {
+            if (getLocalCartDraftId().toInt() != -1) {
+                Log.i(TAG, "getDraftCartId: from local")
+                emit(ApiState.Success(getLocalCartDraftId().toString()))
+                return@flow
+            }
+            var favoriteId: String? = ""
+            emit(ApiState.Loading)
+            remoteSource.getDraftFavoriteId(customerId).addOnSuccessListener {
+                if (it.exists()) {
+                    favoriteId = it.data?.get(Constants.DRAFT_CART_ID) as String?
+                }
+            }.await()
+            if (favoriteId.isNullOrEmpty()) {
+                emit(ApiState.Failure(Constants.NO_CART_MESSAGE))
+            } else {
+                emit(ApiState.Success(favoriteId))
+            }
+        }.catch {
+            emit(ApiState.Failure("An exception occurred: ${it.message}"))
+        }
+    }
+
+    override suspend fun saveCartDraftIdInFireBase(
+        customerId: Long,
+        cartDraftId: Long
+    ): Flow<ApiState<String>> {
+        return flow {
+            emit(ApiState.Loading)
+            remoteSource.saveCartDraftIdInFireBase(customerId, cartDraftId, getFavoriteDraftId())
+                .await()
+            emit(ApiState.Success("cart created Successfully "))
+        }.catch {
+            emit(ApiState.Failure("An error occurred: ${it.message}"))
+        }
+    }
+
+    override suspend fun getAllProductsInCart(cartId: String): Flow<ApiState<List<Cart>>> {
+        return flow {
+            emit(ApiState.Loading)
+            val response = remoteSource.getAllProductIdsInCart(cartId)
+            if (response.isSuccessful) {
+                response.body()?.let {
+                    val cartList = it.convertToCartItems().filter { cart -> cart.productId != null }
+                    emit(ApiState.Success(getImagesForCart(cartList)))
+                } ?: emit(ApiState.Failure("Null response"))
+            } else {
+                emit(ApiState.Failure("api failure: ${response.message()}"))
+            }
+        }.catch {
+            emit(ApiState.Failure("exception: ${it.message}"))
+        }
+    }
+
+    private suspend fun getImagesForCart(cartList: List<Cart>): List<Cart> {
+        var resultList = cartList
+        val productIds = cartList.map { cart ->
+            cart.productId
+        }.joinToString(",")
+        getListOfSpecificProductsIds(productIds).collectLatest {
+            if (it is ApiState.Success) {
+                Log.i(
+                    TAG,
+                    "get images: ${it.data.map { favoriteEntity -> "${favoriteEntity.productId} : ${favoriteEntity.image}" }}"
+                )
+                resultList = cartList.asFlow()
+                    .map { value: Cart ->
+                        val item = it.data
+                            .filter { favoriteEntity ->
+                                favoriteEntity.productId == value.productId
+                            }[0]
+                        value.copy(imageSrc = item.image.src)
+                    }.toList()
+            }
+        }
+        return resultList
+    }
+
     companion object {
         @Volatile
         private var instance: RepoImp? = null
@@ -795,5 +880,3 @@ class RepoImp private constructor(
         }
     }
 }
-
-

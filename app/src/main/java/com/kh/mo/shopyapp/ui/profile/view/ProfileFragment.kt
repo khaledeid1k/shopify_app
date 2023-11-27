@@ -39,7 +39,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
                 )
         }
         observeUserData()
-        showSingleOrder()
+        //showSingleOrder()
 
 
     }
