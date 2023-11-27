@@ -25,11 +25,11 @@ fun TextView.setRandomRate(t:String) {
 fun CheckBox.setFavoriteImage(isFavorite: Boolean) {
     isChecked = isFavorite
 }
-//@BindingAdapter(value = ["app:adapterImagesOfProduct"])
-//fun ViewPager2.adapterImagesOfProduct(images: List<ImageResponse?>?) {
-//    images?.let {
-//        this.adapter = ProductImagesAdapter(it)
-//    }
-//
-//}
+
+@BindingAdapter("isLogin")
+fun CheckBox.checkIsLogin(isLogin: Boolean) {
+     if(!isLogin) {
+         setButtonDrawable(R.drawable.uncheck_favorite)
+     }
+}
 

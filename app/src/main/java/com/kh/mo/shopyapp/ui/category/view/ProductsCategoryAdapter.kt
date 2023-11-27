@@ -8,10 +8,12 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.kh.mo.shopyapp.R
 import com.kh.mo.shopyapp.databinding.ItemProductBinding
+import com.kh.mo.shopyapp.model.response.login.Login
 import com.kh.mo.shopyapp.model.ui.allproducts.Product
 import com.kh.mo.shopyapp.ui.base.BaseDataDiffUtil
 
 class ProductsCategoryAdapter(
+    private val isLogin: Boolean,
     private val onclickFavorite: ProductsCategoryListener,
     private val onClickCart: (Product) -> Unit,
     private val onClickCategory: (Int) -> Unit
@@ -46,6 +48,7 @@ class ProductsCategoryAdapter(
             binding.apply {
                 item = currentItem
                 listener = productsCategoryListener
+                isLoginView = isLogin
             }
         }
 
