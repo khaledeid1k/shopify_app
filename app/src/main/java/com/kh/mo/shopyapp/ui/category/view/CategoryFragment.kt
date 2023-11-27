@@ -35,6 +35,10 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding, CategoryViewModel
     private  var productList: List<Product> = emptyList()
     private lateinit var filterBinding: DialogFilterBinding
     private lateinit var filterDialog: Dialog
+    private var cartListener: (Product) -> Unit = {
+        viewModel.addProductToCart(it)
+        observeAddToCartState()
+    }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -212,11 +216,25 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding, CategoryViewModel
     }
 
     fun addAdapterToCategories(products: List<Product>){
-        productsCategoryAdapter = ProductsCategoryAdapter(viewModel){
+        productsCategoryAdapter = ProductsCategoryAdapter(viewModel, cartListener){
             navigateToProductScreen(products[it])
         }
         productsCategoryAdapter.setItems(products)
         binding.recyclerProductsCategory.adapter = productsCategoryAdapter
     }
 
+    private fun observeAddToCartState() {
+        collectLatestFlowOnLifecycle(viewModel.addToCartState) {
+            when(it) {
+                is ApiState.Failure -> {
+                    Log.i(TAG, "observeAddToCartState: failed: ${it.msg}")
+                    Toast.makeText(requireContext(), "failed", Toast.LENGTH_SHORT).show()
+                }
+                is ApiState.Loading -> {
+                    Toast.makeText(requireContext(), "loading..", Toast.LENGTH_SHORT).show()}
+                is ApiState.Success -> {
+                    Toast.makeText(requireContext(), "success", Toast.LENGTH_SHORT).show()}
+            }
+        }
+    }
 }

@@ -5,6 +5,7 @@ import com.kh.mo.shopyapp.local.LocalSource
 import com.kh.mo.shopyapp.model.entity.CustomerEntity
 import com.kh.mo.shopyapp.model.entity.FavoriteEntity
 import com.kh.mo.shopyapp.model.request.DraftOrderRequest
+import com.kh.mo.shopyapp.model.request.LineItems
 import com.kh.mo.shopyapp.model.request.UserData
 import com.kh.mo.shopyapp.model.response.ads.DiscountCodeResponse
 import com.kh.mo.shopyapp.model.response.allproducts.AllProductsResponse
@@ -12,6 +13,7 @@ import com.kh.mo.shopyapp.model.response.allproducts.ProductResponse
 import com.kh.mo.shopyapp.model.response.allproducts.VariantResponse
 import com.kh.mo.shopyapp.model.response.barnds.BrandsResponse
 import com.kh.mo.shopyapp.model.response.currency.Rates
+import com.kh.mo.shopyapp.model.response.draft_order.DraftOrderResponse
 import com.kh.mo.shopyapp.model.response.maincategory.MainCategoryResponse
 import com.kh.mo.shopyapp.model.response.order.OrdersResponse
 import com.kh.mo.shopyapp.model.response.orderdetails.OrderDetailsResponse
@@ -32,6 +34,8 @@ import com.kh.mo.shopyapp.repo.mapper.convertToAddress
 import com.kh.mo.shopyapp.repo.mapper.convertToAddressRequest
 import com.kh.mo.shopyapp.repo.mapper.convertToAllProducts
 import com.kh.mo.shopyapp.repo.mapper.convertToCartItems
+import com.kh.mo.shopyapp.repo.mapper.convertToDraftOrderRequest
+import com.kh.mo.shopyapp.repo.mapper.convertToLineItemRequest
 import com.kh.mo.shopyapp.repo.mapper.convertUserDataToCustomerData
 import com.kh.mo.shopyapp.utils.Constants
 import com.kh.mo.shopyapp.utils.roundTwoDecimals
@@ -876,6 +880,37 @@ class RepoImp private constructor(
             }
         }
         return resultList
+    }
+
+    override fun addProductToCart(product: Product): Flow<ApiState<Boolean>> {
+        return flow {
+            val allCartItems = remoteSource.getAllProductIdsInCart(getLocalCartDraftId().toString())
+            if (allCartItems.isSuccessful) {
+                allCartItems.body()
+                    ?.let {
+                        val lineItemsRequestList = mutableListOf<LineItems>(product.convertToLineItemRequest())
+                        lineItemsRequestList.addAll(it.draft_order.line_items.convertToLineItemRequest())
+                        val addToCartResponse =
+                            remoteSource.backUpDraftFavorite(
+                                lineItemsRequestList.convertToDraftOrderRequest(
+                                    getCustomerId()
+                                ),
+                                getLocalCartDraftId()
+                            )
+                        if (addToCartResponse.isSuccessful){
+                            addToCartResponse.body()?.let {
+                                emit(ApiState.Success(true))
+                            } ?: emit(ApiState.Failure("null response"))
+                        } else {
+                            emit(ApiState.Failure("api error ${addToCartResponse.message()}"))
+                        }
+                } ?: emit(ApiState.Failure("null response"))
+            } else {
+                emit(ApiState.Failure("api error ${allCartItems.message()}"))
+            }
+        }. catch {
+            emit(ApiState.Failure("exception " + it.message.toString()))
+        }
     }
 
     companion object {

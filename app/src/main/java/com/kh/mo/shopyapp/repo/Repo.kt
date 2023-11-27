@@ -9,6 +9,7 @@ import com.kh.mo.shopyapp.model.response.ads.DiscountCodeResponse
 import com.kh.mo.shopyapp.model.response.allproducts.AllProductsResponse
 import com.kh.mo.shopyapp.model.response.allproducts.ProductResponse
 import com.kh.mo.shopyapp.model.response.barnds.BrandsResponse
+import com.kh.mo.shopyapp.model.response.draft_order.DraftOrderResponse
 import com.kh.mo.shopyapp.model.response.maincategory.MainCategoryResponse
 import com.kh.mo.shopyapp.model.response.order.OrdersResponse
 import com.kh.mo.shopyapp.model.response.orderdetails.OrderDetailsResponse
@@ -94,4 +95,5 @@ interface Repo {
     suspend fun getDraftCartId(customerId: String): Flow<ApiState<String?>>
     suspend fun saveCartDraftIdInFireBase(customerId:Long, cartDraftId:Long): Flow<ApiState<String>>
     suspend fun getAllProductsInCart(cartId: String): Flow<ApiState<List<Cart>>>
+    fun addProductToCart(product: Product): Flow<ApiState<Boolean>>
 }
