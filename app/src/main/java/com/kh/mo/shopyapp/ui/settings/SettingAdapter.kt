@@ -33,8 +33,6 @@ class SettingAdapter(
             settingTitleTxt.setTextColor(settingItem.titleColor)
             goToShow.setColorFilter(settingItem.iconGoColor)
             settingIcon.setImageResource(settingItem.icon)
-            if (position == 5)
-                binding.settingCard.setCardBackgroundColor(Color.RED)
             settingCard.setOnClickListener {
                 listener(position)
             }

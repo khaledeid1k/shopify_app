@@ -27,11 +27,11 @@ var SharedPreferences.customerId
     }
 
 var SharedPreferences.favoriteDraftId
-    get() = getLong(Constants.DRAFT_ID, 0)
+    get() = getLong(Constants.DRAFT_FAVORITE_ID, 0)
     set(value) {
 
         editMe {
-            it.putLong(Constants.DRAFT_ID, value)
+            it.putLong(Constants.DRAFT_FAVORITE_ID, value)
         }
     }
 

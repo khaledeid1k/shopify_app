@@ -18,8 +18,8 @@ class SignInViewModel(private val repo: Repo) : ViewModel() {
     private val _checkCustomerExists = MutableStateFlow<ApiState<Long>>(ApiState.Loading)
     val checkCustomerExists: StateFlow<ApiState<Long>> = _checkCustomerExists
 
-    private val _draftFavoriteId = MutableStateFlow<ApiState<String?>>(ApiState.Loading)
-    val draftFavoriteId: StateFlow<ApiState<String?>> = _draftFavoriteId
+    private val _draftIds = MutableStateFlow<ApiState<List<String>>>(ApiState.Loading)
+    val draftIds: StateFlow<ApiState<List<String>>> = _draftIds
 
      fun singInCustomer(email: String) {
         viewModelScope.launch {
@@ -82,10 +82,14 @@ class SignInViewModel(private val repo: Repo) : ViewModel() {
      fun saveFavoriteDraftId(favoriteDraft:Long){
         repo.saveFavoriteDraftId(favoriteDraft)
     }
+
+    fun saveCartDraftId(favoriteDraft:Long){
+        repo.saveCartDraftId(favoriteDraft)
+    }
      fun getDraftFavoriteId(customerId: Long) {
         viewModelScope.launch {
-            repo.getDraftFavoriteId(customerId.toString()).collect{
-                _draftFavoriteId.value=it
+            repo.getDraftIds(customerId.toString()).collect{
+                _draftIds.value=it
 
             }
         }

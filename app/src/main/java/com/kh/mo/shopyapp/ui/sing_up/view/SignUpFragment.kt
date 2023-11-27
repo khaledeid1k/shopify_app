@@ -8,6 +8,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import com.kh.mo.shopyapp.MainActivity
 import com.kh.mo.shopyapp.R
 import com.kh.mo.shopyapp.databinding.FragmentSignUpBinding
 import com.kh.mo.shopyapp.model.entity.CustomerEntity
@@ -38,7 +39,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding, SignUpViewModel>() {
 
         createCustomer()
         observeCreateFavoriteDraft()
-        observeSaveFavoriteDraftIdInFireBase()
+        observeSaveFavoriteDraftIdInAndCartDraftIdFireBase()
         observeCreateCustomerResult()
         observeSaveCustomerInFireBaseResult()
 
@@ -162,12 +163,12 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding, SignUpViewModel>() {
     private fun singUpWithFireBase(data: CustomerEntity) {
         viewModel.singUpWithFireBase(
             UserData(
+                userName=binding.userNameValue.text?.trim().toString(),
                 email = data.email,
                 password =binding.passwordValue.text?.trim().toString()
             )
         )
     }
-
     private fun observeCreateCustomerResult() {
         lifecycleScope.launch {
             viewModel.createCustomer.collect {
@@ -206,15 +207,15 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding, SignUpViewModel>() {
                     is ApiState.Failure -> { Log.d("Failure", "observeCreateFavoriteDraft: ${it.msg}") }
                     ApiState.Loading -> {}
                     is ApiState.Success -> {
-                        val draftOrder = it.data
-                        viewModel.saveFavoriteDraftIdInFireBase(draftOrder.customerID,draftOrder.draftId)
+                        viewModel.saveCustomerIdAndFavoriteDraftId(it.data.customerID, it.data.draftId)
+                        viewModel.createCartDraft(DraftOrderRequest(DraftOrderDetailsRequest(customer = CustomerDraftRequest(it.data.customerID))))
                       }
                 }
             }
         }
 
     }
-    private fun observeSaveFavoriteDraftIdInFireBase() {
+    private fun observeSaveFavoriteDraftIdInAndCartDraftIdFireBase() {
         lifecycleScope.launch {
             viewModel.favoriteDraftIdInFireBase.collect {
                 when (it) {
@@ -232,6 +233,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding, SignUpViewModel>() {
 
 
     private fun navigateToHome() {
+        checkIsCustomerLogin()
         Toast.makeText(requireContext(), "Sing Up Successfully ", Toast.LENGTH_SHORT).show()
         findNavController().navigate(
             SignUpFragmentDirections.actionSignUpFragmentToHomeFragment()
@@ -246,4 +248,9 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding, SignUpViewModel>() {
             )
         }
     }
+
+    private  fun checkIsCustomerLogin(){
+        (requireContext() as MainActivity).checkIsLogin(checkCustomerId())
+    }
+    private fun checkCustomerId() = viewModel.getCustomerId() != 0L
 }

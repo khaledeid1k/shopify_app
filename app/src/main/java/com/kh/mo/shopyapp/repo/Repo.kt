@@ -29,10 +29,9 @@ interface Repo {
     suspend fun logout()
     fun checkIsUserLogin():Boolean
      suspend fun createFavoriteDraft(draftOrderRequest: DraftOrderRequest):Flow<ApiState<DraftOrder>>
-    suspend fun saveFavoriteDraftIdInFireBase(customerId:Long,favoriteDraft:Long): Flow<ApiState<String>>
     suspend fun createCustomer(userData: UserData): Flow<ApiState<CustomerEntity>>
     suspend fun singInCustomer(email: String): Flow<ApiState<UserData>>
-    suspend fun getDraftFavoriteId(customerId: String): Flow<ApiState<String?>>
+    suspend fun getDraftIds(customerId: String): Flow<ApiState<List<String>>>
     fun validatePassword(password: String): Validation
     fun validateConfirmPassword(password: String, rePassword: String): Validation
     fun validateEmail(email: String): Validation
@@ -102,8 +101,7 @@ interface Repo {
     suspend fun getImageOrders(productId: Long): Flow<ApiState<ProductResponse>>
     suspend fun setLanguage(language: String)
     suspend fun getCurrentLanguage(): String
-    suspend fun getDraftCartId(customerId: String): Flow<ApiState<String?>>
-    suspend fun saveCartDraftIdInFireBase(customerId:Long, cartDraftId:Long): Flow<ApiState<String>>
+    suspend fun saveCartDraftIdAndFavoriteIdInFireBase(): Flow<ApiState<String>>
     suspend fun getAllProductsInCart(): Flow<ApiState<List<Cart>>>
     fun addProductToCart(product: Product): Flow<ApiState<Boolean>>
     fun updateCartItems(cartList: List<Cart>): Flow<ApiState<List<Cart>>>

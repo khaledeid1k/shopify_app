@@ -78,16 +78,15 @@ class SignInFragment : BaseFragment<FragmentSinginBinding, SignInViewModel>() {
     }
     private fun observeGetDraftFavoriteId(){
         lifecycleScope.launch {
-            viewModel.draftFavoriteId.collect {
+            viewModel.draftIds.collect {
                 when (it) {
-                    is ApiState.Failure -> {                            Log.d("TAG", "observeGetDraftFavoriteId: ${it.msg}")
-                    }
-                    is ApiState.Loading -> {                            Log.d("TAG", "observeGetDraftFavoriteId:Loading ")
-                    }
+                    is ApiState.Failure -> { Log.d("TAG", "observeGetDraftFavoriteId: ${it.msg}") }
+                    is ApiState.Loading -> {Log.d("TAG", "observeGetDraftFavoriteId:Loading ") }
                     is ApiState.Success -> {
-                        it.data?.let { favoriteId ->
+                        it.data.let { draftIds ->
                             Log.d("TAG", "observeGetDraftFavoriteId: ${it.data}")
-                            viewModel.saveFavoriteDraftId(favoriteId.toLong())
+                            viewModel.saveFavoriteDraftId(draftIds[0].toLong())
+                            viewModel.saveCartDraftId(draftIds[1].toLong())
                             navigateToHomeScreen()
                             Toast.makeText(
                                 requireContext(),
