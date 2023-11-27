@@ -49,6 +49,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/from"
+                    android:inputType="numberDecimal"
                     android:id="@+id/et_from"/>
 
 
@@ -70,6 +71,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:hint="@string/to"
+                    android:inputType="numberDecimal"
+
                     android:id="@+id/et_to"/>
 
 

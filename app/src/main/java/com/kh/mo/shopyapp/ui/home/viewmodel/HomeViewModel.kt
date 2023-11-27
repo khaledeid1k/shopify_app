@@ -9,7 +9,7 @@ import com.kh.mo.shopyapp.model.ui.allproducts.Product
 import com.kh.mo.shopyapp.model.ui.maincategory.CustomCollection
 import com.kh.mo.shopyapp.remote.ApiState
 import com.kh.mo.shopyapp.repo.Repo
-import com.kh.mo.shopyapp.repo.mapper.convertToAllProducts
+import com.kh.mo.shopyapp.repo.mapper.convertAllProductsResponseToProducts
 import com.kh.mo.shopyapp.repo.mapper.convertToCustomCollection
 import com.kh.mo.shopyapp.repo.mapper.convertToSmartCollection
 import kotlinx.coroutines.Dispatchers
@@ -96,7 +96,7 @@ class HomeViewModel(private var _irepo: Repo) : ViewModel() {
                     }
                     is ApiState.Success -> {
                         success(it.data)
-                        _productBrand.value = ApiState.Success(it.data.convertToAllProducts())
+                        _productBrand.value = ApiState.Success(it.data.convertAllProductsResponseToProducts())
                         Log.i("ss0", "productBrand:Success")
 
                     }

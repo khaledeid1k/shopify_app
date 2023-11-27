@@ -28,7 +28,7 @@ import com.kh.mo.shopyapp.repo.mapper.convertDraftOrderResponseToProductsIds
 import com.kh.mo.shopyapp.repo.mapper.convertLoginToUserData
 import com.kh.mo.shopyapp.repo.mapper.convertToAddress
 import com.kh.mo.shopyapp.repo.mapper.convertToAddressRequest
-import com.kh.mo.shopyapp.repo.mapper.convertToAllProducts
+import com.kh.mo.shopyapp.repo.mapper.convertAllProductsResponseToProducts
 import com.kh.mo.shopyapp.repo.mapper.convertUserDataToCustomerData
 import com.kh.mo.shopyapp.utils.Constants
 import com.kh.mo.shopyapp.utils.roundTwoDecimals
@@ -366,7 +366,7 @@ class RepoImp private constructor(
                 remoteSource.getAllProducts()
             if (allProducts.isSuccessful) {
                 allProducts.body()
-                    ?.let { emit(ApiState.Success(it.convertToAllProducts()
+                    ?.let { emit(ApiState.Success(it.convertAllProductsResponseToProducts()
                         .map { product->
                             changeProductFavoriteValue(product)
                         })) }
@@ -387,7 +387,7 @@ class RepoImp private constructor(
             if (productsCategory.isSuccessful) {
                 remoteSource.getProductsByCollection(collectionId).body()
                     ?.let {
-                        val list = it.convertToAllProducts()
+                        val list = it.convertAllProductsResponseToProducts()
                             .map { product ->
                                 changeProductFavoriteValue(product)
                             }
@@ -421,7 +421,7 @@ class RepoImp private constructor(
                 remoteSource.filterProductsBySubCollection(collectionId,productType)
             if (productsSubCategory.isSuccessful) {
                 remoteSource.filterProductsBySubCollection(collectionId,productType).body()
-                    ?.let { emit(ApiState.Success(it.convertToAllProducts()
+                    ?.let { emit(ApiState.Success(it.convertAllProductsResponseToProducts()
                         .map { product->
                             changeProductFavoriteValue(product)
                         })) }

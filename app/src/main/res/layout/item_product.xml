@@ -71,13 +71,12 @@
             <CheckBox
                 isFavorite="@{item.isFavorite}"
                 android:id="@+id/image_fav"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 android:background="@drawable/round_rate"
                 android:layout_margin="@dimen/_5sdp"
-                android:padding="@dimen/_4sdp"
                 android:button="@drawable/selector_favourite_item"
                 android:onClick="@{()->listener.onClickFavouriteIcon(item)}"
                 />

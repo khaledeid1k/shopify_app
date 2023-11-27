@@ -115,7 +115,7 @@ fun MainCategoryResponse.convertToCustomCollection(): List<CustomCollection> {
 }
 
 
-fun AllProductsResponse.convertToAllProducts(): List<Product> {
+fun AllProductsResponse.convertAllProductsResponseToProducts(): List<Product> {
 
     return this.products.map { it ->
         Product(

@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity() {
         controller.addOnDestinationChangedListener { _, navDestination, _ ->
             if (navDestination.id == R.id.homeFragment ||
                 navDestination.id == R.id.cartFragment ||
-                navDestination.id == R.id.searchFragment ||
+                navDestination.id == R.id.searchResultFragment ||
                 navDestination.id == R.id.favoritesFragment ||
                 navDestination.id == R.id.profileFragment ) {
                 binding.bottomNavigation.makeVisible()

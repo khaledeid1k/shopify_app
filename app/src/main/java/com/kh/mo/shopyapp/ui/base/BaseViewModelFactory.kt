@@ -16,6 +16,7 @@ import com.kh.mo.shopyapp.ui.product.product_details.viewmodel.ProductDetailsVie
 import com.kh.mo.shopyapp.ui.product.product_reviews.viewmodel.ProductReviewsViewModel
 import com.kh.mo.shopyapp.ui.product.viewmodel.ProductViewModel
 import com.kh.mo.shopyapp.ui.profile.viewmodel.ProfileViewModel
+import com.kh.mo.shopyapp.ui.search.viewmodel.SearchResultViewModel
 import com.kh.mo.shopyapp.ui.sing_in.viewmodel.SignInViewModel
 import com.kh.mo.shopyapp.ui.sing_up.viewmodel.SignUpViewModel
 
@@ -37,6 +38,7 @@ class BaseViewModelFactory(private val repo: Repo) : ViewModelProvider.Factory {
             FavoritesViewModel::class.java -> FavoritesViewModel(repo) as T
             OrderViewModel::class.java -> OrderViewModel(repo) as T
             OrderDetailsViewModel::class.java -> OrderDetailsViewModel(repo) as T
+            SearchResultViewModel::class.java -> SearchResultViewModel(repo) as T
             else -> throw Throwable("Unsupported view model")
         }
     }
