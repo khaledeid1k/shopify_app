@@ -14,6 +14,7 @@ import com.kh.mo.shopyapp.model.ui.allproducts.Product
 import com.kh.mo.shopyapp.ui.base.BaseFragment
 import com.kh.mo.shopyapp.ui.category.view.ProductsCategoryAdapter
 import com.kh.mo.shopyapp.ui.favorite.viewmodel.FavoritesViewModel
+import com.kh.mo.shopyapp.utils.createDialog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.flowOn
@@ -31,7 +32,7 @@ class FavoritesFragment : BaseFragment<FragmentFavoritesBinding, FavoritesViewMo
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         getAllFavorites()
-
+        observeDeleteFavorite()
 
     }
 
@@ -50,6 +51,18 @@ class FavoritesFragment : BaseFragment<FragmentFavoritesBinding, FavoritesViewMo
         job=     lifecycleScope .launch {
            viewModel.singleFavorites.collect{
                  navigateToProductDetails(it)
+            }
+        }
+    }
+
+    private fun observeDeleteFavorite(){
+        job=     lifecycleScope .launch {
+            viewModel.deleteFavorites.collect{
+                createDialog(context = requireContext(),
+                title = getString(R.string.are_you_sure),
+                    message = getString(R.string.will_delete_this_from_favorites),
+                    sure = {viewModel.deleteFavoriteById(it)}, cancel = {})
+
             }
         }
     }
