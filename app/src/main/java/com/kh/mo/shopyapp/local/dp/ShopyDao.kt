@@ -20,9 +20,8 @@ interface ShopyDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveFavorite(favoriteEntity:FavoriteEntity):Long
 
-
-    @Query("SELECT COALESCE(COUNT(*), 0) FROM favorite_table WHERE productId = :productId")
-    suspend fun checkProductInFavorite(productId: Long): Int
+    @Query("SELECT COALESCE(COUNT(*), 0) FROM favorite_table WHERE productId = :productId AND customerId = :customerId")
+    suspend fun checkProductInFavorite(productId: Long,customerId: Long): Int
 
     @Query("SELECT * FROM favorite_table WHERE productId = :productId LIMIT 1")
     fun getSingleFavorite(productId: Long): Flow<FavoriteEntity>

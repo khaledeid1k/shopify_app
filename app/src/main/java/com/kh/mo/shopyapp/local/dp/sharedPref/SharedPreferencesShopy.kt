@@ -18,7 +18,7 @@ inline fun SharedPreferences.editMe(operation: (SharedPreferences.Editor) -> Uni
 }
 
 var SharedPreferences.customerId
-    get() = getLong(Constants.CUSTOMER_ID, 0)
+    get() = getLong(Constants.CUSTOMER_ID, 0L)
     set(value) {
 
         editMe {
@@ -27,11 +27,11 @@ var SharedPreferences.customerId
     }
 
 var SharedPreferences.favoriteDraftId
-    get() = getLong(Constants.DRAFT_ID, 0)
+    get() = getLong(Constants.DRAFT_FAVORITE_ID, 0)
     set(value) {
 
         editMe {
-            it.putLong(Constants.DRAFT_ID, value)
+            it.putLong(Constants.DRAFT_FAVORITE_ID, value)
         }
     }
 
@@ -48,3 +48,21 @@ var SharedPreferences.currencyUnit: String
     set(value) = editMe {
         it.putString(Constants.CURRENCY_ID, value)
     }
+
+
+var SharedPreferences.email: String?
+    get() = getString(Constants.EMAIL, "")
+    set(value) = editMe {
+        it.putString(Constants.EMAIL, value)
+    }
+
+
+var SharedPreferences.userName: String?
+    get() = getString(Constants.USER_NAME, "")
+    set(value) = editMe {
+        it.putString(Constants.USER_NAME, value)
+    }
+
+var SharedPreferences.clearValues: () -> Unit
+    get() = { this.edit().clear().apply() }
+    set(value) {}

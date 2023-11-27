@@ -67,7 +67,7 @@
                 android:layout_margin="@dimen/_10sdp"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:onClick="@{()->listener.deleteFavorite(item.productId)}"
+                android:onClick="@{()->listener.deleteFavoriteListener(item.productId)}"
 
                 android:src="@drawable/checked_favorite"
                 app:layout_constraintBottom_toBottomOf="parent"

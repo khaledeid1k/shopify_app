@@ -1,12 +1,14 @@
 package com.kh.mo.shopyapp.ui.sing_in.view
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import com.kh.mo.shopyapp.MainActivity
 import com.kh.mo.shopyapp.R
 import com.kh.mo.shopyapp.databinding.FragmentSinginBinding
 import com.kh.mo.shopyapp.model.entity.Validation
@@ -27,11 +29,13 @@ class SignInFragment : BaseFragment<FragmentSinginBinding, SignInViewModel>() {
         super.onViewCreated(view, savedInstanceState)
         observeLoginWithApi()
         observeLoginWithFireBase()
+        observeGetDraftFavoriteId()
         checkEmailValueValidation()
         checkPasswordValidation()
         singInCustomer()
         navigateToSingUp()
         checkIsUserLogin()
+        loginAsGust()
     }
 
    private fun checkIsUserLogin(){
@@ -48,6 +52,7 @@ class SignInFragment : BaseFragment<FragmentSinginBinding, SignInViewModel>() {
                     is ApiState.Success -> {
                         viewModel.singInWithFireBase(
                             UserData(
+                                id=it.data.id,
                                 email = it.data.email,
                                 password = binding.passwordValue.text.toString()
                             )
@@ -65,15 +70,36 @@ class SignInFragment : BaseFragment<FragmentSinginBinding, SignInViewModel>() {
                     is ApiState.Failure -> {}
                     ApiState.Loading -> {}
                     is ApiState.Success -> {
-                        Toast.makeText(requireContext(), "Sing in Successfully", Toast.LENGTH_SHORT)
-                            .show()
-                        navigateToHomeScreen()
+                        viewModel.getDraftFavoriteId(it.data)
                     }
                 }
             }
         }
     }
-
+    private fun observeGetDraftFavoriteId(){
+        lifecycleScope.launch {
+            viewModel.draftIds.collect {
+                when (it) {
+                    is ApiState.Failure -> { Log.d("TAG", "observeGetDraftFavoriteId: ${it.msg}") }
+                    is ApiState.Loading -> {Log.d("TAG", "observeGetDraftFavoriteId:Loading ") }
+                    is ApiState.Success -> {
+                        it.data.let { draftIds ->
+                            Log.d("TAG", "observeGetDraftFavoriteId: ${it.data}")
+                            viewModel.saveFavoriteDraftId(draftIds[0].toLong())
+                            viewModel.saveCartDraftId(draftIds[1].toLong())
+                            navigateToHomeScreen()
+                            Toast.makeText(
+                                requireContext(),
+                                "Sing in Successfully",
+                                Toast.LENGTH_SHORT
+                            )
+                                .show()
+                    }
+                }
+            }
+        }
+        }
+    }
     private fun printValidationResult(validation: Validation, field: TextInputLayout) {
         binding.apply {
             if (validation.isValid) {
@@ -154,10 +180,22 @@ class SignInFragment : BaseFragment<FragmentSinginBinding, SignInViewModel>() {
         }
     }
     private fun navigateToHomeScreen(){
-
+        checkIsCustomerLogin()
         findNavController().navigate(
             SignInFragmentDirections.actionSignInFragmentToHomeFragment()
         )
+
     }
+
+    private fun loginAsGust(){
+        binding.loginAsGust.setOnClickListener {
+            navigateToHomeScreen()
+        }
+    }
+
+  private  fun checkIsCustomerLogin(){
+        (requireContext() as MainActivity).checkIsLogin(checkCustomerId())
+    }
+    private fun checkCustomerId() = viewModel.getCustomerId() != 0L
 
 }

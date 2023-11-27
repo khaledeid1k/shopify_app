@@ -28,6 +28,9 @@ class FavoritesViewModel(private val repo:Repo):ViewModel(),
     private val _singleFavorites = MutableSharedFlow<Product>()
     val singleFavorites: SharedFlow<Product> = _singleFavorites
 
+    private val _deleteFavorites = MutableSharedFlow<Long>()
+    val deleteFavorites: SharedFlow<Long> = _deleteFavorites
+
     init {
         getAllFavorites()
 
@@ -53,11 +56,17 @@ class FavoritesViewModel(private val repo:Repo):ViewModel(),
          }
      }
 
-    override fun deleteFavorite(productId: Long) {
+    override fun deleteFavoriteListener(productId: Long) {
+        viewModelScope.launch {
+        _deleteFavorites.emit(productId)
+        }
+
+    }
+
+    fun deleteFavoriteById(productId: Long){
         viewModelScope.launch {
             repo.deleteFavorite(productId)
         }
     }
-
 
 }

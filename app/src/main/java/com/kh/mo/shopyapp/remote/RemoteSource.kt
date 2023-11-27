@@ -40,8 +40,7 @@ interface RemoteSource {
     ): Response<DiscountCodeResponse>
 
     suspend fun getProductsOfSpecificBrand(brandName: String): Response<AllProductsResponse>
-    suspend fun saveFavoriteDraftIdInFireBase(customerId:Long,favoriteDraft:Long): Task<Void>
-    suspend fun getDraftFavoriteId(customerId: String): Task<DocumentSnapshot>
+    suspend fun getDraftIds(customerId: String): Task<DocumentSnapshot>
     suspend fun createCustomer(customerDataRequest: CustomerDataRequest): Response<CustomerResponse>
     suspend fun singInCustomer(email: String): Response<Login>
     suspend fun getCurrencyRate(): Rates

@@ -10,7 +10,6 @@ import com.kh.mo.shopyapp.model.request.UserData
 import com.kh.mo.shopyapp.model.response.ads.DiscountCodeResponse
 import com.kh.mo.shopyapp.model.response.allproducts.AllProductsResponse
 import com.kh.mo.shopyapp.model.response.allproducts.ProductResponse
-import com.kh.mo.shopyapp.model.response.allproducts.VariantResponse
 import com.kh.mo.shopyapp.model.response.barnds.BrandsResponse
 import com.kh.mo.shopyapp.model.response.currency.Rates
 import com.kh.mo.shopyapp.model.response.maincategory.MainCategoryResponse
@@ -124,7 +123,10 @@ class RepoImp private constructor(
             emit(ApiState.Failure("An error occurred: ${it.message}"))
         }
 
-    override suspend fun logout() { remoteSource.logout() }
+    override suspend fun logout() {
+        remoteSource.logout()
+    clearSharedPreferences()
+    }
 
     override fun checkIsUserLogin()=remoteSource.checkIsUserLogin()
     override suspend fun createFavoriteDraft(draftOrderRequest: DraftOrderRequest): Flow<ApiState<DraftOrder>> {
@@ -148,14 +150,7 @@ class RepoImp private constructor(
 
     }
 
-    override suspend fun saveFavoriteDraftIdInFireBase(customerId:Long,favoriteDraft:Long)=
-        flow {
-            emit(ApiState.Loading)
-            remoteSource.saveFavoriteDraftIdInFireBase(customerId, favoriteDraft).await()
-            emit(ApiState.Success("Sign up Successfully "))
-        }.catch {
-            emit(ApiState.Failure("An error occurred: ${it.message}"))
-        }
+
 
 
 
@@ -196,17 +191,17 @@ class RepoImp private constructor(
         emit(ApiState.Failure(it.message!!))
     }
 
-    override suspend fun getDraftFavoriteId(customerId: String) =
+    override suspend fun getDraftIds(customerId: String) =
         flow {
-            var favoriteId=""
+            var draftIDs= mutableListOf<String>()
             emit(ApiState.Loading)
-            remoteSource.getDraftFavoriteId (customerId).addOnSuccessListener {
+            remoteSource.getDraftIds (customerId).addOnSuccessListener {
                 if(it.exists()){
-                    favoriteId=   it.data?.get(Constants.DRAFT_FAVORITE_ID) as String
+                    draftIDs.add(it.data?.get(Constants.DRAFT_FAVORITE_ID) as String)
+                    draftIDs.add(it.data?.get(Constants.DRAFT_CART_ID) as String)
                 }
             }.await()
-            if(favoriteId.isEmpty()){emit(ApiState.Failure("Account Not exist"))}
-            else{emit(ApiState.Success(favoriteId)) }
+            emit(ApiState.Success(draftIDs))
         }.catch {
             emit(ApiState.Failure("An error occurred: ${it.message}"))
         }
@@ -619,7 +614,7 @@ class RepoImp private constructor(
 
         return flow {
             emit(ApiState.Loading)
-            emit(ApiState.Success(localSource.checkProductInFavorite(productId)))
+            emit(ApiState.Success(localSource.checkProductInFavorite(productId,getCustomerId())))
         }.catch {
             emit(ApiState.Failure(it.message!!))
         }
@@ -644,7 +639,24 @@ class RepoImp private constructor(
 
     override fun saveCartDraftId(draftId: Long) = localSource.saveCartDraftId(draftId)
     override fun getLocalCartDraftId() = localSource.getCartDraftId()
+    override fun saveCustomerEmail(customerEmail: String) {
+        localSource.saveCustomerEmail(customerEmail)
+    }
 
+    override fun getCustomerEmail(): String {
+        return localSource.getCustomerEmail()
+    }
+
+    override fun saveCustomerUserName(customerUserName: String) {
+       localSource.saveCustomerUserName(customerUserName)
+    }
+
+    override fun getCustomerUserName(): String {
+        return localSource.getCustomerUserName()
+    }
+    override fun clearSharedPreferences() {
+        localSource.clearSharedPreferences()
+    }
     private suspend fun changeProductFavoriteValue(product: Product): Product {
         checkProductInFavorite(product.id).collect {
             if (it is ApiState.Success) {
@@ -785,39 +797,14 @@ class RepoImp private constructor(
         return localSource.getCurrentLanguage()
     }
 
-    override suspend fun getDraftCartId(customerId: String): Flow<ApiState<String?>> {
-        return flow {
-            if (getLocalCartDraftId().toInt() != -1) {
-                Log.i(TAG, "getDraftCartId: from local")
-                emit(ApiState.Success(getLocalCartDraftId().toString()))
-                return@flow
-            }
-            var favoriteId: String? = ""
-            emit(ApiState.Loading)
-            remoteSource.getDraftFavoriteId(customerId).addOnSuccessListener {
-                if (it.exists()) {
-                    favoriteId = it.data?.get(Constants.DRAFT_CART_ID) as String?
-                }
-            }.await()
-            if (favoriteId.isNullOrEmpty()) {
-                emit(ApiState.Failure(Constants.NO_CART_MESSAGE))
-            } else {
-                emit(ApiState.Success(favoriteId))
-            }
-        }.catch {
-            emit(ApiState.Failure("An exception occurred: ${it.message}"))
-        }
-    }
 
-    override suspend fun saveCartDraftIdInFireBase(
-        customerId: Long,
-        cartDraftId: Long
+    override suspend fun saveCartDraftIdAndFavoriteIdInFireBase(
     ): Flow<ApiState<String>> {
         return flow {
             emit(ApiState.Loading)
-            remoteSource.saveCartDraftIdInFireBase(customerId, cartDraftId, getFavoriteDraftId())
+            remoteSource.saveCartDraftIdInFireBase(getCustomerId(), getLocalCartDraftId(), getFavoriteDraftId())
                 .await()
-            emit(ApiState.Success("cart created Successfully "))
+            emit(ApiState.Success("Draft created Successfully "))
         }.catch {
             emit(ApiState.Failure("An error occurred: ${it.message}"))
         }
