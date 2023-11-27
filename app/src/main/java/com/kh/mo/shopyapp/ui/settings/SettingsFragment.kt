@@ -30,6 +30,7 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, ProfileViewModel>
     private val TAG = "TAG SettingsFragment"
     private lateinit var _view: View
     override val layoutIdFragment = R.layout.fragment_settings
+    lateinit var settingAdapter: SettingAdapter
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -41,9 +42,9 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, ProfileViewModel>
 
     private val listener: (Int) -> Unit = { position ->
         when (position) {
-            0 -> showAddresses()
-            1 -> showCurrencies()
-            2 -> showLanguages()
+            0 -> showCurrencies()
+            1 -> showLanguages()
+            2 -> showAddresses()
             3 -> sync()
             4 -> upload()
             5 -> logOut()
@@ -126,14 +127,18 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, ProfileViewModel>
 
     private fun setSettingsList() {
         val settingList = listOf(
-            SettingsModel(resources.getString(R.string.address), R.drawable.ic_location),
             SettingsModel(resources.getString(R.string.currency), R.drawable.ic_currency),
             SettingsModel(resources.getString(R.string.language), R.drawable.ic_language),
+            SettingsModel(resources.getString(R.string.address), R.drawable.ic_location),
             SettingsModel(resources.getString(R.string.sync), R.drawable.sync),
             SettingsModel(resources.getString(R.string.upload), R.drawable.upload),
             SettingsModel(resources.getString(R.string.log_out), R.drawable.logout,Color.RED,Color.RED)
         )
-        val settingAdapter = SettingAdapter(settingList, listener)
+        settingAdapter = if (viewModel.checkIsUserLogin()) {
+            SettingAdapter(settingList, listener)
+        } else {
+            SettingAdapter(settingList.take(2), listener)
+        }
         binding.settingRecyclerV.adapter = settingAdapter
     }
 
@@ -240,7 +245,7 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, ProfileViewModel>
                         Log.i(TAG, "observerLanguageOnDialog: change value to $firstTime")
                     } else {
                         dialog.dismiss()
-                        requireActivity().recreate()
+                        //requireActivity().recreate()
                     }
                 }
             }

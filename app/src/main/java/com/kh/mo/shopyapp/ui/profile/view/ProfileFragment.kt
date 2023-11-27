@@ -38,43 +38,44 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
                     R.id.action_profileFragment_to_orderFragment
                 )
         }
-        observeUserData()
+        checkUserState()
         showSingleOrder()
 
 
     }
 
-    private fun observeUserData() {
-        collectLatestFlowOnLifecycle(viewModel.userData) { userData ->
-            userData?.let {
+    private fun checkUserState() {
+        if (viewModel.checkIsUserLogin()){
                 showLoggedInViews()
-                setUserData(userData)
-            } ?: showNotLoggedInViews()
+                setUserData()
+        } else {
+            showNotLoggedInViews()
         }
     }
 
     private fun showLoggedInViews() {
         binding.apply {
             notLoggedInCard.visibility = View.GONE
-            settingsBtn.visibility = View.VISIBLE
             ordersCard.visibility = View.VISIBLE
             wishListCard.visibility = View.VISIBLE
+            imageProfile.setImageResource(R.drawable.image_person)
         }
     }
 
-    private fun setUserData(data: UserData) {
+    private fun setUserData() {
         binding.apply {
-            userNameTV.text = data.userName
-            emailTV.text = data.email
+            userNameTV.text = viewModel.getCustomerUserName()
+            emailTV.text = viewModel.getCustomerEmail()
         }
     }
 
     private fun showNotLoggedInViews() {
         binding.apply {
             notLoggedInCard.visibility = View.VISIBLE
-            settingsBtn.visibility = View.GONE
             ordersCard.visibility = View.GONE
             wishListCard.visibility = View.GONE
+            userNameTV.text = getString(R.string.guest)
+            imageProfile.setImageResource(R.drawable.ic_profile)
         }
     }
 
