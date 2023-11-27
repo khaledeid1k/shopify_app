@@ -1,11 +1,8 @@
 package com.kh.mo.shopyapp.model.response.allproducts
 
 
-import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import kotlinx.parcelize.Parcelize
 
-@Parcelize
 data class OptionResponse(
     @SerializedName("id")
     val id: Long,
@@ -17,4 +14,4 @@ data class OptionResponse(
     val productId: Long,
     @SerializedName("values")
     val values: List<String>
-) : Parcelable
+)

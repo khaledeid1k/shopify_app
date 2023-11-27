@@ -11,6 +11,7 @@ interface LocalSource {
     fun validateEmail(email: String): Validation
     fun validateUserName(userName: String): Validation
     suspend fun getAllFavorites(customerId: Long): Flow<List<FavoriteEntity>>
+    fun getSingleFavorite(productId: Long): Flow<FavoriteEntity>
     suspend fun deleteFavorite(productId: Long)
     suspend fun saveFavorite(favoriteEntity: FavoriteEntity): Long
     suspend fun checkProductInFavorite(productId: Long): Int

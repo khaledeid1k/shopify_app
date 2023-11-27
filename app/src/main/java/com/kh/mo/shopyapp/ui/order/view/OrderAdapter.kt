@@ -8,13 +8,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.kh.mo.shopyapp.R
 import com.kh.mo.shopyapp.databinding.ItemOrderBinding
-import com.kh.mo.shopyapp.home.view.BrandsAdapter
-import com.kh.mo.shopyapp.model.response.barnds.SmartCollection
-import com.kh.mo.shopyapp.model.ui.order.Order
-import com.kh.mo.shopyapp.model.ui.order.OrderAndImage
+import com.kh.mo.shopyapp.model.ui.orderdetails.Order
+
 
 class OrderAdapter(var context: Context,private val onClick:(Long) -> Unit) :
     ListAdapter<Order, OrderAdapter.OrdersVH>(RecyclerDiffUtilOrdersItem()) {
@@ -44,7 +41,7 @@ class OrderAdapter(var context: Context,private val onClick:(Long) -> Unit) :
             binding.apply {
 
                 tvProductNameOrder.text = currentItem.id.toString()
-                tvProductDateOrder.text=currentItem.customerResponse?.createdAt
+                tvProductDateOrder.text=currentItem.customer?.createdAt
                 tvProductPriceOrder.text=currentItem.subtotalPrice+"EGP"
                 tvProductSizeOrder.text=currentItem.lineItems?.get(0)?.quantity.toString()+"x"
                 binding.imageProductOrder.setImageResource(R.drawable.placeholder_products)

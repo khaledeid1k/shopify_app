@@ -24,5 +24,7 @@ interface ShopyDao {
     @Query("SELECT COALESCE(COUNT(*), 0) FROM favorite_table WHERE productId = :productId")
     suspend fun checkProductInFavorite(productId: Long): Int
 
+    @Query("SELECT * FROM favorite_table WHERE productId = :productId LIMIT 1")
+    fun getSingleFavorite(productId: Long): Flow<FavoriteEntity>
 
 }

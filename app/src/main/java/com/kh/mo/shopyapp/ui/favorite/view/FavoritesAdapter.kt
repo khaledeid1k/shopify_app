@@ -8,10 +8,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kh.mo.shopyapp.R
 import com.kh.mo.shopyapp.databinding.ItemFavoriteBinding
 import com.kh.mo.shopyapp.model.ui.Favorite
-import com.kh.mo.shopyapp.model.ui.allproducts.Product
 import com.kh.mo.shopyapp.ui.base.BaseDataDiffUtil
 
-class FavoritesAdapter(val favoritesAdapterListener:FavoritesAdapterListener) : RecyclerView.Adapter<FavoritesAdapter.FavoritesViewHolder>() {
+class FavoritesAdapter(private val favoritesAdapterListener:FavoritesAdapterListener,
+                       private   val onClickFavorite:(Int)->Unit) : RecyclerView.Adapter<FavoritesAdapter.FavoritesViewHolder>() {
 
     private var favorites: List<Favorite> = emptyList()
 
@@ -29,6 +29,9 @@ class FavoritesAdapter(val favoritesAdapterListener:FavoritesAdapterListener) : 
     override fun onBindViewHolder(holder: FavoritesViewHolder, position: Int) {
         val favorite = favorites[position]
         holder.bind(favorite,favoritesAdapterListener)
+        holder.itemView.setOnClickListener {
+            onClickFavorite(position)
+        }
     }
 
     override fun getItemCount()=favorites.size
@@ -47,7 +50,7 @@ class FavoritesAdapter(val favoritesAdapterListener:FavoritesAdapterListener) : 
     fun setItems(newItems: List<Favorite>) {
         val diffResult = DiffUtil.calculateDiff(
             BaseDataDiffUtil(favorites, newItems,
-                checkItemsTheSame=    { oldItemPosition, newItemPosition -> favorites[oldItemPosition].id == newItems[newItemPosition].id },
+                checkItemsTheSame=    { oldItemPosition, newItemPosition -> favorites[oldItemPosition].productId == newItems[newItemPosition].productId },
                 checkContentsTheSame=  { oldItemPosition, newItemPosition -> favorites[oldItemPosition] == newItems[newItemPosition] }
             )
         )

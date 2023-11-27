@@ -42,12 +42,12 @@ class ProductsOfBrandsAdapter(var context: Context, val onClickListener: (positi
             binding.apply {
                 tvProductNameOrder.text = currentItem.title
                 Glide.with(context)
-                    .load(currentItem.images.get(0).src)
+                    .load(currentItem.productImages.get(0).src)
                     .placeholder(R.drawable.placeholder_products)
                     .into(imageProductOrder)
-                Log.i("HomeFragment", currentItem.images.get(0).src.toString())
+                Log.i("HomeFragment", currentItem.productImages.get(0).src.toString())
 
-                tvProductPriceOrder.text = currentItem.variants.get(0).price
+                tvProductPriceOrder.text = currentItem.productVariants.get(0).price
             }
 
         }

@@ -37,14 +37,13 @@
             android:defaultValue="NAN" />
     </fragment>
     <fragment
-        android:id="@+id/searchFragment"
-        android:name="com.kh.mo.shopyapp.ui.search.view.SearchFragment"
-        android:label="fragment_search"
-        tools:layout="@layout/fragment_search" />
-    <fragment
         android:id="@+id/favoritesFragment"
         android:name="com.kh.mo.shopyapp.ui.favorite.view.FavoritesFragment"
-        android:label="FavoritesFragment" />
+        android:label="FavoritesFragment" >
+        <action
+            android:id="@+id/action_favoritesFragment_to_productFragment"
+            app:destination="@id/productFragment" />
+    </fragment>
     <fragment
         android:id="@+id/productFragment"
         android:name="com.kh.mo.shopyapp.ui.product.view.ProductFragment"
@@ -179,4 +178,8 @@
             app:argType="long" />
 
     </fragment>
+    <fragment
+        android:id="@+id/searchResultFragment"
+        android:name="com.kh.mo.shopyapp.ui.search.view.SearchResultFragment"
+        android:label="SearchResultFragment" />
 </navigation>

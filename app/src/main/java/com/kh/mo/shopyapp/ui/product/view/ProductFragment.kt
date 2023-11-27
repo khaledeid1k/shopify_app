@@ -32,7 +32,7 @@ class ProductFragment : BaseFragment<FragmentProductBinding, ProductViewModel>()
 
    private fun tightIndicatorToViewPagerOfImages(){
        binding.apply {
-           productImagesViewPager.adapter = ProductImagesAdapter(receiveProduct().images)
+           productImagesViewPager.adapter = ProductImagesAdapter(receiveProduct().productImages)
            dotsIndicator.setViewPager2(productImagesViewPager)
        }
 

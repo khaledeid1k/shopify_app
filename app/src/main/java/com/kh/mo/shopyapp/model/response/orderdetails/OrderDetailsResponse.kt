@@ -5,5 +5,5 @@ import com.google.gson.annotations.SerializedName
 
 data class OrderDetailsResponse(
     @SerializedName("order")
-    val order: Order?
+    val order: OrderResponse?
 )

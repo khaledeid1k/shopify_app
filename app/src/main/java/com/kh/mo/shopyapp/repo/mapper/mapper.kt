@@ -1,30 +1,15 @@
 package com.kh.mo.shopyapp.repo.mapper
 
-import com.kh.mo.shopyapp.model.entity.CustomerEntity
-import com.kh.mo.shopyapp.model.entity.FavoriteEntity
-import com.kh.mo.shopyapp.model.entity.ImageEntity
-import com.kh.mo.shopyapp.model.entity.OptionEntity
-import com.kh.mo.shopyapp.model.entity.VariantEntity
-import com.kh.mo.shopyapp.model.request.AddressRequest
-import com.kh.mo.shopyapp.model.request.CustomerDataRequest
-import com.kh.mo.shopyapp.model.request.CustomerDraftRequest
-import com.kh.mo.shopyapp.model.request.DraftOrderDetailsRequest
-import com.kh.mo.shopyapp.model.request.DraftOrderRequest
-import com.kh.mo.shopyapp.model.request.LineItems
-import com.kh.mo.shopyapp.model.request.UserData
+import com.kh.mo.shopyapp.model.entity.*
+import com.kh.mo.shopyapp.model.request.*
 import com.kh.mo.shopyapp.model.response.address.AddressResponse
-import com.kh.mo.shopyapp.model.response.allproducts.AllProductsResponse
-import com.kh.mo.shopyapp.model.response.allproducts.ImageResponse
-import com.kh.mo.shopyapp.model.response.allproducts.OptionResponse
-import com.kh.mo.shopyapp.model.response.allproducts.ProductResponse
-import com.kh.mo.shopyapp.model.response.allproducts.VariantResponse
+import com.kh.mo.shopyapp.model.response.allproducts.*
 import com.kh.mo.shopyapp.model.response.barnds.BrandsResponse
 import com.kh.mo.shopyapp.model.response.barnds.SmartCollection
 import com.kh.mo.shopyapp.model.response.create_customer.CustomerResponse
 import com.kh.mo.shopyapp.model.response.draft_order.DraftOrderResponse
 import com.kh.mo.shopyapp.model.response.login.Login
 import com.kh.mo.shopyapp.model.response.maincategory.MainCategoryResponse
-import com.kh.mo.shopyapp.model.response.order.OrderResponse
 import com.kh.mo.shopyapp.model.response.order.OrdersResponse
 import com.kh.mo.shopyapp.model.response.orderdetails.OrderDetailsResponse
 import com.kh.mo.shopyapp.model.response.osm.NominatimResponse
@@ -33,10 +18,13 @@ import com.kh.mo.shopyapp.model.ui.Cart
 import com.kh.mo.shopyapp.model.ui.DraftOrder
 import com.kh.mo.shopyapp.model.ui.Favorite
 import com.kh.mo.shopyapp.model.ui.allproducts.Product
+import com.kh.mo.shopyapp.model.ui.allproducts.ProductImage
+import com.kh.mo.shopyapp.model.ui.allproducts.ProductOption
+import com.kh.mo.shopyapp.model.ui.allproducts.ProductVariant
 import com.kh.mo.shopyapp.model.ui.maincategory.CustomCollection
 import com.kh.mo.shopyapp.model.ui.order.Image
-import com.kh.mo.shopyapp.model.ui.order.LineItem
-import com.kh.mo.shopyapp.model.ui.order.Order
+import com.kh.mo.shopyapp.model.ui.orderdetails.LineItem
+import com.kh.mo.shopyapp.model.ui.orderdetails.Order
 
 fun CustomerResponse.convertCustomerResponseToCustomerEntity(): CustomerEntity {
     return CustomerEntity(
@@ -123,17 +111,18 @@ fun MainCategoryResponse.convertToCustomCollection(): List<CustomCollection> {
 }
 
 
-fun AllProductsResponse.convertToAllProducts(): List<Product> {
+fun AllProductsResponse.convertAllProductsResponseToProducts(): List<Product> {
 
-    return this.products.map {
+    return this.products.map { it ->
         Product(
             id = it.id,
-            images = it.images,
+            productImages = it.images.map { ProductImage(it.src) },
             productType = it.productType,
-            image = it.image,
+            productImage = ProductImage(it.image.src),
             title = it.title,
-            variants = it.variants,
-            options = it.options,
+            productVariants = it.variants.map { ProductVariant(
+                it.id!!,it.price!!, it.productId!!, it.title!!,it.weightUnit!!) },
+            productOptions =it.options.map {  ProductOption(it.values)} ,
             vendor = it.vendor,
             status = it.status
         )
@@ -153,27 +142,41 @@ fun DraftOrderResponse.convertDraftOrderResponseToDraftOrder(): DraftOrder {
 fun OrdersResponse.convertToOrders(): List<Order> {
     return this.orders?.map {
         Order(
-            it.currency, it.totalPrice, it.customerResponse, it.lineItems, it.subtotalPrice, it.id
+            it.confirmed,
+            it.contactEmail,
+            it.createdAt,
+            it.currency,
+            it.currentTotalDiscounts,
+            it.currentTotalPrice,
+            it.customerResponse,
+            it.id,
+            it.lineItems,
+            it.name,
+            it.orderNumber,
+            it.paymentGatewayNames,
+            it.phone,
+            it.refunds,
+            it.subtotalPrice,
+            it.totalDiscounts,
+            it.totalPrice,
+            it.totalTax
         )
     } ?: emptyList()
 }
 
-fun OrderResponse.convertToLineItem(): List<LineItem> {
-    return this.lineItems?.map {
-        LineItem(
-            it.quantity, it.title, it.price, it.id
-        )
-    } ?: emptyList()
-}
-
+//fun OrderResponse.convertToLineItem(): List<LineItem> {
+//    return this.lineItems?.map {
+//        LineItem(
+//            it.quantity, it.title, it.price,it.id)
+//    } ?: emptyList()
+//}
 fun OrderDetailsResponse.convertToLineItem(): List<LineItem> {
     return this.order?.lineItems?.map {
         LineItem(
-            it.quantity, it.title, it.price, it.productId
+            it.giftCard, it.name, it.price, it.productId, it.quantity, it.title, it.totalDiscount
         )
     } ?: emptyList()
 }
-
 fun ProductResponse.convertToImage(): List<Image> {
     return this.images.map {
         Image(it.src)
@@ -181,16 +184,20 @@ fun ProductResponse.convertToImage(): List<Image> {
 }
 
 
+
+
+
 fun Product.convertProductToFavoriteEntity(customerId: Long): FavoriteEntity {
     return FavoriteEntity(
         id,
         customerId,
-        images.convertImagesToImagesEntity(),
+        productImages.map { ImageEntity(it.src) },
         productType,
-        image.convertImageToImageEntity(),
+        ImageEntity(productImage.src),
         title,
-        variants.convertVariantsToVariantsEntity(),
-        options.convertOptionsToOptionsEntity(),
+        productVariants.map { VariantEntity(
+            it.id,it.price, it.productId, it.title,it.weightUnit)},
+        productOptions.map { OptionEntity(it.values) },
         vendor,
         status
     )
@@ -228,7 +235,7 @@ fun List<OptionResponse>.convertOptionsToOptionsEntity(): List<OptionEntity> {
 
 
 fun List<FavoriteEntity>.convertFavoritesEntityToDraftOrderRequest(customerId: Long): DraftOrderRequest {
-    return DraftOrderRequest(
+  return  DraftOrderRequest(
         DraftOrderDetailsRequest(
             map {
                 LineItems(product_id = it.productId.toString(), variant_id = it.variants[0].id)
@@ -241,13 +248,13 @@ fun List<FavoriteEntity>.convertFavoritesEntityToDraftOrderRequest(customerId: L
 
 fun List<FavoriteEntity>.convertFavoritesEntityToFavorites(): List<Favorite> {
     return map {
-        Favorite(it.productId, it.image.src, it.title, it.variants[0].price!!)
+        Favorite(it.productId,it.image.src,it.title, it.variants[0].price!!)
     }
 
 }
 
 fun DraftOrderResponse.convertDraftOrderResponseToProductsIds(): List<Long> {
-    return draft_order.line_items.map { it.product_id!! }
+   return draft_order.line_items.map { it.product_id!! }
 }
 
 fun AllProductsResponse.convertAllProductsResponseToProductsIds(customerId: Long): List<FavoriteEntity> {
@@ -255,17 +262,24 @@ fun AllProductsResponse.convertAllProductsResponseToProductsIds(customerId: Long
         FavoriteEntity(
             it.id,
             customerId,
-            it.images.convertImagesToImagesEntity(),
+            it.images.convertImagesToImagesEntity() ,
             it.productType,
             ImageEntity(it.image.src.toString()),
             it.title,
-            it.variants.map { v ->
-                VariantEntity(v.id, v.price, v.productId, v.title, v.weightUnit)
-            },
+            it.variants.map { v->
+                VariantEntity(v.id,v.price,v.productId,v.title,v.weightUnit)
+            } ,
             it.options.convertOptionsToOptionsEntity(),
-            it.vendor, it.status
-        )
+            it.vendor,it.status)
     }
+}
+
+fun FavoriteEntity.convertFavoriteEntityToProduct():Product{
+    return Product(productId,images.map { ProductImage(it.src) },
+        productType, ProductImage(image.src),title,variants.map { ProductVariant(
+            it.id?:0L,it.price.toString(), it.productId?:0L, it.title.toString(),it.weightUnit.toString()) },
+    options.map { ProductOption(it.values) },vendor.toString(),status.toString())
+
 }
 
 fun DraftOrderResponse.convertToCartItems(): List<Cart> =
@@ -282,7 +296,7 @@ fun DraftOrderResponse.convertToCartItems(): List<Cart> =
     }
 
 fun Product.convertToLineItemRequest(): LineItems {
-    return LineItems(product_id = this.id.toString(), variant_id = this.variants[0].id)
+    return LineItems(product_id = this.id.toString(), variant_id = this.productVariants [0].id)
 }
 
 fun List<com.kh.mo.shopyapp.model.response.draft_order.LineItem>.convertToLineItemRequest(): List<LineItems> {

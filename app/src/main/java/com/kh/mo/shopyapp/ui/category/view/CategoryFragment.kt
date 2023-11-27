@@ -19,7 +19,6 @@ import com.kh.mo.shopyapp.model.ui.allproducts.Product
 import com.kh.mo.shopyapp.remote.ApiState
 import com.kh.mo.shopyapp.ui.base.BaseFragment
 import com.kh.mo.shopyapp.ui.category.viewmodel.CategoryViewModel
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 
@@ -104,7 +103,6 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding, CategoryViewModel
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 
             }
-
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 val searchText = p0.toString().trim()
                 val filteredList = productList.filter { brand ->
@@ -128,14 +126,12 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding, CategoryViewModel
                 if (minPrice.isBlank() && maxPrice.isBlank()) {
                     minPrice = "0"
                     maxPrice = "10000"
-
-
                 } else if (maxPrice.isBlank()) {
                     maxPrice = "10000"
                 } else {
                     minPrice = "0"
                 }
-                products.variants[0].price!!.split(" ")[0].toDouble() in minPrice.toDouble()..maxPrice.toDouble()
+                products.productVariants[0].price!!.toDouble() in minPrice.toDouble()..maxPrice.toDouble()
             }
             if (filteredPrice.isEmpty()) {
                 binding.lottiNoProduct.visibility = LottieAnimationView.VISIBLE
@@ -154,7 +150,7 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding, CategoryViewModel
 
     }
 
-    //2
+
     private fun getSubCategories() {
         lifecycleScope.launch {
             viewModel.product.collect { apiState ->
@@ -172,7 +168,7 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding, CategoryViewModel
             }
         }
     }
-//3
+
     private fun getCollectionProducts() {
         lifecycleScope.launch {
             viewModel.productCollection.collect {
@@ -191,7 +187,7 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding, CategoryViewModel
 
         }
     }
-//1
+
     private fun filterProductsBySubCollection() {
         lifecycleScope.launch {
             viewModel.filterProductCollection.collect {

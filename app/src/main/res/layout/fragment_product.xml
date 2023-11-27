@@ -37,7 +37,7 @@
         <TextView
             android:id="@+id/product_price"
             style="@style/sub_title"
-            android:text="@{product.variants.get(0).price}"
+            android:text="@{product.productVariants.get(0).price}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/_15sdp"
