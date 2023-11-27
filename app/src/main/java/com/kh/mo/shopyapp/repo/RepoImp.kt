@@ -23,6 +23,7 @@ import com.kh.mo.shopyapp.model.ui.DraftOrder
 import com.kh.mo.shopyapp.model.ui.Review
 import com.kh.mo.shopyapp.model.ui.SupportedCurrencies
 import com.kh.mo.shopyapp.model.ui.allproducts.Product
+import com.kh.mo.shopyapp.model.ui.allproducts.ProductVariant
 import com.kh.mo.shopyapp.remote.ApiState
 import com.kh.mo.shopyapp.remote.RemoteSource
 import com.kh.mo.shopyapp.repo.mapper.convertAllProductsResponseToProductsIds
@@ -33,7 +34,6 @@ import com.kh.mo.shopyapp.repo.mapper.convertLoginToUserData
 import com.kh.mo.shopyapp.repo.mapper.convertToAddress
 import com.kh.mo.shopyapp.repo.mapper.convertToAddressRequest
 import com.kh.mo.shopyapp.repo.mapper.convertAllProductsResponseToProducts
-import com.kh.mo.shopyapp.repo.mapper.convertToAllProducts
 import com.kh.mo.shopyapp.repo.mapper.convertToCartItems
 import com.kh.mo.shopyapp.repo.mapper.convertToDraftOrderRequest
 import com.kh.mo.shopyapp.repo.mapper.convertToLineItemRequest
@@ -730,22 +730,22 @@ class RepoImp private constructor(
         val currencyUnit = getCurrencyUnit()
         val result = productList.asFlow().map { product ->
             val variantWithCalculatedPrice =
-                calculatePriceForEachVariant(product.variants, currencyUnit, rates)
-            product.copy(variants = variantWithCalculatedPrice)
+                calculatePriceForEachVariant(product.productVariants, currencyUnit, rates)
+            product.copy(productVariants = variantWithCalculatedPrice)
         }.toList()
         return result
     }
 
     private suspend fun calculatePriceForEachVariant(
-        variantList: List<VariantResponse>,
+        variantList: List<ProductVariant>,
         currencyUnit: String,
         rates: Rates
-    ): List<VariantResponse> {
+    ): List<ProductVariant> {
         return variantList.asFlow()
             .map { variantResponse ->
                 val calculatedPrice =
                     variantResponse.price?.let { convertCurrency(it, currencyUnit, rates) }
-                variantResponse.copy(price = calculatedPrice)
+                variantResponse.copy(price = calculatedPrice.toString())
             }.toList()
     }
 

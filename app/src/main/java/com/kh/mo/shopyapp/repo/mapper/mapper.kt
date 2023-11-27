@@ -2,21 +2,14 @@ package com.kh.mo.shopyapp.repo.mapper
 
 import com.kh.mo.shopyapp.model.entity.*
 import com.kh.mo.shopyapp.model.request.*
-import com.kh.mo.shopyapp.model.response.orderdetails.OrderDetailsResponse
 import com.kh.mo.shopyapp.model.response.address.AddressResponse
-import com.kh.mo.shopyapp.model.response.allproducts.AllProductsResponse
-import com.kh.mo.shopyapp.model.response.allproducts.ImageResponse
-import com.kh.mo.shopyapp.model.response.allproducts.OptionResponse
-import com.kh.mo.shopyapp.model.response.allproducts.VariantResponse
-import com.kh.mo.shopyapp.model.response.allproducts.ProductResponse
+import com.kh.mo.shopyapp.model.response.allproducts.*
 import com.kh.mo.shopyapp.model.response.barnds.BrandsResponse
 import com.kh.mo.shopyapp.model.response.barnds.SmartCollection
 import com.kh.mo.shopyapp.model.response.create_customer.CustomerResponse
 import com.kh.mo.shopyapp.model.response.draft_order.DraftOrderResponse
 import com.kh.mo.shopyapp.model.response.login.Login
 import com.kh.mo.shopyapp.model.response.maincategory.MainCategoryResponse
-import com.kh.mo.shopyapp.model.response.osm.NominatimResponse
-import com.kh.mo.shopyapp.model.ui.Address
 import com.kh.mo.shopyapp.model.response.order.OrderResponse
 import com.kh.mo.shopyapp.model.response.order.OrdersResponse
 import com.kh.mo.shopyapp.model.response.orderdetails.OrderDetailsResponse
@@ -284,7 +277,7 @@ fun DraftOrderResponse.convertToCartItems(): List<Cart> =
     }
 
 fun Product.convertToLineItemRequest(): LineItems {
-    return LineItems(product_id = this.id.toString(), variant_id = this.variants[0].id)
+    return LineItems(product_id = this.id.toString(), variant_id = this.productVariants [0].id)
 }
 
 fun List<com.kh.mo.shopyapp.model.response.draft_order.LineItem>.convertToLineItemRequest(): List<LineItems> {
