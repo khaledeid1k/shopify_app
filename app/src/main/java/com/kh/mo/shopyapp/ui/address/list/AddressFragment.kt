@@ -70,16 +70,10 @@ class AddressFragment : BottomSheetDialogFragment() {
         init()
         observerUserId()
         binding.openMapBtn.setOnClickListener {
-            mView?.let { _view ->
-                val action = SettingsFragmentDirections.actionSettingsFragmentToMapFragment(userId.value?:0L)
-                Navigation.findNavController(_view)
-                    .navigate(action)
-                this.dismiss()
-            } ?: Toast.makeText(
-                requireContext(),
-                getString(R.string.something_went_wrong_please_try_again_later),
-                Toast.LENGTH_SHORT
-            ).show()
+            openMap()
+        }
+        binding.loginBtn.setOnClickListener {
+            openMap()
         }
     }
 
@@ -153,5 +147,18 @@ class AddressFragment : BottomSheetDialogFragment() {
             addressAdapter.submitList(addressList)
             openMapBtn.visibility = View.VISIBLE
         }
+    }
+
+    private fun openMap() {
+        mView?.let { _view ->
+            val action = SettingsFragmentDirections.actionSettingsFragmentToMapFragment(userId.value?:0L)
+            Navigation.findNavController(_view)
+                .navigate(action)
+            this.dismiss()
+        } ?: Toast.makeText(
+            requireContext(),
+            getString(R.string.something_went_wrong_please_try_again_later),
+            Toast.LENGTH_SHORT
+        ).show()
     }
 }

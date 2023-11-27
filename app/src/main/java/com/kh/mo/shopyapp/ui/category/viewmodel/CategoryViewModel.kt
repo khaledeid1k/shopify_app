@@ -1,5 +1,6 @@
 package com.kh.mo.shopyapp.ui.category.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kh.mo.shopyapp.model.ui.allproducts.Product
@@ -10,6 +11,7 @@ import com.kh.mo.shopyapp.ui.category.view.ProductsCategoryAdapter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class CategoryViewModel(private var _irepo: Repo) : ViewModel(),
@@ -26,6 +28,10 @@ class CategoryViewModel(private var _irepo: Repo) : ViewModel(),
         MutableStateFlow<ApiState<List<Product>>>(ApiState.Loading)
     val filterProductCollection: StateFlow<ApiState<List<Product>>> = _filterProductCollection
 
+    private val _addToCartState: MutableStateFlow<ApiState<Boolean>> =
+        MutableStateFlow(ApiState.Loading)
+    val addToCartState: StateFlow<ApiState<Boolean>>
+        get() = _addToCartState
 
     init {
         getSubCategories()
@@ -50,6 +56,7 @@ class CategoryViewModel(private var _irepo: Repo) : ViewModel(),
 
 
     fun filterProductsBySubCollection(collectionId: Long, productType: String) {
+        Log.i(TAG, "filterProductsBySubCollection: $collectionId, $productType")
         viewModelScope.launch(Dispatchers.IO) {
             _irepo.filterProductsBySubCollection(collectionId, productType).collect {
                 _filterProductCollection.value = it
@@ -84,6 +91,14 @@ class CategoryViewModel(private var _irepo: Repo) : ViewModel(),
         }
 
 
+    }
+
+    fun addProductToCart(product: Product) {
+        viewModelScope.launch(Dispatchers.IO) {
+            _irepo.addProductToCart(product).collectLatest {
+                _addToCartState.value = it
+            }
+        }
     }
 
 

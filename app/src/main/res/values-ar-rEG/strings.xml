@@ -36,6 +36,9 @@
     <string name="dollar_currency">$</string>
     <string name="checkout">المراجعة</string>
     <string name="address">العنوان</string>
+    <string name="log_out">تسجيل الخروج</string>
+    <string name="upload">رفع</string>
+    <string name="sync">مزامنة</string>
     <string name="edit">تعديل</string>
     <string name="Products">المنتجات</string>
     <string name="confirm">تاكيد</string>
@@ -95,6 +98,8 @@
     <string name="location_disabled">تحديد الموقع غير مفعل</string>
     <string name="location_disabled_message">من فضل شغل تحديد الموقع للوصول الى موقعك الحالي</string>
     <string name="set_default_address">اجعلة الموقع الرئيسي</string>
+    <string name="warning">"انتبة "</string>
+    <string name="warning_meesage">"تاكد من رفع البيانات الخاصه بك قبل تسجيل الخروج"</string>
     <string name="currency">العملة</string>
     <string name="egp_currency">(EGP) الجنية المصري</string>
     <string name="usd_currency">(USD) الدولار الامريكي</string>
@@ -102,4 +107,7 @@
     <string name="eur_currency">(EUR) اليورو</string>
     <string name="change_currency_to">"تم تغيير العملة الى "</string>
     <string name="language">اللغة</string>
+    <string name="english">English</string>
+    <string name="arabic">العربية</string>
+    <string name="change_language_to">تم تغيير اللغة الى </string>
 </resources>

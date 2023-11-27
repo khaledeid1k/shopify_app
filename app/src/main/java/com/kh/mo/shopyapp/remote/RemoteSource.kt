@@ -74,4 +74,7 @@ interface RemoteSource {
     suspend fun getOrdersByCustomerID(customerId: Long): Response<OrdersResponse>
     suspend fun getOrderByID(orderId: Long): Response<OrderDetailsResponse>
     suspend fun getImageOrders(productId: Long): Response<ProductResponse>
+    suspend fun createCartDraft(draftOrderRequest: DraftOrderRequest): Response<DraftOrderResponse>
+    suspend fun saveCartDraftIdInFireBase(customerId:Long,cartDraftId:Long, favoriteDraft: Long): Task<Void>
+    suspend fun getAllProductIdsInCart(cartId: String): Response<DraftOrderResponse>
 }

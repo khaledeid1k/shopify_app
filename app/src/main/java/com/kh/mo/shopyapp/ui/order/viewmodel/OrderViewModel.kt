@@ -19,20 +19,20 @@ class OrderViewModel(private var _irepo: Repo) : ViewModel() {
     private val _orders = MutableStateFlow<ApiState<List<Order>>>(ApiState.Loading)
     val orders: StateFlow<ApiState<List<Order>>> = _orders
 
-    private val _imageOrders = MutableStateFlow<ApiState<List<Image>>>(ApiState.Loading)
-    val imageOrders: StateFlow<ApiState<List<Image>>> = _imageOrders
+
 
 
 
 
     init {
-
+        getOrders()
 
     }
 
-    fun getOrders(customerId: Long) {
+    fun getOrders() {
+
         viewModelScope.launch(Dispatchers.IO) {
-            _irepo.getOrdersByCustomerID(customerId).collect {
+            _irepo.getOrdersByCustomerID( _irepo.getCustomerId()).collect {
                 when (it) {
                     is ApiState.Failure -> {
                         Log.i(TAG, "Failure")
@@ -49,24 +49,7 @@ class OrderViewModel(private var _irepo: Repo) : ViewModel() {
         }
     }
 
-    fun getImageOrder(productId: Long) {
-        viewModelScope.launch(Dispatchers.IO) {
-            _irepo.getImageOrders(productId).collect {
-                when (it) {
-                    is ApiState.Failure -> {
-                        Log.i(TAG, "Failure")
-                    }
-                    is ApiState.Loading -> {
-                        Log.i(TAG, "Loading")
-                    }
-                    is ApiState.Success -> {
-                        Log.i(TAG, "Success:${it.data.images.get(0).src}")
-                        _imageOrders.value = ApiState.Success(it.data.convertToImage())
-                    }
-                }
-            }
-        }
-    }
+
 
 
 }

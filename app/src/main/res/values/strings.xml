@@ -106,4 +106,9 @@
     <string name="eur_currency">Euro (EUR)</string>
     <string name="change_currency_to">"currency changed to "</string>
     <string name="language">Language</string>
+    <string name="english">English</string>
+    <string name="arabic">العربية</string>
+    <string name="change_language_to">Language changed to </string>
+    <string name="total">Total</string>
+    <string name="free_shipping">Free Shipping</string>
 </resources>

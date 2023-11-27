@@ -5,16 +5,20 @@ import com.kh.mo.shopyapp.local.LocalSource
 import com.kh.mo.shopyapp.model.entity.CustomerEntity
 import com.kh.mo.shopyapp.model.entity.FavoriteEntity
 import com.kh.mo.shopyapp.model.request.DraftOrderRequest
+import com.kh.mo.shopyapp.model.request.LineItems
 import com.kh.mo.shopyapp.model.request.UserData
 import com.kh.mo.shopyapp.model.response.ads.DiscountCodeResponse
 import com.kh.mo.shopyapp.model.response.allproducts.AllProductsResponse
 import com.kh.mo.shopyapp.model.response.allproducts.ProductResponse
+import com.kh.mo.shopyapp.model.response.allproducts.VariantResponse
 import com.kh.mo.shopyapp.model.response.barnds.BrandsResponse
 import com.kh.mo.shopyapp.model.response.currency.Rates
+import com.kh.mo.shopyapp.model.response.draft_order.DraftOrderResponse
 import com.kh.mo.shopyapp.model.response.maincategory.MainCategoryResponse
 import com.kh.mo.shopyapp.model.response.order.OrdersResponse
 import com.kh.mo.shopyapp.model.response.orderdetails.OrderDetailsResponse
 import com.kh.mo.shopyapp.model.ui.Address
+import com.kh.mo.shopyapp.model.ui.Cart
 import com.kh.mo.shopyapp.model.ui.DraftOrder
 import com.kh.mo.shopyapp.model.ui.Review
 import com.kh.mo.shopyapp.model.ui.SupportedCurrencies
@@ -29,6 +33,10 @@ import com.kh.mo.shopyapp.repo.mapper.convertLoginToUserData
 import com.kh.mo.shopyapp.repo.mapper.convertToAddress
 import com.kh.mo.shopyapp.repo.mapper.convertToAddressRequest
 import com.kh.mo.shopyapp.repo.mapper.convertAllProductsResponseToProducts
+import com.kh.mo.shopyapp.repo.mapper.convertToAllProducts
+import com.kh.mo.shopyapp.repo.mapper.convertToCartItems
+import com.kh.mo.shopyapp.repo.mapper.convertToDraftOrderRequest
+import com.kh.mo.shopyapp.repo.mapper.convertToLineItemRequest
 import com.kh.mo.shopyapp.repo.mapper.convertUserDataToCustomerData
 import com.kh.mo.shopyapp.utils.Constants
 import com.kh.mo.shopyapp.utils.roundTwoDecimals
@@ -36,8 +44,12 @@ import com.kh.mo.shopyapp.utils.toEUR
 import com.kh.mo.shopyapp.utils.toGBP
 import com.kh.mo.shopyapp.utils.toUSD
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.tasks.await
 
 class RepoImp private constructor(
@@ -391,15 +403,10 @@ class RepoImp private constructor(
                             .map { product ->
                                 changeProductFavoriteValue(product)
                             }
-//                        list.forEach {product ->
-//                            product.productVariants.forEach { variant ->
-//                                variant.price = variant.price?.let {price ->
-//                                    checkCurrencyUnitAndCalculatePrice(price)
-//                                }
-//                            }
-//                        }
+                        val result = checkCurrencyUnitAndCalculatePrice(list)
+                        Log.i(TAG, "emitting result")
                         emit(
-                            ApiState.Success(list)
+                            ApiState.Success(result)
                         )
                     }
             } else {
@@ -420,7 +427,7 @@ class RepoImp private constructor(
             val productsSubCategory =
                 remoteSource.filterProductsBySubCollection(collectionId,productType)
             if (productsSubCategory.isSuccessful) {
-                remoteSource.filterProductsBySubCollection(collectionId,productType).body()
+                productsSubCategory.body()
                     ?.let { emit(ApiState.Success(it.convertAllProductsResponseToProducts()
                         .map { product->
                             changeProductFavoriteValue(product)
@@ -635,6 +642,9 @@ class RepoImp private constructor(
       return  localSource.getCustomerId()
     }
 
+    override fun saveCartDraftId(draftId: Long) = localSource.saveCartDraftId(draftId)
+    override fun getLocalCartDraftId() = localSource.getCartDraftId()
+
     private suspend fun changeProductFavoriteValue(product: Product): Product {
         checkProductInFavorite(product.id).collect {
             if (it is ApiState.Success) {
@@ -706,9 +716,41 @@ class RepoImp private constructor(
         }
     }
 
-    private suspend fun checkCurrencyUnitAndCalculatePrice(price: String): String {
+    private suspend fun checkCurrencyUnitAndCalculateCartPrice(cartList: List<Cart>): List<Cart> {
         val rates = getLatestCurrencyRates()
-        return when (getCurrencyUnit()) {
+        val currencyUnit = getCurrencyUnit()
+        val result = cartList.asFlow().map { product ->
+            product.copy(price = product.price?.let { convertCurrency(it, currencyUnit, rates) })
+        }.toList()
+        return result
+    }
+
+    private suspend fun checkCurrencyUnitAndCalculatePrice(productList: List<Product>): List<Product> {
+        val rates = getLatestCurrencyRates()
+        val currencyUnit = getCurrencyUnit()
+        val result = productList.asFlow().map { product ->
+            val variantWithCalculatedPrice =
+                calculatePriceForEachVariant(product.variants, currencyUnit, rates)
+            product.copy(variants = variantWithCalculatedPrice)
+        }.toList()
+        return result
+    }
+
+    private suspend fun calculatePriceForEachVariant(
+        variantList: List<VariantResponse>,
+        currencyUnit: String,
+        rates: Rates
+    ): List<VariantResponse> {
+        return variantList.asFlow()
+            .map { variantResponse ->
+                val calculatedPrice =
+                    variantResponse.price?.let { convertCurrency(it, currencyUnit, rates) }
+                variantResponse.copy(price = calculatedPrice)
+            }.toList()
+    }
+
+    private fun convertCurrency(price: String, currencyUnit: String, rates: Rates): String {
+        return when (currencyUnit) {
             SupportedCurrencies.USD.value -> {
                 price.toDouble()
                     .toUSD(rates.EGP.toDouble())
@@ -732,6 +774,126 @@ class RepoImp private constructor(
             else -> {
                 "$price \u0045\u00A3"
             }
+        }
+    }
+
+    override suspend fun setLanguage(language: String) {
+        localSource.changeLanguage(language)
+    }
+
+    override suspend fun getCurrentLanguage(): String {
+        return localSource.getCurrentLanguage()
+    }
+
+    override suspend fun getDraftCartId(customerId: String): Flow<ApiState<String?>> {
+        return flow {
+            if (getLocalCartDraftId().toInt() != -1) {
+                Log.i(TAG, "getDraftCartId: from local")
+                emit(ApiState.Success(getLocalCartDraftId().toString()))
+                return@flow
+            }
+            var favoriteId: String? = ""
+            emit(ApiState.Loading)
+            remoteSource.getDraftFavoriteId(customerId).addOnSuccessListener {
+                if (it.exists()) {
+                    favoriteId = it.data?.get(Constants.DRAFT_CART_ID) as String?
+                }
+            }.await()
+            if (favoriteId.isNullOrEmpty()) {
+                emit(ApiState.Failure(Constants.NO_CART_MESSAGE))
+            } else {
+                emit(ApiState.Success(favoriteId))
+            }
+        }.catch {
+            emit(ApiState.Failure("An exception occurred: ${it.message}"))
+        }
+    }
+
+    override suspend fun saveCartDraftIdInFireBase(
+        customerId: Long,
+        cartDraftId: Long
+    ): Flow<ApiState<String>> {
+        return flow {
+            emit(ApiState.Loading)
+            remoteSource.saveCartDraftIdInFireBase(customerId, cartDraftId, getFavoriteDraftId())
+                .await()
+            emit(ApiState.Success("cart created Successfully "))
+        }.catch {
+            emit(ApiState.Failure("An error occurred: ${it.message}"))
+        }
+    }
+
+    override suspend fun getAllProductsInCart(cartId: String): Flow<ApiState<List<Cart>>> {
+        return flow {
+            emit(ApiState.Loading)
+            val response = remoteSource.getAllProductIdsInCart(cartId)
+            if (response.isSuccessful) {
+                response.body()?.let {
+                    val cartList = it.convertToCartItems().filter { cart -> cart.productId != null }
+                    val listWithImages = getImagesForCart(cartList)
+                    val listWithConvertedCurrencies = checkCurrencyUnitAndCalculateCartPrice(listWithImages)
+                    emit(ApiState.Success(listWithConvertedCurrencies))
+                } ?: emit(ApiState.Failure("Null response"))
+            } else {
+                emit(ApiState.Failure("api failure: ${response.message()}"))
+            }
+        }.catch {
+            emit(ApiState.Failure("exception: ${it.message}"))
+        }
+    }
+
+    private suspend fun getImagesForCart(cartList: List<Cart>): List<Cart> {
+        var resultList = cartList
+        val productIds = cartList.map { cart ->
+            cart.productId
+        }.joinToString(",")
+        getListOfSpecificProductsIds(productIds).collectLatest {
+            if (it is ApiState.Success) {
+                Log.i(
+                    TAG,
+                    "get images: ${it.data.map { favoriteEntity -> "${favoriteEntity.productId} : ${favoriteEntity.image}" }}"
+                )
+                resultList = cartList.asFlow()
+                    .map { value: Cart ->
+                        val item = it.data
+                            .filter { favoriteEntity ->
+                                favoriteEntity.productId == value.productId
+                            }[0]
+                        value.copy(imageSrc = item.image.src)
+                    }.toList()
+            }
+        }
+        return resultList
+    }
+
+    override fun addProductToCart(product: Product): Flow<ApiState<Boolean>> {
+        return flow {
+            val allCartItems = remoteSource.getAllProductIdsInCart(getLocalCartDraftId().toString())
+            if (allCartItems.isSuccessful) {
+                allCartItems.body()
+                    ?.let {
+                        val lineItemsRequestList = mutableListOf<LineItems>(product.convertToLineItemRequest())
+                        lineItemsRequestList.addAll(it.draft_order.line_items.convertToLineItemRequest())
+                        val addToCartResponse =
+                            remoteSource.backUpDraftFavorite(
+                                lineItemsRequestList.convertToDraftOrderRequest(
+                                    getCustomerId()
+                                ),
+                                getLocalCartDraftId()
+                            )
+                        if (addToCartResponse.isSuccessful){
+                            addToCartResponse.body()?.let {
+                                emit(ApiState.Success(true))
+                            } ?: emit(ApiState.Failure("null response"))
+                        } else {
+                            emit(ApiState.Failure("api error ${addToCartResponse.message()}"))
+                        }
+                } ?: emit(ApiState.Failure("null response"))
+            } else {
+                emit(ApiState.Failure("api error ${allCartItems.message()}"))
+            }
+        }. catch {
+            emit(ApiState.Failure("exception " + it.message.toString()))
         }
     }
 

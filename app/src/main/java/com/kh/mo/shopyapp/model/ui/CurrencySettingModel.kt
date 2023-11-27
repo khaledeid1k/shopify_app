@@ -5,3 +5,9 @@ data class CurrencySettingModel(
     val key: SupportedCurrencies,
     var isThePreference: Boolean = false
 )
+
+data class LanguageSettingModel(
+    val title: String,
+    val key: SupportedLanguages,
+    var isThePreference: Boolean = false
+)

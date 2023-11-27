@@ -1,13 +1,10 @@
 package com.kh.mo.shopyapp.repo
 
 import com.kh.mo.shopyapp.model.entity.CustomerEntity
+import com.kh.mo.shopyapp.model.entity.FavoriteEntity
 import com.kh.mo.shopyapp.model.entity.Validation
-import com.kh.mo.shopyapp.model.request.AddressRequest
-import com.kh.mo.shopyapp.model.entity.*
-import com.kh.mo.shopyapp.model.ui.Address
 import com.kh.mo.shopyapp.model.request.DraftOrderRequest
 import com.kh.mo.shopyapp.model.request.UserData
-import com.kh.mo.shopyapp.model.response.address.AddressResponse
 import com.kh.mo.shopyapp.model.response.ads.DiscountCodeResponse
 import com.kh.mo.shopyapp.model.response.allproducts.AllProductsResponse
 import com.kh.mo.shopyapp.model.response.allproducts.ProductResponse
@@ -16,6 +13,8 @@ import com.kh.mo.shopyapp.model.response.draft_order.DraftOrderResponse
 import com.kh.mo.shopyapp.model.response.maincategory.MainCategoryResponse
 import com.kh.mo.shopyapp.model.response.order.OrdersResponse
 import com.kh.mo.shopyapp.model.response.orderdetails.OrderDetailsResponse
+import com.kh.mo.shopyapp.model.ui.Address
+import com.kh.mo.shopyapp.model.ui.Cart
 import com.kh.mo.shopyapp.model.ui.DraftOrder
 import com.kh.mo.shopyapp.model.ui.Review
 import com.kh.mo.shopyapp.model.ui.allproducts.Product
@@ -86,10 +85,17 @@ interface Repo {
     fun saveCustomerId(customerId: Long)
     fun getFavoriteDraftId(): Long
     fun getCustomerId(): Long
+    fun saveCartDraftId(draftId: Long)
+    fun getLocalCartDraftId(): Long
     suspend fun getCurrencyUnit(): String
     suspend fun setCurrencyUnit(unit: String): String
     suspend fun getOrdersByCustomerID(customerId: Long): Flow<ApiState<OrdersResponse>>
     suspend fun getOrderById(id: Long): Flow<ApiState<OrderDetailsResponse>>
     suspend fun getImageOrders(productId: Long): Flow<ApiState<ProductResponse>>
-
+    suspend fun setLanguage(language: String)
+    suspend fun getCurrentLanguage(): String
+    suspend fun getDraftCartId(customerId: String): Flow<ApiState<String?>>
+    suspend fun saveCartDraftIdInFireBase(customerId:Long, cartDraftId:Long): Flow<ApiState<String>>
+    suspend fun getAllProductsInCart(cartId: String): Flow<ApiState<List<Cart>>>
+    fun addProductToCart(product: Product): Flow<ApiState<Boolean>>
 }

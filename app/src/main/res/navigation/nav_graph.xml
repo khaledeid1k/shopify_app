@@ -67,7 +67,7 @@
     </fragment>
     <fragment
         android:id="@+id/cartFragment"
-        android:name="com.kh.mo.shopyapp.ui.cart.CartFragment"
+        android:name="com.kh.mo.shopyapp.ui.cart.view.CartFragment"
         android:label="fragment_cart"
         tools:layout="@layout/fragment_cart" />
     <fragment
@@ -176,6 +176,7 @@
         <argument
             android:name="orderId"
             app:argType="long" />
+
     </fragment>
     <fragment
         android:id="@+id/searchResultFragment"

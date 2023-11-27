@@ -3,6 +3,7 @@ package com.kh.mo.shopyapp.local
 import android.content.Context
 import com.kh.mo.shopyapp.local.dp.ShopyDataBase
 import com.kh.mo.shopyapp.local.dp.sharedPref.SharedPreferencesShopy
+import com.kh.mo.shopyapp.local.dp.sharedPref.cartDraftId
 import com.kh.mo.shopyapp.local.dp.sharedPref.currencyUnit
 import com.kh.mo.shopyapp.local.dp.sharedPref.customerId
 import com.kh.mo.shopyapp.local.dp.sharedPref.favoriteDraftId
@@ -11,9 +12,11 @@ import com.kh.mo.shopyapp.local.validation.ValidationSateImpl
 import com.kh.mo.shopyapp.model.entity.FavoriteEntity
 import com.kh.mo.shopyapp.model.entity.LineItemEntity
 import com.kh.mo.shopyapp.model.entity.Validation
+import com.yariksoffice.lingver.Lingver
 import kotlinx.coroutines.flow.Flow
+import java.util.Locale
 
-class LocalSourceImp private constructor(context: Context):LocalSource {
+class LocalSourceImp private constructor(val context: Context):LocalSource {
     private val validationSateImpl= ValidationSateImpl(AuthInputValidatorImpl())
    private val shopyDao=ShopyDataBase.getShopyDataBaseDataBaseInstance(context).shopyDao()
     private val sharedPreferencesShopy =    SharedPreferencesShopy(context).customPreference()
@@ -72,6 +75,14 @@ class LocalSourceImp private constructor(context: Context):LocalSource {
        return sharedPreferencesShopy.favoriteDraftId
 
     }
+    override fun saveCartDraftId(draftId: Long) {
+        sharedPreferencesShopy.cartDraftId = draftId
+    }
+
+    override fun getCartDraftId(): Long {
+       return sharedPreferencesShopy.cartDraftId
+
+    }
 
     override fun getCurrencyUnit(): String {
         return sharedPreferencesShopy.currencyUnit
@@ -79,6 +90,14 @@ class LocalSourceImp private constructor(context: Context):LocalSource {
 
     override fun setCurrencyUnit(unit: String) {
         sharedPreferencesShopy.currencyUnit = unit
+    }
+
+    override fun changeLanguage(language: String) {
+        Lingver.getInstance().setLocale(context, language)
+    }
+
+    override fun getCurrentLanguage(): String {
+        return Locale.getDefault().language
     }
 
     companion object {

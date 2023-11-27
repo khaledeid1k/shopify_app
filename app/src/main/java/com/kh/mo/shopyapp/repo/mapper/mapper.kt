@@ -19,6 +19,10 @@ import com.kh.mo.shopyapp.model.response.osm.NominatimResponse
 import com.kh.mo.shopyapp.model.ui.Address
 import com.kh.mo.shopyapp.model.response.order.OrderResponse
 import com.kh.mo.shopyapp.model.response.order.OrdersResponse
+import com.kh.mo.shopyapp.model.response.orderdetails.OrderDetailsResponse
+import com.kh.mo.shopyapp.model.response.osm.NominatimResponse
+import com.kh.mo.shopyapp.model.ui.Address
+import com.kh.mo.shopyapp.model.ui.Cart
 import com.kh.mo.shopyapp.model.ui.DraftOrder
 import com.kh.mo.shopyapp.model.ui.Favorite
 import com.kh.mo.shopyapp.model.ui.allproducts.Product
@@ -264,4 +268,35 @@ fun FavoriteEntity.convertFavoriteEntityToProduct():Product{
             it.id?:0L,it.price.toString(), it.productId?:0L, it.title.toString(),it.weightUnit.toString()) },
     options.map { ProductOption(it.values) },vendor.toString(),status.toString())
 
+}
+
+fun DraftOrderResponse.convertToCartItems(): List<Cart> =
+    this.draft_order.line_items.map { item ->
+        Cart(
+            quantity = item.quantity,
+            title = item.title,
+            price = item.price,
+            productId = item.product_id,
+            variantId = item.variant_id,
+            variantTitle = item.variant_title,
+            imageSrc = ""
+        )
+    }
+
+fun Product.convertToLineItemRequest(): LineItems {
+    return LineItems(product_id = this.id.toString(), variant_id = this.variants[0].id)
+}
+
+fun List<com.kh.mo.shopyapp.model.response.draft_order.LineItem>.convertToLineItemRequest(): List<LineItems> {
+    return this.map {
+        LineItems(variant_id = it.variant_id)
+    }
+}
+
+fun List<LineItems>.convertToDraftOrderRequest(customerId: Long): DraftOrderRequest {
+    return DraftOrderRequest(
+        DraftOrderDetailsRequest(
+            this.distinctBy { lineItems -> lineItems.variant_id }, CustomerDraftRequest(customerId)
+        )
+    )
 }

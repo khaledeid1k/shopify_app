@@ -1,120 +1,142 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="@dimen/_8sdp">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/cartItemImgV"
-        android:layout_width="@dimen/_75sdp"
-        android:layout_height="@dimen/_75sdp"
-        android:layout_marginStart="@dimen/_8sdp"
-        android:elevation="8dp"
-        android:layout_marginBottom="@dimen/_8sdp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:src="@drawable/product_placeholder"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <data>
 
-    <TextView
-        android:id="@+id/cartItemTitleTxtV"
-        style="@style/sub_title"
-        android:layout_width="0dp"
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_8sdp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/cartItemImgV"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="Samsung Galaxy Watch 6" />
+        android:padding="@dimen/_8sdp">
 
-    <TextView
-        android:id="@+id/cartItemVariantTxtV"
-        style="@style/sub_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@id/cartItemTitleTxtV"
-        app:layout_constraintTop_toBottomOf="@id/cartItemTitleTxtV"
-        tools:text="Silver" />
-
-    <TextView
-        android:id="@+id/x"
-        style="@style/sub_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_4sdp"
-        android:text="@string/x"
-        android:textColor="@color/orange"
-        app:layout_constraintStart_toEndOf="@id/cartItemVariantTxtV"
-        app:layout_constraintTop_toTopOf="@id/cartItemVariantTxtV" />
-
-    <TextView
-        android:id="@+id/cartItemNumberTxtV"
-        style="@style/sub_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/orange"
-        app:layout_constraintStart_toEndOf="@id/x"
-        app:layout_constraintTop_toTopOf="@id/x"
-        tools:text="3" />
-
-    <TextView
-        android:id="@+id/cartItemPriceTxtV"
-        style="@style/sub_title"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:textColor="?attr/colorPrimary"
-        app:layout_constraintStart_toStartOf="@id/cartItemVariantTxtV"
-        app:layout_constraintBottom_toBottomOf="@id/cartItemImgV"
-        tools:text="33.33" />
-
-    <TextView
-        android:id="@+id/cartItemCurrencyTxtV"
-        style="@style/sub_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="?attr/colorPrimary"
-        app:layout_constraintBottom_toBottomOf="@id/cartItemPriceTxtV"
-        app:layout_constraintStart_toEndOf="@id/cartItemPriceTxtV"
-        app:layout_constraintTop_toTopOf="@id/cartItemPriceTxtV"
-        tools:text="@string/dollar_currency" />
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="@dimen/_4sdp"
-        android:background="@drawable/round_corners"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="@id/cartItemImgV">
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/cartItemImgV"
+            android:layout_width="@dimen/_75sdp"
+            android:layout_height="@dimen/_75sdp"
+            android:layout_marginStart="@dimen/_8sdp"
+            android:elevation="8dp"
+            android:layout_marginVertical="@dimen/_8sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:src="@drawable/product_placeholder"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:id="@+id/cartItemSubBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_sub"
-            android:backgroundTint="?attr/colorBackgroundFloating"
-            android:background="@drawable/round_corners" />
+            android:id="@+id/cartItemDeleteIC"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_delete"
+            android:elevation="@dimen/_8sdp"
+            app:layout_constraintTop_toTopOf="@id/cartItemImgV"
+            app:layout_constraintStart_toStartOf="parent"
+            android:background="@drawable/round_rate"
+            android:backgroundTint="@color/unselected_chip_background_color"
+            android:padding="@dimen/_4sdp" />
 
         <TextView
-            android:id="@+id/cartItemCountTxtV"
+            android:id="@+id/cartItemTitleTxtV"
             style="@style/sub_title"
-            android:textColor="?attr/colorBackgroundFloating"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_8sdp"
-            android:layout_marginEnd="@dimen/_8sdp"
-            android:layout_height="wrap_content"
-            tools:text="1" />
+            android:maxLines="1"
+            android:ellipsize="end"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/cartItemImgV"
+            app:layout_constraintTop_toTopOf="@id/cartItemImgV"
+            tools:text="Samsung Galaxy Watch 6" />
 
-        <ImageView
-            android:id="@+id/cartItemAddBtn"
+        <TextView
+            android:id="@+id/cartItemVariantTxtV"
+            style="@style/sub_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_add"
-            android:backgroundTint="?attr/colorBackgroundFloating"
-            android:background="@drawable/round_corners"/>
+            app:layout_constraintStart_toStartOf="@id/cartItemTitleTxtV"
+            app:layout_constraintTop_toBottomOf="@id/cartItemTitleTxtV"
+            tools:text="Silver" />
 
-    </LinearLayout>
+        <TextView
+            android:id="@+id/x"
+            style="@style/sub_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_4sdp"
+            android:text="@string/x"
+            android:textColor="@color/orange"
+            app:layout_constraintStart_toEndOf="@id/cartItemVariantTxtV"
+            app:layout_constraintTop_toTopOf="@id/cartItemVariantTxtV" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/cartItemQuantityTxtV"
+            style="@style/sub_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/orange"
+            app:layout_constraintStart_toEndOf="@id/x"
+            app:layout_constraintTop_toTopOf="@id/x"
+            tools:text="3" />
+
+        <TextView
+            android:id="@+id/cartItemPriceTxtV"
+            style="@style/sub_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="?attr/colorPrimary"
+            app:layout_constraintStart_toStartOf="@id/cartItemVariantTxtV"
+            app:layout_constraintBottom_toBottomOf="@id/cartItemImgV"
+            tools:text="33.33" />
+
+        <TextView
+            android:id="@+id/cartItemCurrencyTxtV"
+            style="@style/sub_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="?attr/colorPrimary"
+            app:layout_constraintBottom_toBottomOf="@id/cartItemPriceTxtV"
+            app:layout_constraintStart_toEndOf="@id/cartItemPriceTxtV"
+            app:layout_constraintTop_toTopOf="@id/cartItemPriceTxtV"
+            tools:text="@string/dollar_currency" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/_4sdp"
+            android:background="@drawable/round_corners"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/cartItemImgV">
+
+            <ImageView
+                android:id="@+id/cartItemSubBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_sub"
+                android:backgroundTint="?attr/colorBackgroundFloating"
+                android:background="@drawable/round_corners" />
+
+            <TextView
+                android:id="@+id/cartItemCountTxtV"
+                style="@style/sub_title"
+                android:textColor="?attr/colorBackgroundFloating"
+                android:layout_width="wrap_content"
+                android:layout_marginStart="@dimen/_8sdp"
+                android:layout_marginEnd="@dimen/_8sdp"
+                android:layout_height="wrap_content"
+                android:text="1" />
+
+            <ImageView
+                android:id="@+id/cartItemAddBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_add"
+                android:backgroundTint="?attr/colorBackgroundFloating"
+                android:background="@drawable/round_corners" />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

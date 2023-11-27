@@ -21,13 +21,8 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderViewModel>() {
     private lateinit var orderAdapter: OrderAdapter
     private var image=""
    // private lateinit var orderImageAdapter: OrderImageAdapter
-
-    private var customerID:Long=7590081495324L
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.i(TAG,"OnView")
-        viewModel.getOrders(customerID)
         getAllOrders()
         //getImage()
 
@@ -46,11 +41,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderViewModel>() {
                     }
                     is ApiState.Success -> {
                         val data = it.data
-
-
                         Log.i(TAG,data.toString())
-                        viewModel.getImageOrder(data.get(0).lineItems?.get(0)?.productId!!)
-                        getImage()
                         orderAdapter = OrderAdapter(requireContext()) {
                             val action=OrderFragmentDirections.actionOrderFragmentToOrderDetailsFragment(it)
                             Navigation.findNavController(requireView()).navigate(action)
@@ -66,31 +57,5 @@ class OrderFragment : BaseFragment<FragmentOrderBinding, OrderViewModel>() {
 
     }
 
-    fun getImage(){
-        lifecycleScope.launch {
-            viewModel.imageOrders.collect {
-                when (it) {
-                    is ApiState.Failure -> {
-                        Log.i(TAG,"Fail")
-                    }
-                    is ApiState.Loading -> {
-                        Log.i(TAG,"Loading")
 
-                    }
-                    is ApiState.Success -> {
-                        val data = it.data
-                        image=data.get(0).src
-                        Log.i(TAG,image)
-//                        orderImageAdapter = OrderImageAdapter(requireContext())
-//                        orderImageAdapter.submitList(data)
-//                        binding.recyclerOrders.adapter = orderImageAdapter
-//                        Log.i(TAG,data.toString())
-
-
-                    }
-                }
-            }
-
-        }
-    }
 }
