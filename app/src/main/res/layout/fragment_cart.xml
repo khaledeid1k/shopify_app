@@ -43,9 +43,10 @@
             style="@style/sub_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:visibility="invisible"
             app:layout_constraintBottom_toTopOf="@id/cartTotalPriceTxtV"
             app:layout_constraintStart_toStartOf="parent"
-            tools:text="Total" />
+            android:text="@string/total" />
 
         <TextView
             android:id="@+id/cartTotalCurrencyTxtV"
@@ -73,9 +74,10 @@
             style="@style/sub_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            tools:text="Free Shipping" />
+            android:text="@string/free_shipping" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/cartCheckoutBtn"

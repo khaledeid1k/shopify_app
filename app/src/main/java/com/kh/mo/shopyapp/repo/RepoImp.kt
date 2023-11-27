@@ -728,6 +728,15 @@ class RepoImp private constructor(
         }
     }
 
+    private suspend fun checkCurrencyUnitAndCalculateCartPrice(cartList: List<Cart>): List<Cart> {
+        val rates = getLatestCurrencyRates()
+        val currencyUnit = getCurrencyUnit()
+        val result = cartList.asFlow().map { product ->
+            product.copy(price = product.price?.let { convertCurrency(it, currencyUnit, rates) })
+        }.toList()
+        return result
+    }
+
     private suspend fun checkCurrencyUnitAndCalculatePrice(productList: List<Product>): List<Product> {
         val rates = getLatestCurrencyRates()
         val currencyUnit = getCurrencyUnit()
@@ -833,7 +842,9 @@ class RepoImp private constructor(
             if (response.isSuccessful) {
                 response.body()?.let {
                     val cartList = it.convertToCartItems().filter { cart -> cart.productId != null }
-                    emit(ApiState.Success(getImagesForCart(cartList)))
+                    val listWithImages = getImagesForCart(cartList)
+                    val listWithConvertedCurrencies = checkCurrencyUnitAndCalculateCartPrice(listWithImages)
+                    emit(ApiState.Success(listWithConvertedCurrencies))
                 } ?: emit(ApiState.Failure("Null response"))
             } else {
                 emit(ApiState.Failure("api failure: ${response.message()}"))
