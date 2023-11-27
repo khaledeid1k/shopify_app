@@ -18,7 +18,7 @@ inline fun SharedPreferences.editMe(operation: (SharedPreferences.Editor) -> Uni
 }
 
 var SharedPreferences.customerId
-    get() = getLong(Constants.CUSTOMER_ID, 0)
+    get() = getLong(Constants.CUSTOMER_ID, 0L)
     set(value) {
 
         editMe {

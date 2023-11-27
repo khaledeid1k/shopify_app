@@ -90,4 +90,7 @@ class SignInViewModel(private val repo: Repo) : ViewModel() {
             }
         }
     }
+
+    fun getCustomerId()=repo.getCustomerId()
+
 }

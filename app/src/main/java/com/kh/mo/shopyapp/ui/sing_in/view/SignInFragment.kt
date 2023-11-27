@@ -8,6 +8,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import com.kh.mo.shopyapp.MainActivity
 import com.kh.mo.shopyapp.R
 import com.kh.mo.shopyapp.databinding.FragmentSinginBinding
 import com.kh.mo.shopyapp.model.entity.Validation
@@ -34,6 +35,7 @@ class SignInFragment : BaseFragment<FragmentSinginBinding, SignInViewModel>() {
         singInCustomer()
         navigateToSingUp()
         checkIsUserLogin()
+        loginAsGust()
     }
 
    private fun checkIsUserLogin(){
@@ -179,10 +181,22 @@ class SignInFragment : BaseFragment<FragmentSinginBinding, SignInViewModel>() {
         }
     }
     private fun navigateToHomeScreen(){
-
+        checkIsCustomerLogin()
         findNavController().navigate(
             SignInFragmentDirections.actionSignInFragmentToHomeFragment()
         )
+
     }
+
+    private fun loginAsGust(){
+        binding.loginAsGust.setOnClickListener {
+            navigateToHomeScreen()
+        }
+    }
+
+  private  fun checkIsCustomerLogin(){
+        (requireContext() as MainActivity).checkIsLogin(checkCustomerId())
+    }
+    private fun checkCustomerId() = viewModel.getCustomerId() != 0L
 
 }
