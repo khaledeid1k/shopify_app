@@ -100,7 +100,7 @@ class RepoImp private constructor(
             }
 
         }.catch {
-            emit(ApiState.Failure(it.message!!))
+            emit(ApiState.Failure(it.message.toString()))
         }
     }
 
