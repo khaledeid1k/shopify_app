@@ -1,5 +1,6 @@
 package com.kh.mo.shopyapp.ui.settings
 
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -130,7 +131,7 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, ProfileViewModel>
             SettingsModel(resources.getString(R.string.language), R.drawable.ic_language),
             SettingsModel(resources.getString(R.string.sync), R.drawable.sync),
             SettingsModel(resources.getString(R.string.upload), R.drawable.upload),
-            SettingsModel(resources.getString(R.string.log_out), R.drawable.logout)
+            SettingsModel(resources.getString(R.string.log_out), R.drawable.logout,Color.RED,Color.RED)
         )
         val settingAdapter = SettingAdapter(settingList, listener)
         binding.settingRecyclerV.adapter = settingAdapter

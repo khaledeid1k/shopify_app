@@ -28,6 +28,8 @@ class SettingAdapter(
         val settingItem = settingList[position]
         binding.apply {
             settingTitleTxt.text = settingItem.title
+            settingTitleTxt.setTextColor(settingItem.titleColor)
+            goToShow.setColorFilter(settingItem.iconGoColor)
             settingIcon.setImageResource(settingItem.icon)
             settingCard.setOnClickListener {
                 listener(position)
