@@ -50,28 +50,8 @@ class CartFragment : BaseFragment<FragmentCartBinding, CartViewModel>() {
         binding.cartRecyclerV.adapter = cartAdapter
 
         if (viewModel.checkIsUserLogin()) {
-            viewModel.getDraftCartId()
-            observeCartDraftIdState()
-        }
-    }
-
-    private fun observeCartDraftIdState() {
-        collectLatestFlowOnLifecycle(viewModel.draftCartId) { state ->
-            when (state) {
-                is ApiState.Failure -> {
-                    Log.i(TAG, "observeCartDraftIdState: failure ${state.msg}")
-                }
-
-                ApiState.Loading -> {
-                    Log.i(TAG, "observeCartDraftIdState: loading..")
-                }
-
-                is ApiState.Success -> {
-                    Log.i(TAG, "observeCartDraftIdState: success ${state.data}")
-                    viewModel.getAllProductsInCart(state.data)
-                    observeProductListState()
-                }
-            }
+            viewModel.getAllProductsInCart()
+            observeProductListState()
         }
     }
 
@@ -88,8 +68,13 @@ class CartFragment : BaseFragment<FragmentCartBinding, CartViewModel>() {
 
                 is ApiState.Success -> {
                     Log.i(TAG, "observeProductListState: success ${state.data}")
-                    cartAdapter.submitList(state.data)
-                    calculateTotal(state.data)
+                    if (state.data.isEmpty()) {
+                        Toast.makeText(requireContext(), "no data in cart", Toast.LENGTH_SHORT)
+                            .show()
+                    } else {
+                        cartAdapter.submitList(state.data)
+                        calculateTotal(state.data)
+                    }
                 }
             }
         }
