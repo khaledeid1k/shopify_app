@@ -177,7 +177,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding, SignUpViewModel>() {
                     is ApiState.Success -> {
                         customerEntity=it.data
                         createFavoriteDraft(it.data.id)
-
+                        //viewModel.createCartDraft()
 
                     }
                 }
