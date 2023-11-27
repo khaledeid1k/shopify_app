@@ -839,10 +839,10 @@ class RepoImp private constructor(
         }
     }
 
-    override suspend fun getAllProductsInCart(cartId: String): Flow<ApiState<List<Cart>>> {
+    override suspend fun getAllProductsInCart(): Flow<ApiState<List<Cart>>> {
         return flow {
             emit(ApiState.Loading)
-            val response = remoteSource.getAllProductIdsInCart(cartId)
+            val response = remoteSource.getAllProductIdsInCart(getLocalCartDraftId().toString())
             if (response.isSuccessful) {
                 response.body()?.let {
                     val cartList = it.convertToCartItems().filter { cart -> cart.productId != null }
@@ -889,7 +889,7 @@ class RepoImp private constructor(
                 allCartItems.body()
                     ?.let {
                         val lineItemsRequestList = mutableListOf<LineItems>(product.convertToLineItemRequest())
-                        lineItemsRequestList.addAll(it.draft_order.line_items.convertToLineItemRequest())
+                        lineItemsRequestList.addAll(it.draft_order.line_items.filter { item -> item.variant_id != null }.convertToLineItemRequest())
                         val addToCartResponse =
                             remoteSource.backUpDraftFavorite(
                                 lineItemsRequestList.convertToDraftOrderRequest(
@@ -902,11 +902,11 @@ class RepoImp private constructor(
                                 emit(ApiState.Success(true))
                             } ?: emit(ApiState.Failure("null response"))
                         } else {
-                            emit(ApiState.Failure("api error ${addToCartResponse.message()}"))
+                            emit(ApiState.Failure("api error add to cart ${addToCartResponse}"))
                         }
                 } ?: emit(ApiState.Failure("null response"))
             } else {
-                emit(ApiState.Failure("api error ${allCartItems.message()}"))
+                emit(ApiState.Failure("api error get all ex item ${allCartItems.message()}"))
             }
         }. catch {
             emit(ApiState.Failure("exception " + it.message.toString()))

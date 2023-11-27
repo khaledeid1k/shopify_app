@@ -94,6 +94,6 @@ interface Repo {
     suspend fun getCurrentLanguage(): String
     suspend fun getDraftCartId(customerId: String): Flow<ApiState<String?>>
     suspend fun saveCartDraftIdInFireBase(customerId:Long, cartDraftId:Long): Flow<ApiState<String>>
-    suspend fun getAllProductsInCart(cartId: String): Flow<ApiState<List<Cart>>>
+    suspend fun getAllProductsInCart(): Flow<ApiState<List<Cart>>>
     fun addProductToCart(product: Product): Flow<ApiState<Boolean>>
 }
