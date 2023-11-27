@@ -1,6 +1,7 @@
 package com.kh.mo.shopyapp.ui.sing_in.view
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
@@ -27,6 +28,7 @@ class SignInFragment : BaseFragment<FragmentSinginBinding, SignInViewModel>() {
         super.onViewCreated(view, savedInstanceState)
         observeLoginWithApi()
         observeLoginWithFireBase()
+        observeGetDraftFavoriteId()
         checkEmailValueValidation()
         checkPasswordValidation()
         singInCustomer()
@@ -48,6 +50,7 @@ class SignInFragment : BaseFragment<FragmentSinginBinding, SignInViewModel>() {
                     is ApiState.Success -> {
                         viewModel.singInWithFireBase(
                             UserData(
+                                id=it.data.id,
                                 email = it.data.email,
                                 password = binding.passwordValue.text.toString()
                             )
@@ -65,15 +68,37 @@ class SignInFragment : BaseFragment<FragmentSinginBinding, SignInViewModel>() {
                     is ApiState.Failure -> {}
                     ApiState.Loading -> {}
                     is ApiState.Success -> {
-                        Toast.makeText(requireContext(), "Sing in Successfully", Toast.LENGTH_SHORT)
-                            .show()
-                        navigateToHomeScreen()
+                        viewModel.getDraftFavoriteId(it.data)
                     }
                 }
             }
         }
     }
-
+    private fun observeGetDraftFavoriteId(){
+        lifecycleScope.launch {
+            viewModel.draftFavoriteId.collect {
+                when (it) {
+                    is ApiState.Failure -> {                            Log.d("TAG", "observeGetDraftFavoriteId: ${it.msg}")
+                    }
+                    is ApiState.Loading -> {                            Log.d("TAG", "observeGetDraftFavoriteId:Loading ")
+                    }
+                    is ApiState.Success -> {
+                        it.data?.let { favoriteId ->
+                            Log.d("TAG", "observeGetDraftFavoriteId: ${it.data}")
+                            viewModel.saveFavoriteDraftId(favoriteId.toLong())
+                            navigateToHomeScreen()
+                            Toast.makeText(
+                                requireContext(),
+                                "Sing in Successfully",
+                                Toast.LENGTH_SHORT
+                            )
+                                .show()
+                    }
+                }
+            }
+        }
+        }
+    }
     private fun printValidationResult(validation: Validation, field: TextInputLayout) {
         binding.apply {
             if (validation.isValid) {

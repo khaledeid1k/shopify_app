@@ -25,4 +25,13 @@ interface LocalSource {
     fun setCurrencyUnit(unit: String)
     fun changeLanguage(language: String)
     fun getCurrentLanguage(): String
+
+    fun saveCustomerEmail(customerEmail:String)
+    fun getCustomerEmail():String
+
+    fun saveCustomerUserName(customerUserName:String)
+    fun getCustomerUserName():String
+    fun clearSharedPreferences()
+
+
 }

@@ -27,4 +27,7 @@ object Constants {
     const val ACTION_DELETE = "delete"
     const val ACTION_ADD = "add"
     const val ACTION_SUB = "sub"
+    const val EMAIL = "EMAIL"
+    const val USER_NAME = "USERNAME"
+
 }

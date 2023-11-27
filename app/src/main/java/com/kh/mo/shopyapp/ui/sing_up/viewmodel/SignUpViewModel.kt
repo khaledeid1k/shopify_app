@@ -17,18 +17,22 @@ import kotlin.math.log
 
 class SignUpViewModel(private val repo: Repo) : ViewModel() {
 
-    private val _saveCustomerFireBase = MutableStateFlow<ApiState<String>>(ApiState.Loading)
-    val saveCustomerFireBase: StateFlow<ApiState<String>> = _saveCustomerFireBase
 
     private val _createCustomer = MutableStateFlow<ApiState<CustomerEntity>>(ApiState.Loading)
     val createCustomer: StateFlow<ApiState<CustomerEntity>> = _createCustomer
-
 
     private val _createFavoriteDraft = MutableStateFlow<ApiState<DraftOrder>>(ApiState.Loading)
     val createFavoriteDraft: StateFlow<ApiState<DraftOrder>> = _createFavoriteDraft
 
     private val _favoriteDraftIdInFireBase = MutableStateFlow<ApiState<String>>(ApiState.Loading)
     val favoriteDraftIdInFireBase: StateFlow<ApiState<String>> = _favoriteDraftIdInFireBase
+
+    private val _saveCustomerFireBase = MutableStateFlow<ApiState<String>>(ApiState.Loading)
+    val saveCustomerFireBase: StateFlow<ApiState<String>> = _saveCustomerFireBase
+
+
+
+
 
 
     fun createUser(userData: UserData) {
@@ -46,26 +50,6 @@ class SignUpViewModel(private val repo: Repo) : ViewModel() {
                     }
                 }
             }
-        }
-    }
-    fun singUpWithFireBase(userData: UserData) {
-        viewModelScope.launch {
-            repo.singUpWithFireBase(userData).collect {
-                when (it) {
-                    is ApiState.Failure -> {
-                        _saveCustomerFireBase.value = ApiState.Failure(it.msg)
-                    }
-                    is ApiState.Loading -> {
-                        _saveCustomerFireBase.value = ApiState.Loading
-                    }
-                    is ApiState.Success -> {
-                        _saveCustomerFireBase.value = ApiState.Success(it.data)
-                    }
-                }
-
-
-            }
-
         }
     }
     fun createFavoriteDraft(draftOrderRequest: DraftOrderRequest){
@@ -100,10 +84,38 @@ class SignUpViewModel(private val repo: Repo) : ViewModel() {
         }
 
     }
+    fun singUpWithFireBase(userData: UserData) {
+        viewModelScope.launch {
+            saveCustomerEmail(userData.email)
+            saveCustomerUserName(userData.userName)
+            repo.singUpWithFireBase(userData).collect {
+                when (it) {
+                    is ApiState.Failure -> {
+                        _saveCustomerFireBase.value = ApiState.Failure(it.msg)
+                    }
+                    is ApiState.Loading -> {
+                        _saveCustomerFireBase.value = ApiState.Loading
+                    }
+                    is ApiState.Success -> {
+                        _saveCustomerFireBase.value = ApiState.Success(it.data)
+                    }
+                }
 
-    fun saveCustomerIdAndFavoriteDraftId(customerId:Long,favoriteDraft:Long){
+
+            }
+
+        }
+    }
+
+    private fun saveCustomerIdAndFavoriteDraftId(customerId:Long, favoriteDraft:Long){
         repo.saveCustomerId(customerId)
         repo.saveFavoriteDraftId(favoriteDraft)
+    }
+    private fun saveCustomerEmail(customerEmail: String){
+        repo.saveCustomerEmail(customerEmail)
+    }
+    private fun saveCustomerUserName(customerUserName: String){
+        repo.saveCustomerUserName(customerUserName)
     }
     fun validateUserName(userName: String) = repo.validateUserName(userName)
     fun validateEmail(email: String): Validation = repo.validateEmail(email)

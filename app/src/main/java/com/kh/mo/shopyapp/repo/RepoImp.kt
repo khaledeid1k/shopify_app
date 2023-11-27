@@ -124,7 +124,10 @@ class RepoImp private constructor(
             emit(ApiState.Failure("An error occurred: ${it.message}"))
         }
 
-    override suspend fun logout() { remoteSource.logout() }
+    override suspend fun logout() {
+        remoteSource.logout()
+    clearSharedPreferences()
+    }
 
     override fun checkIsUserLogin()=remoteSource.checkIsUserLogin()
     override suspend fun createFavoriteDraft(draftOrderRequest: DraftOrderRequest): Flow<ApiState<DraftOrder>> {
@@ -644,7 +647,24 @@ class RepoImp private constructor(
 
     override fun saveCartDraftId(draftId: Long) = localSource.saveCartDraftId(draftId)
     override fun getLocalCartDraftId() = localSource.getCartDraftId()
+    override fun saveCustomerEmail(customerEmail: String) {
+        localSource.saveCustomerEmail(customerEmail)
+    }
 
+    override fun getCustomerEmail(): String {
+        return localSource.getCustomerEmail()
+    }
+
+    override fun saveCustomerUserName(customerUserName: String) {
+       localSource.saveCustomerUserName(customerUserName)
+    }
+
+    override fun getCustomerUserName(): String {
+        return localSource.getCustomerUserName()
+    }
+    override fun clearSharedPreferences() {
+        localSource.clearSharedPreferences()
+    }
     private suspend fun changeProductFavoriteValue(product: Product): Product {
         checkProductInFavorite(product.id).collect {
             if (it is ApiState.Success) {

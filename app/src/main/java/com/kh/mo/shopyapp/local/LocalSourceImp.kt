@@ -2,11 +2,7 @@ package com.kh.mo.shopyapp.local
 
 import android.content.Context
 import com.kh.mo.shopyapp.local.dp.ShopyDataBase
-import com.kh.mo.shopyapp.local.dp.sharedPref.SharedPreferencesShopy
-import com.kh.mo.shopyapp.local.dp.sharedPref.cartDraftId
-import com.kh.mo.shopyapp.local.dp.sharedPref.currencyUnit
-import com.kh.mo.shopyapp.local.dp.sharedPref.customerId
-import com.kh.mo.shopyapp.local.dp.sharedPref.favoriteDraftId
+import com.kh.mo.shopyapp.local.dp.sharedPref.*
 import com.kh.mo.shopyapp.local.validation.AuthInputValidatorImpl
 import com.kh.mo.shopyapp.local.validation.ValidationSateImpl
 import com.kh.mo.shopyapp.model.entity.FavoriteEntity
@@ -98,6 +94,25 @@ class LocalSourceImp private constructor(val context: Context):LocalSource {
 
     override fun getCurrentLanguage(): String {
         return Locale.getDefault().language
+    }
+
+    override fun saveCustomerEmail(customerEmail:String)  {
+        sharedPreferencesShopy.email=customerEmail
+    }
+
+    override fun getCustomerEmail(): String {
+      return sharedPreferencesShopy.email.toString()
+    }
+
+    override fun saveCustomerUserName(customerUserName:String) {
+        sharedPreferencesShopy.userName=customerUserName
+    }
+
+    override fun getCustomerUserName(): String {
+    return sharedPreferencesShopy.userName.toString()
+    }
+    override fun clearSharedPreferences() {
+        sharedPreferencesShopy.clearValues()
     }
 
     companion object {

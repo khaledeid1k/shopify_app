@@ -87,6 +87,14 @@ interface Repo {
     fun getCustomerId(): Long
     fun saveCartDraftId(draftId: Long)
     fun getLocalCartDraftId(): Long
+
+    fun saveCustomerEmail(customerEmail:String)
+    fun getCustomerEmail():String
+
+    fun saveCustomerUserName(customerUserName:String)
+    fun getCustomerUserName():String
+
+    fun clearSharedPreferences()
     suspend fun getCurrencyUnit(): String
     suspend fun setCurrencyUnit(unit: String): String
     suspend fun getOrdersByCustomerID(customerId: Long): Flow<ApiState<OrdersResponse>>

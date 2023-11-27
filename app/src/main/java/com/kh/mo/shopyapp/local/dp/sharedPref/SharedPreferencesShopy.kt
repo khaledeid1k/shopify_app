@@ -48,3 +48,21 @@ var SharedPreferences.currencyUnit: String
     set(value) = editMe {
         it.putString(Constants.CURRENCY_ID, value)
     }
+
+
+var SharedPreferences.email: String?
+    get() = getString(Constants.EMAIL, "")
+    set(value) = editMe {
+        it.putString(Constants.EMAIL, value)
+    }
+
+
+var SharedPreferences.userName: String?
+    get() = getString(Constants.USER_NAME, "")
+    set(value) = editMe {
+        it.putString(Constants.USER_NAME, value)
+    }
+
+var SharedPreferences.clearValues: () -> Unit
+    get() = { this.edit().clear().apply() }
+    set(value) {}

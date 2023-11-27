@@ -154,6 +154,11 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding, SignUpViewModel>() {
             viewModel.createUser(it)
         }
     }
+    private fun createFavoriteDraft(customerId:Long){
+        viewModel.createFavoriteDraft(
+            DraftOrderRequest(DraftOrderDetailsRequest(customer= CustomerDraftRequest(customerId))))
+    }
+
     private fun singUpWithFireBase(data: CustomerEntity) {
         viewModel.singUpWithFireBase(
             UserData(
@@ -161,10 +166,6 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding, SignUpViewModel>() {
                 password =binding.passwordValue.text?.trim().toString()
             )
         )
-    }
-    private fun createFavoriteDraft(customerId:Long){
-        viewModel.createFavoriteDraft(
-            DraftOrderRequest(DraftOrderDetailsRequest(customer= CustomerDraftRequest(customerId))))
     }
 
     private fun observeCreateCustomerResult() {

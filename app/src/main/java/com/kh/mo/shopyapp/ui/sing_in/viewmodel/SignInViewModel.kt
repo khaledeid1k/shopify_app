@@ -15,9 +15,11 @@ class SignInViewModel(private val repo: Repo) : ViewModel() {
     private val _singIn = MutableStateFlow<ApiState<UserData>>(ApiState.Loading)
     val singIn: StateFlow<ApiState<UserData>> = _singIn
 
-    private val _checkCustomerExists = MutableStateFlow<ApiState<String>>(ApiState.Loading)
-    val checkCustomerExists: StateFlow<ApiState<String>> = _checkCustomerExists
+    private val _checkCustomerExists = MutableStateFlow<ApiState<Long>>(ApiState.Loading)
+    val checkCustomerExists: StateFlow<ApiState<Long>> = _checkCustomerExists
 
+    private val _draftFavoriteId = MutableStateFlow<ApiState<String?>>(ApiState.Loading)
+    val draftFavoriteId: StateFlow<ApiState<String?>> = _draftFavoriteId
 
      fun singInCustomer(email: String) {
         viewModelScope.launch {
@@ -30,9 +32,12 @@ class SignInViewModel(private val repo: Repo) : ViewModel() {
                         _singIn.value = ApiState.Loading
                     }
                     is ApiState.Success -> {
-                        _singIn.value = ApiState.Success(it.data)
                         saveCustomerId(it.data.id)
-                        getDraftFavoriteId(it.data.id)
+                        saveCustomerEmail(it.data.email)
+                        saveCustomerUserName(it.data.userName)
+                        _singIn.value = ApiState.Success(it.data)
+
+
                     }
                 }
             }
@@ -50,7 +55,8 @@ class SignInViewModel(private val repo: Repo) : ViewModel() {
                         _checkCustomerExists.value = ApiState.Loading
                     }
                     is ApiState.Success -> {
-                        _checkCustomerExists.value = ApiState.Success(it.data)
+                        _checkCustomerExists.value = ApiState.Success(userData.id)
+
                     }
                 }
             }
@@ -67,19 +73,20 @@ class SignInViewModel(private val repo: Repo) : ViewModel() {
     private fun saveCustomerId(customerId:Long){
         repo.saveCustomerId(customerId)
     }
-
-    private fun saveFavoriteDraftId(favoriteDraft:Long){
+    private fun saveCustomerEmail(customerEmail: String){
+        repo.saveCustomerEmail(customerEmail)
+    }
+    private fun saveCustomerUserName(customerUserName: String){
+        repo.saveCustomerUserName(customerUserName)
+    }
+     fun saveFavoriteDraftId(favoriteDraft:Long){
         repo.saveFavoriteDraftId(favoriteDraft)
     }
-    private fun getDraftFavoriteId(customerId: Long) {
+     fun getDraftFavoriteId(customerId: Long) {
         viewModelScope.launch {
             repo.getDraftFavoriteId(customerId.toString()).collect{
-                if(it is ApiState.Success){
-                    it.data?.let {favoriteId->
-                        saveFavoriteDraftId(favoriteId.toLong())
-                    }
+                _draftFavoriteId.value=it
 
-                }
             }
         }
     }
