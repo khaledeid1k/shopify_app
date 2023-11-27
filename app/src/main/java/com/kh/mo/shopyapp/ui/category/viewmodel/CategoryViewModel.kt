@@ -38,6 +38,8 @@ class CategoryViewModel(private var _irepo: Repo) : ViewModel(),
 
     }
 
+    fun checkIsUserLogin() = _irepo.checkIsUserLogin()
+
     private fun getSubCategories() {
         viewModelScope.launch(Dispatchers.IO) {
             _irepo.getAllProducts().collect {

@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.airbnb.lottie.LottieAnimationView
+import com.kh.mo.shopyapp.MainActivity
 import com.kh.mo.shopyapp.R
 import com.kh.mo.shopyapp.databinding.DialogFilterBinding
 import com.kh.mo.shopyapp.databinding.FragmentCategoryBinding
@@ -35,8 +36,12 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding, CategoryViewModel
     private lateinit var filterBinding: DialogFilterBinding
     private lateinit var filterDialog: Dialog
     private var cartListener: (Product) -> Unit = {
-        viewModel.addProductToCart(it)
-        observeAddToCartState()
+        if (viewModel.checkIsUserLogin()) {
+            viewModel.addProductToCart(it)
+            observeAddToCartState()
+        } else {
+            (requireActivity() as MainActivity).showRequestLoginDialog()
+        }
     }
 
 
