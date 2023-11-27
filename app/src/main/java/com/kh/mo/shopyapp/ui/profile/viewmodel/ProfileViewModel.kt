@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.kh.mo.shopyapp.model.entity.FavoriteEntity
 import com.kh.mo.shopyapp.model.request.DraftOrderRequest
 import com.kh.mo.shopyapp.model.request.UserData
-import com.kh.mo.shopyapp.model.ui.order.Order
+import com.kh.mo.shopyapp.model.ui.orderdetails.Order
 import com.kh.mo.shopyapp.remote.ApiState
 import com.kh.mo.shopyapp.repo.Repo
 import com.kh.mo.shopyapp.repo.mapper.convertFavoritesEntityToDraftOrderRequest

@@ -11,11 +11,19 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.kh.mo.shopyapp.R
 import com.kh.mo.shopyapp.databinding.ItemOrderBinding
-import com.kh.mo.shopyapp.model.ui.order.LineItem
-import com.kh.mo.shopyapp.model.ui.order.Order
-import com.kh.mo.shopyapp.ui.order.view.OrderAdapter
+import com.kh.mo.shopyapp.local.LocalSourceImp
+import com.kh.mo.shopyapp.model.ui.orderdetails.LineItem
+import com.kh.mo.shopyapp.remote.ApiState
+import com.kh.mo.shopyapp.remote.RemoteSource
+import com.kh.mo.shopyapp.remote.RemoteSourceImp
+import com.kh.mo.shopyapp.repo.RepoImp
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-class OrderDetailsAdapter(var context: Context,private var uri:Uri) :
+
+class OrderDetailsAdapter(var context: Context) :
     ListAdapter<LineItem, OrderDetailsAdapter.OrdersVH>(RecyclerDiffUtilOrdersItem()) {
     private lateinit var binding: ItemOrderBinding
     private val TAG = "TAG OrderDetailsAdapter"
@@ -43,7 +51,26 @@ class OrderDetailsAdapter(var context: Context,private var uri:Uri) :
                 tvProductPriceOrder.text=currentItem.price+"EGP"
                 tvProductSizeOrder.text="${currentItem.quantity}x"
                 Log.i(TAG,currentItem.productId.toString())
-                Glide.with(context).load(uri).into(binding.imageProductOrder)
+
+                CoroutineScope(Dispatchers.IO).launch {
+                    RepoImp.getRepoImpInstance(RemoteSourceImp.getRemoteSourceImpInstance(),
+                        LocalSourceImp.getLocalSourceImpInstance(context)).getImageOrders(currentItem.productId!!).collect {
+                        when (it) {
+                            is ApiState.Failure ->{}
+                            is ApiState.Loading ->{}
+                            is ApiState.Success -> {
+                                withContext(Dispatchers.Main) {
+                                    Glide.with(itemView.context)
+                                        .load(it.data.images.get(0).src)
+                                        .into(imageProductOrder)
+                                }
+                            }
+
+                        }
+                    }
+                }
+
+                //Glide.with(context).load(uri).into(binding.imageProductOrder)
 
             }
 

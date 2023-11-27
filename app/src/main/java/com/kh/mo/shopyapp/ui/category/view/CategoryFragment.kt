@@ -103,7 +103,6 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding, CategoryViewModel
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 
             }
-
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 val searchText = p0.toString().trim()
                 val filteredList = productList.filter { brand ->
@@ -127,8 +126,6 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding, CategoryViewModel
                 if (minPrice.isBlank() && maxPrice.isBlank()) {
                     minPrice = "0"
                     maxPrice = "10000"
-
-
                 } else if (maxPrice.isBlank()) {
                     maxPrice = "10000"
                 } else {

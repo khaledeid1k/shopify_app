@@ -3,7 +3,7 @@ package com.kh.mo.shopyapp.model.response.orderdetails
 
 import com.google.gson.annotations.SerializedName
 
-data class Order(
+data class OrderResponse(
     @SerializedName("admin_graphql_api_id")
     val adminGraphqlApiId: String?,
     @SerializedName("app_id")
@@ -61,7 +61,7 @@ data class Order(
     @SerializedName("current_total_tax_set")
     val currentTotalTaxSet: CurrentTotalTaxSet?,
     @SerializedName("customer")
-    val customer: Customer?,
+    val customer: CustomerResponse?,
     @SerializedName("customer_locale")
     val customerLocale: Any?,
     @SerializedName("device_id")
@@ -87,7 +87,7 @@ data class Order(
     @SerializedName("landing_site_ref")
     val landingSiteRef: Any?,
     @SerializedName("line_items")
-    val lineItems: List<LineItem>?,
+    val lineItems: List<LineItemResponse>?,
     @SerializedName("location_id")
     val locationId: Any?,
     @SerializedName("merchant_of_record_app_id")

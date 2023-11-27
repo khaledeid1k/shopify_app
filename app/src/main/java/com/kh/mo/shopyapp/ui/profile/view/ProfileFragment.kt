@@ -39,7 +39,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
                 )
         }
         observeUserData()
-        //showSingleOrder()
+        showSingleOrder()
 
 
     }
@@ -79,6 +79,11 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
     }
 
     private fun showSingleOrder() {
+
+
+    }
+
+    private fun getAllOrders() {
         lifecycleScope.launch {
             viewModel.orders.collect {
                 when (it) {
@@ -90,10 +95,20 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
                     }
                     is ApiState.Success -> {
                         val data = it.data
-                        binding.apply {
-                            tvProductNameOrderProfile.text = data.get(0).id.toString()
-                            tvProductSizeOrderProfile.text = data.get(0).lineItems?.get(0)?.quantity.toString() + "x"
-                            tvProductPriceOrderProfile.text = data.get(0).subtotalPrice
+                        if (!data.isEmpty()) {
+                            binding.apply {
+                                tvProductNameOrderProfile.text = data.get(0).id.toString()
+                                tvProductSizeOrderProfile.text =
+                                    data.get(0).lineItems?.get(0)?.quantity.toString() + "x"
+                                tvProductPriceOrderProfile.text = data.get(0).subtotalPrice
+                            }
+                        }else{
+                            binding.apply {
+                                tvProductNameOrderProfile.text = "No orders yet"
+                                tvProductSizeOrderProfile.visibility =View.GONE
+                                tvProductPriceOrderProfile.visibility =View.GONE
+                                tvAllMyOrders.isClickable=false
+                            }
                         }
 
 

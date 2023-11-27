@@ -2,8 +2,11 @@ package com.kh.mo.shopyapp.model.response.order
 
 
 import com.google.gson.annotations.SerializedName
+import com.kh.mo.shopyapp.model.response.orderdetails.DefaultAddressResponse
 
 data class CustomerResponse(
+    @SerializedName("default_address")
+    val defaultAddress: DefaultAddressResponse?,
     @SerializedName("accepts_marketing")
     val acceptsMarketing: Boolean?,
     @SerializedName("accepts_marketing_updated_at")

@@ -3,7 +3,7 @@ package com.kh.mo.shopyapp.model.response.orderdetails
 
 import com.google.gson.annotations.SerializedName
 
-data class LineItem(
+data class LineItemResponse(
     @SerializedName("admin_graphql_api_id")
     val adminGraphqlApiId: String?,
     @SerializedName("attributed_staffs")
