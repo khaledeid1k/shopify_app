@@ -78,7 +78,7 @@ class CategoryViewModel(private var _irepo: Repo) : ViewModel(),
 
     override fun onClickFavouriteIcon(product: Product) {
         viewModelScope.launch {
-            _irepo.checkProductInFavorite(product.id).collect {
+            _irepo.checkProductInFavorite(product.id,).collect {
                 if (it is ApiState.Success) {
                     if (it.data != 0) {
                         deleteFavorite(product.id)

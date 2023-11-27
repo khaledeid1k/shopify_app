@@ -14,7 +14,7 @@ interface LocalSource {
     fun getSingleFavorite(productId: Long): Flow<FavoriteEntity>
     suspend fun deleteFavorite(productId: Long)
     suspend fun saveFavorite(favoriteEntity: FavoriteEntity): Long
-    suspend fun checkProductInFavorite(productId: Long): Int
+    suspend fun checkProductInFavorite(productId: Long,customerId: Long): Int
     fun saveFavoriteDraftId(draftId: Long)
     fun saveCustomerId(customerId: Long)
     fun getFavoriteDraftId(): Long

@@ -619,7 +619,7 @@ class RepoImp private constructor(
 
         return flow {
             emit(ApiState.Loading)
-            emit(ApiState.Success(localSource.checkProductInFavorite(productId)))
+            emit(ApiState.Success(localSource.checkProductInFavorite(productId,getCustomerId())))
         }.catch {
             emit(ApiState.Failure(it.message!!))
         }
