@@ -1,7 +1,7 @@
 package com.kh.mo.shopyapp.model.ui
 
 data class Cart(
-    val quantity: Int?,
+    var quantity: Int?,
     val title: String?,
     val price: String?,
     val productId: Long?,

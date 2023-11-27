@@ -298,3 +298,9 @@ fun List<LineItems>.convertToDraftOrderRequest(customerId: Long): DraftOrderRequ
         )
     )
 }
+
+fun List<Cart>.convertToLineItems(): List<LineItems> {
+    return this.map {
+        LineItems(quantity = it.quantity ?: 1, price = it.price?.split(" ")?.get(0)?.toDouble() ?: 0.0, title = it.title, product_id = it.productId.toString(), variant_id = it.variantId)
+    }
+}

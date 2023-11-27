@@ -111,4 +111,5 @@
     <string name="change_language_to">Language changed to </string>
     <string name="total">Total</string>
     <string name="free_shipping">Free Shipping</string>
+    <string name="delete_item_confirm">are you sure you want to delete this item?</string>
 </resources>

@@ -22,8 +22,6 @@ import kotlinx.coroutines.launch
 
 class CartViewModel(private val repo: Repo) : ViewModel() {
     private val TAG = "TAG CartViewModel"
-    private val _draftCartId = MutableStateFlow<ApiState<String>>(ApiState.Loading)
-    val draftCartId: StateFlow<ApiState<String>> = _draftCartId
 
     private val _productList = MutableStateFlow<ApiState<List<Cart>>>(ApiState.Loading)
     val productList: StateFlow<ApiState<List<Cart>>>
@@ -37,5 +35,44 @@ class CartViewModel(private val repo: Repo) : ViewModel() {
                 _productList.value = state
             }
         }
+    }
+
+    fun deleteItem(item: Cart) {
+        val list: MutableList<Cart> = _productList.value.toData()?.toMutableList() ?: mutableListOf()
+        _productList.value = ApiState.Loading
+        /*_productList.value = ApiState.Success(list.filter {
+            it != item
+        })*/
+        viewModelScope.launch(Dispatchers.IO) {
+            val updatedList = list.filter { it != item }
+            Log.i(TAG, "deleteItem: updatedList: $updatedList")
+            repo.updateCartItems(updatedList).collectLatest {
+                _productList.value = it
+            }
+        }
+    }
+
+    fun addOneToItem(item: Cart) {
+        val list: MutableList<Cart> = _productList.value.toData()?.toMutableList() ?: mutableListOf()
+        _productList.value = ApiState.Loading
+        val result = list.map {
+            if (it == item)
+                it.copy(quantity = it.quantity?.inc())
+            else
+                it
+        }
+        _productList.value = ApiState.Success(result)
+    }
+
+    fun subOneFromItem(item: Cart) {
+        val list: MutableList<Cart> = _productList.value.toData()?.toMutableList() ?: mutableListOf()
+        _productList.value = ApiState.Loading
+        val result = list.map {
+            if (it == item)
+                it.copy(quantity = it.quantity?.dec())
+            else
+                it
+        }
+        _productList.value = ApiState.Success(result)
     }
 }

@@ -110,4 +110,7 @@
     <string name="english">English</string>
     <string name="arabic">العربية</string>
     <string name="change_language_to">تم تغيير اللغة الى </string>
+    <string name="total">الاجمالي</string>
+    <string name="free_shipping">شحن مجاني</string>
+    <string name="delete_item_confirm">هل انت متاكد انك تريد حذف هذا المنتج؟</string>
 </resources>

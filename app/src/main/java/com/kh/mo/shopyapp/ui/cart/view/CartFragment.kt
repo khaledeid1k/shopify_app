@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.kh.mo.shopyapp.R
 import com.kh.mo.shopyapp.databinding.FragmentCartBinding
 import com.kh.mo.shopyapp.model.ui.Cart
@@ -24,14 +25,17 @@ class CartFragment : BaseFragment<FragmentCartBinding, CartViewModel>() {
     private val listener: (Cart, String) -> Unit = { item, action ->
         when (action) {
             Constants.ACTION_DELETE -> {
-                Toast.makeText(requireContext(), "delete", Toast.LENGTH_SHORT).show()
+                delete(item)
+                //Toast.makeText(requireContext(), "delete", Toast.LENGTH_SHORT).show()
             }
 
             Constants.ACTION_ADD -> {
+                add(item)
                 Toast.makeText(requireContext(), "add", Toast.LENGTH_SHORT).show()
             }
 
             Constants.ACTION_SUB -> {
+                sub(item)
                 Toast.makeText(requireContext(), "sub", Toast.LENGTH_SHORT).show()
             }
         }
@@ -71,6 +75,7 @@ class CartFragment : BaseFragment<FragmentCartBinding, CartViewModel>() {
                     if (state.data.isEmpty()) {
                         Toast.makeText(requireContext(), "no data in cart", Toast.LENGTH_SHORT)
                             .show()
+                        binding.cartRecyclerV.visibility = View.GONE
                     } else {
                         cartAdapter.submitList(state.data)
                         calculateTotal(state.data)
@@ -92,5 +97,25 @@ class CartFragment : BaseFragment<FragmentCartBinding, CartViewModel>() {
             cartShippingTitleTxtV.visibility = View.VISIBLE
             cartTotalPriceTxtV.text = totalPrice.roundTwoDecimals().toString() + currency
         }
+    }
+
+    private fun delete(item: Cart) {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(resources.getString(R.string.delete_address))
+            .setMessage(getString(R.string.delete_item_confirm))
+            .setNegativeButton(resources.getString(R.string.cancel)) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .setPositiveButton(resources.getString(R.string.confirm)) { dialog, _ ->
+                viewModel.deleteItem(item)
+                dialog.dismiss()
+            }
+            .show()
+    }
+    private fun add(item: Cart) {
+        viewModel.addOneToItem(item)
+    }
+    private fun sub(item: Cart) {
+        viewModel.subOneFromItem(item)
     }
 }

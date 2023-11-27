@@ -1,9 +1,11 @@
 package com.kh.mo.shopyapp.ui.settings
 
 import android.content.Context
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.kh.mo.shopyapp.R
 import com.kh.mo.shopyapp.databinding.ItemSettingsBinding
 import com.kh.mo.shopyapp.model.ui.SettingsModel
 
@@ -29,6 +31,8 @@ class SettingAdapter(
         binding.apply {
             settingTitleTxt.text = settingItem.title
             settingIcon.setImageResource(settingItem.icon)
+            if (position == 5)
+                binding.settingCard.setCardBackgroundColor(Color.RED)
             settingCard.setOnClickListener {
                 listener(position)
             }
