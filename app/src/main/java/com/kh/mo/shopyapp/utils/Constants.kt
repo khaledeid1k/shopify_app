@@ -24,4 +24,7 @@ object Constants {
     const val EUR_ID = "EUR"
     const val GBP_ID = "GBP"
     const val NO_CART_MESSAGE = "No Cart Found"
+    const val ACTION_DELETE = "delete"
+    const val ACTION_ADD = "add"
+    const val ACTION_SUB = "sub"
 }

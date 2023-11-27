@@ -33,6 +33,7 @@
             android:layout_marginStart="@dimen/_16sdp"
             android:layout_marginEnd="@dimen/_16sdp"
             android:alpha=".5"
+            android:visibility="invisible"
             android:layout_marginBottom="@dimen/_16sdp"
             android:background="@color/sub_text"
             app:layout_constraintBottom_toTopOf="@id/cartTotalTxtV" />
