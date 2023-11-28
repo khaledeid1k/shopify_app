@@ -1,9 +1,11 @@
 package com.kh.mo.shopyapp.ui.settings
 
 import android.content.Context
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.kh.mo.shopyapp.R
 import com.kh.mo.shopyapp.databinding.ItemSettingsBinding
 import com.kh.mo.shopyapp.model.ui.SettingsModel
 
@@ -28,6 +30,8 @@ class SettingAdapter(
         val settingItem = settingList[position]
         binding.apply {
             settingTitleTxt.text = settingItem.title
+            settingTitleTxt.setTextColor(settingItem.titleColor)
+            goToShow.setColorFilter(settingItem.iconGoColor)
             settingIcon.setImageResource(settingItem.icon)
             settingCard.setOnClickListener {
                 listener(position)

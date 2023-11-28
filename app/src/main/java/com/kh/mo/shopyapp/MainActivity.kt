@@ -1,13 +1,16 @@
 package com.kh.mo.shopyapp
 
 import android.os.Bundle
-import android.view.View
+import android.util.Log
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
+import androidx.navigation.ui.NavigationUI.onNavDestinationSelected
 import com.kh.mo.shopyapp.databinding.ActivityMainBinding
+import com.kh.mo.shopyapp.utils.createDialog
 import com.kh.mo.shopyapp.utils.makeGone
 import com.kh.mo.shopyapp.utils.makeVisible
 
@@ -54,6 +57,35 @@ class MainActivity : AppCompatActivity() {
         } else {
             super.onBackPressed()
         }
+    }
+
+
+    fun checkIsLogin(isLogin: Boolean){
+        Log.d("TAG", "checkIsLogin:$isLogin ")
+        if(isLogin){
+            NavigationUI.setupWithNavController(binding.bottomNavigation, controller)
+        }else{
+            controlToBottomNavigationClicks()
+        }
+    }
+
+     private fun controlToBottomNavigationClicks() {
+    binding.bottomNavigation.setOnNavigationItemSelectedListener { item: MenuItem ->
+
+        val itemId = item.itemId
+        if (itemId == R.id.favoritesFragment || itemId == R.id.cartFragment) {
+            showRequestLoginDialog()
+            return@setOnNavigationItemSelectedListener false
+        }
+        onNavDestinationSelected(item, controller)
+    }
+}
+    private fun showRequestLoginDialog() {
+        createDialog(context = this,
+            title=getString(R.string.please_login),
+            message = getString(R.string.gust_message),
+            sure = {controller.navigate(R.id.signInFragment)}, cancel = {})
+
     }
 
 }

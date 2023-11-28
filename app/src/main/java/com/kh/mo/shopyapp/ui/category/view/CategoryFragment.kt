@@ -19,6 +19,8 @@ import com.kh.mo.shopyapp.model.ui.allproducts.Product
 import com.kh.mo.shopyapp.remote.ApiState
 import com.kh.mo.shopyapp.ui.base.BaseFragment
 import com.kh.mo.shopyapp.ui.category.viewmodel.CategoryViewModel
+import com.kh.mo.shopyapp.utils.createDialog
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 
@@ -37,11 +39,13 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding, CategoryViewModel
     private var cartListener: (Product) -> Unit = {
         viewModel.addProductToCart(it)
         observeAddToCartState()
+
     }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        observeCheckUserState()
         categoryName = CategoryFragmentArgs.fromBundle(requireArguments()).nameOfMainCategory
         collectionId = CategoryFragmentArgs.fromBundle(requireArguments()).collectionId
 
@@ -206,13 +210,32 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding, CategoryViewModel
 
         }
     }
+    private fun observeCheckUserState() {
+        Log.d(TAG, "3onClickFavouriteIcon: ")
+
+        lifecycleScope.launch {
+        viewModel.userState.collectLatest{
+            Log.d(TAG, "4onClickFavouriteIcon: ")
+            createDialog(context = requireContext(),
+                title=getString(R.string.please_login),
+                message = getString(R.string.gust_message),
+                sure = {navigateToSignInFragment()}, cancel = {})
+        }
+
+        }
+    }
+  private  fun navigateToSignInFragment(){
+        findNavController().navigate(CategoryFragmentDirections
+            .actionCategoryFragmentToSignInFragment())
+
+    }
 
     private fun navigateToProductScreen(product: Product){
         findNavController().navigate(    CategoryFragmentDirections.actionCategoryFragmentToProductFragment(product))
     }
 
     fun addAdapterToCategories(products: List<Product>){
-        productsCategoryAdapter = ProductsCategoryAdapter(viewModel, cartListener){
+        productsCategoryAdapter = ProductsCategoryAdapter(viewModel.checkCustomerId(),viewModel, cartListener){
             navigateToProductScreen(products[it])
         }
         productsCategoryAdapter.setItems(products)

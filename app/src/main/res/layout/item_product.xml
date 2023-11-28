@@ -10,6 +10,9 @@
         <variable
             name="listener"
             type="com.kh.mo.shopyapp.ui.category.view.ProductsCategoryAdapter.ProductsCategoryListener" />
+        <variable
+            name="isLoginView"
+            type="Boolean"/>
 
     </data>
 
@@ -77,6 +80,8 @@
                 app:layout_constraintTop_toTopOf="parent"
                 android:background="@drawable/round_rate"
                 android:layout_margin="@dimen/_5sdp"
+                isLogin="@{isLoginView}"
+                android:clickable="false"
                 android:button="@drawable/selector_favourite_item"
                 android:onClick="@{()->listener.onClickFavouriteIcon(item)}"
                 />

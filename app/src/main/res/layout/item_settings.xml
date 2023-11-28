@@ -10,12 +10,12 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="100dp"
+        android:id="@+id/settingCard"
         android:elevation="8dp"
         app:cardCornerRadius="24dp"
         app:cardUseCompatPadding="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/settingCard"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="16dp">
@@ -42,6 +42,7 @@
                 tools:text="Setting" />
 
             <ImageView
+                android:id="@+id/go_to_show"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_baseline_arrow_forward_24"

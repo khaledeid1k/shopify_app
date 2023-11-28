@@ -37,20 +37,9 @@ class RemoteSourceImp private constructor() : RemoteSource {
     private val firebaseAuth = FirebaseAuth.getInstance()
     private val firebaseFireStore = FirebaseFirestore.getInstance()
 
-    override suspend fun saveFavoriteDraftIdInFireBase(
-        customerId: Long,
-        favoriteDraft: Long
-    ): Task<Void> {
-        val documentReference: DocumentReference = firebaseFireStore.collection(
-            Constants.collectionPath
-        ).document(customerId.toString())
-        val user: HashMap<String, String> = HashMap()
-        user[Constants.DRAFT_FAVORITE_ID] = favoriteDraft.toString()
-        return documentReference.set(user)
 
-    }
 
-    override suspend fun getDraftFavoriteId(customerId: String): Task<DocumentSnapshot> {
+    override suspend fun getDraftIds(customerId: String): Task<DocumentSnapshot> {
 
          return   firebaseFireStore.collection(Constants.collectionPath)
                 .document(customerId).get()

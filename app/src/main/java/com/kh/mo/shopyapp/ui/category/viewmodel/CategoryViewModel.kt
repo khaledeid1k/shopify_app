@@ -9,9 +9,7 @@ import com.kh.mo.shopyapp.repo.Repo
 import com.kh.mo.shopyapp.repo.mapper.convertProductToFavoriteEntity
 import com.kh.mo.shopyapp.ui.category.view.ProductsCategoryAdapter
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class CategoryViewModel(private var _irepo: Repo) : ViewModel(),
@@ -23,6 +21,9 @@ class CategoryViewModel(private var _irepo: Repo) : ViewModel(),
 
     private val _productCollection = MutableStateFlow<ApiState<List<Product>>>(ApiState.Loading)
     val productCollection: StateFlow<ApiState<List<Product>>> = _productCollection
+
+    private val _userState = MutableSharedFlow<Boolean>()
+    val userState: SharedFlow<Boolean> = _userState
 
     private val _filterProductCollection =
         MutableStateFlow<ApiState<List<Product>>>(ApiState.Loading)
@@ -78,6 +79,8 @@ class CategoryViewModel(private var _irepo: Repo) : ViewModel(),
 
     override fun onClickFavouriteIcon(product: Product) {
         viewModelScope.launch {
+            if(checkCustomerId()){
+                Log.d(TAG, "1onClickFavouriteIcon:${checkCustomerId()} ")
             _irepo.checkProductInFavorite(product.id).collect {
                 if (it is ApiState.Success) {
                     if (it.data != 0) {
@@ -87,6 +90,12 @@ class CategoryViewModel(private var _irepo: Repo) : ViewModel(),
                         saveFavorite(product)
                     }
                 }
+            }
+
+            }else{
+                Log.d(TAG, "2onClickFavouriteIcon:${checkCustomerId()} ")
+
+                _userState.emit(false)
             }
         }
 
@@ -102,4 +111,5 @@ class CategoryViewModel(private var _irepo: Repo) : ViewModel(),
     }
 
 
+      fun checkCustomerId() = _irepo.getCustomerId() != 0L
 }

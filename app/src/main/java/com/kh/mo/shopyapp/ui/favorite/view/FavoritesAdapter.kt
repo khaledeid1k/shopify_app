@@ -64,7 +64,7 @@ class FavoritesAdapter(private val favoritesAdapterListener:FavoritesAdapterList
 
     interface FavoritesAdapterListener {
 
-        fun deleteFavorite(productId: Long)
+        fun deleteFavoriteListener(productId: Long)
     }
 
 }

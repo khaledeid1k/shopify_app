@@ -22,8 +22,6 @@ import kotlinx.coroutines.launch
 
 class CartViewModel(private val repo: Repo) : ViewModel() {
     private val TAG = "TAG CartViewModel"
-    private val _draftCartId = MutableStateFlow<ApiState<String>>(ApiState.Loading)
-    val draftCartId: StateFlow<ApiState<String>> = _draftCartId
 
     private val _productList = MutableStateFlow<ApiState<List<Cart>>>(ApiState.Loading)
     val productList: StateFlow<ApiState<List<Cart>>>
@@ -31,88 +29,50 @@ class CartViewModel(private val repo: Repo) : ViewModel() {
 
     fun checkIsUserLogin() = repo.checkIsUserLogin()
 
-    fun getDraftCartId() {
+    fun getAllProductsInCart() {
         viewModelScope.launch(Dispatchers.IO) {
-            repo.getDraftCartId(repo.getCustomerId().toString()).collectLatest { state ->
-                when (state) {
-                    is ApiState.Failure -> {
-                        if (state.msg == Constants.NO_CART_MESSAGE) {
-                            Log.i(TAG, "getDraftCartId: not created or ordered")
-                            _draftCartId.value = ApiState.Loading
-                            createCartDraft()
-                        } else {
-                            _draftCartId.value = state
-                            Log.i(TAG, "getDraftCartId: failure${state.msg}")
-                        }
-                    }
-
-                    is ApiState.Loading -> {
-                        _draftCartId.value = state
-                    }
-
-                    is ApiState.Success -> {
-                        Log.i(TAG, "getDraftCartId: success: ${state.data}")
-                        _draftCartId.value = state.data?.let {
-                            ApiState.Success(state.data)
-                        } ?: ApiState.Failure("null response")
-                    }
-                }
-            }
-
-        }
-    }
-
-    private fun createCartDraft() {
-        viewModelScope.launch(Dispatchers.IO) {
-            repo.createFavoriteDraft(
-                DraftOrderRequest(
-                    DraftOrderDetailsRequest(
-                        customer = CustomerDraftRequest(repo.getCustomerId())
-                    )
-                )
-            ).collectLatest { state: ApiState<DraftOrder> ->
-                when (state) {
-                    is ApiState.Failure -> {
-                        _draftCartId.value = state
-                    }
-
-                    is ApiState.Loading -> {
-                        _draftCartId.value = state
-                    }
-
-                    is ApiState.Success -> {
-                        _draftCartId.value = ApiState.Success(state.data.draftId.toString())
-                        saveCartDraftIdInFireBase(state.data.customerID, state.data.draftId)
-                        saveCartDraftIdInPreferences(state.data.draftId)
-                    }
-                }
-            }
-        }
-    }
-
-    private fun saveCartDraftIdInFireBase(customerId: Long, draftId: Long) {
-        viewModelScope.launch(Dispatchers.IO) {
-            repo.saveCartDraftIdInFireBase(customerId, draftId).collect {
-                when (it) {
-                    is ApiState.Failure -> {}
-                    is ApiState.Loading -> {}
-                    is ApiState.Success -> {
-                        Log.i(TAG, "saveCartDraftIdInFireBase: success: ${it.data}")
-                    }
-                }
-            }
-        }
-    }
-
-    private fun saveCartDraftIdInPreferences(draftId: Long) {
-        viewModelScope.launch(Dispatchers.IO) { repo.saveCartDraftId(draftId) }
-    }
-
-    fun getAllProductsInCart(cartId: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            repo.getAllProductsInCart(cartId).collectLatest {state ->
+            repo.getAllProductsInCart().collectLatest {state ->
                 _productList.value = state
             }
         }
+    }
+
+    fun deleteItem(item: Cart) {
+        val list: MutableList<Cart> = _productList.value.toData()?.toMutableList() ?: mutableListOf()
+        _productList.value = ApiState.Loading
+        /*_productList.value = ApiState.Success(list.filter {
+            it != item
+        })*/
+        viewModelScope.launch(Dispatchers.IO) {
+            val updatedList = list.filter { it != item }
+            Log.i(TAG, "deleteItem: updatedList: $updatedList")
+            repo.updateCartItems(updatedList).collectLatest {
+                _productList.value = it
+            }
+        }
+    }
+
+    fun addOneToItem(item: Cart) {
+        val list: MutableList<Cart> = _productList.value.toData()?.toMutableList() ?: mutableListOf()
+        _productList.value = ApiState.Loading
+        val result = list.map {
+            if (it == item)
+                it.copy(quantity = it.quantity?.inc())
+            else
+                it
+        }
+        _productList.value = ApiState.Success(result)
+    }
+
+    fun subOneFromItem(item: Cart) {
+        val list: MutableList<Cart> = _productList.value.toData()?.toMutableList() ?: mutableListOf()
+        _productList.value = ApiState.Loading
+        val result = list.map {
+            if (it == item)
+                it.copy(quantity = it.quantity?.dec())
+            else
+                it
+        }
+        _productList.value = ApiState.Success(result)
     }
 }
