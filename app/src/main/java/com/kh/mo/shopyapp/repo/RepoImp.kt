@@ -69,18 +69,17 @@ class RepoImp private constructor(
             emit(ApiState.Loading)
             val draftFavorite =
                 remoteSource.getListOfSpecificProductsIds(productsIds)
-            Log.d(TAG, "asdasdasdasd: ${draftFavorite.body()}")
 
             if (draftFavorite.isSuccessful) {
                 draftFavorite.body()
                     ?.let {
                         emit(ApiState.Success(it.convertAllProductsResponseToProductsIds(getCustomerId()))) }
             } else {
-                emit(ApiState.Failure(draftFavorite.message()))
+                emit(ApiState.Failure("Network Error"))
             }
 
         }.catch {
-            emit(ApiState.Failure(it.message!!))
+            emit(ApiState.Failure("Network Error"))
         }
     }
 
@@ -93,13 +92,20 @@ class RepoImp private constructor(
                 remoteSource.getProductsIdForDraftFavorite(draftFavoriteId)
             if (draftFavorite.isSuccessful) {
                 draftFavorite.body()
-                    ?.let { emit(ApiState.Success(it.convertDraftOrderResponseToProductsIds())) }
+                    ?.let {
+                        if(it.draft_order.line_items[0].variant_id==null){
+                            emit(ApiState.Failure("No Data To Sync"))
+                        }else{
+                            emit(ApiState.Success(it.convertDraftOrderResponseToProductsIds()))
+
+                        }
+                    }?: run { emit(ApiState.Failure("No Data To Sync")) }
             } else {
-                emit(ApiState.Failure(draftFavorite.message()))
+                emit(ApiState.Failure("Network Error"))
             }
 
         }.catch {
-            emit(ApiState.Failure(it.message.toString()))
+            emit(ApiState.Failure("Network Error"))
         }
     }
 
@@ -193,7 +199,7 @@ class RepoImp private constructor(
 
             emit(ApiState.Failure("Email not exist"))
         }else{
-            emit(ApiState.Failure("NetWork Erorr"))
+            emit(ApiState.Failure("Network Error"))
         }
 
     }
@@ -591,12 +597,11 @@ class RepoImp private constructor(
                     emit(ApiState.Success("back Up Data successfully "))
 
                 } ?: run {
-                    emit(ApiState.Failure("Api Error"))
+                    emit(ApiState.Failure("Network Error"))
                 }
             }
         }.catch {
-            emit(ApiState.Failure(it.message.toString()))
-            Log.d(TAG, "createFavoriteDraft: ${it.message.toString()}")
+            emit(ApiState.Failure("Network Error"))
         }
     }
 
