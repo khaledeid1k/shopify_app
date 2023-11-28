@@ -1,9 +1,11 @@
 package com.kh.mo.shopyapp
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -13,6 +15,10 @@ import com.kh.mo.shopyapp.databinding.ActivityMainBinding
 import com.kh.mo.shopyapp.utils.createDialog
 import com.kh.mo.shopyapp.utils.makeGone
 import com.kh.mo.shopyapp.utils.makeVisible
+import com.paymob.acceptsdk.PayActivity
+import com.paymob.acceptsdk.PayActivityIntentKeys
+import com.paymob.acceptsdk.ThreeDSecureWebViewActivty
+
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -88,4 +94,38 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    fun startPaymentActivity() {
+        val pay_intent = Intent(this, PayActivity::class.java)
+
+        // this key is used to save the card by deafult.
+        // this key is used to save the card by deafult.
+        pay_intent.putExtra(PayActivityIntentKeys.SAVE_CARD_DEFAULT, false)
+
+        // this key is used to display the savecard checkbox.
+
+        // this key is used to display the savecard checkbox.
+        pay_intent.putExtra(PayActivityIntentKeys.SHOW_SAVE_CARD, false)
+
+        //this key is used to set the theme color(Actionbar, statusBar, button).
+
+        //this key is used to set the theme color(Actionbar, statusBar, button).
+        pay_intent.putExtra(
+            PayActivityIntentKeys.THEME_COLOR,
+            ResourcesCompat.getColor(baseContext.resources, R.color.orange, baseContext.theme)
+        )
+
+        // this key is to wether display the Actionbar or not.
+
+        // this key is to wether display the Actionbar or not.
+        //pay_intent.putExtra("ActionBar", true)
+
+        // this key is used to define the language. takes for ex ("ar", "en") as inputs.
+
+        // this key is used to define the language. takes for ex ("ar", "en") as inputs.
+        //pay_intent.putExtra("language", "ar")
+
+        startActivityForResult(pay_intent, 74)
+        val secure_intent = Intent(this, ThreeDSecureWebViewActivty::class.java)
+        secure_intent.putExtra("ActionBar", true)
+    }
 }

@@ -1,82 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="@dimen/_8sdp">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/checkoutItemImgV"
-        android:layout_width="@dimen/_75sdp"
-        android:layout_height="@dimen/_75sdp"
-        android:layout_marginStart="@dimen/_8sdp"
-        android:layout_marginBottom="@dimen/_8sdp"
-        android:elevation="8dp"
-        android:src="@drawable/product_placeholder"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <data>
 
-    <TextView
-        android:id="@+id/checkoutItemTitleTxtV"
-        style="@style/sub_title"
-        android:layout_width="0dp"
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_8sdp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/checkoutItemImgV"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="Samsung Galaxy Watch 6" />
+        android:padding="@dimen/_8sdp">
 
-    <TextView
-        android:id="@+id/checkoutItemVariantTxtV"
-        style="@style/sub_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@id/checkoutItemTitleTxtV"
-        app:layout_constraintTop_toBottomOf="@id/checkoutItemTitleTxtV"
-        tools:text="Silver" />
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/checkoutItemImgV"
+            android:layout_width="@dimen/_75sdp"
+            android:layout_height="@dimen/_75sdp"
+            android:layout_marginStart="@dimen/_8sdp"
+            android:layout_marginBottom="@dimen/_8sdp"
+            android:elevation="8dp"
+            android:src="@drawable/product_placeholder"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/x"
-        style="@style/sub_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_4sdp"
-        android:text="@string/x"
-        android:textColor="@color/orange"
-        app:layout_constraintStart_toEndOf="@id/checkoutItemVariantTxtV"
-        app:layout_constraintTop_toTopOf="@id/checkoutItemVariantTxtV" />
+        <TextView
+            android:id="@+id/checkoutItemTitleTxtV"
+            style="@style/sub_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_8sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/checkoutItemImgV"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Samsung Galaxy Watch 6" />
 
-    <TextView
-        android:id="@+id/checkoutItemNumberTxtV"
-        style="@style/sub_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/orange"
-        app:layout_constraintStart_toEndOf="@id/x"
-        app:layout_constraintTop_toTopOf="@id/x"
-        tools:text="3" />
+        <TextView
+            android:id="@+id/checkoutItemVariantTxtV"
+            style="@style/sub_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@id/checkoutItemTitleTxtV"
+            app:layout_constraintTop_toBottomOf="@id/checkoutItemTitleTxtV"
+            tools:text="Silver" />
 
-    <TextView
-        android:id="@+id/checkoutItemPriceTxtV"
-        style="@style/sub_title"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:textColor="?attr/colorPrimary"
-        app:layout_constraintBottom_toBottomOf="@id/checkoutItemImgV"
-        app:layout_constraintStart_toStartOf="@id/checkoutItemVariantTxtV"
-        tools:text="33.33" />
+        <TextView
+            android:id="@+id/x"
+            style="@style/sub_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_4sdp"
+            android:text="@string/x"
+            android:textColor="@color/orange"
+            app:layout_constraintStart_toEndOf="@id/checkoutItemVariantTxtV"
+            app:layout_constraintTop_toTopOf="@id/checkoutItemVariantTxtV" />
 
-    <TextView
-        android:id="@+id/checkoutItemCurrencyTxtV"
-        style="@style/sub_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="?attr/colorPrimary"
-        app:layout_constraintBottom_toBottomOf="@id/checkoutItemPriceTxtV"
-        app:layout_constraintStart_toEndOf="@id/checkoutItemPriceTxtV"
-        app:layout_constraintTop_toTopOf="@id/checkoutItemPriceTxtV"
-        tools:text="@string/dollar_currency" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/checkoutItemQuantityTxtV"
+            style="@style/sub_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/orange"
+            app:layout_constraintStart_toEndOf="@id/x"
+            app:layout_constraintTop_toTopOf="@id/x"
+            tools:text="3" />
+
+        <TextView
+            android:id="@+id/checkoutItemPriceTxtV"
+            style="@style/sub_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="?attr/colorPrimary"
+            app:layout_constraintBottom_toBottomOf="@id/checkoutItemImgV"
+            app:layout_constraintStart_toStartOf="@id/checkoutItemVariantTxtV"
+            app:layout_constraintTop_toBottomOf="@+id/checkoutItemVariantTxtV"
+            tools:text="33.33" />
+
+        <TextView
+            android:id="@+id/checkoutItemCurrencyTxtV"
+            style="@style/sub_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="?attr/colorPrimary"
+            app:layout_constraintBottom_toBottomOf="@id/checkoutItemPriceTxtV"
+            app:layout_constraintStart_toEndOf="@id/checkoutItemPriceTxtV"
+            app:layout_constraintTop_toTopOf="@id/checkoutItemPriceTxtV"
+            tools:text="@string/dollar_currency" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

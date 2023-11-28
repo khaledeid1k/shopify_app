@@ -131,4 +131,8 @@
     <string name="add_to_favorite">Add Favorite</string>
     <string name="add_to_cart">Add Cart</string>
     <string name="favorite">Favorite</string>
+    <string name="no_address_found_let_s_add_you_shipping_address">No Address found let\'s add you shipping address</string>
+    <string name="cash_on_delivery">Cash on delivery</string>
+    <string name="pay_with_card">Pay with Card</string>
+    <string name="tap_to_pay_now">Tap to pay now</string>
 </resources>

@@ -10,11 +10,12 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.checkout.CheckoutFragment">
+        tools:context=".ui.checkout.view.CheckoutFragment">
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_marginBottom="@dimen/_8sdp"
             app:layout_constraintBottom_toTopOf="@id/confirmBtn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -58,20 +59,24 @@
 
                 <TextView
                     android:id="@+id/addressNameValueTxtV"
-                    style="@style/main_title"
-                    android:layout_width="wrap_content"
+                    style="@style/sub_title"
+                    android:textSize="@dimen/_20ssp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_8sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/mapAddressImgV"
                     app:layout_constraintTop_toTopOf="@id/mapAddressImgV"
                     tools:text="House" />
 
                 <TextView
                     android:id="@+id/addressValueTxtV"
-                    style="@style/sub_title"
+                    style="@style/small_title"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_marginStart="@dimen/_8sdp"
+                    android:maxLines="3"
+                    android:ellipsize="end"
                     app:layout_constraintBottom_toBottomOf="@id/mapAddressImgV"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/mapAddressImgV"
@@ -111,18 +116,6 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/productsRecyclerV" />
 
-                <TextView
-                    android:id="@+id/editPaymentTxtV"
-                    style="@style/sub_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/_20sdp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:text="@string/edit"
-                    app:layout_constraintBottom_toBottomOf="@id/paymentTxtV"
-                    app:layout_constraintEnd_toEndOf="parent" />
-
                 <androidx.cardview.widget.CardView
                     android:id="@+id/paymentCardV"
                     android:layout_width="0dp"
@@ -148,7 +141,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="top|center"
                         android:layout_marginTop="@dimen/_4sdp"
-                        tools:text="Master Card" />
+                        android:text="@string/pay_with_card" />
 
                     <TextView
                         android:id="@+id/paymentCardNumberTxt"
@@ -157,9 +150,27 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom|center"
                         android:layout_marginBottom="@dimen/_4sdp"
-                        tools:text="123456789101122" />
+                        android:textColor="?attr/colorPrimary"
+                        android:text="@string/tap_to_pay_now" />
 
                 </androidx.cardview.widget.CardView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/cash_on_delivery"
+                    app:layout_constraintStart_toStartOf="@id/paymentCardV"
+                    style="@style/sub_title"
+                    app:layout_constraintTop_toTopOf="@id/cashOnDeliverySwitch"
+                    app:layout_constraintBottom_toBottomOf="@id/cashOnDeliverySwitch"/>
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/cashOnDeliverySwitch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="false"
+                    app:layout_constraintEnd_toEndOf="@id/paymentCardV"
+                    app:layout_constraintTop_toBottomOf="@id/paymentCardV"/>
 
                 <TextView
                     android:id="@+id/couponTxtV"
@@ -169,7 +180,7 @@
                     android:layout_marginTop="@dimen/_20sdp"
                     android:text="@string/add_coupon"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/paymentCardV" />
+                    app:layout_constraintTop_toBottomOf="@id/cashOnDeliverySwitch" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/couponTxtF"
@@ -200,7 +211,7 @@
             android:layout_marginStart="@dimen/_20sdp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/confirmBtn"
-            tools:text="Total" />
+            android:text="@string/total" />
 
         <TextView
             android:id="@+id/checkoutTotalCurrencyTxtV"

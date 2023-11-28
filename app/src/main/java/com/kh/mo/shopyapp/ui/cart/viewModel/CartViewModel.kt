@@ -3,21 +3,13 @@ package com.kh.mo.shopyapp.ui.cart.viewModel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kh.mo.shopyapp.model.request.CustomerDraftRequest
-import com.kh.mo.shopyapp.model.request.DraftOrderDetailsRequest
-import com.kh.mo.shopyapp.model.request.DraftOrderRequest
 import com.kh.mo.shopyapp.model.ui.Cart
-import com.kh.mo.shopyapp.model.ui.DraftOrder
-import com.kh.mo.shopyapp.model.ui.order.LineItem
 import com.kh.mo.shopyapp.remote.ApiState
 import com.kh.mo.shopyapp.repo.Repo
-import com.kh.mo.shopyapp.utils.Constants
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 class CartViewModel(private val repo: Repo) : ViewModel() {
@@ -31,18 +23,16 @@ class CartViewModel(private val repo: Repo) : ViewModel() {
 
     fun getAllProductsInCart() {
         viewModelScope.launch(Dispatchers.IO) {
-            repo.getAllProductsInCart().collectLatest {state ->
+            repo.getAllProductsInCart().collectLatest { state ->
                 _productList.value = state
             }
         }
     }
 
     fun deleteItem(item: Cart) {
-        val list: MutableList<Cart> = _productList.value.toData()?.toMutableList() ?: mutableListOf()
+        val list: MutableList<Cart> =
+            _productList.value.toData()?.toMutableList() ?: mutableListOf()
         _productList.value = ApiState.Loading
-        /*_productList.value = ApiState.Success(list.filter {
-            it != item
-        })*/
         viewModelScope.launch(Dispatchers.IO) {
             val updatedList = list.filter { it != item }
             Log.i(TAG, "deleteItem: updatedList: $updatedList")
@@ -53,7 +43,8 @@ class CartViewModel(private val repo: Repo) : ViewModel() {
     }
 
     fun addOneToItem(item: Cart) {
-        val list: MutableList<Cart> = _productList.value.toData()?.toMutableList() ?: mutableListOf()
+        val list: MutableList<Cart> =
+            _productList.value.toData()?.toMutableList() ?: mutableListOf()
         _productList.value = ApiState.Loading
         val result = list.map {
             if (it == item)
@@ -65,7 +56,8 @@ class CartViewModel(private val repo: Repo) : ViewModel() {
     }
 
     fun subOneFromItem(item: Cart) {
-        val list: MutableList<Cart> = _productList.value.toData()?.toMutableList() ?: mutableListOf()
+        val list: MutableList<Cart> =
+            _productList.value.toData()?.toMutableList() ?: mutableListOf()
         _productList.value = ApiState.Loading
         val result = list.map {
             if (it == item)

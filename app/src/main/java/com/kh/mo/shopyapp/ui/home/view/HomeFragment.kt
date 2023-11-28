@@ -1,9 +1,14 @@
 package com.kh.mo.shopyapp.ui.home.view
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
@@ -11,6 +16,7 @@ import com.kh.mo.shopyapp.R
 import com.kh.mo.shopyapp.databinding.FragmentHomeBinding
 import com.kh.mo.shopyapp.home.view.BrandsAdapter
 import com.kh.mo.shopyapp.model.ui.AdModel
+import com.kh.mo.shopyapp.remote.ApiState
 import com.kh.mo.shopyapp.remote.RemoteSourceImp
 import com.kh.mo.shopyapp.repo.RepoImp
 import com.kh.mo.shopyapp.ui.base.BaseFragment
@@ -32,6 +38,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
     private lateinit var adsAdapter: AdsAdapter
     private val listener: (AdModel) -> Unit = {
         viewModel.getCoupon(it)
+        observeCouponState()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -123,5 +130,25 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
                 binding.recyclerBrands.adapter = brandsAdapter
             }
         }
+    }
+
+    private fun observeCouponState() {
+        collectLatestFlowOnLifecycle(viewModel.couponState) {
+            when (it) {
+                is ApiState.Failure -> Log.i(TAG, "getCoupon: ${it.msg}")
+                ApiState.Loading -> Log.i(TAG, "getCoupon: $it")
+                is ApiState.Success -> {
+                    Log.i(TAG, "getCoupon: ${it.data.discountCode?.code}")
+                    it.data.discountCode?.code?.let { it1 -> copyDiscountCodeToClipboard(it1) }
+                }
+            }
+        }
+    }
+
+    private fun copyDiscountCodeToClipboard(code: String) {
+        val clipboardManager = requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        val clipData = ClipData.newPlainText("Copied Text", code)
+        clipboardManager.setPrimaryClip(clipData)
+        Toast.makeText(requireContext(), "code $code copied to clipboard", Toast.LENGTH_SHORT).show()
     }
 }

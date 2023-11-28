@@ -145,8 +145,8 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, ProfileViewModel>
     private fun showAddresses() {
         val dialog = AddressFragment()
         dialog.show(requireActivity().supportFragmentManager, dialog.tag)
-        dialog.userId.value = viewModel.getCustomerId()
         dialog.mView = _view
+        dialog.source = "settings"
     }
 
 

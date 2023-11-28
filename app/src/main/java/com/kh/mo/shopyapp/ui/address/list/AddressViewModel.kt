@@ -20,10 +20,14 @@ class AddressViewModel(private val repo: Repo) : ViewModel() {
     val userAddresses: StateFlow<ApiState<List<Address>>>
         get() = _userAddresses
 
-    fun getAddresses(userId: Long) {
+    init {
+        getAddresses()
+    }
+
+    private fun getAddresses() {
         viewModelScope.launch(Dispatchers.IO) {
-            Log.i(TAG, "getAddresses of user $userId")
-            repo.getAddressesOfCustomer(userId).collectLatest { addressResponse ->
+            Log.i(TAG, "getAddresses of user ")
+            repo.getAddressesOfCustomer(repo.getCustomerId()).collectLatest { addressResponse ->
                 if (addressResponse is ApiState.Success && addressResponse.data.isEmpty())
                     _userAddresses.value = ApiState.Failure("Empty Data")
                 else
@@ -31,4 +35,6 @@ class AddressViewModel(private val repo: Repo) : ViewModel() {
             }
         }
     }
+
+    fun getCustomerID() = repo.getCustomerId()
 }

@@ -9,5 +9,6 @@ class ApplicationClass : Application() {
         super.onCreate()
 
         Lingver.init(this)
+
     }
 }
