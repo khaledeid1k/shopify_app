@@ -40,9 +40,10 @@ class OrderAdapter(var context: Context,private val onClick:(Long) -> Unit) :
             Log.i("OrderFragmentAdapter","test")
             binding.apply {
 
-                tvProductNameOrder.text = currentItem.id.toString()
-                tvProductDateOrder.text=currentItem.customer?.createdAt
-                tvProductPriceOrder.text=currentItem.subtotalPrice+"EGP"
+                tvProductNameOrder.text = "#"+currentItem.orderNumber.toString()
+                val date=currentItem.customer?.createdAt
+                tvProductDateOrder.text=date?.substring(0,date.indexOf("T")).toString()
+                tvProductPriceOrder.text=currentItem.subtotalPrice+currentItem.currency
                 tvProductSizeOrder.text=currentItem.lineItems?.get(0)?.quantity.toString()+"x"
                 binding.imageProductOrder.setImageResource(R.drawable.order_bag)
 

@@ -2,7 +2,9 @@ package com.kh.mo.shopyapp.ui.profile.view
 
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
 import android.view.View
+import androidx.core.view.marginBottom
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import com.kh.mo.shopyapp.R
@@ -93,18 +95,22 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
                         val data = it.data
                         if (!data.isEmpty()) {
                             binding.apply {
-                                tvCreatedAtValue.text = data.get(0).createdAt
+                                val date=data.get(0).createdAt
+                                tvCreatedAtValue.text =date?.substring(0,date.indexOf("T")).toString()
                                 tvProductPriceOrderProfile.text = data.get(0).totalPrice+data.get(0).currency
-                                tvOrderIdValue.text=data.get(0).id.toString()
+                                tvOrderIdValue.text=data.get(0).name.toString()
                             }
                         }else{
                             binding.apply {
                                 tvOrderIdValue.text = "No orders yet"
+                                tvOrderIdValue.gravity=Gravity.CENTER
+                                //tvOrderIdValue.marginBottom
                                 tvCreatedAt.visibility =View.GONE
                                 tvProductPriceOrderProfile.visibility =View.GONE
                                 tvAllMyOrders.isClickable=false
                                 tvCreatedAtValue.visibility=View.GONE
                                 tvTotal.visibility=View.GONE
+                                orderId.visibility=View.GONE
 
                             }
                         }
