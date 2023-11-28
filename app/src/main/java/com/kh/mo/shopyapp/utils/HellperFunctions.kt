@@ -1,5 +1,9 @@
 package com.kh.mo.shopyapp.utils
 
+import android.app.ProgressDialog
+import android.content.Context
+import android.widget.Toast
+import java.text.MessageFormat
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -34,4 +38,10 @@ fun isHoursPassed(storedDate: Date?): Boolean {
     val timeDifference = currentTimeMillis - storedTimeMillis
     println("current date: ${formatCurrentDate(Date(currentTimeMillis))}")
     return timeDifference >= 1 * 60 * 60 * 1000
+}
+
+fun printError(context: Context,progressDialog:ProgressDialog,messageFormat: String){
+    progressDialog.dismiss()
+    Toast.makeText(context, messageFormat, Toast.LENGTH_SHORT).show()
+
 }

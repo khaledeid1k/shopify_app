@@ -135,4 +135,8 @@
     <string name="cash_on_delivery">Cash on delivery</string>
     <string name="pay_with_card">Pay with Card</string>
     <string name="tap_to_pay_now">Tap to pay now</string>
+    <string name="loading_sign_Up">Create an account...</string>
+    <string name="loading_login">Logging in…</string>
+
+
 </resources>

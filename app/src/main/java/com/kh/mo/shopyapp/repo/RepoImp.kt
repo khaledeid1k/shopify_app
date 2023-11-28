@@ -161,7 +161,7 @@ class RepoImp private constructor(
             emit(ApiState.Loading)
             val customer = remoteSource.createCustomer(userData.convertUserDataToCustomerData())
             if (!customer.isSuccessful) {
-                emit(ApiState.Failure("NetWork Error"))
+                emit(ApiState.Failure("Email has already been taken"))
             } else {
                 customer.body()?.let { responseBody ->
                     emit(ApiState.Success(responseBody.convertCustomerResponseToCustomerEntity()))
@@ -170,7 +170,7 @@ class RepoImp private constructor(
                 }
             }
         }.catch {
-            emit(ApiState.Failure(it.message!!))
+            emit(ApiState.Failure("NetWork Error"))
         }
     }
 

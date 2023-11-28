@@ -62,7 +62,6 @@ class SignInFragment : BaseFragment<FragmentSinginBinding, SignInViewModel>() {
             }
         }
     }
-
     private fun observeLoginWithFireBase() {
         lifecycleScope.launch {
             viewModel.checkCustomerExists.collect {
