@@ -126,7 +126,9 @@ class SearchResultFragment :BaseFragment<FragmentSearchResultBinding,SearchResul
                                 productsList.add(product)
                             }
                         }
-                        if(productsList.isEmpty()){ binding.noSearchResult.makeGone()}
+                        if(productsList.isEmpty()){
+                            binding.noSearchResult.makeVisible()
+                        }
                         addAdapterToSearch()
 
 
