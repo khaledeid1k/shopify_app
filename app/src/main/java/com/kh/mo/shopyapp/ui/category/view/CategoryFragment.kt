@@ -144,7 +144,7 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding, CategoryViewModel
                 } else {
                     minPrice = "0"
                 }
-                products.productVariants[0].price!!.toDouble() in minPrice.toDouble()..maxPrice.toDouble()
+                products.productVariants[0].price.split(" ")[0].toDouble() in minPrice .toDouble()..maxPrice.toDouble()
             }
             if (filteredPrice.isEmpty()) {
                 binding.lottiNoProduct.visibility = LottieAnimationView.VISIBLE
