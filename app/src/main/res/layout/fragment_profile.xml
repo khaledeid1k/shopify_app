@@ -62,6 +62,7 @@
             android:id="@+id/notLoggedInCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:elevation="@dimen/_10sdp"
             app:cardCornerRadius="@dimen/_10sdp"
             app:cardUseCompatPadding="true"
@@ -125,7 +126,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:elevation="@dimen/_10sdp"
-            android:visibility="gone"
+            android:visibility="visible"
             app:cardCornerRadius="@dimen/_10sdp"
             app:cardUseCompatPadding="true"
             app:layout_constraintStart_toStartOf="parent"
@@ -138,6 +139,7 @@
                 <TextView
                     android:id="@+id/tv_all_my_orders"
                     style="@style/sub_title"
+                    android:textStyle="bold"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawablePadding="@dimen/_10sdp"
@@ -148,37 +150,68 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-
                 <TextView
-                    android:id="@+id/tv_product_name_order_profile"
-                    style="@style/sub_title"
+                    android:id="@+id/order_id"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_20sdp"
-                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_all_my_orders"
-                    tools:text="Faux Sued Ankle Boots" />
+                    android:text="@string/order_id"
+                    style="@style/sub_title"
+                    android:layout_marginHorizontal="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_10sdp"/>
+                <TextView
+                    android:id="@+id/tv_order_id_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toEndOf="@id/order_id"
+                    app:layout_constraintTop_toBottomOf="@id/tv_all_my_orders"
+                    tools:text="79654812"
+                    style="@style/sub_title"
+                    android:layout_marginHorizontal="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    app:layout_constraintBottom_toTopOf="@id/tv_created_at_value"
+                    />
+
 
                 <TextView
-                    android:id="@+id/tv_product_size_order_profile"
+                    android:id="@+id/tv_created_at"
                     style="@style/sub_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="@+id/tv_product_name_order_profile"
-                    app:layout_constraintStart_toStartOf="@+id/tv_product_name_order_profile"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_product_name_order_profile"
+                    app:layout_constraintStart_toStartOf="@id/order_id"
+                    android:text="Date : "
+                    app:layout_constraintTop_toBottomOf="@id/order_id"/>
+
+                <TextView
+                    android:id="@+id/tv_created_at_value"
+                    style="@style/sub_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    app:layout_constraintStart_toStartOf="@+id/tv_order_id_value"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_order_id_value"
                     tools:text="7, Hot Pink" />
+
+                <TextView
+                    android:id="@+id/tv_total"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/tv_created_at_value"
+                    app:layout_constraintStart_toStartOf="parent"
+                    style="@style/sub_title"
+                    android:text="@string/total_profile"
+                    android:layout_marginHorizontal="@dimen/_20sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
 
                 <TextView
                     android:id="@+id/tv_product_price_order_profile"
                     style="@style/sub_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/orange"
-                    app:layout_constraintEnd_toEndOf="@+id/tv_product_name_order_profile"
-                    app:layout_constraintStart_toStartOf="@+id/tv_product_name_order_profile"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_product_size_order_profile"
+                    app:layout_constraintStart_toStartOf="@+id/tv_order_id_value"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_created_at_value"
                     tools:text="49$" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>

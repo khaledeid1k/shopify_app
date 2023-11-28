@@ -29,7 +29,7 @@
     <string name="fitting">FITTING</string>
     <string name="brands">Brands</string>
     <string name="categories">Categories</string>
-    <string name="orders">Orders</string>
+    <string name="orders">Orders History</string>
     <string name="edit_profile">Edit Profile</string>
     <string name="all_my_orders">All My Orders</string>
     <string name="dollar_currency">$</string>
@@ -119,6 +119,8 @@
     <string name="service_fee">Service Fee</string>
     <string name="total_discount">Total Discount</string>
     <string name="_0_00">0.00</string>
+    <string name="order_id">Order Id :</string>
+    <string name="total_profile">Total :</string>
     <string name="are_you_sure">Are You Sure ?</string>
     <string name="will_delete_this_from_favorites">will delete this from favorites </string>
     <string name="please_login">Log in to access this feature</string>
