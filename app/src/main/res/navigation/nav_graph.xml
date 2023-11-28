@@ -51,6 +51,9 @@
         <argument
             android:name="productDetails"
             app:argType="com.kh.mo.shopyapp.model.ui.allproducts.Product" />
+        <action
+            android:id="@+id/action_productFragment_to_signInFragment"
+            app:destination="@id/signInFragment" />
     </fragment>
     <fragment
         android:id="@+id/homeFragment"
