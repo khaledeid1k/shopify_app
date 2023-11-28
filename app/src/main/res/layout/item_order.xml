@@ -24,10 +24,9 @@
                 android:layout_height="@dimen/_80sdp"
                 android:layout_margin="@dimen/_10sdp"
                 tools:src="@drawable/img"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:scaleType="centerCrop"
+                android:scaleType="fitXY"
                 />
 
             <TextView
@@ -45,13 +44,19 @@
 
             <TextView
                 android:id="@+id/tv_product_size_order"
-                style="@style/sub_title"
-                android:layout_width="wrap_content"
+                style="@style/small_title"
+                android:layout_width="@dimen/_30sdp"
                 android:layout_height="wrap_content"
-                tools:text="7, Hot Pink"
-                app:layout_constraintEnd_toEndOf="@+id/tv_product_name_order"
-                app:layout_constraintStart_toStartOf="@+id/tv_product_name_order"
-                app:layout_constraintTop_toBottomOf="@+id/tv_product_name_order" />
+                tools:text="1x"
+                android:background="@drawable/round_rate"
+                android:padding="@dimen/_7sdp"
+                android:layout_marginStart="@dimen/_10sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/image_product_order"
+                app:layout_constraintBottom_toBottomOf="@id/image_product_order"
+
+
+                />
 
             <TextView
                 android:id="@+id/tv_product_price_order"
@@ -62,7 +67,7 @@
                 android:textColor="@color/orange"
                 app:layout_constraintEnd_toEndOf="@+id/tv_product_name_order"
                 app:layout_constraintStart_toStartOf="@+id/tv_product_name_order"
-                app:layout_constraintTop_toBottomOf="@+id/tv_product_size_order" />
+                app:layout_constraintTop_toBottomOf="@+id/tv_product_name_order" />
 
             <TextView
                 android:id="@+id/tv_product_date_order"

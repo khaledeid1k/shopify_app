@@ -169,8 +169,11 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding, CategoryViewModel
             viewModel.product.collect { apiState ->
                 when (apiState) {
                     is ApiState.Failure -> {}
-                    is ApiState.Loading -> {}
+                    is ApiState.Loading -> {
+                        binding.loading.visibility=View.VISIBLE
+                    }
                     is ApiState.Success -> {
+                        binding.loading.visibility=View.GONE
                         Log.d(TAG, "getSubCategories: ${apiState.data}")
                         val data = apiState.data.distinctBy { it.productType }
                         binding.firstSubcategory.text = data[0].productType

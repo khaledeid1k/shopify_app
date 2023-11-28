@@ -121,13 +121,13 @@
 <!--            app:spanCount="3" />-->
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_products_category"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/_20sdp"
-            tools:listitem="@layout/item_product"
-            android:id="@+id/recycler_products_category"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            app:spanCount="2" />
+            app:spanCount="2"
+            tools:listitem="@layout/item_product" />
 
         <com.airbnb.lottie.LottieAnimationView
             android:layout_width="match_parent"
@@ -135,6 +135,14 @@
             android:visibility="gone"
             app:lottie_rawRes="@raw/no_product"
             android:id="@+id/lotti_no_product"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"/>
+        <com.airbnb.lottie.LottieAnimationView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            app:lottie_rawRes="@raw/loading"
+            android:id="@+id/loading"
             app:lottie_autoPlay="true"
             app:lottie_loop="true"/>
 
