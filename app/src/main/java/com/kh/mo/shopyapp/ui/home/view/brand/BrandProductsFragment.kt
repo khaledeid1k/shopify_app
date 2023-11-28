@@ -27,6 +27,7 @@ class BrandProductsFragment : BaseFragment<FragmentBrandProductsBinding,HomeView
 
         brandName = BrandProductsFragmentArgs.fromBundle(requireArguments()).brandName
         brandImage = BrandProductsFragmentArgs.fromBundle(requireArguments()).brandImage
+
         Glide.with(requireContext())
             .load(brandImage)
             .placeholder(R.drawable.placeholder_products)

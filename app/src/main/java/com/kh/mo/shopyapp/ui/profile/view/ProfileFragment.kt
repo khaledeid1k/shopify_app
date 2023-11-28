@@ -103,14 +103,14 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
                             }
                         }else{
                             binding.apply {
-                                tvOrderIdValue.text = "No orders yet"
-                                tvOrderIdValue.gravity=Gravity.CENTER
+                                tvTotal.text = "No orders yet"
+                                tvTotal.gravity=Gravity.CENTER
                                 //tvOrderIdValue.marginBottom
                                 tvCreatedAt.visibility =View.GONE
                                 tvProductPriceOrderProfile.visibility =View.GONE
                                 tvAllMyOrders.isClickable=false
                                 tvCreatedAtValue.visibility=View.GONE
-                                tvTotal.visibility=View.GONE
+                                tvOrderIdValue.visibility=View.GONE
                                 orderId.visibility=View.GONE
 
                             }

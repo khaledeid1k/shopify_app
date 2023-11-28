@@ -3,6 +3,7 @@ package com.kh.mo.shopyapp.ui.home.view.brand
 import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -46,7 +47,7 @@ class ProductsOfBrandsAdapter(var context: Context, val onClickListener: (positi
                     .placeholder(R.drawable.placeholder_products)
                     .into(imageProductOrder)
                 Log.i("HomeFragment", currentItem.productImages.get(0).src.toString())
-
+                tvProductSizeOrder.visibility= View.GONE
                 tvProductPriceOrder.text = currentItem.productVariants.get(0).price
             }
 

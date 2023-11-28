@@ -39,14 +39,14 @@ interface Repo {
     fun validateEmail(email: String): Validation
     fun validateUserName(userName: String): Validation
     fun reviews():List<Review>
-    suspend fun getAllBrands(): Flow<ApiState<BrandsResponse>>
+    suspend fun getAllBrands(): Flow<ApiState<List<Product>>>
     suspend fun getMainCategories(): Flow<ApiState<MainCategoryResponse>>
     suspend fun getDiscountCode(
         priceRuleId: String,
         discountCodeId: String
     ): Flow<ApiState<DiscountCodeResponse>>
 
-    suspend fun getProductsOfSpecificBrand(brandName:String): Flow<ApiState<AllProductsResponse>>
+    suspend fun getProductsOfSpecificBrand(brandName:String): Flow<ApiState<List<Product>>>
     suspend fun getAllProducts(): Flow<ApiState<List<Product>>>
     suspend fun getProductsByCollection(collectionId:Long): Flow<ApiState<List<Product>>>
     suspend fun filterProductsBySubCollection(collectionId:Long,productType:String): Flow<ApiState<List<Product>>>
