@@ -6,7 +6,9 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.room.util.query
 import com.kh.mo.shopyapp.R
 import com.kh.mo.shopyapp.databinding.DialogFilterBinding
@@ -124,6 +126,8 @@ class SearchResultFragment :BaseFragment<FragmentSearchResultBinding,SearchResul
         binding.searchResultList.adapter = searchResultAdapter
     }
     override fun onClickSearchItem(product: Product) {
-
+        findNavController().navigate(
+        SearchResultFragmentDirections.actionSearchResultFragmentToProductFragment(product)
+        )
     }
 }

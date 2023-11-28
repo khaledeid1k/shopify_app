@@ -20,6 +20,8 @@
         android:elevation="@dimen/_10sdp"
         app:cardCornerRadius="@dimen/_6sdp"
         app:cardUseCompatPadding="true"
+        android:onClick="@{()->listener.onClickSearchItem(item)}"
+
 
         >
 
