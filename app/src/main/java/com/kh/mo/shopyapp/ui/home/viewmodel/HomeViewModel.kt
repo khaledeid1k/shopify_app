@@ -14,7 +14,9 @@ import com.kh.mo.shopyapp.repo.mapper.convertAllProductsResponseToProducts
 import com.kh.mo.shopyapp.repo.mapper.convertToCustomCollection
 import com.kh.mo.shopyapp.repo.mapper.convertToSmartCollection
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -32,8 +34,8 @@ class HomeViewModel(private var _irepo: Repo) : ViewModel() {
     private val _productBrand = MutableStateFlow<ApiState<List<Product>>>(ApiState.Loading)
     val productBrand: StateFlow<ApiState<List<Product>>> = _productBrand
 
-    private val _couponState = MutableStateFlow<ApiState<DiscountCodeResponse>>(ApiState.Loading)
-    val couponState: StateFlow<ApiState<DiscountCodeResponse>> = _couponState
+    private val _couponState = MutableSharedFlow<ApiState<DiscountCodeResponse>>()
+    val couponState: SharedFlow<ApiState<DiscountCodeResponse>> = _couponState
 
     init{
         getAllBrands()
@@ -112,7 +114,7 @@ class HomeViewModel(private var _irepo: Repo) : ViewModel() {
     fun getCoupon(adItem: AdModel) {
         viewModelScope.launch(Dispatchers.IO) {
             _irepo.getDiscountCode(adItem.priceRuleId, adItem.discountCodeId).collectLatest {
-                _couponState.value = it
+                _couponState.emit(it)
             }
         }
     }

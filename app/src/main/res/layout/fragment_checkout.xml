@@ -22,6 +22,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -214,17 +215,6 @@
             android:text="@string/total" />
 
         <TextView
-            android:id="@+id/checkoutTotalCurrencyTxtV"
-            style="@style/sub_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="?attr/colorPrimary"
-            app:layout_constraintBottom_toBottomOf="@id/checkoutTotalPriceTxtV"
-            app:layout_constraintStart_toEndOf="@id/checkoutTotalPriceTxtV"
-            app:layout_constraintTop_toTopOf="@id/checkoutTotalPriceTxtV"
-            tools:text="@string/dollar_currency" />
-
-        <TextView
             android:id="@+id/checkoutTotalPriceTxtV"
             style="@style/sub_title"
             android:layout_width="0dp"
@@ -252,6 +242,24 @@
             android:textColor="?attr/colorBackgroundFloating"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/loading"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/loading" />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lotti_no_product"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/no_product" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

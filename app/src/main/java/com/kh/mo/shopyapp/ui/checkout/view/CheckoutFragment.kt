@@ -76,22 +76,55 @@ class CheckoutFragment : BaseFragment<FragmentCheckoutBinding, CheckoutViewModel
         collectLatestFlowOnLifecycle(viewModel.productList) { state ->
             when (state) {
                 is ApiState.Failure -> {
-                    Log.i(TAG, "observeProductListState: failure ${state.msg}")
+                    binding.apply {
+                        loading.visibility = View.GONE
+                        loading.pauseAnimation()
+                        lottiNoProduct.visibility = View.VISIBLE
+                        lottiNoProduct.playAnimation()
+                        constraintLayout.visibility = View.GONE
+                        checkoutTotalTxtV.visibility = View.GONE
+                        checkoutTotalPriceTxtV.visibility = View.GONE
+                        confirmBtn.visibility = View.GONE
+                    }
                 }
 
                 ApiState.Loading -> {
-                    Log.i(TAG, "observeProductListState: loading...")
+                    binding.apply {
+                        loading.visibility = View.VISIBLE
+                        loading.playAnimation()
+                        constraintLayout.visibility = View.GONE
+                        checkoutTotalTxtV.visibility = View.GONE
+                        checkoutTotalPriceTxtV.visibility = View.GONE
+                        confirmBtn.visibility = View.GONE
+                    }
                 }
 
                 is ApiState.Success -> {
                     Log.i(TAG, "observeProductListState: success ${state.data}")
                     if (state.data.isEmpty()) {
-                        Toast.makeText(requireContext(), "no data in cart", Toast.LENGTH_SHORT)
-                            .show()
-                        binding.productsRecyclerV.visibility = View.GONE
+                        binding.apply {
+                            loading.visibility = View.GONE
+                            loading.pauseAnimation()
+                            lottiNoProduct.visibility = View.VISIBLE
+                            lottiNoProduct.playAnimation()
+                            constraintLayout.visibility = View.GONE
+                            checkoutTotalTxtV.visibility = View.GONE
+                            checkoutTotalPriceTxtV.visibility = View.GONE
+                            confirmBtn.visibility = View.GONE
+                        }
                     } else {
                         adapter.submitList(state.data)
                         calculateTotal(state.data)
+                        binding.apply {
+                            loading.visibility = View.GONE
+                            loading.pauseAnimation()
+                            lottiNoProduct.visibility = View.GONE
+                            lottiNoProduct.pauseAnimation()
+                            constraintLayout.visibility = View.VISIBLE
+                            checkoutTotalTxtV.visibility = View.VISIBLE
+                            checkoutTotalPriceTxtV.visibility = View.VISIBLE
+                            confirmBtn.visibility = View.VISIBLE
+                        }
                     }
                 }
             }
@@ -102,7 +135,7 @@ class CheckoutFragment : BaseFragment<FragmentCheckoutBinding, CheckoutViewModel
         val currency: String = cartList[0].price?.split(" ")?.get(1) ?: ""
         var totalPrice = 0.0
         cartList.asFlow().collect {
-            val price = it.price?.split(" ")?.get(0)?.toDouble() ?: 0.0
+            val price = (it.price?.split(" ")?.get(0)?.toDouble()?.times(it.quantity!!)) ?: 0.0
             totalPrice += price
         }
         binding.apply {
@@ -116,10 +149,15 @@ class CheckoutFragment : BaseFragment<FragmentCheckoutBinding, CheckoutViewModel
             when(it) {
                 is ApiState.Failure -> {
                     Log.i(TAG, "observeAddressState: failed,${it.msg}")
+                    binding.mapAddressImgV.visibility = View.VISIBLE
+                    showNoAddress()
                 }
-                is ApiState.Loading -> {}
+                is ApiState.Loading -> {
+                    binding.mapAddressImgV.visibility = View.INVISIBLE
+                }
                 is ApiState.Success -> {
                     Log.i(TAG, "observeAddressState: success,${it.data}")
+                    binding.mapAddressImgV.visibility = View.VISIBLE
                     if (it.data.isEmpty()) {
                         showNoAddress()
                     } else {

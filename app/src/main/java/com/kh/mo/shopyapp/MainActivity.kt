@@ -95,7 +95,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun startPaymentActivity() {
+        val paymentKey = "ZXlKaGJHY2lPaUpJVXpVeE1pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5WDJsa0lqb3hOamN6TnpJMUxDSmhiVzkxYm5SZlkyVnVkSE1pT2pjMExDSmpkWEp5Wlc1amVTSTZJa1ZIVUNJc0ltbHVkR1ZuY21GMGFXOXVYMmxrSWpvME16WTBOalV4TENKdmNtUmxjbDlwWkNJNk1UWTNNalkyTmpBMExDSmlhV3hzYVc1blgyUmhkR0VpT25zaVptbHljM1JmYm1GdFpTSTZJa05zYVdabWIzSmtJaXdpYkdGemRGOXVZVzFsSWpvaVRtbGpiMnhoY3lJc0luTjBjbVZsZENJNklrVjBhR0Z1SUV4aGJtUWlMQ0ppZFdsc1pHbHVaeUk2SWpnd01qZ2lMQ0ptYkc5dmNpSTZJalF5SWl3aVlYQmhjblJ0Wlc1MElqb2lPREF6SWl3aVkybDBlU0k2SWtwaGMydHZiSE5yYVdKMWNtZG9JaXdpYzNSaGRHVWlPaUpWZEdGb0lpd2lZMjkxYm5SeWVTSTZJa05TSWl3aVpXMWhhV3dpT2lKamJHRjFaR1YwZEdVd09VQmxlR0V1WTI5dElpd2ljR2h2Ym1WZmJuVnRZbVZ5SWpvaUt6RXhNakl6TVRrek5UZ2lMQ0p3YjNOMFlXeGZZMjlrWlNJNklqQXhPRGs0SWl3aVpYaDBjbUZmWkdWelkzSnBjSFJwYjI0aU9pSk9RU0o5TENKc2IyTnJYMjl5WkdWeVgzZG9aVzVmY0dGcFpDSTZabUZzYzJVc0ltVjRkSEpoSWpwN2ZTd2ljMmx1WjJ4bFgzQmhlVzFsYm5SZllYUjBaVzF3ZENJNlptRnNjMlVzSW1WNGNDSTZNVGN3TVRFM01EYzFNaXdpY0cxclgybHdJam9pTVRrM0xqRTJNaTR4T1RZdU1UTXpJbjAuVW4wYi05djZxbTJiMmFlT2lqNGh0TXBHTHBmWGNxc1BBcVlKUXJ2NXlQWHBCYTZKWTl6cXEyRjdIQU5xeGVadGFVMVlvSmtyaHZUQi1laDR3WXBlc2c="
         val pay_intent = Intent(this, PayActivity::class.java)
+
+        intent.putExtra(PayActivityIntentKeys.PAYMENT_KEY, paymentKey);
+        intent.putExtra(PayActivityIntentKeys.THREE_D_SECURE_ACTIVITY_TITLE, "Verification");
 
         // this key is used to save the card by deafult.
         // this key is used to save the card by deafult.

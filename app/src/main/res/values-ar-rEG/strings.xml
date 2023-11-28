@@ -127,4 +127,15 @@
     <string name="gust_message">تسطيع انشاء حساب لكي تضيف منتجات الى المفضلة والعديد من المميزات الاخرى</string>
     <string name="guest">بدون حساب</string>
     <string name="skip"><![CDATA[تخطي ->]]></string>
+    <string name="add_to_favorite">اضافة مفضلة</string>
+    <string name="add_to_cart">اضافة الى عربه التسوق</string>
+    <string name="favorite">مفضلة</string>
+    <string name="no_address_found_let_s_add_you_shipping_address">لم يتم العثور على عناوين خاصه بك لنضيف عنوان التوصيل الخاص بك</string>
+    <string name="cash_on_delivery">الدفع عند الاستلام</string>
+    <string name="pay_with_card">الدفع بالبطاقة</string>
+    <string name="tap_to_pay_now">اضغط للدفع الان</string>
+    <string name="minimum_one_item">عنصر واحد على الاقل</string>
+    <string name="minimum_one_item_message">يجب ان يكون هناك على الاقل عنصر واحد، يمكنك حذف هذا المنتج</string>
+    <string name="delete">حذف</string>
+
 </resources>
