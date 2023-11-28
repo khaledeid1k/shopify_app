@@ -63,13 +63,13 @@ class ProfileViewModel(private val repo: Repo) : ViewModel() {
     }
 
     fun backUpDraftFavorite() {
-        getAllFavorites({
+        getAllFavorites(success =  {
             viewModelScope.launch {
                 repo.backUpDraftFavorite(it, getFavoriteDraftId()).collect {
                     _backUpDraftFavorite.value = it
                 }
             }
-        }, {
+        }, failure = {
             _backUpDraftFavorite.value = ApiState.Failure("No Data To Upload")
         }
         )

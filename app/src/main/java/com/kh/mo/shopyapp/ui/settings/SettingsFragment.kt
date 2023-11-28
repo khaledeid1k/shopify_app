@@ -66,6 +66,8 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, ProfileViewModel>
 
     private fun upload() {
         viewModel.backUpDraftFavorite()
+        binding.loading.makeVisible()
+        binding.loadingOverlay.makeVisible()
         observerUploadData()
     }
 
@@ -76,11 +78,11 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, ProfileViewModel>
                     is ApiState.Failure -> {
                         binding.loading.makeGone()
                         binding.loadingOverlay.makeGone()
+                        Toast.makeText(requireContext(), it.msg, Toast.LENGTH_SHORT).show()
                     }
 
                     is ApiState.Loading -> {
-                        binding.loading.makeVisible()
-                        binding.loadingOverlay.makeVisible()
+
                     }
 
                     is ApiState.Success -> {
@@ -96,6 +98,8 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, ProfileViewModel>
 
     private fun sync() {
         viewModel.retrieveDraftFavorite()
+        binding.loading.makeVisible()
+        binding.loadingOverlay.makeVisible()
         observerSyncData()
     }
 
@@ -103,11 +107,14 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, ProfileViewModel>
         lifecycleScope.launch {
             viewModel.retrieveDraftFavorite.collect {
                 when (it) {
-                    is ApiState.Failure -> {}
-                    ApiState.Loading -> {
-                        binding.loading.makeVisible()
+                    is ApiState.Failure -> {
+                        binding.loading.makeGone()
+                        binding.loadingOverlay.makeGone()
                     }
 
+                    is ApiState.Loading -> {
+
+                    }
                     is ApiState.Success -> {
                         viewModel.saveProducts(it.data) { result ->
                             if (result > 0) {
