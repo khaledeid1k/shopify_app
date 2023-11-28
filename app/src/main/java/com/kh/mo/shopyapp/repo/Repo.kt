@@ -5,7 +5,9 @@ import com.kh.mo.shopyapp.model.entity.FavoriteEntity
 import com.kh.mo.shopyapp.model.entity.Validation
 import com.kh.mo.shopyapp.model.request.DraftOrderRequest
 import com.kh.mo.shopyapp.model.request.UserData
+import com.kh.mo.shopyapp.model.request.order.CreateOrderRequest
 import com.kh.mo.shopyapp.model.response.ads.DiscountCodeResponse
+import com.kh.mo.shopyapp.model.response.ads.PriceRuleResponse
 import com.kh.mo.shopyapp.model.response.allproducts.AllProductsResponse
 import com.kh.mo.shopyapp.model.response.allproducts.ProductResponse
 import com.kh.mo.shopyapp.model.response.barnds.BrandsResponse
@@ -105,4 +107,7 @@ interface Repo {
     suspend fun getAllProductsInCart(): Flow<ApiState<List<Cart>>>
     fun addProductToCart(product: Product): Flow<ApiState<Boolean>>
     fun updateCartItems(cartList: List<Cart>): Flow<ApiState<List<Cart>>>
+    fun getPriceRule(priceRuleId: String): Flow<ApiState<PriceRuleResponse>>
+    fun createOrder(orderRequest: CreateOrderRequest): Flow<ApiState<OrdersResponse>>
+    suspend fun clearDraftCart(draftOrderRequest: DraftOrderRequest): Flow<ApiState<String>>
 }

@@ -12,6 +12,7 @@ import androidx.core.content.ContextCompat.getSystemService
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
+import com.kh.mo.shopyapp.MainActivity
 import com.kh.mo.shopyapp.R
 import com.kh.mo.shopyapp.databinding.FragmentHomeBinding
 import com.kh.mo.shopyapp.home.view.BrandsAdapter
@@ -140,6 +141,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
                 is ApiState.Success -> {
                     Log.i(TAG, "getCoupon: ${it.data.discountCode?.code}")
                     it.data.discountCode?.code?.let { it1 -> copyDiscountCodeToClipboard(it1) }
+                    (requireActivity() as MainActivity).copiedCoupon = it.data
                 }
             }
         }

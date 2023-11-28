@@ -195,6 +195,7 @@
                     app:layout_constraintTop_toBottomOf="@id/couponTxtV">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/couponET"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="text" />
@@ -221,6 +222,17 @@
             android:layout_height="wrap_content"
             android:textColor="?attr/colorPrimary"
             app:layout_constraintStart_toStartOf="@id/checkoutTotalTxtV"
+            app:layout_constraintTop_toBottomOf="@id/checkoutTotalTxtV"
+            tools:text="33.33" />
+
+        <TextView
+            android:id="@+id/checkoutTotalPriceWithDiscountTxtV"
+            style="@style/sub_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_8sdp"
+            android:textColor="?attr/colorPrimary"
+            app:layout_constraintStart_toEndOf="@id/checkoutTotalPriceTxtV"
             app:layout_constraintTop_toBottomOf="@id/checkoutTotalTxtV"
             tools:text="33.33" />
 

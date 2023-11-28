@@ -301,7 +301,7 @@ fun Product.convertToLineItemRequest(): LineItems {
 
 fun List<com.kh.mo.shopyapp.model.response.draft_order.LineItem>.convertToLineItemRequest(): List<LineItems> {
     return this.map {
-        LineItems(variant_id = it.variant_id)
+        LineItems(variant_id = it.variant_id, quantity = it.quantity ?: 1)
     }
 }
 

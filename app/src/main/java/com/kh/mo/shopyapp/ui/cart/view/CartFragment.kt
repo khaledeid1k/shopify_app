@@ -84,6 +84,7 @@ class CartFragment : BaseFragment<FragmentCartBinding, CartViewModel>() {
                         cartTotalTxtV.visibility = View.GONE
                         cartShippingTitleTxtV.visibility = View.GONE
                         cartTotalPriceTxtV.visibility = View.GONE
+                        cartCheckoutBtn.visibility = View.GONE
                         loading.visibility = View.VISIBLE
                         loading.playAnimation()
                     }

@@ -4,9 +4,11 @@ import com.kh.mo.shopyapp.model.request.AddressRequest
 import com.kh.mo.shopyapp.model.request.CustomerRequest
 import com.kh.mo.shopyapp.model.response.address.AddressResponse
 import com.kh.mo.shopyapp.model.request.DraftOrderRequest
+import com.kh.mo.shopyapp.model.request.order.CreateOrderRequest
 import com.kh.mo.shopyapp.model.response.orderdetails.OrderDetailsResponse
 import com.kh.mo.shopyapp.model.response.address.AddressesResponse
 import com.kh.mo.shopyapp.model.response.ads.DiscountCodeResponse
+import com.kh.mo.shopyapp.model.response.ads.PriceRuleResponse
 import com.kh.mo.shopyapp.model.response.allproducts.AllProductsResponse
 import com.kh.mo.shopyapp.model.response.allproducts.ProductResponse
 import com.kh.mo.shopyapp.model.response.barnds.BrandsResponse
@@ -106,4 +108,10 @@ interface Services {
 
     @GET("products/{product_id}/images.json")
     suspend fun getImageOrders(@Path("product_id") product_id: Long): Response<ProductResponse>
+
+    @GET("price_rules/{price_rule_id}.json")
+    suspend fun getPriceRule(@Path("price_rule_id") priceRuleId: String): Response<PriceRuleResponse>
+
+    @POST("orders.json")
+    suspend fun createOrder(@Body orderRequest: CreateOrderRequest): Response<OrdersResponse>
 }

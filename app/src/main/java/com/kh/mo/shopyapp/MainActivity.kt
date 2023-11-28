@@ -12,6 +12,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.NavigationUI.onNavDestinationSelected
 import com.kh.mo.shopyapp.databinding.ActivityMainBinding
+import com.kh.mo.shopyapp.model.response.ads.DiscountCodeResponse
 import com.kh.mo.shopyapp.utils.createDialog
 import com.kh.mo.shopyapp.utils.makeGone
 import com.kh.mo.shopyapp.utils.makeVisible
@@ -24,6 +25,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var controller: NavController
     private lateinit var navHostFragment: NavHostFragment
+    var copiedCoupon: DiscountCodeResponse? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding  = DataBindingUtil.setContentView(
