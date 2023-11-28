@@ -8,6 +8,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
+import com.kh.mo.shopyapp.MainActivity
 import com.kh.mo.shopyapp.R
 import com.kh.mo.shopyapp.databinding.FragmentCheckoutBinding
 import com.kh.mo.shopyapp.model.ui.Address
@@ -35,6 +36,11 @@ class CheckoutFragment : BaseFragment<FragmentCheckoutBinding, CheckoutViewModel
         super.onViewCreated(view, savedInstanceState)
 
         _view = view
+        init()
+        addListeners()
+    }
+
+    private fun init() {
         adapter = CheckoutAdapter(requireContext())
         val dividerItemDecoration = DividerItemDecoration(requireContext(), RecyclerView.VERTICAL)
         ResourcesCompat.getDrawable(resources, R.drawable.divider_drawable, null)
@@ -46,9 +52,23 @@ class CheckoutFragment : BaseFragment<FragmentCheckoutBinding, CheckoutViewModel
         userAddress = viewModel.userAddress as MutableStateFlow<ApiState<List<Address>>>
         observeProductListState()
         observeAddressState()
+    }
 
+    private fun addListeners() {
         binding.addressEditTxt.setOnClickListener {
             showAddressesDialog()
+        }
+        binding.cashOnDeliverySwitch.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                binding.paymentCardV.isEnabled = false
+                binding.paymentCardNumberTxt.visibility = View.GONE
+            } else {
+                binding.paymentCardV.isEnabled = true
+                binding.paymentCardNumberTxt.visibility = View.VISIBLE
+            }
+        }
+        binding.paymentCardV.setOnClickListener {
+            //(requireActivity() as MainActivity).startPaymentActivity()
         }
     }
 
