@@ -3,6 +3,7 @@ package com.kh.mo.shopyapp.ui.home.viewmodel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kh.mo.shopyapp.model.response.ads.DiscountCodeResponse
 import com.kh.mo.shopyapp.model.response.barnds.SmartCollection
 import com.kh.mo.shopyapp.model.ui.AdModel
 import com.kh.mo.shopyapp.model.ui.allproducts.Product
@@ -30,6 +31,9 @@ class HomeViewModel(private var _irepo: Repo) : ViewModel() {
 
     private val _productBrand = MutableStateFlow<ApiState<List<Product>>>(ApiState.Loading)
     val productBrand: StateFlow<ApiState<List<Product>>> = _productBrand
+
+    private val _couponState = MutableStateFlow<ApiState<DiscountCodeResponse>>(ApiState.Loading)
+    val couponState: StateFlow<ApiState<DiscountCodeResponse>> = _couponState
 
     init{
         getAllBrands()
@@ -108,11 +112,7 @@ class HomeViewModel(private var _irepo: Repo) : ViewModel() {
     fun getCoupon(adItem: AdModel) {
         viewModelScope.launch(Dispatchers.IO) {
             _irepo.getDiscountCode(adItem.priceRuleId, adItem.discountCodeId).collectLatest {
-                when (it) {
-                    is ApiState.Failure -> Log.i(TAG, "getCoupon: ${it.msg}")
-                    ApiState.Loading -> Log.i(TAG, "getCoupon: $it")
-                    is ApiState.Success -> Log.i(TAG, "getCoupon: ${it.data.discountCode?.code}")
-                }
+                _couponState.value = it
             }
         }
     }
