@@ -2,17 +2,12 @@ package com.kh.mo.shopyapp.ui.favorite.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kh.mo.shopyapp.model.entity.FavoriteEntity
-import com.kh.mo.shopyapp.model.request.UserData
 import com.kh.mo.shopyapp.model.ui.Favorite
 import com.kh.mo.shopyapp.model.ui.allproducts.Product
-import com.kh.mo.shopyapp.remote.ApiState
 import com.kh.mo.shopyapp.repo.Repo
 import com.kh.mo.shopyapp.repo.mapper.convertFavoriteEntityToProduct
-import com.kh.mo.shopyapp.repo.mapper.convertFavoritesEntityToDraftOrderRequest
 import com.kh.mo.shopyapp.repo.mapper.convertFavoritesEntityToFavorites
 import com.kh.mo.shopyapp.ui.favorite.view.FavoritesAdapter
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
