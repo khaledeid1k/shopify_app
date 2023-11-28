@@ -193,7 +193,7 @@ class RepoImp private constructor(
 
     override suspend fun getDraftIds(customerId: String) =
         flow {
-            var draftIDs= mutableListOf<String>()
+            val draftIDs= mutableListOf<String>()
             emit(ApiState.Loading)
             remoteSource.getDraftIds (customerId).addOnSuccessListener {
                 if(it.exists()){

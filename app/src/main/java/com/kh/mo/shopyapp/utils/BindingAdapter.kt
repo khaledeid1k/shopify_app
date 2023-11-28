@@ -4,6 +4,7 @@ import android.util.Log
 import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.widget.AppCompatButton
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.kh.mo.shopyapp.R
@@ -31,5 +32,15 @@ fun CheckBox.checkIsLogin(isLogin: Boolean) {
      if(!isLogin) {
          setButtonDrawable(R.drawable.uncheck_favorite)
      }
+}
+
+@BindingAdapter("checkIsProductFavorite")
+fun AppCompatButton.checkIsProductFavorite(favorite: Boolean) {
+    text = if(favorite) {
+        context.getString(R.string.favorite)
+    }else{
+        context.getString(R.string.add_to_favorite)
+    }
+
 }
 

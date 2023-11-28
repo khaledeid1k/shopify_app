@@ -21,6 +21,7 @@ import com.kh.mo.shopyapp.remote.ApiState
 import com.kh.mo.shopyapp.ui.base.BaseFragment
 import com.kh.mo.shopyapp.ui.category.viewmodel.CategoryViewModel
 import com.kh.mo.shopyapp.utils.createDialog
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -37,6 +38,7 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding, CategoryViewModel
     private  var productList: List<Product> = emptyList()
     private lateinit var filterBinding: DialogFilterBinding
     private lateinit var filterDialog: Dialog
+    var  job: Job?=null
     private var cartListener: (Product) -> Unit = {
         viewModel.addProductToCart(it)
         observeAddToCartState()
@@ -220,8 +222,8 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding, CategoryViewModel
     private fun observeCheckUserState() {
         Log.d(TAG, "3onClickFavouriteIcon: ")
 
-        lifecycleScope.launch {
-        viewModel.userState.collectLatest{
+        job=   lifecycleScope.launch {
+       viewModel.userState.collectLatest{
             Log.d(TAG, "4onClickFavouriteIcon: ")
             createDialog(context = requireContext(),
                 title=getString(R.string.please_login),
@@ -262,5 +264,10 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding, CategoryViewModel
                     Toast.makeText(requireContext(), "success", Toast.LENGTH_SHORT).show()}
             }
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        job?.cancel()
     }
 }

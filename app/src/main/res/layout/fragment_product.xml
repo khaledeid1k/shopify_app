@@ -8,6 +8,9 @@
         <variable
             name="product"
             type="com.kh.mo.shopyapp.model.ui.allproducts.Product" />
+   <variable
+            name="isFav"
+            type="Boolean" />
 
     </data>
 
@@ -37,7 +40,6 @@
         <TextView
             android:id="@+id/product_price"
             style="@style/sub_title"
-            android:text="@{product.productVariants.get(0).price}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/_15sdp"
@@ -126,10 +128,55 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:animateLayoutChanges="true"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/add_to_cart"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/home_fragment_tabs" />
 
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/add_to_cart"
+            style="@style/sub_title"
+            android:layout_width="wrap_content"
+            android:drawablePadding="@dimen/_8sdp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:layout_marginVertical="@dimen/_10sdp"
+            android:background="@drawable/round_corners"
+            android:backgroundTint="?attr/colorPrimary"
+            android:drawableStart="@drawable/ic_arrow_right_background"
+            android:padding="@dimen/_8sdp"
+            android:paddingStart="@dimen/_16sdp"
+            android:text="@string/add_to_cart"
+            android:textAllCaps="false"
+            android:textColor="?attr/colorBackgroundFloating"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/add_to_favorite" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/add_to_favorite"
+            style="@style/sub_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/round_corners"
+            android:backgroundTint="?attr/colorPrimary"
+            android:drawableStart="@drawable/ic_arrow_right_background"
+            android:drawablePadding="@dimen/_8sdp"
+            android:padding="@dimen/_8sdp"
+
+            app:layout_constraintEnd_toStartOf="@+id/add_to_cart"
+            android:text="@string/add_to_favorite"
+
+            android:textAllCaps="false"
+            android:layout_marginVertical="@dimen/_10sdp"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:textColor="?attr/colorBackgroundFloating"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
 </layout>
