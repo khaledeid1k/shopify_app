@@ -130,6 +130,18 @@ fun AllProductsResponse.convertAllProductsResponseToProducts(): List<Product> {
 
 }
 
+fun BrandsResponse.convertAllBrandsResponseToProducts(): List<Product> {
+
+    return this.smartCollections.map {
+        Product(
+            id = it.id,
+            productImage = ProductImage(it.image.src),
+            title = it.title
+        )
+    }
+
+}
+
 fun DraftOrderResponse.convertDraftOrderResponseToDraftOrder(): DraftOrder {
     return DraftOrder(
         this.draft_order!!.id,

@@ -119,14 +119,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
             viewModel.brands.collect {
                 brandsAdapter = BrandsAdapter(requireContext()) {collection ->
                     val action = HomeFragmentDirections.actionHomeFragmentToBrandProductsFragment(
-                        collection.title!!,
-                        collection.image?.src!!
+                        collection.title,
+                        collection.productImage.src
                     )
                     Navigation.findNavController(requireView()).navigate(action)
                 }
                 brandsAdapter.submitList(it.toData())
 
-                Log.i("HomeFragment", it.toData()?.get(0)?.image?.src.toString())
+                //Log.i("HomeFragment", it.toData()?.get(0)?.image?.src.toString())
                 binding.recyclerBrands.adapter = brandsAdapter
             }
         }
