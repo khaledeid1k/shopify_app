@@ -3,21 +3,18 @@ package com.kh.mo.shopyapp.ui.favorite.view
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.kh.mo.shopyapp.R
 import com.kh.mo.shopyapp.databinding.FragmentFavoritesBinding
 import com.kh.mo.shopyapp.model.ui.Favorite
 import com.kh.mo.shopyapp.model.ui.allproducts.Product
 import com.kh.mo.shopyapp.ui.base.BaseFragment
-import com.kh.mo.shopyapp.ui.category.view.ProductsCategoryAdapter
 import com.kh.mo.shopyapp.ui.favorite.viewmodel.FavoritesViewModel
 import com.kh.mo.shopyapp.utils.createDialog
-import kotlinx.coroutines.Dispatchers
+import com.kh.mo.shopyapp.utils.makeGone
+import com.kh.mo.shopyapp.utils.makeVisible
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 
 
@@ -41,6 +38,12 @@ class FavoritesFragment : BaseFragment<FragmentFavoritesBinding, FavoritesViewMo
    private fun getAllFavorites(){
         lifecycleScope.launch {
             viewModel.favorites.collect {
+                if (it.isNotEmpty()) {
+             binding.noFavorites.makeGone()
+                }
+                else{
+                    binding.noFavorites.makeVisible()
+              }
                 addAdapterToFavorites(it)
             }
         }

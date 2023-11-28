@@ -42,12 +42,24 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, ProfileViewModel>
 
     private val listener: (Int) -> Unit = { position ->
         when (position) {
-            0 -> showCurrencies()
-            1 -> showLanguages()
-            2 -> showAddresses()
-            3 -> sync()
-            4 -> upload()
-            5 -> logOut()
+            0 -> {
+                showCurrencies()
+            }
+            1 -> {
+                showLanguages()
+            }
+            2 -> {
+                showAddresses()
+            }
+            3 -> {
+                sync()
+            }
+            4 -> {
+                upload()
+            }
+            5 -> {
+                logOut()
+            }
         }
     }
 
@@ -66,6 +78,8 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, ProfileViewModel>
 
     private fun upload() {
         viewModel.backUpDraftFavorite()
+        binding.loading.makeVisible()
+        binding.loadingOverlay.makeVisible()
         observerUploadData()
     }
 
@@ -76,11 +90,11 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, ProfileViewModel>
                     is ApiState.Failure -> {
                         binding.loading.makeGone()
                         binding.loadingOverlay.makeGone()
+                        Toast.makeText(requireContext(), it.msg, Toast.LENGTH_SHORT).show()
                     }
 
                     is ApiState.Loading -> {
-                        binding.loading.makeVisible()
-                        binding.loadingOverlay.makeVisible()
+
                     }
 
                     is ApiState.Success -> {
@@ -96,26 +110,55 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, ProfileViewModel>
 
     private fun sync() {
         viewModel.retrieveDraftFavorite()
+        binding.loading.makeVisible()
+        binding.loadingOverlay.makeVisible()
         observerSyncData()
     }
-
-    private fun observerSyncData() {
+    private fun observerSyncData(){
         lifecycleScope.launch {
-            viewModel.retrieveDraftFavorite.collect {
+            viewModel.retrieveDraftFavorite.collect{
+                when(it){
+                    is ApiState.Failure -> {
+                        binding.loading.makeGone()
+                        binding.loadingOverlay.makeGone()
+                        Toast.makeText(requireContext(), it.msg, Toast.LENGTH_SHORT).show() }
+                    is ApiState.Loading ->{}
+                    is ApiState.Success -> {
+                        viewModel.getListOfSpecificProductsByIds(it.data)
+                        observerSyncDataProducts()
+                    }
+                }
+            }
+        }
+    }
+
+
+    private fun observerSyncDataProducts() {
+        lifecycleScope.launch {
+            viewModel.retrieveDraftFavoriteProducts.collectLatest {
                 when (it) {
-                    is ApiState.Failure -> {}
-                    ApiState.Loading -> {
-                        binding.loading.makeVisible()
+                    is ApiState.Failure -> {
+                        binding.loading.makeGone()
+                        binding.loadingOverlay.makeGone()
+                        Toast.makeText(requireContext(), it.msg, Toast.LENGTH_SHORT).show()
                     }
 
+                    is ApiState.Loading -> {
+
+                    }
                     is ApiState.Success -> {
+                        binding.loading.makeGone()
+                        binding.loadingOverlay.makeGone()
+                        if(it.data.isNotEmpty()){
                         viewModel.saveProducts(it.data) { result ->
                             if (result > 0) {
-                                binding.loading.makeGone()
-                                Toast.makeText(requireContext(), "Sync Done", Toast.LENGTH_SHORT)
+                                Toast.makeText(requireContext(), "Sync Done" , Toast.LENGTH_SHORT)
                                     .show()
-
                             }
+                        }
+                        }else{
+                            Toast.makeText(requireContext(), "No Data to Sync", Toast.LENGTH_SHORT)
+                                .show()
                         }
                     }
                 }

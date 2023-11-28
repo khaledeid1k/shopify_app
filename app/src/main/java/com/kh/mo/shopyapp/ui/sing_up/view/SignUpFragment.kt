@@ -1,5 +1,6 @@
 package com.kh.mo.shopyapp.ui.sing_up.view
 
+import android.app.ProgressDialog
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -21,10 +22,14 @@ import com.kh.mo.shopyapp.remote.ApiState
 import com.kh.mo.shopyapp.ui.base.BaseFragment
 import com.kh.mo.shopyapp.ui.sing_up.viewmodel.SignUpViewModel
 import com.kh.mo.shopyapp.utils.getText
+import com.kh.mo.shopyapp.utils.printError
 import kotlinx.coroutines.launch
 
 
 class SignUpFragment : BaseFragment<FragmentSignUpBinding, SignUpViewModel>() {
+    private val progressDialog: ProgressDialog by lazy {
+        ProgressDialog(requireActivity())
+    }
 
     override val layoutIdFragment: Int = R.layout.fragment_sign_up
     override fun getViewModelClass() = SignUpViewModel::class.java
@@ -152,6 +157,8 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding, SignUpViewModel>() {
 
     private fun createCustomer() {
         checkDataValidation {
+            progressDialog.setMessage(getString(R.string.loading_sign_Up))
+            progressDialog.show()
             viewModel.createUser(it)
         }
     }
@@ -159,7 +166,6 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding, SignUpViewModel>() {
         viewModel.createFavoriteDraft(
             DraftOrderRequest(DraftOrderDetailsRequest(customer= CustomerDraftRequest(customerId))))
     }
-
     private fun singUpWithFireBase(data: CustomerEntity) {
         viewModel.singUpWithFireBase(
             UserData(
@@ -169,34 +175,23 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding, SignUpViewModel>() {
             )
         )
     }
+
+
     private fun observeCreateCustomerResult() {
         lifecycleScope.launch {
             viewModel.createCustomer.collect {
                 when (it) {
-                    is ApiState.Failure -> {}
-                    ApiState.Loading -> {}
+                    is ApiState.Failure -> {
+                        printError(requireContext(),progressDialog,it.msg)
+                    }
+                    ApiState.Loading -> {
+
+                    }
                     is ApiState.Success -> {
                         customerEntity=it.data
                         createFavoriteDraft(it.data.id)
-                        //viewModel.createCartDraft()
-
                     }
                 }
-            }
-        }
-    }
-    private fun observeSaveCustomerInFireBaseResult() {
-        lifecycleScope.launch {
-            viewModel.saveCustomerFireBase.collect {
-                when (it) {
-                    is ApiState.Failure -> { Log.d("Failure", "observeCreateFavoriteDraft: ${it.msg}") }
-                    ApiState.Loading -> {}
-                    is ApiState.Success -> {
-                        navigateToHome()
-                    }
-
-                }
-
             }
         }
     }
@@ -204,7 +199,10 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding, SignUpViewModel>() {
         lifecycleScope.launch {
             viewModel.createFavoriteDraft.collect{
                 when(it){
-                    is ApiState.Failure -> { Log.d("Failure", "observeCreateFavoriteDraft: ${it.msg}") }
+                    is ApiState.Failure -> {
+                        printError(requireContext(),progressDialog,it.msg)
+
+                    }
                     ApiState.Loading -> {}
                     is ApiState.Success -> {
                         viewModel.saveCustomerIdAndFavoriteDraftId(it.data.customerID, it.data.draftId)
@@ -219,12 +217,33 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding, SignUpViewModel>() {
         lifecycleScope.launch {
             viewModel.favoriteDraftIdInFireBase.collect {
                 when (it) {
-                    is ApiState.Failure -> {}
+                    is ApiState.Failure -> {
+                        printError(requireContext(),progressDialog,it.msg)
+
+                    }
                     is ApiState.Loading -> {}
                     is ApiState.Success -> {
                         singUpWithFireBase(customerEntity)
                     }
                 }
+            }
+        }
+    }
+    private fun observeSaveCustomerInFireBaseResult() {
+        lifecycleScope.launch {
+            viewModel.saveCustomerFireBase.collect {
+                when (it) {
+                    is ApiState.Failure -> {
+                        printError(requireContext(),progressDialog,it.msg)
+                    }
+                    ApiState.Loading -> {}
+                    is ApiState.Success -> {
+                        progressDialog.dismiss()
+                        navigateToHome()
+                    }
+
+                }
+
             }
         }
     }

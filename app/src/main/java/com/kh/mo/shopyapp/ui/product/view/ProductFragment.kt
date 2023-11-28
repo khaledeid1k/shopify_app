@@ -36,13 +36,6 @@ class ProductFragment : BaseFragment<FragmentProductBinding, ProductViewModel>()
 
     }
 
-    fun asd() {
-        if (!viewModel.checkCustomerId()) {
-            binding.addToFavorite.isClickable = false
-
-        }
-
-    }
 
     override fun onResume() {
         super.onResume()

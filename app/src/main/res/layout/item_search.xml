@@ -21,8 +21,6 @@
         app:cardCornerRadius="@dimen/_6sdp"
         app:cardUseCompatPadding="true"
         android:onClick="@{()->listener.onClickSearchItem(item)}"
-
-
         >
 
         <androidx.constraintlayout.widget.ConstraintLayout

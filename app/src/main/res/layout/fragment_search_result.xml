@@ -9,9 +9,18 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".ui.search.view.SearchFragment">
+        android:layout_height="match_parent">
 
+
+        <TextView
+            android:id="@+id/search_title"
+            style="@style/big_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/search"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="@dimen/_20sdp"/>
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/edite_text_search"
             android:layout_width="0dp"
@@ -21,11 +30,12 @@
             android:layout_marginHorizontal="@dimen/_10sdp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/filter_search"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@+id/search_title">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/search_text"
                 style="@style/SearchBarStyle"
+                android:hint="@string/search"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:drawableStart="@drawable/search"
@@ -36,7 +46,7 @@
                 android:maxLines="1"
                 android:paddingStart="@dimen/_10sdp"
                 android:textSize="@dimen/_12ssp"
-                tools:text="shirt" />
+            />
         </com.google.android.material.textfield.TextInputLayout>
 
         <ImageView
@@ -51,6 +61,21 @@
             app:layout_constraintStart_toEndOf="@+id/edite_text_search"
             app:layout_constraintTop_toTopOf="@+id/edite_text_search" />
 
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/no_search_result"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:lottie_rawRes="@raw/no_result_of_search"
+            app:lottie_autoPlay="true"
+            android:visibility="visible"
+            android:layout_marginTop="@dimen/_20sdp"
+            app:layout_constraintTop_toBottomOf="@+id/edite_text_search"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:lottie_loop="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            />
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/search_result_list"
             app:layout_constraintTop_toBottomOf="@+id/edite_text_search"

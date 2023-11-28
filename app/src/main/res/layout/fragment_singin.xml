@@ -138,6 +138,7 @@
             app:errorEnabled="true"
             app:errorIconDrawable="@null"
             app:layout_constraintVertical_bias=".0"
+            app:startIconDrawable="@drawable/password_icon"
 
             app:layout_constraintEnd_toStartOf="@+id/guideline_v_r"
             app:layout_constraintBottom_toTopOf="@+id/forget_password"

@@ -1,11 +1,9 @@
 package com.kh.mo.shopyapp.ui.profile.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kh.mo.shopyapp.model.entity.FavoriteEntity
 import com.kh.mo.shopyapp.model.request.DraftOrderRequest
-import com.kh.mo.shopyapp.model.request.UserData
 import com.kh.mo.shopyapp.model.ui.orderdetails.Order
 import com.kh.mo.shopyapp.remote.ApiState
 import com.kh.mo.shopyapp.repo.Repo
@@ -21,10 +19,13 @@ class ProfileViewModel(private val repo: Repo) : ViewModel() {
 
     private val _backUpDraftFavorite = MutableStateFlow<ApiState<String>>(ApiState.Loading)
     val backUpDraftFavorite: StateFlow<ApiState<String>> = _backUpDraftFavorite
-
     private val _retrieveDraftFavorite =
+        MutableStateFlow<ApiState<List<Long>>>(ApiState.Loading)
+    val retrieveDraftFavorite: StateFlow<ApiState<List<Long>>> = _retrieveDraftFavorite
+
+    private val _retrieveDraftFavoriteProducts =
         MutableStateFlow<ApiState<List<FavoriteEntity>>>(ApiState.Loading)
-    val retrieveDraftFavorite: StateFlow<ApiState<List<FavoriteEntity>>> = _retrieveDraftFavorite
+    val retrieveDraftFavoriteProducts: StateFlow<ApiState<List<FavoriteEntity>>> = _retrieveDraftFavoriteProducts
 
     private val _currencyPreference = MutableStateFlow("")
     val currencyPreference: StateFlow<String> = _currencyPreference
@@ -63,13 +64,13 @@ class ProfileViewModel(private val repo: Repo) : ViewModel() {
     }
 
     fun backUpDraftFavorite() {
-        getAllFavorites({
+        getAllFavorites(success =  {
             viewModelScope.launch {
                 repo.backUpDraftFavorite(it, getFavoriteDraftId()).collect {
                     _backUpDraftFavorite.value = it
                 }
             }
-        }, {
+        }, failure = {
             _backUpDraftFavorite.value = ApiState.Failure("No Data To Upload")
         }
         )
@@ -81,18 +82,16 @@ class ProfileViewModel(private val repo: Repo) : ViewModel() {
         viewModelScope.launch {
             favoritesEntity.map {
                 val result = repo.saveFavorite(it)
-
                 isSuccessfully(result)
-
             }
 
         }
     }
 
-    private fun getListOfSpecificProductsByIds(productsIds: List<Long>) {
+     fun getListOfSpecificProductsByIds(productsIds: List<Long>) {
         viewModelScope.launch {
             repo.getListOfSpecificProductsIds(productsIds.joinToString(",")).collect {
-                _retrieveDraftFavorite.value = it
+                _retrieveDraftFavoriteProducts.value = it
             }
         }
 
@@ -102,11 +101,7 @@ class ProfileViewModel(private val repo: Repo) : ViewModel() {
     fun retrieveDraftFavorite() {
         viewModelScope.launch {
             repo.getProductsIdForDraftFavorite(getFavoriteDraftId()).collect {
-                if (it is ApiState.Success) {
-                    getListOfSpecificProductsByIds(it.data)
-                    Log.d(TAG, "retrieveDraftFavorite: ${it.data}")
-
-                }
+                _retrieveDraftFavorite.value =it
             }
         }
     }
