@@ -18,6 +18,8 @@ import com.kh.mo.shopyapp.remote.ApiState
 import com.kh.mo.shopyapp.ui.base.BaseFragment
 import com.kh.mo.shopyapp.ui.search.viewmodel.SearchResultViewModel
 import com.kh.mo.shopyapp.utils.getText
+import com.kh.mo.shopyapp.utils.makeGone
+import com.kh.mo.shopyapp.utils.makeVisible
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.filter
@@ -31,7 +33,7 @@ class SearchResultFragment :BaseFragment<FragmentSearchResultBinding,SearchResul
     override val layoutIdFragment=R.layout.fragment_search_result
     private lateinit var filterDialog: Dialog
     private lateinit var filterBinding: DialogFilterBinding
-    private var minPrice=0.0
+    private var minPrice=Double.MIN_VALUE
     private var maxPrice=Double.MAX_VALUE
     private var productsList: MutableSet<Product> = mutableSetOf()
     private var query=""
@@ -53,16 +55,34 @@ class SearchResultFragment :BaseFragment<FragmentSearchResultBinding,SearchResul
     }
     private fun takeFilterPrice(){
         filterBinding.btnApplyFilter.setOnClickListener {
-            if(filterBinding.etFrom.text.toString().isNotEmpty()){
+            filterBinding.etFrom.text.toString().apply {
+                if(isNotEmpty()){
                 minPrice=filterBinding.etFrom.text.toString().toDouble()
             }
-            if (filterBinding.etTo.text.toString().isNotEmpty()){
+                if(isEmpty()){
+                    maxPrice= Double.MIN_VALUE
+                }
+            }
+
+            filterBinding.etTo.text.toString().apply {
+                if (isNotEmpty()){
                 maxPrice = filterBinding.etTo.text.toString().toDouble()
 
             }
-            filterDialog.dismiss()
-            productsList.clear()
-            observeProducts(query)
+                if(isEmpty()){
+                    maxPrice= Double.MAX_VALUE
+                }
+            }
+
+            if(minPrice>maxPrice){
+                Toast.makeText(requireContext(), "Error Range", Toast.LENGTH_SHORT).show()
+            }else{
+
+                filterDialog.dismiss()
+                productsList.clear()
+                observeProducts(query)
+            }
+
         }
 
     }
@@ -87,26 +107,27 @@ class SearchResultFragment :BaseFragment<FragmentSearchResultBinding,SearchResul
             viewModel.products.collect {
                 when(it){
                     is ApiState.Failure ->{}
-                    ApiState.Loading -> {}
-                    is ApiState.Success -> {
+                    ApiState.Loading -> {
 
+                    }
+                    is ApiState.Success -> {
                         it.data.asFlow().filter { product ->
+
                             product.title.contains(query, ignoreCase = true)
                                     && product.productVariants[0].price.toDouble() <= maxPrice
                                     && product.productVariants[0].price.toDouble() >= minPrice
                         } .collect{product->
-
+                            Log.d("TAG", "observeProducts:$product ")
                             if(query.isEmpty()) {
+                                binding.noSearchResult.makeVisible()
                                 productsList.clear()
-
                             } else{
+                                binding.noSearchResult.makeGone()
                                 productsList.add(product)
                             }
-
-
-                            addAdapterToSearch()
                         }
-
+                        if(productsList.isEmpty()){ binding.noSearchResult.makeGone()}
+                        addAdapterToSearch()
 
 
                     }
