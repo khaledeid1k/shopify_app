@@ -1,5 +1,6 @@
 package com.kh.mo.shopyapp.ui.sing_in.view
 
+import android.app.ProgressDialog
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -17,10 +18,15 @@ import com.kh.mo.shopyapp.remote.ApiState
 import com.kh.mo.shopyapp.ui.base.BaseFragment
 import com.kh.mo.shopyapp.ui.sing_in.viewmodel.SignInViewModel
 import com.kh.mo.shopyapp.utils.getText
+import com.kh.mo.shopyapp.utils.printError
 import kotlinx.coroutines.launch
 
 
 class SignInFragment : BaseFragment<FragmentSinginBinding, SignInViewModel>() {
+
+    private val progressDialog: ProgressDialog by lazy {
+        ProgressDialog(requireActivity())
+    }
     override val layoutIdFragment = R.layout.fragment_singin
 
     override fun getViewModelClass() = SignInViewModel::class.java
@@ -47,7 +53,8 @@ class SignInFragment : BaseFragment<FragmentSinginBinding, SignInViewModel>() {
         lifecycleScope.launch {
             viewModel.singIn.collect {
                 when (it) {
-                    is ApiState.Failure -> {}
+                    is ApiState.Failure -> { printError(requireContext(),progressDialog,it.msg)
+                    }
                     ApiState.Loading -> {}
                     is ApiState.Success -> {
                         viewModel.singInWithFireBase(
@@ -66,7 +73,7 @@ class SignInFragment : BaseFragment<FragmentSinginBinding, SignInViewModel>() {
         lifecycleScope.launch {
             viewModel.checkCustomerExists.collect {
                 when (it) {
-                    is ApiState.Failure -> {}
+                    is ApiState.Failure -> { printError(requireContext(),progressDialog,it.msg)}
                     ApiState.Loading -> {}
                     is ApiState.Success -> {
                         viewModel.getDraftFavoriteId(it.data)
@@ -79,20 +86,15 @@ class SignInFragment : BaseFragment<FragmentSinginBinding, SignInViewModel>() {
         lifecycleScope.launch {
             viewModel.draftIds.collect {
                 when (it) {
-                    is ApiState.Failure -> { Log.d("TAG", "observeGetDraftFavoriteId: ${it.msg}") }
-                    is ApiState.Loading -> {Log.d("TAG", "observeGetDraftFavoriteId:Loading ") }
+                    is ApiState.Failure -> {  printError(requireContext(),progressDialog,it.msg) }
+                    is ApiState.Loading -> { }
                     is ApiState.Success -> {
                         it.data.let { draftIds ->
                             Log.d("TAG", "observeGetDraftFavoriteId: ${it.data}")
                             viewModel.saveFavoriteDraftId(draftIds[0].toLong())
                             viewModel.saveCartDraftId(draftIds[1].toLong())
+                            progressDialog.dismiss()
                             navigateToHomeScreen()
-                            Toast.makeText(
-                                requireContext(),
-                                "Sing in Successfully",
-                                Toast.LENGTH_SHORT
-                            )
-                                .show()
                     }
                 }
             }
@@ -167,6 +169,8 @@ class SignInFragment : BaseFragment<FragmentSinginBinding, SignInViewModel>() {
 
     private fun singInCustomer() {
         checkDataValidation {
+            progressDialog.setMessage(getString(R.string.loading_login))
+            progressDialog.show()
             viewModel.singInCustomer(it.email)
         }
     }

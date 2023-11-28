@@ -120,7 +120,7 @@ class RepoImp private constructor(
             remoteSource.singInWithFireBase(userData).await()
             emit(ApiState.Success("Sign in Successfully "))
         }.catch {
-            emit(ApiState.Failure("An error occurred: ${it.message}"))
+            emit(ApiState.Failure("Wrong Password"))
         }
 
     override suspend fun logout() {
@@ -170,7 +170,7 @@ class RepoImp private constructor(
                 }
             }
         }.catch {
-            emit(ApiState.Failure("NetWork Error"))
+            emit(ApiState.Failure("${it.message}"))
         }
     }
 
@@ -179,7 +179,7 @@ class RepoImp private constructor(
         emit(ApiState.Loading)
         val customer = remoteSource.singInCustomer(email)
         if (!customer.isSuccessful) {
-            emit(ApiState.Failure("NetWork Error"))
+            emit(ApiState.Failure("Email not exist"))
         } else {
             customer.body()?.let { responseBody ->
                 emit(ApiState.Success(responseBody.convertLoginToUserData()))
@@ -188,7 +188,14 @@ class RepoImp private constructor(
             }
         }
     }.catch {
-        emit(ApiState.Failure(it.message!!))
+        Log.d(TAG, "singInCustomer: ${it.message}")
+        if(it.message.toString()=="Index: 0, Size: 0"){
+
+            emit(ApiState.Failure("Email not exist"))
+        }else{
+            emit(ApiState.Failure("NetWork Erorr"))
+        }
+
     }
 
     override suspend fun getDraftIds(customerId: String) =
@@ -203,7 +210,7 @@ class RepoImp private constructor(
             }.await()
             emit(ApiState.Success(draftIDs))
         }.catch {
-            emit(ApiState.Failure("An error occurred: ${it.message}"))
+            emit(ApiState.Failure("${it.message}"))
         }
 
 
