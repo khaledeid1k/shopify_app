@@ -21,6 +21,7 @@ import com.kh.mo.shopyapp.remote.ApiState
 import com.kh.mo.shopyapp.remote.RemoteSourceImp
 import com.kh.mo.shopyapp.repo.RepoImp
 import com.kh.mo.shopyapp.ui.base.BaseViewModelFactory
+import com.kh.mo.shopyapp.ui.checkout.view.CheckoutFragmentDirections
 import com.kh.mo.shopyapp.ui.settings.SettingsFragmentDirections
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -33,16 +34,24 @@ class AddressFragment : BottomSheetDialogFragment() {
     private lateinit var addressViewModel: AddressViewModel
     private lateinit var binding: FragmentAddressBinding
     private lateinit var addressAdapter: AddressAdapter
-    val userId: MutableStateFlow<Long?> = MutableStateFlow(null)
+    val  userAddress: MutableStateFlow<Address?> =
+        MutableStateFlow(null)
+
     var mView: View? = null
+    var source: String? = null
     private val listener: (Address) -> Unit = { address ->
         mView?.let { _view ->
-            val action = SettingsFragmentDirections.actionSettingsFragmentToAddressDetailsFragment(
-                address,
-                "settings"
-            )
-            Navigation.findNavController(_view).navigate(action)
-            this.dismiss()
+            if (source == "settings") {
+                val action =
+                    SettingsFragmentDirections.actionSettingsFragmentToAddressDetailsFragment(
+                        address,
+                        "settings"
+                    )
+                Navigation.findNavController(_view).navigate(action)
+                this.dismiss()
+            } else {
+                userAddress.value = address
+            }
         } ?: Toast.makeText(
             requireContext(),
             getString(R.string.something_went_wrong_please_try_again_later),
@@ -68,7 +77,7 @@ class AddressFragment : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         init()
-        observerUserId()
+        observeAddressResponse()
         binding.openMapBtn.setOnClickListener {
             openMap()
         }
@@ -93,21 +102,8 @@ class AddressFragment : BottomSheetDialogFragment() {
         addressAdapter = AddressAdapter(requireContext(), listener)
     }
 
-    private fun observerUserId() {
-        lifecycleScope.launch(Dispatchers.IO) {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                userId.collectLatest { id ->
-                    id?.let {
-                        addressViewModel.getAddresses(id)
-                        observeAddressResponse()
-                    }
-                }
-            }
-        }
-    }
-
-    private suspend fun observeAddressResponse() {
-        withContext(Dispatchers.Main) {
+    private fun observeAddressResponse() {
+        lifecycleScope.launch(Dispatchers.Main) {
             addressViewModel.userAddresses.collectLatest { addressResponse ->
                 when (addressResponse) {
                     is ApiState.Failure -> {
@@ -151,7 +147,11 @@ class AddressFragment : BottomSheetDialogFragment() {
 
     private fun openMap() {
         mView?.let { _view ->
-            val action = SettingsFragmentDirections.actionSettingsFragmentToMapFragment(userId.value?:0L)
+            val action = if (source == "settings") {
+                SettingsFragmentDirections.actionSettingsFragmentToMapFragment(addressViewModel.getCustomerID())
+            } else {
+                CheckoutFragmentDirections.actionCheckoutFragmentToMapFragment(addressViewModel.getCustomerID())
+            }
             Navigation.findNavController(_view)
                 .navigate(action)
             this.dismiss()

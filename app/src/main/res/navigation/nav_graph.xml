@@ -188,7 +188,11 @@
         android:label="SearchResultFragment" />
     <fragment
         android:id="@+id/checkoutFragment"
-        android:name="com.kh.mo.shopyapp.ui.checkout.CheckoutFragment"
+        android:name="com.kh.mo.shopyapp.ui.checkout.view.CheckoutFragment"
         android:label="fragment_checkout"
-        tools:layout="@layout/fragment_checkout" />
+        tools:layout="@layout/fragment_checkout" >
+        <action
+            android:id="@+id/action_checkoutFragment_to_mapFragment"
+            app:destination="@id/mapFragment" />
+    </fragment>
 </navigation>

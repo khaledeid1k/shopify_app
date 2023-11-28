@@ -10,11 +10,12 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.checkout.CheckoutFragment">
+        tools:context=".ui.checkout.view.CheckoutFragment">
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_marginBottom="@dimen/_8sdp"
             app:layout_constraintBottom_toTopOf="@id/confirmBtn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -58,20 +59,24 @@
 
                 <TextView
                     android:id="@+id/addressNameValueTxtV"
-                    style="@style/main_title"
-                    android:layout_width="wrap_content"
+                    style="@style/sub_title"
+                    android:textSize="@dimen/_20ssp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_8sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/mapAddressImgV"
                     app:layout_constraintTop_toTopOf="@id/mapAddressImgV"
                     tools:text="House" />
 
                 <TextView
                     android:id="@+id/addressValueTxtV"
-                    style="@style/sub_title"
+                    style="@style/small_title"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_marginStart="@dimen/_8sdp"
+                    android:maxLines="3"
+                    android:ellipsize="end"
                     app:layout_constraintBottom_toBottomOf="@id/mapAddressImgV"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/mapAddressImgV"
@@ -200,7 +205,7 @@
             android:layout_marginStart="@dimen/_20sdp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/confirmBtn"
-            tools:text="Total" />
+            android:text="@string/total" />
 
         <TextView
             android:id="@+id/checkoutTotalCurrencyTxtV"
