@@ -9,7 +9,7 @@
         android:id="@+id/image_fav_item"
         android:layout_width="@dimen/_70sdp"
         android:layout_height="@dimen/_70sdp"
-        android:src="@drawable/img"
+        tools:src="@drawable/img"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_margin="@dimen/_10sdp"
