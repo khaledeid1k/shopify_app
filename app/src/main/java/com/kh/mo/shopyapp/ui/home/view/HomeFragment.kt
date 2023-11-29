@@ -84,26 +84,30 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
     private fun getMainCategories() {
         lifecycleScope.launch {
             viewModel.mainCategories.collect { category ->
-                mainCategoriesAdapter = MainCategoryAdapter(requireContext()) {
-                    //  Log.i("sssss",category.toData()!!.get(category.toData()!!.lastIndexOf(it)).title)
-                    val title = category.toData()?.get(category.toData()!!.lastIndexOf(it))?.title!!
-                    val collectionId =
-                        category.toData()!!.get(category.toData()!!.lastIndexOf(it)).id!!
-                    val action = HomeFragmentDirections.actionHomeFragmentToCategoryFragment(
-                        title,
-                        collectionId
-                    )
-                    Navigation.findNavController(requireView()).navigate(action)
-
+                when (category) {
+                    is ApiState.Failure -> {}
+                    is ApiState.Loading -> {}
+                    is ApiState.Success -> {
+                        mainCategoriesAdapter = MainCategoryAdapter(requireContext()) {
+                            val title =
+                                category.data.get(category.data.lastIndexOf(it)).title!!
+                            val collectionId =
+                                category.data.get(category.data.lastIndexOf(it)).id!!
+                            val action =
+                                HomeFragmentDirections.actionHomeFragmentToCategoryFragment(
+                                    title,
+                                    collectionId
+                                )
+                            Navigation.findNavController(requireView()).navigate(action)
+                        }
+                        //to drop the first item from response
+                        mainCategoriesAdapter.submitList(category.data.drop(1))
+                        Log.i("HomeFragment", category.data.get(0).image?.src.toString())
+                        binding.recyclerCategory.adapter = mainCategoriesAdapter
+                    }
 
                 }
-                //to drop the first item from response
-                mainCategoriesAdapter.submitList(category.toData()?.drop(1))
-
-                Log.i("HomeFragment", category.toData()?.get(0)?.image?.src.toString())
-                binding.recyclerCategory.adapter = mainCategoriesAdapter
             }
-
         }
     }
 
@@ -163,9 +167,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
     }
 
     private fun copyDiscountCodeToClipboard(code: String) {
-        val clipboardManager = requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        val clipboardManager =
+            requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         val clipData = ClipData.newPlainText("Copied Text", code)
         clipboardManager.setPrimaryClip(clipData)
-        Toast.makeText(requireContext(), "code $code copied to clipboard", Toast.LENGTH_SHORT).show()
+        Toast.makeText(requireContext(), "code $code copied to clipboard", Toast.LENGTH_SHORT)
+            .show()
     }
 }

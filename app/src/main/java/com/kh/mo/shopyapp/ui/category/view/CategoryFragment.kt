@@ -54,16 +54,10 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding, CategoryViewModel
         observeCheckUserState()
         categoryName = CategoryFragmentArgs.fromBundle(requireArguments()).nameOfMainCategory
         collectionId = CategoryFragmentArgs.fromBundle(requireArguments()).collectionId
-
-
-
-
         viewModel.getCollectionProducts(collectionId)
-        viewModel.filterProductsBySubCollection(collectionId, productType)
         binding.tvCategoryName.text = categoryName
         getSubCategories()
         getCollectionProducts()
-        filterProductsBySubCollection()
         initDialog()
         onClick()
     }
@@ -77,21 +71,20 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding, CategoryViewModel
 
     private fun onClick() {
         binding.chipGroup.setOnCheckedChangeListener { _, checkedId ->
-
             if (checkedId == R.id.first_subcategory && flag) {
                 flag = false
                 productType = binding.firstSubcategory.text.toString()
                 viewModel.filterProductsBySubCollection(collectionId, productType)
+                filterProductsBySubCollection()
             } else {
                 flag = true
                 addAdapterToCategories(productList)
-
             }
-
             if (checkedId == R.id.second_subcategory && flag) {
                 flag = false
                 productType = binding.secondSubcategory.text.toString()
                 viewModel.filterProductsBySubCollection(collectionId, productType)
+                filterProductsBySubCollection()
             } else {
                 flag = true
                 addAdapterToCategories(productList)
@@ -101,13 +94,11 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding, CategoryViewModel
                 flag = false
                 productType = binding.thirdSubcategory.text.toString()
                 viewModel.filterProductsBySubCollection(collectionId, productType)
+                filterProductsBySubCollection()
             } else {
                 flag = true
                 addAdapterToCategories(productList)
-
             }
-
-
         }
         binding.etSearch.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -200,7 +191,6 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding, CategoryViewModel
                         addAdapterToCategories(it.data)
                         productList = it.data
                         Log.d(TAG, "getCollectionProducts: ${it.data}")
-
                     }
                 }
 
@@ -221,13 +211,9 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding, CategoryViewModel
                         binding.loading.visibility=View.GONE
                         Log.d(TAG, "filterProductsBySubCollection: ${it.data}")
                         addAdapterToCategories(it.data)
-
-
                     }
                 }
-
             }
-
         }
     }
     private fun observeCheckUserState() {
