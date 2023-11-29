@@ -114,8 +114,8 @@ class SearchResultFragment :BaseFragment<FragmentSearchResultBinding,SearchResul
                         it.data.asFlow().filter { product ->
 
                             product.title.contains(query, ignoreCase = true)
-                                    && product.productVariants[0].price.toDouble() <= maxPrice
-                                    && product.productVariants[0].price.toDouble() >= minPrice
+                                    && product.productVariants[0].price.split(" ")[0].toDouble() <= maxPrice
+                                    && product.productVariants[0].price.split(" ")[0].toDouble() >= minPrice
                         } .collect{product->
                             Log.d("TAG", "observeProducts:$product ")
                             if(query.isEmpty()) {
