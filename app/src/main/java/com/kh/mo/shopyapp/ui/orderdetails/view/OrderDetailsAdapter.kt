@@ -21,7 +21,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 
-class OrderDetailsAdapter(var context: Context) :
+class OrderDetailsAdapter(var context: Context,private val onClick:(Long?)->Unit) :
     ListAdapter<LineItem, OrderDetailsAdapter.OrdersVH>(RecyclerDiffUtilOrdersItem()) {
     private lateinit var binding: ItemOrderBinding
     private val TAG = "TAG OrderDetailsAdapter"
@@ -49,6 +49,9 @@ class OrderDetailsAdapter(var context: Context) :
                 tvProductPriceOrder.text=currentItem.price+"EGP"
                 tvProductSizeOrder.text="${currentItem.quantity}x"
                 Log.i(TAG,currentItem.productId.toString())
+                itemView.setOnClickListener{
+                    onClick(currentItem.productId)
+                }
 
                 CoroutineScope(Dispatchers.IO).launch {
                     RepoImp.getRepoImpInstance(RemoteSourceImp.getRemoteSourceImpInstance(),
@@ -67,9 +70,6 @@ class OrderDetailsAdapter(var context: Context) :
                         }
                     }
                 }
-
-                //Glide.with(context).load(uri).into(binding.imageProductOrder)
-
             }
 
         }
