@@ -45,7 +45,7 @@ class OrderAdapter(var context: Context,private val onClick:(Long) -> Unit) :
                 tvProductDateOrder.text=date?.substring(0,date.indexOf("T")).toString()
                 tvProductPriceOrder.text=currentItem.subtotalPrice+currentItem.currency
                 tvProductSizeOrder.text=currentItem.lineItems?.get(0)?.quantity.toString()+"x"
-                binding.imageProductOrder.setImageResource(R.drawable.order_bag)
+                binding.imageProductOrder.setImageResource(R.drawable.order_bag_resized)
 
             }
             itemView.setOnClickListener{
