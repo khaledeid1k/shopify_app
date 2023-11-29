@@ -73,7 +73,7 @@ class OrderDetailsFragment : BaseFragment<FragmentOrderDetailsBinding, OrderDeta
                             tvAddress.text = data.get(0).customer?.defaultAddress?.address1
                             Log.i(TAG, "address" + data.get(0).customer?.defaultAddress)
                             tvPhoneNumber.text = data.get(0).customer?.defaultAddress?.phone
-                            //tvPaymentMethodValue.text=data.get(0).paymentGatewayNames?.get(0).toString()
+                            tvPaymentMethodValue.text="cash on delivery"
                             tvSubTotalValue.text =
                                 data.get(0).subtotalPrice + data.get(0).currency
                             tvTotalValue.text = data.get(0).totalPrice + data.get(0).currency
