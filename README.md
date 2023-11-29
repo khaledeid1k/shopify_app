@@ -82,7 +82,7 @@ Welcome to the <b>Brandat</b> App, your ultimate shopping destination seamlessly
   <img src="https://github.com/Hanaa-Hany/Weather-App/assets/48853445/9a7fbfd1-2700-40b6-95df-66b4f22cb082" width="30%"/>
   <img src="https://github.com/Hanaa-Hany/Weather-App/assets/48853445/a72533a3-4ffd-4419-966a-256e2db47bbd" width=30%/>
   <img src="https://github.com/Hanaa-Hany/Weather-App/assets/48853445/0c6ff770-0c68-4eb1-8554-95123acfa855" width=30%/>
-  <img src="https://github.com/Hanaa-Hany/Weather-App/assets/48853445/6670c3d4-5a0d-4008-9f9d-0801fb460e6d" width=30%/>
+  <img src="https://github.com/khaledeid1k/shopy_App/assets/48853445/e6707150-cbbc-463f-b0c6-f26e331f2856" width=30%/>
   <img src="https://github.com/Hanaa-Hany/Weather-App/assets/48853445/31e8c63c-39ce-4153-9bf0-b78f9e2c4a59" width=30%/>
   <img src="https://github.com/Hanaa-Hany/Weather-App/assets/48853445/a15a7719-58c3-4c11-9301-94b2bcd13a61" width=30%/>
   <img src="https://github.com/Hanaa-Hany/Weather-App/assets/48853445/29a279af-35a9-4881-bf61-d9e94ec6ce9b" width=30%/>
