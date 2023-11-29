@@ -190,7 +190,7 @@ fun OrdersResponse.convertToOrders(): List<Order> {
 fun OrderDetailsResponse.convertToLineItem(): List<LineItem> {
     return this.order?.lineItems?.map {
         LineItem(
-            it.giftCard, it.name, it.price, it.productId, it.quantity, it.title, it.totalDiscount
+            it.giftCard, it.name, it.price, it.productId, it.quantity, it.title, it.totalDiscount,it.priceSet
         )
     } ?: emptyList()
 }

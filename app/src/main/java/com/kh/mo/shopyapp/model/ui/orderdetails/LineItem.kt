@@ -1,5 +1,6 @@
 package com.kh.mo.shopyapp.model.ui.orderdetails
 
+import com.kh.mo.shopyapp.model.response.orderdetails.PriceSet
 
 
 data class LineItem(
@@ -10,6 +11,7 @@ data class LineItem(
     val productId: Long?,
     val quantity: Int?,
     val title: String?,
-    val totalDiscount: String?
+    val totalDiscount: String?,
+    val priceSet: PriceSet?
 
 )

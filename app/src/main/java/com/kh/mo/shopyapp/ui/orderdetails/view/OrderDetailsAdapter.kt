@@ -46,7 +46,7 @@ class OrderDetailsAdapter(var context: Context,private val onClick:(Long?)->Unit
             binding.apply {
                 tvProductNameOrder.text = currentItem.title
                 //tvProductDateOrder.text=currentItem.
-                tvProductPriceOrder.text=currentItem.price+"EGP"
+                tvProductPriceOrder.text=currentItem.price+currentItem.priceSet?.shopMoney?.currencyCode
                 tvProductSizeOrder.text="${currentItem.quantity}x"
                 Log.i(TAG,currentItem.productId.toString())
                 itemView.setOnClickListener{
