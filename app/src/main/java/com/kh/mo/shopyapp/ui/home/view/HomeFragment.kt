@@ -112,8 +112,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
             viewModel.brands.collect {
                 when (it) {
                     is ApiState.Failure -> {}
-                    is ApiState.Loading -> {}
+                    is ApiState.Loading -> {
+                        binding.homeShimmerLayout.startShimmerAnimation()
+                    }
                     is ApiState.Success -> {
+                        showViews()
                         brandsAdapter = BrandsAdapter(requireContext()) { collection ->
                             val action =
                                 HomeFragmentDirections.actionHomeFragmentToBrandProductsFragment(
@@ -129,6 +132,19 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
                     }
                 }
             }
+        }
+    }
+
+    private fun showViews() {
+        binding.apply {
+            homeShimmerLayout.stopShimmerAnimation()
+            homeShimmerLayout.visibility = View.GONE
+            couponPager.visibility = View.VISIBLE
+            dotsIndicator.visibility = View.VISIBLE
+            tvMainCategoryHome.visibility = View.VISIBLE
+            recyclerCategory.visibility = View.VISIBLE
+            tvBrandHome.visibility = View.VISIBLE
+            recyclerBrands.visibility = View.VISIBLE
         }
     }
 

@@ -150,4 +150,7 @@ dependencies {
     //implementation 'morxander.editcard:EditCard:1.0.1'
     implementation 'com.android.volley:volley:1.2.1'
     implementation files('libs/acceptsdk-release.aar')
+
+    //shimmer effect
+    implementation 'com.facebook.shimmer:shimmer:0.1.0@aar'
 }

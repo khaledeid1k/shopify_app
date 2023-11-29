@@ -18,11 +18,27 @@
             tools:context=".home.view.HomeFragment"
             android:background="@color/gray">
 
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/homeShimmerLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <include layout="@layout/home_shimmer_layout" />
+
+                </LinearLayout>
+            </com.facebook.shimmer.ShimmerFrameLayout>
+
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/couponPager"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_150sdp"
                 android:orientation="horizontal"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -36,6 +52,7 @@
                 app:dotsSize="8dp"
                 app:dotsSpacing="4dp"
                 app:dotsWidthFactor="2.5"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/couponPager"
@@ -50,6 +67,7 @@
                 android:layout_marginTop="@dimen/_8sdp"
                 android:fontFamily="@font/inter_medium"
                 android:text="@string/categories"
+                android:visibility="gone"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/dots_indicator" />
 
@@ -57,9 +75,10 @@
                 android:id="@+id/recycler_category"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_20sdp"
+                android:layout_marginHorizontal="@dimen/_20sdp"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:orientation="horizontal"
+                android:visibility="gone"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@id/tv_main_category_home"
@@ -73,6 +92,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:text="@string/brands"
+                android:visibility="gone"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/recycler_category" />
 
@@ -80,6 +100,7 @@
                 android:id="@+id/recycler_brands"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

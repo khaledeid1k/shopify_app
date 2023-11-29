@@ -821,7 +821,7 @@ class RepoImp private constructor(
             }
 
             else -> {
-                "$price \u0045\u00A3"
+                "$price EGP"
             }
         }
     }
