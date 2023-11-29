@@ -6,6 +6,7 @@ import com.kh.mo.shopyapp.model.entity.Validation
 import com.kh.mo.shopyapp.model.request.DraftOrderRequest
 import com.kh.mo.shopyapp.model.request.UserData
 import com.kh.mo.shopyapp.model.request.order.CreateOrderRequest
+import com.kh.mo.shopyapp.model.request.order.LineItem
 import com.kh.mo.shopyapp.model.response.ads.DiscountCodeResponse
 import com.kh.mo.shopyapp.model.response.ads.PriceRuleResponse
 import com.kh.mo.shopyapp.model.response.allproducts.AllProductsResponse
@@ -102,7 +103,7 @@ interface Repo {
     suspend fun getCurrencyUnit(): String
     suspend fun setCurrencyUnit(unit: String): String
     suspend fun getOrdersByCustomerID(customerId: Long): Flow<ApiState<OrdersResponse>>
-    suspend fun getOrderById(id: Long): Flow<ApiState<OrderDetailsResponse>>
+    suspend fun getOrderById(id: Long): Flow<ApiState<List<com.kh.mo.shopyapp.model.ui.orderdetails.LineItem>>>
     suspend fun getImageOrders(productId: Long): Flow<ApiState<ProductResponse>>
     suspend fun setLanguage(language: String)
     suspend fun getCurrentLanguage(): String

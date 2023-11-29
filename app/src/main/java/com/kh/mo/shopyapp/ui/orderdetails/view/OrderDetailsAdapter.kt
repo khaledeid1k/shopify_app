@@ -9,12 +9,10 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.kh.mo.shopyapp.R
 import com.kh.mo.shopyapp.databinding.ItemOrderBinding
 import com.kh.mo.shopyapp.local.LocalSourceImp
 import com.kh.mo.shopyapp.model.ui.orderdetails.LineItem
 import com.kh.mo.shopyapp.remote.ApiState
-import com.kh.mo.shopyapp.remote.RemoteSource
 import com.kh.mo.shopyapp.remote.RemoteSourceImp
 import com.kh.mo.shopyapp.repo.RepoImp
 import kotlinx.coroutines.CoroutineScope

@@ -19,6 +19,7 @@ import com.kh.mo.shopyapp.model.ui.*
 import com.kh.mo.shopyapp.model.ui.allproducts.Product
 import com.kh.mo.shopyapp.model.ui.allproducts.ProductVariant
 import com.kh.mo.shopyapp.model.ui.maincategory.CustomCollection
+import com.kh.mo.shopyapp.model.ui.orderdetails.LineItem
 import com.kh.mo.shopyapp.remote.ApiState
 import com.kh.mo.shopyapp.remote.RemoteSource
 import com.kh.mo.shopyapp.repo.mapper.*
@@ -727,14 +728,14 @@ class RepoImp private constructor(
         }
     }
 
-    override suspend fun getOrderById(id: Long): Flow<ApiState<OrderDetailsResponse>> {
+    override suspend fun getOrderById(id: Long): Flow<ApiState<List<LineItem>>> {
         return flow {
             emit(ApiState.Loading)
             val order =
                 remoteSource.getOrderByID(id)
             if (order.isSuccessful) {
                 remoteSource.getOrderByID(id).body()
-                    ?.let { emit(ApiState.Success(it)) }
+                    ?.let { emit(ApiState.Success(it.convertToLineItem())) }
             } else {
                 emit(ApiState.Failure(order.message()))
             }

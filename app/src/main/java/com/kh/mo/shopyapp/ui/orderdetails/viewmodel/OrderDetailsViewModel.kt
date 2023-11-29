@@ -33,22 +33,11 @@ class OrderDetailsViewModel(private var _irepo: Repo): ViewModel() {
     fun getOrdersById(orderID: Long) {
         viewModelScope.launch(Dispatchers.IO) {
             _irepo.getOrderById(orderID).collect {
-                when (it) {
-                    is ApiState.Failure -> {
-                        Log.i(TAG, "Failure")
-                    }
-                    is ApiState.Loading -> {
-                        Log.i(TAG, "llLoading")
-                    }
-                    is ApiState.Success -> {
-                       // Log.i(TAG, "Success:${it.data.lineItems?.size}")
-
-                        _orderList.value = ApiState.Success(it.data.convertToLineItem())
+                        _orderList.value = it
                     }
                 }
             }
-        }
-    }
+
     fun getOrders() {
 
         viewModelScope.launch(Dispatchers.IO) {
