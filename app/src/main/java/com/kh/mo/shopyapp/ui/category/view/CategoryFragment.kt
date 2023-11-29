@@ -57,12 +57,7 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding, CategoryViewModel
         observeCheckUserState()
         categoryName = CategoryFragmentArgs.fromBundle(requireArguments()).nameOfMainCategory
         collectionId = CategoryFragmentArgs.fromBundle(requireArguments()).collectionId
-
-
-
-
         viewModel.getCollectionProducts(collectionId)
-        viewModel.filterProductsBySubCollection(collectionId, productType)
         binding.tvCategoryName.text = categoryName
         getSubCategories()
         getCollectionProducts()
@@ -80,7 +75,6 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding, CategoryViewModel
 
     private fun onClick() {
         binding.chipGroup.setOnCheckedChangeListener { _, checkedId ->
-
             if (checkedId == R.id.first_subcategory && flag) {
                 flag = false
                 productType = binding.firstSubcategory.text.toString()
@@ -90,7 +84,6 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding, CategoryViewModel
                 addAdapterToCategories(productList)
 
             }
-
             if (checkedId == R.id.second_subcategory && flag) {
                 flag = false
                 productType = binding.secondSubcategory.text.toString()
@@ -107,7 +100,6 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding, CategoryViewModel
             } else {
                 flag = true
                 addAdapterToCategories(productList)
-
             }
 
 
@@ -224,13 +216,9 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding, CategoryViewModel
                         binding.loading.visibility=View.GONE
                         Log.d(TAG, "filterProductsBySubCollection: ${it.data}")
                         addAdapterToCategories(it.data)
-
-
                     }
                 }
-
             }
-
         }
     }
     private fun observeCheckUserState() {
