@@ -59,8 +59,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
         binding.apply {
             notLoggedInCard.visibility = View.GONE
             ordersCard.visibility = View.VISIBLE
-            wishListCard.visibility = View.VISIBLE
-            imageProfile.setImageResource(R.drawable.image_person)
+            imageProfile.setImageResource(R.drawable.ic_account)
         }
     }
 
@@ -75,9 +74,8 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileViewModel>()
         binding.apply {
             notLoggedInCard.visibility = View.VISIBLE
             ordersCard.visibility = View.GONE
-            wishListCard.visibility = View.GONE
             userNameTV.text = getString(R.string.guest)
-            imageProfile.setImageResource(R.drawable.ic_profile)
+            imageProfile.setImageResource(R.drawable.ic_account)
         }
     }
 
