@@ -25,6 +25,7 @@ import com.kh.mo.shopyapp.model.response.login.Login
 import com.kh.mo.shopyapp.model.response.maincategory.MainCategoryResponse
 import com.kh.mo.shopyapp.model.response.osm.NominatimResponse
 import com.kh.mo.shopyapp.model.response.order.OrdersResponse
+import com.kh.mo.shopyapp.model.response.singleproduct.SingleProductResponse
 import com.kh.mo.shopyapp.remote.service.Network
 import com.kh.mo.shopyapp.utils.Constants
 import com.kh.mo.shopyapp.utils.formatCurrentDate
@@ -177,6 +178,11 @@ class RemoteSourceImp private constructor() : RemoteSource {
     override suspend fun getAllProducts(): Response<AllProductsResponse> {
         return Network.retrofitService.getAllProducts()
     }
+
+    override suspend fun getSingleProduct(productId: Long): Response<SingleProductResponse> {
+        return Network.retrofitService.getSingleProduct(productId)
+    }
+
 
     override suspend fun getProductsByCollection(collectionId: Long): Response<AllProductsResponse> {
         return Network.retrofitService.getProductsByCollection(collectionId)

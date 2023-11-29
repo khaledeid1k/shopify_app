@@ -52,6 +52,7 @@ interface Repo {
 
     suspend fun getProductsOfSpecificBrand(brandName:String): Flow<ApiState<List<Product>>>
     suspend fun getAllProducts(): Flow<ApiState<List<Product>>>
+    suspend fun getSingleProduct(productId: Long):Flow<ApiState<Product>>
     suspend fun getProductsByCollection(collectionId:Long): Flow<ApiState<List<Product>>>
     suspend fun filterProductsBySubCollection(collectionId:Long,productType:String): Flow<ApiState<List<Product>>>
     suspend fun getAddressesOfCustomer(customerId: Long): Flow<ApiState<List<Address>>>

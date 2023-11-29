@@ -23,6 +23,7 @@ import com.kh.mo.shopyapp.model.response.maincategory.MainCategoryResponse
 import com.kh.mo.shopyapp.model.response.order.OrdersResponse
 import com.kh.mo.shopyapp.model.response.orderdetails.OrderDetailsResponse
 import com.kh.mo.shopyapp.model.response.osm.NominatimResponse
+import com.kh.mo.shopyapp.model.response.singleproduct.SingleProductResponse
 import retrofit2.Response
 
 interface RemoteSource {
@@ -49,6 +50,7 @@ interface RemoteSource {
     suspend fun getCurrencyRate(): Rates
     suspend fun isCurrencyDbUpdated(): Boolean
     suspend fun getAllProducts(): Response<AllProductsResponse>
+    suspend fun getSingleProduct(productId: Long): Response<SingleProductResponse>
     suspend fun getProductsByCollection(collectionId: Long): Response<AllProductsResponse>
     suspend fun filterProductsBySubCollection(collectionId: Long,productType:String): Response<AllProductsResponse>
     suspend fun getAddressesOfCustomer(customerId: Long): Response<AddressesResponse>

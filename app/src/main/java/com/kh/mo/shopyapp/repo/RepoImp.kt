@@ -410,6 +410,27 @@ class RepoImp private constructor(
         }
     }
 
+    override suspend fun getSingleProduct(productId: Long): Flow<ApiState<Product>> {
+        return flow {
+
+            emit(ApiState.Loading)
+            val allProducts =
+                remoteSource.getSingleProduct(productId)
+            if (allProducts.isSuccessful) {
+                allProducts.body()
+                    ?.let {
+                        emit(
+                            ApiState.Success(it.convertToSingleProductResponseProduct()))
+                    }
+            } else {
+                emit(ApiState.Failure(allProducts.message()))
+            }
+
+        }.catch {
+            emit(ApiState.Failure(it.message!!))
+        }
+    }
+
     override suspend fun getProductsByCollection(collectionId: Long): Flow<ApiState<List<Product>>> {
         return flow {
             emit(ApiState.Loading)
