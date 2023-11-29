@@ -21,7 +21,11 @@ class SignInViewModel(private val repo: Repo) : ViewModel() {
     private val _draftIds = MutableStateFlow<ApiState<List<String>>>(ApiState.Loading)
     val draftIds: StateFlow<ApiState<List<String>>> = _draftIds
 
-     fun singInCustomer(email: String) {
+    private val _checkEmailVerification = MutableStateFlow<ApiState<Boolean>>(ApiState.Loading)
+    val checkEmailVerification: StateFlow<ApiState<Boolean>> = _checkEmailVerification
+
+
+    fun singInCustomer(email: String) {
         viewModelScope.launch {
             repo.singInCustomer(email).collect {
                 when (it) {
@@ -96,5 +100,13 @@ class SignInViewModel(private val repo: Repo) : ViewModel() {
     }
 
     fun getCustomerId()=repo.getCustomerId()
+
+    fun checkEmailVerification(){viewModelScope.launch {
+        repo.checkEmailVerification().collect{
+            _checkEmailVerification.value=it
+        }
+
+    }}
+
 
 }

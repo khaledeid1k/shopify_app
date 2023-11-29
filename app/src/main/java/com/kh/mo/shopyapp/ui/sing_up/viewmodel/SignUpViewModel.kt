@@ -23,6 +23,9 @@ class SignUpViewModel(private val repo: Repo) : ViewModel() {
     private val _createCustomer = MutableStateFlow<ApiState<CustomerEntity>>(ApiState.Loading)
     val createCustomer: StateFlow<ApiState<CustomerEntity>> = _createCustomer
 
+    private val _sendEmailVerification = MutableStateFlow<ApiState<String>>(ApiState.Loading)
+    val sendEmailVerification: StateFlow<ApiState<String>> = _sendEmailVerification
+
     private val _createFavoriteDraft = MutableStateFlow<ApiState<DraftOrder>>(ApiState.Loading)
     val createFavoriteDraft: StateFlow<ApiState<DraftOrder>> = _createFavoriteDraft
 
@@ -108,6 +111,14 @@ class SignUpViewModel(private val repo: Repo) : ViewModel() {
 
     private fun saveCartDraftIdInPreferences(draftId: Long) {
         viewModelScope.launch(Dispatchers.IO) { repo.saveCartDraftId(draftId) }
+    }
+
+     fun sendEmailVerification(){
+        viewModelScope.launch {
+            repo.sendEmailVerification().collect{
+                _sendEmailVerification.value=it
+            }
+        }
     }
 
 }
