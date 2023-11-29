@@ -1,6 +1,7 @@
 package com.kh.mo.shopyapp.repo
 
 import android.util.Log
+import com.google.android.gms.tasks.Task
 import com.kh.mo.shopyapp.local.LocalSource
 import com.kh.mo.shopyapp.model.entity.CustomerEntity
 import com.kh.mo.shopyapp.model.entity.FavoriteEntity
@@ -166,7 +167,7 @@ class RepoImp private constructor(
                 }
             }
         }.catch {
-            emit(ApiState.Failure("${it.message}"))
+            emit(ApiState.Failure("NetWork Error"))
         }
     }
 
@@ -193,6 +194,30 @@ class RepoImp private constructor(
         }
 
     }
+   override suspend fun sendEmailVerification()= flow {
+                emit(ApiState.Loading)
+                remoteSource.sendEmailVerification()?.addOnCompleteListener {
+                }?.await()?:run { emit(ApiState.Failure("NetWork Error")) }
+             emit(ApiState.Success("Verification Send"))
+            }.catch {
+                emit(ApiState.Failure("${it.message}"))
+            }
+
+    override suspend fun checkEmailVerification()=
+        flow {
+            emit(ApiState.Loading)
+           if( remoteSource.checkEmailVerification()){
+               emit(ApiState.Success(true))
+           }
+            else{
+               emit(ApiState.Failure("Email need Verification"))
+            }
+        }.catch {
+            emit(ApiState.Failure("${it.message}"))
+        }
+
+
+
 
     override suspend fun getDraftIds(customerId: String) =
         flow {

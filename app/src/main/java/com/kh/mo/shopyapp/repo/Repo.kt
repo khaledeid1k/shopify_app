@@ -29,7 +29,9 @@ interface Repo {
     suspend fun singUpWithFireBase(userData: UserData): Flow<ApiState<String>>
     suspend fun singInWithFireBase(userData: UserData): Flow<ApiState<String>>
     suspend fun logout()
+    suspend fun sendEmailVerification(): Flow<ApiState<String>>
     fun checkIsUserLogin():Boolean
+    suspend fun checkEmailVerification(): Flow< ApiState<Boolean>>
      suspend fun createFavoriteDraft(draftOrderRequest: DraftOrderRequest):Flow<ApiState<DraftOrder>>
     suspend fun createCustomer(userData: UserData): Flow<ApiState<CustomerEntity>>
     suspend fun singInCustomer(email: String): Flow<ApiState<UserData>>

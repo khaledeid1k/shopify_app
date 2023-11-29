@@ -40,9 +40,10 @@ interface RemoteSource {
         priceRuleId: String,
         discountCodeId: String
     ): Response<DiscountCodeResponse>
-
+    suspend fun sendEmailVerification(): Task<Void>?
     suspend fun getProductsOfSpecificBrand(brandName: String): Response<AllProductsResponse>
     suspend fun getDraftIds(customerId: String): Task<DocumentSnapshot>
+    suspend fun checkEmailVerification():  Boolean
     suspend fun createCustomer(customerDataRequest: CustomerDataRequest): Response<CustomerResponse>
     suspend fun singInCustomer(email: String): Response<Login>
     suspend fun getCurrencyRate(): Rates

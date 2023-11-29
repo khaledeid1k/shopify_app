@@ -63,36 +63,8 @@ class AuthInputValidatorImpl : AuthInputValidator {
     }
 
     override fun emailValidator(email: String): Validation {
-        val digitPattern = Regex(".*[0-9].*")
-        val lowercasePattern = Regex(".*[a-z].*")
-        val uppercasePattern = Regex(".*[A-Z].*")
-        val specialCharacterPattern = Regex(".*[_-].*")
-        val lengthPattern: Boolean = email.matches(Regex(".{15,20}"))
+        val lengthPattern: Boolean = email.matches(Regex(".{8,40}"))
 
-        if (!email.matches(digitPattern)) {
-            return Validation(false, "Email must contain at least one digit", Constants.ErrorEmail)
-        }
-        if (!email.matches(lowercasePattern)) {
-            return Validation(
-                false,
-                "Email must contain at least one lowercase letter.",
-                Constants.ErrorEmail
-            )
-        }
-        if (!email.matches(uppercasePattern)) {
-            return Validation(
-                false,
-                "Email must contain at least one uppercase letter.",
-                Constants.ErrorEmail
-            )
-        }
-        if (!email.matches(specialCharacterPattern)) {
-            return Validation(
-                false,
-                "Email must contain at least one special character (_-).",
-                Constants.ErrorEmail
-            )
-        }
 
         if (!email.matches(Regex(".*@\\w+\\..*"))) {
             return Validation(false, "Invalid placement of '@' symbol.", Constants.ErrorEmail)
@@ -111,7 +83,7 @@ class AuthInputValidatorImpl : AuthInputValidator {
         return if (!lengthPattern) {
             Validation(
                 false,
-                "Email length must be between 15 and 20 characters.",
+                "Email length must be between 15 and 30 characters.",
                 Constants.ErrorEmail
             )
         } else Validation(true, "", "")

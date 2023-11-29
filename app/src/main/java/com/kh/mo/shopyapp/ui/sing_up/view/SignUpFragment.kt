@@ -238,8 +238,8 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding, SignUpViewModel>() {
                     }
                     ApiState.Loading -> {}
                     is ApiState.Success -> {
-                        progressDialog.dismiss()
-                        navigateToHome()
+                        viewModel.sendEmailVerification()
+                        observeSendEmailVerification()
                     }
 
                 }
@@ -247,7 +247,25 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding, SignUpViewModel>() {
             }
         }
     }
+    private fun observeSendEmailVerification() {
+        lifecycleScope.launch {
+            viewModel.sendEmailVerification.collect{
+                when(it){
+                    is ApiState.Failure ->{}
+                    is ApiState.Loading -> {}
+                    is ApiState.Success -> {
+                        progressDialog.dismiss()
+                        findNavController().navigate(
+                            SignUpFragmentDirections.actionSignUpFragmentToSignInFragment()
+                        )
 
+                        Toast.makeText(requireContext(), "Please , Verification Your Email", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+
+    }
 
 
 

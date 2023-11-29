@@ -41,10 +41,19 @@ class RemoteSourceImp private constructor() : RemoteSource {
 
 
 
+    override   suspend fun sendEmailVerification(): Task<Void> {
+        return  firebaseAuth.currentUser!!.sendEmailVerification()
+    }
+
     override suspend fun getDraftIds(customerId: String): Task<DocumentSnapshot> {
 
          return   firebaseFireStore.collection(Constants.collectionPath)
                 .document(customerId).get()
+    }
+
+    override suspend fun checkEmailVerification(): Boolean {
+       return firebaseAuth.currentUser!!.isEmailVerified
+
     }
 
     override suspend fun getListOfSpecificProductsIds( productsIds: String):Response<AllProductsResponse> {

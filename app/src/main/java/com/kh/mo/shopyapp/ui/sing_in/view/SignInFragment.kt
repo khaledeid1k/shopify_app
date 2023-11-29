@@ -19,6 +19,8 @@ import com.kh.mo.shopyapp.ui.base.BaseFragment
 import com.kh.mo.shopyapp.ui.sing_in.viewmodel.SignInViewModel
 import com.kh.mo.shopyapp.utils.getText
 import com.kh.mo.shopyapp.utils.printError
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 
@@ -36,6 +38,7 @@ class SignInFragment : BaseFragment<FragmentSinginBinding, SignInViewModel>() {
         observeLoginWithApi()
         observeLoginWithFireBase()
         observeGetDraftFavoriteId()
+        observeCheckEmailVerification()
         checkEmailValueValidation()
         checkPasswordValidation()
         singInCustomer()
@@ -45,7 +48,10 @@ class SignInFragment : BaseFragment<FragmentSinginBinding, SignInViewModel>() {
     }
 
    private fun checkIsUserLogin(){
-        if(viewModel.checkIsUserLogin()){navigateToHomeScreen()}
+        if(viewModel.checkIsUserLogin()){
+            viewModel.checkEmailVerification()
+
+        }
     }
 
 
@@ -53,7 +59,8 @@ class SignInFragment : BaseFragment<FragmentSinginBinding, SignInViewModel>() {
         lifecycleScope.launch {
             viewModel.singIn.collect {
                 when (it) {
-                    is ApiState.Failure -> { printError(requireContext(),progressDialog,it.msg)
+                    is ApiState.Failure -> {
+                        printError(requireContext(),progressDialog,it.msg)
                     }
                     ApiState.Loading -> {}
                     is ApiState.Success -> {
@@ -93,12 +100,29 @@ class SignInFragment : BaseFragment<FragmentSinginBinding, SignInViewModel>() {
                             Log.d("TAG", "observeGetDraftFavoriteId: ${it.data}")
                             viewModel.saveFavoriteDraftId(draftIds[0].toLong())
                             viewModel.saveCartDraftId(draftIds[1].toLong())
-                            progressDialog.dismiss()
-                            navigateToHomeScreen()
+                            viewModel.checkEmailVerification()
+
                     }
                 }
             }
         }
+        }
+    }
+
+    private fun observeCheckEmailVerification() {
+        lifecycleScope.launch {
+            viewModel.checkEmailVerification.collectLatest {
+                when(it){
+                    is ApiState.Failure -> {
+                       printError(requireContext(),progressDialog,it.msg)
+                           }
+                    is ApiState.Loading -> {}
+                    is ApiState.Success -> {
+                        progressDialog.dismiss()
+                        navigateToHomeScreen()
+                    }
+                }
+            }
         }
     }
     private fun printValidationResult(validation: Validation, field: TextInputLayout) {
@@ -172,6 +196,7 @@ class SignInFragment : BaseFragment<FragmentSinginBinding, SignInViewModel>() {
             progressDialog.setMessage(getString(R.string.loading_login))
             progressDialog.show()
             viewModel.singInCustomer(it.email)
+
         }
     }
 
