@@ -40,9 +40,6 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding, CategoryViewModel
     private lateinit var filterDialog: Dialog
     var  job: Job?=null
     private var cartListener: (Product) -> Unit = {
-        viewModel.addProductToCart(it)
-        observeAddToCartState()
-
         if (viewModel.checkIsUserLogin()) {
             viewModel.addProductToCart(it)
             observeAddToCartState()
@@ -271,11 +268,18 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding, CategoryViewModel
                 is ApiState.Failure -> {
                     Log.i(TAG, "observeAddToCartState: failed: ${it.msg}")
                     Toast.makeText(requireContext(), "failed", Toast.LENGTH_SHORT).show()
+                    binding.loading.visibility = View.GONE
+                    binding.loading.pauseAnimation()
                 }
                 is ApiState.Loading -> {
-                    Toast.makeText(requireContext(), "loading..", Toast.LENGTH_SHORT).show()}
+                    binding.loading.visibility = View.VISIBLE
+                    binding.loading.playAnimation()
+                }
                 is ApiState.Success -> {
-                    Toast.makeText(requireContext(), "success", Toast.LENGTH_SHORT).show()}
+                    Toast.makeText(requireContext(), "success", Toast.LENGTH_SHORT).show()
+                    binding.loading.visibility = View.GONE
+                    binding.loading.pauseAnimation()
+                }
             }
         }
     }

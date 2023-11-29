@@ -132,7 +132,7 @@ class CheckoutViewModel(private val repo: Repo) : ViewModel() {
                 ),
                 listOf(
                     OrderDiscountCode(
-                        priceRule?.priceRule?.value,
+                        (priceRule?.priceRule?.value?.toDouble()?.times(-1))?.toString(),
                         discountCode?.code,
                         priceRule?.priceRule?.valueType
                     )
