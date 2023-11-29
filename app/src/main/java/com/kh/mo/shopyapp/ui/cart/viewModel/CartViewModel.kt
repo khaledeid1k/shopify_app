@@ -43,28 +43,37 @@ class CartViewModel(private val repo: Repo) : ViewModel() {
     }
 
     fun addOneToItem(item: Cart) {
-        val list: MutableList<Cart> =
-            _productList.value.toData()?.toMutableList() ?: mutableListOf()
-        _productList.value = ApiState.Loading
-        val result = list.map {
-            if (it == item)
-                it.copy(quantity = it.quantity?.inc())
-            else
-                it
+        viewModelScope.launch(Dispatchers.IO) {
+            val list: MutableList<Cart> =
+                _productList.value.toData()?.toMutableList() ?: mutableListOf()
+            _productList.value = ApiState.Loading
+            val result = list.map {
+                if (it == item)
+                    it.copy(quantity = it.quantity?.inc())
+                else
+                    it
+            }
+            repo.updateCartItems(result).collectLatest {
+                _productList.value = it
+            }
         }
-        _productList.value = ApiState.Success(result)
     }
 
     fun subOneFromItem(item: Cart) {
-        val list: MutableList<Cart> =
-            _productList.value.toData()?.toMutableList() ?: mutableListOf()
-        _productList.value = ApiState.Loading
-        val result = list.map {
-            if (it == item)
-                it.copy(quantity = it.quantity?.dec())
-            else
-                it
+        viewModelScope.launch(Dispatchers.IO) {
+            val list: MutableList<Cart> =
+                _productList.value.toData()?.toMutableList() ?: mutableListOf()
+            _productList.value = ApiState.Loading
+            val result = list.map {
+                if (it == item)
+                    it.copy(quantity = it.quantity?.dec())
+                else
+                    it
+            }
+            _productList.value = ApiState.Success(result)
+            repo.updateCartItems(result).collectLatest {
+                _productList.value = it
+            }
         }
-        _productList.value = ApiState.Success(result)
     }
 }

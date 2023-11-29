@@ -6,26 +6,19 @@ import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.content.ContextCompat.getSystemService
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
+import com.kh.mo.shopyapp.MainActivity
 import com.kh.mo.shopyapp.R
 import com.kh.mo.shopyapp.databinding.FragmentHomeBinding
 import com.kh.mo.shopyapp.home.view.BrandsAdapter
 import com.kh.mo.shopyapp.model.ui.AdModel
 import com.kh.mo.shopyapp.remote.ApiState
-import com.kh.mo.shopyapp.remote.RemoteSourceImp
-import com.kh.mo.shopyapp.repo.RepoImp
 import com.kh.mo.shopyapp.ui.base.BaseFragment
-import com.kh.mo.shopyapp.ui.base.BaseViewModelFactory
 import com.kh.mo.shopyapp.ui.home.viewmodel.HomeViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 
 class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
@@ -117,17 +110,24 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
     private fun getBrands() {
         lifecycleScope.launch {
             viewModel.brands.collect {
-                brandsAdapter = BrandsAdapter(requireContext()) {collection ->
-                    val action = HomeFragmentDirections.actionHomeFragmentToBrandProductsFragment(
-                        collection.title!!,
-                        collection.image?.src!!
-                    )
-                    Navigation.findNavController(requireView()).navigate(action)
-                }
-                brandsAdapter.submitList(it.toData())
+                when (it) {
+                    is ApiState.Failure -> {}
+                    is ApiState.Loading -> {}
+                    is ApiState.Success -> {
+                        brandsAdapter = BrandsAdapter(requireContext()) { collection ->
+                            val action =
+                                HomeFragmentDirections.actionHomeFragmentToBrandProductsFragment(
+                                    collection.title,
+                                    collection.productImage.src
+                                )
+                            Navigation.findNavController(requireView()).navigate(action)
+                        }
+                        brandsAdapter.submitList(it.toData())
 
-                Log.i("HomeFragment", it.toData()?.get(0)?.image?.src.toString())
-                binding.recyclerBrands.adapter = brandsAdapter
+                        //Log.i("HomeFragment", it.toData()?.get(0)?.image?.src.toString())
+                        binding.recyclerBrands.adapter = brandsAdapter
+                    }
+                }
             }
         }
     }
@@ -140,6 +140,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
                 is ApiState.Success -> {
                     Log.i(TAG, "getCoupon: ${it.data.discountCode?.code}")
                     it.data.discountCode?.code?.let { it1 -> copyDiscountCodeToClipboard(it1) }
+                    (requireActivity() as MainActivity).copiedCoupon = it.data
                 }
             }
         }

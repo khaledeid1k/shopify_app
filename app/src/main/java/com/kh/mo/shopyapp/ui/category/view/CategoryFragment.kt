@@ -121,6 +121,11 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding, CategoryViewModel
                 val filteredList = productList.filter { brand ->
                     brand.title.contains(searchText, ignoreCase = true)
                 }
+                if(filteredList.isEmpty()){
+                    binding.lottiNoProduct.visibility=View.VISIBLE
+                }else{
+                    binding.lottiNoProduct.visibility=View.GONE
+                }
                 addAdapterToCategories(filteredList)
             }
 
@@ -190,8 +195,11 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding, CategoryViewModel
             viewModel.productCollection.collect {
                 when (it) {
                     is ApiState.Failure -> {}
-                    is ApiState.Loading -> {}
+                    is ApiState.Loading -> {
+                        binding.loading.visibility=View.VISIBLE
+                    }
                     is ApiState.Success -> {
+                        binding.loading.visibility=View.GONE
                         addAdapterToCategories(it.data)
                         productList = it.data
                         Log.d(TAG, "getCollectionProducts: ${it.data}")
@@ -209,8 +217,11 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding, CategoryViewModel
             viewModel.filterProductCollection.collect {
                 when (it) {
                     is ApiState.Failure -> {}
-                    is ApiState.Loading -> {}
+                    is ApiState.Loading -> {
+                        binding.loading.visibility=View.VISIBLE
+                    }
                     is ApiState.Success -> {
+                        binding.loading.visibility=View.GONE
                         Log.d(TAG, "filterProductsBySubCollection: ${it.data}")
                         addAdapterToCategories(it.data)
 

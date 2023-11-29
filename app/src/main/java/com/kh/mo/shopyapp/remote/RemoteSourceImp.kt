@@ -12,6 +12,8 @@ import com.kh.mo.shopyapp.model.request.CustomerDataRequest
 import com.kh.mo.shopyapp.model.request.CustomerRequest
 import com.kh.mo.shopyapp.model.request.DraftOrderRequest
 import com.kh.mo.shopyapp.model.request.UserData
+import com.kh.mo.shopyapp.model.request.order.CreateOrderRequest
+import com.kh.mo.shopyapp.model.response.ads.PriceRuleResponse
 import com.kh.mo.shopyapp.model.response.orderdetails.OrderDetailsResponse
 import com.kh.mo.shopyapp.model.response.allproducts.AllProductsResponse
 import com.kh.mo.shopyapp.model.response.allproducts.ProductResponse
@@ -257,6 +259,13 @@ class RemoteSourceImp private constructor() : RemoteSource {
         return network.getProductsIdForDraftFavorite(cartId.toLong())
     }
 
+    override suspend fun getPriceRule(priceRuleId: String): Response<PriceRuleResponse> {
+        return network.getPriceRule(priceRuleId)
+    }
+
+    override suspend fun createOrder(orderRequest: CreateOrderRequest): Response<OrdersResponse> {
+        return network.createOrder(orderRequest)
+    }
     companion object {
         @Volatile
         private var instance: RemoteSourceImp? = null

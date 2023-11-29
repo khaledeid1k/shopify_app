@@ -202,7 +202,7 @@
                     style="@style/sub_title"
                     android:text="@string/total_profile"
                     android:layout_marginHorizontal="@dimen/_20sdp"
-                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_20sdp"
                     app:layout_constraintBottom_toBottomOf="parent"/>
 
                 <TextView

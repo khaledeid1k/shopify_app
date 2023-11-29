@@ -8,7 +8,9 @@ import com.kh.mo.shopyapp.model.entity.FavoriteEntity
 import com.kh.mo.shopyapp.model.request.DraftOrderRequest
 import com.kh.mo.shopyapp.model.request.LineItems
 import com.kh.mo.shopyapp.model.request.UserData
+import com.kh.mo.shopyapp.model.request.order.CreateOrderRequest
 import com.kh.mo.shopyapp.model.response.ads.DiscountCodeResponse
+import com.kh.mo.shopyapp.model.response.ads.PriceRuleResponse
 import com.kh.mo.shopyapp.model.response.allproducts.AllProductsResponse
 import com.kh.mo.shopyapp.model.response.allproducts.ProductResponse
 import com.kh.mo.shopyapp.model.response.barnds.BrandsResponse
@@ -25,19 +27,7 @@ import com.kh.mo.shopyapp.model.ui.allproducts.Product
 import com.kh.mo.shopyapp.model.ui.allproducts.ProductVariant
 import com.kh.mo.shopyapp.remote.ApiState
 import com.kh.mo.shopyapp.remote.RemoteSource
-import com.kh.mo.shopyapp.repo.mapper.convertAllProductsResponseToProductsIds
-import com.kh.mo.shopyapp.repo.mapper.convertCustomerResponseToCustomerEntity
-import com.kh.mo.shopyapp.repo.mapper.convertDraftOrderResponseToDraftOrder
-import com.kh.mo.shopyapp.repo.mapper.convertDraftOrderResponseToProductsIds
-import com.kh.mo.shopyapp.repo.mapper.convertLoginToUserData
-import com.kh.mo.shopyapp.repo.mapper.convertToAddress
-import com.kh.mo.shopyapp.repo.mapper.convertToAddressRequest
-import com.kh.mo.shopyapp.repo.mapper.convertAllProductsResponseToProducts
-import com.kh.mo.shopyapp.repo.mapper.convertToCartItems
-import com.kh.mo.shopyapp.repo.mapper.convertToDraftOrderRequest
-import com.kh.mo.shopyapp.repo.mapper.convertToLineItemRequest
-import com.kh.mo.shopyapp.repo.mapper.convertToLineItems
-import com.kh.mo.shopyapp.repo.mapper.convertUserDataToCustomerData
+import com.kh.mo.shopyapp.repo.mapper.*
 import com.kh.mo.shopyapp.utils.Constants
 import com.kh.mo.shopyapp.utils.roundTwoDecimals
 import com.kh.mo.shopyapp.utils.toEUR
@@ -349,7 +339,7 @@ class RepoImp private constructor(
     override fun validateConfirmPassword(password: String, rePassword: String) =
         localSource.validateConfirmPassword(password, rePassword)
 
-    override suspend fun getAllBrands(): Flow<ApiState<BrandsResponse>> {
+    override suspend fun getAllBrands(): Flow<ApiState<List<Product>>>{
         return flow {
 
             emit(ApiState.Loading)
@@ -357,7 +347,10 @@ class RepoImp private constructor(
                 remoteSource.getAllBrands()
             if (allBrands.isSuccessful) {
                 remoteSource.getAllBrands().body()
-                    ?.let { emit(ApiState.Success(it)) }
+                    ?.let {
+                        val list=it.convertAllBrandsResponseToProducts()
+                        val result = checkCurrencyUnitAndCalculatePrice(list)
+                        emit(ApiState.Success(result)) }
             } else {
                 emit(ApiState.Failure(allBrands.message()))
             }
@@ -386,14 +379,17 @@ class RepoImp private constructor(
 
     }
 
-    override suspend fun getProductsOfSpecificBrand(brandName: String): Flow<ApiState<AllProductsResponse>> {
+    override suspend fun getProductsOfSpecificBrand(brandName: String): Flow<ApiState<List<Product>>> {
         return flow {
             emit(ApiState.Loading)
             val brandItems =
                 remoteSource.getProductsOfSpecificBrand(brandName)
             if (brandItems.isSuccessful) {
                 remoteSource.getProductsOfSpecificBrand(brandName).body()
-                    ?.let { emit(ApiState.Success(it)) }
+                    ?.let {
+                        val list=it.convertAllProductsResponseToProducts()
+                        val result = checkCurrencyUnitAndCalculatePrice(list)
+                        emit(ApiState.Success(result)) }
             } else {
                 emit(ApiState.Failure(brandItems.message()))
             }
@@ -942,6 +938,62 @@ class RepoImp private constructor(
                     val listWithConvertedCurrencies =
                         checkCurrencyUnitAndCalculateCartPrice(listWithImages)
                     emit(ApiState.Success(listWithConvertedCurrencies))
+                } ?: emit(ApiState.Failure("Null response"))
+            } else {
+                emit(ApiState.Failure("api failure: ${result.message()}"))
+            }
+        }.catch {
+            emit(ApiState.Failure("exception: ${it.message}"))
+        }
+    }
+
+    override fun getPriceRule(priceRuleId: String): Flow<ApiState<PriceRuleResponse>> {
+        return flow {
+            emit(ApiState.Loading)
+            val response = remoteSource.getPriceRule(priceRuleId)
+            if (response.isSuccessful){
+                response.body()?.let {
+                    emit(ApiState.Success(it))
+                } ?: emit(ApiState.Failure("Null data"))
+            } else {
+                emit(ApiState.Failure("failure ${response.message()}"))
+            }
+        }.catch {
+            emit(ApiState.Failure("Exception ${it.message}"))
+        }
+    }
+
+    override fun createOrder(orderRequest: CreateOrderRequest): Flow<ApiState<OrdersResponse>> {
+        return flow {
+            Log.i(TAG, "createOrder: $orderRequest")
+            emit(ApiState.Loading)
+            val result = remoteSource.createOrder(orderRequest)
+            if (result.isSuccessful){
+                result.body()?.let {
+                    emit(ApiState.Success(it))
+                }?: emit(ApiState.Failure("Null data"))
+            } else {
+                emit(ApiState.Failure("failure ${result}"))
+            }
+        }.catch {
+            emit(ApiState.Failure("Exception ${it.message}"))
+        }
+    }
+
+    override suspend fun clearDraftCart(
+        draftOrderRequest: DraftOrderRequest,
+    ): Flow<ApiState<String>> {
+        return flow {
+            Log.i(TAG, "clear draft cart: ")
+            emit(ApiState.Loading)
+            val result = remoteSource.backUpDraftFavorite(
+                draftOrderRequest,
+                getLocalCartDraftId()
+            )
+            Log.i(TAG, "updateCartItems: result: $result")
+            if (result.isSuccessful) {
+                result.body()?.let {
+                    emit(ApiState.Success("cleared"))
                 } ?: emit(ApiState.Failure("Null response"))
             } else {
                 emit(ApiState.Failure("api failure: ${result.message()}"))

@@ -3,7 +3,6 @@ package com.kh.mo.shopyapp.ui.cart.view
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -27,17 +26,14 @@ class CartFragment : BaseFragment<FragmentCartBinding, CartViewModel>() {
         when (action) {
             Constants.ACTION_DELETE -> {
                 delete(item)
-                //Toast.makeText(requireContext(), "delete", Toast.LENGTH_SHORT).show()
             }
 
             Constants.ACTION_ADD -> {
                 add(item)
-                Toast.makeText(requireContext(), "add", Toast.LENGTH_SHORT).show()
             }
 
             Constants.ACTION_SUB -> {
                 sub(item)
-                Toast.makeText(requireContext(), "sub", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -69,21 +65,57 @@ class CartFragment : BaseFragment<FragmentCartBinding, CartViewModel>() {
             when (state) {
                 is ApiState.Failure -> {
                     Log.i(TAG, "observeProductListState: failure ${state.msg}")
+                    binding.apply {
+                        lottiNoProduct.visibility = View.VISIBLE
+                        lottiNoProduct.playAnimation()
+                        cartRecyclerV.visibility = View.GONE
+                        cartTotalTxtV.visibility = View.GONE
+                        cartShippingTitleTxtV.visibility = View.GONE
+                        binding.cartTotalPriceTxtV.visibility = View.GONE
+                        cartCheckoutBtn.visibility = View.GONE
+                    }
+
                 }
 
                 ApiState.Loading -> {
                     Log.i(TAG, "observeProductListState: loading...")
+                    binding.apply {
+                        cartRecyclerV.visibility = View.GONE
+                        cartTotalTxtV.visibility = View.GONE
+                        cartShippingTitleTxtV.visibility = View.GONE
+                        cartTotalPriceTxtV.visibility = View.GONE
+                        cartCheckoutBtn.visibility = View.GONE
+                        loading.visibility = View.VISIBLE
+                        loading.playAnimation()
+                    }
                 }
 
                 is ApiState.Success -> {
                     Log.i(TAG, "observeProductListState: success ${state.data}")
                     if (state.data.isEmpty()) {
-                        Toast.makeText(requireContext(), "no data in cart", Toast.LENGTH_SHORT)
-                            .show()
-                        binding.cartRecyclerV.visibility = View.GONE
+                        binding.apply {
+                            lottiNoProduct.visibility = View.VISIBLE
+                            lottiNoProduct.playAnimation()
+                            cartRecyclerV.visibility = View.GONE
+                            cartTotalTxtV.visibility = View.GONE
+                            cartShippingTitleTxtV.visibility = View.GONE
+                            cartTotalPriceTxtV.visibility = View.GONE
+                            cartCheckoutBtn.visibility = View.GONE
+                        }
                     } else {
                         cartAdapter.submitList(state.data)
                         calculateTotal(state.data)
+                        binding.apply {
+                            lottiNoProduct.visibility = View.GONE
+                            lottiNoProduct.pauseAnimation()
+                            loading.visibility = View.GONE
+                            loading.pauseAnimation()
+                            cartRecyclerV.visibility = View.VISIBLE
+                            cartTotalTxtV.visibility = View.VISIBLE
+                            cartShippingTitleTxtV.visibility = View.VISIBLE
+                            cartTotalPriceTxtV.visibility = View.VISIBLE
+                            cartCheckoutBtn.visibility = View.VISIBLE
+                        }
                     }
                 }
             }
@@ -94,7 +126,7 @@ class CartFragment : BaseFragment<FragmentCartBinding, CartViewModel>() {
         val currency: String = cartList[0].price?.split(" ")?.get(1) ?: ""
         var totalPrice = 0.0
         cartList.asFlow().collect {
-            val price = it.price?.split(" ")?.get(0)?.toDouble() ?: 0.0
+            val price = (it.price?.split(" ")?.get(0)?.toDouble()?.times(it.quantity!!)) ?: 0.0
             totalPrice += price
         }
         binding.apply {
@@ -123,6 +155,20 @@ class CartFragment : BaseFragment<FragmentCartBinding, CartViewModel>() {
     }
 
     private fun sub(item: Cart) {
-        viewModel.subOneFromItem(item)
+        if (item.quantity?.minus(1)!! <= 0) {
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle(resources.getString(R.string.minimum_one_item))
+                .setMessage(getString(R.string.minimum_one_item_message))
+                .setNegativeButton(resources.getString(R.string.cancel)) { dialog, _ ->
+                    dialog.dismiss()
+                }
+                .setPositiveButton(resources.getString(R.string.delete)) { dialog, _ ->
+                    delete(item)
+                    dialog.dismiss()
+                }
+                .show()
+        } else {
+            viewModel.subOneFromItem(item)
+        }
     }
 }

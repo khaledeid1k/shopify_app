@@ -27,7 +27,8 @@ class CheckoutAdapter(private val context: Context) :
             checkoutItemTitleTxtV.text = item.title
             checkoutItemVariantTxtV.text = item.variantTitle
             checkoutItemQuantityTxtV.text = item.quantity.toString()
-            checkoutItemPriceTxtV.text = item.price
+            val price = item.price!!.split(" ")
+            checkoutItemPriceTxtV.text = "${(price[0].toDouble() * item.quantity!!)} ${price[1]}"
             Glide.with(context)
                 .load(item.imageSrc)
                 .placeholder(R.drawable.product_placeholder)

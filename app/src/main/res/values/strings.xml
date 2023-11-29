@@ -135,6 +135,9 @@
     <string name="cash_on_delivery">Cash on delivery</string>
     <string name="pay_with_card">Pay with Card</string>
     <string name="tap_to_pay_now">Tap to pay now</string>
+    <string name="minimum_one_item">Minimum one item</string>
+    <string name="minimum_one_item_message">at leat one item can be placed in cart, if you want you can delete it</string>
+    <string name="delete">Delete</string>
     <string name="loading_sign_Up">Create an account...</string>
     <string name="loading_login">Logging in…</string>
 

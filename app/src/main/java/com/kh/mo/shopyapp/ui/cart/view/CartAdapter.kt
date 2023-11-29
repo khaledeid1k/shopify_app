@@ -32,7 +32,8 @@ ListAdapter<Cart, CartAdapter.ViewHolder>(CartDiffUtils()) {
             cartItemTitleTxtV.text = item.title
             cartItemVariantTxtV.text = item.variantTitle
             cartItemQuantityTxtV.text = item.quantity.toString()
-            cartItemPriceTxtV.text = item.price
+            val price = item.price!!.split(" ")
+            cartItemPriceTxtV.text = "${(price[0].toDouble() * item.quantity!!)} ${price[1]}"
             Glide.with(context)
                 .load(item.imageSrc)
                 .placeholder(R.drawable.product_placeholder)

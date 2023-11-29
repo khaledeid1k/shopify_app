@@ -5,7 +5,9 @@ import com.kh.mo.shopyapp.model.entity.FavoriteEntity
 import com.kh.mo.shopyapp.model.entity.Validation
 import com.kh.mo.shopyapp.model.request.DraftOrderRequest
 import com.kh.mo.shopyapp.model.request.UserData
+import com.kh.mo.shopyapp.model.request.order.CreateOrderRequest
 import com.kh.mo.shopyapp.model.response.ads.DiscountCodeResponse
+import com.kh.mo.shopyapp.model.response.ads.PriceRuleResponse
 import com.kh.mo.shopyapp.model.response.allproducts.AllProductsResponse
 import com.kh.mo.shopyapp.model.response.allproducts.ProductResponse
 import com.kh.mo.shopyapp.model.response.barnds.BrandsResponse
@@ -39,14 +41,14 @@ interface Repo {
     fun validateEmail(email: String): Validation
     fun validateUserName(userName: String): Validation
     fun reviews():List<Review>
-    suspend fun getAllBrands(): Flow<ApiState<BrandsResponse>>
+    suspend fun getAllBrands(): Flow<ApiState<List<Product>>>
     suspend fun getMainCategories(): Flow<ApiState<MainCategoryResponse>>
     suspend fun getDiscountCode(
         priceRuleId: String,
         discountCodeId: String
     ): Flow<ApiState<DiscountCodeResponse>>
 
-    suspend fun getProductsOfSpecificBrand(brandName:String): Flow<ApiState<AllProductsResponse>>
+    suspend fun getProductsOfSpecificBrand(brandName:String): Flow<ApiState<List<Product>>>
     suspend fun getAllProducts(): Flow<ApiState<List<Product>>>
     suspend fun getProductsByCollection(collectionId:Long): Flow<ApiState<List<Product>>>
     suspend fun filterProductsBySubCollection(collectionId:Long,productType:String): Flow<ApiState<List<Product>>>
@@ -107,4 +109,7 @@ interface Repo {
     suspend fun getAllProductsInCart(): Flow<ApiState<List<Cart>>>
     fun addProductToCart(product: Product): Flow<ApiState<Boolean>>
     fun updateCartItems(cartList: List<Cart>): Flow<ApiState<List<Cart>>>
+    fun getPriceRule(priceRuleId: String): Flow<ApiState<PriceRuleResponse>>
+    fun createOrder(orderRequest: CreateOrderRequest): Flow<ApiState<OrdersResponse>>
+    suspend fun clearDraftCart(draftOrderRequest: DraftOrderRequest): Flow<ApiState<String>>
 }

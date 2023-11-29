@@ -130,6 +130,18 @@ fun AllProductsResponse.convertAllProductsResponseToProducts(): List<Product> {
 
 }
 
+fun BrandsResponse.convertAllBrandsResponseToProducts(): List<Product> {
+
+    return this.smartCollections.map {
+        Product(
+            id = it.id,
+            productImage = ProductImage(it.image.src),
+            title = it.title
+        )
+    }
+
+}
+
 fun DraftOrderResponse.convertDraftOrderResponseToDraftOrder(): DraftOrder {
     return DraftOrder(
         this.draft_order!!.id,
@@ -301,7 +313,7 @@ fun Product.convertToLineItemRequest(): LineItems {
 
 fun List<com.kh.mo.shopyapp.model.response.draft_order.LineItem>.convertToLineItemRequest(): List<LineItems> {
     return this.map {
-        LineItems(variant_id = it.variant_id)
+        LineItems(variant_id = it.variant_id, quantity = it.quantity ?: 1)
     }
 }
 
