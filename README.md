@@ -62,6 +62,8 @@ Welcome to the <b>Brandat</b> App, your ultimate shopping destination seamlessly
 <br><br><br>
 
 <div align="center">
+   <img src="https://github.com/khaledeid1k/shopy_App/assets/48853445/af7a70ae-cfef-4613-ba78-9e57b613ce31" width=30%/>
+   <img src="https://github.com/khaledeid1k/shopy_App/assets/48853445/be20147d-8750-4002-902c-2869f3b00d26" width=30%/>
   <img src="https://github.com/Hanaa-Hany/Weather-App/assets/48853445/5596755b-27bd-46a7-8a75-01d792dba8e1" width="30%"/>
   <img src="https://github.com/Hanaa-Hany/Weather-App/assets/48853445/ac94d918-d928-4034-b19c-9c6f59318036" width="30%"/>
   <img src="https://github.com/Hanaa-Hany/Weather-App/assets/48853445/3c97926d-0236-4779-b017-9fb2f065074b" width="30%"/>
