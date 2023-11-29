@@ -113,9 +113,13 @@ class AddressDetailsFragment :
                         phoneNumberTxtF.error = "required"
                         disableConfirmBtn()
                     } else {
-                        phoneNumberTxtF.isErrorEnabled = false
-                        updatedAddress.phone = it.toString()
-                        addressStateFlow.value = updatedAddress
+                        if (isPhoneNumberValid()) {
+                            phoneNumberTxtF.isErrorEnabled = false
+                            updatedAddress.phone = it.toString()
+                            addressStateFlow.value = updatedAddress
+                        } else {
+                            binding.phoneNumberTxtF.error = "phone should be +2 followed by 11 digits"
+                        }
                     }
                 }
             }
@@ -294,5 +298,10 @@ class AddressDetailsFragment :
                 }
             }
         }
+    }
+
+    private fun isPhoneNumberValid(): Boolean {
+        val regex = Regex("^\\+2\\d{11}$")
+        return binding.phoneNumberET.text.toString().matches(regex)
     }
 }

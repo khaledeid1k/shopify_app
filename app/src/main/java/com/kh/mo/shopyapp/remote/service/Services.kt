@@ -17,6 +17,8 @@ import com.kh.mo.shopyapp.model.response.draft_order.DraftOrderResponse
 import com.kh.mo.shopyapp.model.response.login.Login
 import com.kh.mo.shopyapp.model.response.maincategory.MainCategoryResponse
 import com.kh.mo.shopyapp.model.response.order.OrdersResponse
+import com.kh.mo.shopyapp.model.response.singleproduct.SingleProductResponse
+import com.kh.mo.shopyapp.model.ui.allproducts.Product
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -62,6 +64,9 @@ interface Services {
 
     @GET("products.json")
     suspend fun filterProductsBySubCollection(@Query("collection_id") collectionId: Long,@Query("product_type") productType: String): Response<AllProductsResponse>
+
+    @GET("products/{product_id}.json")
+    suspend fun getSingleProduct(@Path("product_id") productId: Long):Response<SingleProductResponse>
 
     @GET("customers/{customerId}/addresses.json")
     suspend fun getAddressesOfCustomer(

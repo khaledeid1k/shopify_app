@@ -121,6 +121,8 @@
     <string name="service_fee">مصاريف الخدمه</string>
     <string name="total_discount">الخصم الكلي</string>
     <string name="_0_00">0.00</string>
+    <string name="order_id">رقم الطلب :</string>
+    <string name="total_profile">الاجمالي :</string>
     <string name="are_you_sure">هل انت متاكد؟</string>
     <string name="will_delete_this_from_favorites">حذف من المفضلة </string>
     <string name="please_login">سجل الدخول لتستخم هذه الميزه</string>
@@ -137,5 +139,6 @@
     <string name="minimum_one_item">عنصر واحد على الاقل</string>
     <string name="minimum_one_item_message">يجب ان يكون هناك على الاقل عنصر واحد، يمكنك حذف هذا المنتج</string>
     <string name="delete">حذف</string>
-
+    <string name="loading_sign_Up">انشاء حساب…</string>
+    <string name="loading_login">تسجيل الدخول…</string>
 </resources>

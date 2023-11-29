@@ -56,7 +56,7 @@ class MapFragment : BaseFragment<FragmentMapBinding, MapViewModel>() {
         binding.osmMap.setTileSource(TileSourceFactory.MAPNIK)
         binding.osmMap.setMultiTouchControls(true)
         mapController = binding.osmMap.controller
-        mapController.setZoom(8.0)
+        mapController.setZoom(20.0)
         val compassOverlay =
             CompassOverlay(
                 requireContext(),

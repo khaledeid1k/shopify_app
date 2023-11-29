@@ -6,6 +6,7 @@ import com.kh.mo.shopyapp.model.entity.Validation
 import com.kh.mo.shopyapp.model.request.DraftOrderRequest
 import com.kh.mo.shopyapp.model.request.UserData
 import com.kh.mo.shopyapp.model.request.order.CreateOrderRequest
+import com.kh.mo.shopyapp.model.request.order.LineItem
 import com.kh.mo.shopyapp.model.response.ads.DiscountCodeResponse
 import com.kh.mo.shopyapp.model.response.ads.PriceRuleResponse
 import com.kh.mo.shopyapp.model.response.allproducts.AllProductsResponse
@@ -20,6 +21,7 @@ import com.kh.mo.shopyapp.model.ui.Cart
 import com.kh.mo.shopyapp.model.ui.DraftOrder
 import com.kh.mo.shopyapp.model.ui.Review
 import com.kh.mo.shopyapp.model.ui.allproducts.Product
+import com.kh.mo.shopyapp.model.ui.maincategory.CustomCollection
 import com.kh.mo.shopyapp.remote.ApiState
 import kotlinx.coroutines.flow.Flow
 
@@ -42,7 +44,7 @@ interface Repo {
     fun validateUserName(userName: String): Validation
     fun reviews():List<Review>
     suspend fun getAllBrands(): Flow<ApiState<List<Product>>>
-    suspend fun getMainCategories(): Flow<ApiState<MainCategoryResponse>>
+    suspend fun getMainCategories(): Flow<ApiState<List<CustomCollection>>>
     suspend fun getDiscountCode(
         priceRuleId: String,
         discountCodeId: String
@@ -50,6 +52,7 @@ interface Repo {
 
     suspend fun getProductsOfSpecificBrand(brandName:String): Flow<ApiState<List<Product>>>
     suspend fun getAllProducts(): Flow<ApiState<List<Product>>>
+    suspend fun getSingleProduct(productId: Long):Flow<ApiState<Product>>
     suspend fun getProductsByCollection(collectionId:Long): Flow<ApiState<List<Product>>>
     suspend fun filterProductsBySubCollection(collectionId:Long,productType:String): Flow<ApiState<List<Product>>>
     suspend fun getAddressesOfCustomer(customerId: Long): Flow<ApiState<List<Address>>>
@@ -101,7 +104,7 @@ interface Repo {
     suspend fun getCurrencyUnit(): String
     suspend fun setCurrencyUnit(unit: String): String
     suspend fun getOrdersByCustomerID(customerId: Long): Flow<ApiState<OrdersResponse>>
-    suspend fun getOrderById(id: Long): Flow<ApiState<OrderDetailsResponse>>
+    suspend fun getOrderById(id: Long): Flow<ApiState<List<com.kh.mo.shopyapp.model.ui.orderdetails.LineItem>>>
     suspend fun getImageOrders(productId: Long): Flow<ApiState<ProductResponse>>
     suspend fun setLanguage(language: String)
     suspend fun getCurrentLanguage(): String

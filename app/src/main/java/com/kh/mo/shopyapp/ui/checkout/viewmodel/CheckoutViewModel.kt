@@ -104,6 +104,7 @@ class CheckoutViewModel(private val repo: Repo) : ViewModel() {
                                 is ApiState.Success -> {
                                     if (clearResult.data == "cleared") {
                                         _productList.value = ApiState.Success(emptyList())
+                                        _orderCreated.value = ApiState.Success(true)
                                     }
                                 }
                             }
@@ -132,7 +133,7 @@ class CheckoutViewModel(private val repo: Repo) : ViewModel() {
                 ),
                 listOf(
                     OrderDiscountCode(
-                        priceRule?.priceRule?.value,
+                        (priceRule?.priceRule?.value?.toDouble()?.times(-1))?.toString(),
                         discountCode?.code,
                         priceRule?.priceRule?.valueType
                     )

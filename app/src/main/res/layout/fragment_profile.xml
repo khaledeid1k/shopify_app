@@ -19,7 +19,7 @@
             android:layout_height="@dimen/_100sdp"
             android:layout_margin="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_16sdp"
-            android:src="@drawable/image_person"
+            android:src="@drawable/ic_account"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -215,51 +215,6 @@
                     tools:text="49$" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-
         </androidx.cardview.widget.CardView>
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/wishListCard"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:elevation="@dimen/_10sdp"
-            android:visibility="gone"
-            app:cardCornerRadius="@dimen/_10sdp"
-            app:cardUseCompatPadding="true"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ordersCard">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:id="@+id/tv_fav_profile"
-                    style="@style/sub_title"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:drawablePadding="@dimen/_10sdp"
-                    android:padding="@dimen/_10sdp"
-                    android:text="@string/wish_list"
-                    app:drawableEndCompat="@drawable/ic_arrow"
-                    app:drawableStartCompat="@drawable/ic_orders"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/wishListRV"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_fav_profile"
-                    app:spanCount="2"
-                    tools:listitem="@layout/item_fav" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </androidx.cardview.widget.CardView>
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

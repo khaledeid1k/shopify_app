@@ -1,11 +1,9 @@
 package com.kh.mo.shopyapp
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -16,9 +14,6 @@ import com.kh.mo.shopyapp.model.response.ads.DiscountCodeResponse
 import com.kh.mo.shopyapp.utils.createDialog
 import com.kh.mo.shopyapp.utils.makeGone
 import com.kh.mo.shopyapp.utils.makeVisible
-import com.paymob.acceptsdk.PayActivity
-import com.paymob.acceptsdk.PayActivityIntentKeys
-import com.paymob.acceptsdk.ThreeDSecureWebViewActivty
 
 
 class MainActivity : AppCompatActivity() {
@@ -97,42 +92,42 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    fun startPaymentActivity() {
-        val paymentKey = "ZXlKaGJHY2lPaUpJVXpVeE1pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5WDJsa0lqb3hOamN6TnpJMUxDSmhiVzkxYm5SZlkyVnVkSE1pT2pjMExDSmpkWEp5Wlc1amVTSTZJa1ZIVUNJc0ltbHVkR1ZuY21GMGFXOXVYMmxrSWpvME16WTBOalV4TENKdmNtUmxjbDlwWkNJNk1UWTNNalkyTmpBMExDSmlhV3hzYVc1blgyUmhkR0VpT25zaVptbHljM1JmYm1GdFpTSTZJa05zYVdabWIzSmtJaXdpYkdGemRGOXVZVzFsSWpvaVRtbGpiMnhoY3lJc0luTjBjbVZsZENJNklrVjBhR0Z1SUV4aGJtUWlMQ0ppZFdsc1pHbHVaeUk2SWpnd01qZ2lMQ0ptYkc5dmNpSTZJalF5SWl3aVlYQmhjblJ0Wlc1MElqb2lPREF6SWl3aVkybDBlU0k2SWtwaGMydHZiSE5yYVdKMWNtZG9JaXdpYzNSaGRHVWlPaUpWZEdGb0lpd2lZMjkxYm5SeWVTSTZJa05TSWl3aVpXMWhhV3dpT2lKamJHRjFaR1YwZEdVd09VQmxlR0V1WTI5dElpd2ljR2h2Ym1WZmJuVnRZbVZ5SWpvaUt6RXhNakl6TVRrek5UZ2lMQ0p3YjNOMFlXeGZZMjlrWlNJNklqQXhPRGs0SWl3aVpYaDBjbUZmWkdWelkzSnBjSFJwYjI0aU9pSk9RU0o5TENKc2IyTnJYMjl5WkdWeVgzZG9aVzVmY0dGcFpDSTZabUZzYzJVc0ltVjRkSEpoSWpwN2ZTd2ljMmx1WjJ4bFgzQmhlVzFsYm5SZllYUjBaVzF3ZENJNlptRnNjMlVzSW1WNGNDSTZNVGN3TVRFM01EYzFNaXdpY0cxclgybHdJam9pTVRrM0xqRTJNaTR4T1RZdU1UTXpJbjAuVW4wYi05djZxbTJiMmFlT2lqNGh0TXBHTHBmWGNxc1BBcVlKUXJ2NXlQWHBCYTZKWTl6cXEyRjdIQU5xeGVadGFVMVlvSmtyaHZUQi1laDR3WXBlc2c="
-        val pay_intent = Intent(this, PayActivity::class.java)
-
-        intent.putExtra(PayActivityIntentKeys.PAYMENT_KEY, paymentKey);
-        intent.putExtra(PayActivityIntentKeys.THREE_D_SECURE_ACTIVITY_TITLE, "Verification");
-
-        // this key is used to save the card by deafult.
-        // this key is used to save the card by deafult.
-        pay_intent.putExtra(PayActivityIntentKeys.SAVE_CARD_DEFAULT, false)
-
-        // this key is used to display the savecard checkbox.
-
-        // this key is used to display the savecard checkbox.
-        pay_intent.putExtra(PayActivityIntentKeys.SHOW_SAVE_CARD, false)
-
-        //this key is used to set the theme color(Actionbar, statusBar, button).
-
-        //this key is used to set the theme color(Actionbar, statusBar, button).
-        pay_intent.putExtra(
-            PayActivityIntentKeys.THEME_COLOR,
-            ResourcesCompat.getColor(baseContext.resources, R.color.orange, baseContext.theme)
-        )
-
-        // this key is to wether display the Actionbar or not.
-
-        // this key is to wether display the Actionbar or not.
-        //pay_intent.putExtra("ActionBar", true)
-
-        // this key is used to define the language. takes for ex ("ar", "en") as inputs.
-
-        // this key is used to define the language. takes for ex ("ar", "en") as inputs.
-        //pay_intent.putExtra("language", "ar")
-
-        startActivityForResult(pay_intent, 74)
-        val secure_intent = Intent(this, ThreeDSecureWebViewActivty::class.java)
-        secure_intent.putExtra("ActionBar", true)
-    }
+//    fun startPaymentActivity() {
+//        val paymentKey = "ZXlKaGJHY2lPaUpJVXpVeE1pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5WDJsa0lqb3hOamN6TnpJMUxDSmhiVzkxYm5SZlkyVnVkSE1pT2pjMExDSmpkWEp5Wlc1amVTSTZJa1ZIVUNJc0ltbHVkR1ZuY21GMGFXOXVYMmxrSWpvME16WTBOalV4TENKdmNtUmxjbDlwWkNJNk1UWTNNalkyTmpBMExDSmlhV3hzYVc1blgyUmhkR0VpT25zaVptbHljM1JmYm1GdFpTSTZJa05zYVdabWIzSmtJaXdpYkdGemRGOXVZVzFsSWpvaVRtbGpiMnhoY3lJc0luTjBjbVZsZENJNklrVjBhR0Z1SUV4aGJtUWlMQ0ppZFdsc1pHbHVaeUk2SWpnd01qZ2lMQ0ptYkc5dmNpSTZJalF5SWl3aVlYQmhjblJ0Wlc1MElqb2lPREF6SWl3aVkybDBlU0k2SWtwaGMydHZiSE5yYVdKMWNtZG9JaXdpYzNSaGRHVWlPaUpWZEdGb0lpd2lZMjkxYm5SeWVTSTZJa05TSWl3aVpXMWhhV3dpT2lKamJHRjFaR1YwZEdVd09VQmxlR0V1WTI5dElpd2ljR2h2Ym1WZmJuVnRZbVZ5SWpvaUt6RXhNakl6TVRrek5UZ2lMQ0p3YjNOMFlXeGZZMjlrWlNJNklqQXhPRGs0SWl3aVpYaDBjbUZmWkdWelkzSnBjSFJwYjI0aU9pSk9RU0o5TENKc2IyTnJYMjl5WkdWeVgzZG9aVzVmY0dGcFpDSTZabUZzYzJVc0ltVjRkSEpoSWpwN2ZTd2ljMmx1WjJ4bFgzQmhlVzFsYm5SZllYUjBaVzF3ZENJNlptRnNjMlVzSW1WNGNDSTZNVGN3TVRFM01EYzFNaXdpY0cxclgybHdJam9pTVRrM0xqRTJNaTR4T1RZdU1UTXpJbjAuVW4wYi05djZxbTJiMmFlT2lqNGh0TXBHTHBmWGNxc1BBcVlKUXJ2NXlQWHBCYTZKWTl6cXEyRjdIQU5xeGVadGFVMVlvSmtyaHZUQi1laDR3WXBlc2c="
+//        val pay_intent = Intent(this, PayActivity::class.java)
+//
+//        intent.putExtra(PayActivityIntentKeys.PAYMENT_KEY, paymentKey);
+//        intent.putExtra(PayActivityIntentKeys.THREE_D_SECURE_ACTIVITY_TITLE, "Verification");
+//
+//        // this key is used to save the card by deafult.
+//        // this key is used to save the card by deafult.
+//        pay_intent.putExtra(PayActivityIntentKeys.SAVE_CARD_DEFAULT, false)
+//
+//        // this key is used to display the savecard checkbox.
+//
+//        // this key is used to display the savecard checkbox.
+//        pay_intent.putExtra(PayActivityIntentKeys.SHOW_SAVE_CARD, false)
+//
+//        //this key is used to set the theme color(Actionbar, statusBar, button).
+//
+//        //this key is used to set the theme color(Actionbar, statusBar, button).
+//        pay_intent.putExtra(
+//            PayActivityIntentKeys.THEME_COLOR,
+//            ResourcesCompat.getColor(baseContext.resources, R.color.orange, baseContext.theme)
+//        )
+//
+//        // this key is to wether display the Actionbar or not.
+//
+//        // this key is to wether display the Actionbar or not.
+//        //pay_intent.putExtra("ActionBar", true)
+//
+//        // this key is used to define the language. takes for ex ("ar", "en") as inputs.
+//
+//        // this key is used to define the language. takes for ex ("ar", "en") as inputs.
+//        //pay_intent.putExtra("language", "ar")
+//
+//        startActivityForResult(pay_intent, 74)
+//        val secure_intent = Intent(this, ThreeDSecureWebViewActivty::class.java)
+//        secure_intent.putExtra("ActionBar", true)
+//    }
 }

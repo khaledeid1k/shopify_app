@@ -9,12 +9,10 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.kh.mo.shopyapp.R
 import com.kh.mo.shopyapp.databinding.ItemOrderBinding
 import com.kh.mo.shopyapp.local.LocalSourceImp
 import com.kh.mo.shopyapp.model.ui.orderdetails.LineItem
 import com.kh.mo.shopyapp.remote.ApiState
-import com.kh.mo.shopyapp.remote.RemoteSource
 import com.kh.mo.shopyapp.remote.RemoteSourceImp
 import com.kh.mo.shopyapp.repo.RepoImp
 import kotlinx.coroutines.CoroutineScope
@@ -23,7 +21,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 
-class OrderDetailsAdapter(var context: Context) :
+class OrderDetailsAdapter(var context: Context,private val onClick:(Long?)->Unit) :
     ListAdapter<LineItem, OrderDetailsAdapter.OrdersVH>(RecyclerDiffUtilOrdersItem()) {
     private lateinit var binding: ItemOrderBinding
     private val TAG = "TAG OrderDetailsAdapter"
@@ -48,9 +46,12 @@ class OrderDetailsAdapter(var context: Context) :
             binding.apply {
                 tvProductNameOrder.text = currentItem.title
                 //tvProductDateOrder.text=currentItem.
-                tvProductPriceOrder.text=currentItem.price+"EGP"
+                tvProductPriceOrder.text=currentItem.price+currentItem.priceSet?.shopMoney?.currencyCode
                 tvProductSizeOrder.text="${currentItem.quantity}x"
                 Log.i(TAG,currentItem.productId.toString())
+                itemView.setOnClickListener{
+                    onClick(currentItem.productId)
+                }
 
                 CoroutineScope(Dispatchers.IO).launch {
                     RepoImp.getRepoImpInstance(RemoteSourceImp.getRemoteSourceImpInstance(),
@@ -69,9 +70,6 @@ class OrderDetailsAdapter(var context: Context) :
                         }
                     }
                 }
-
-                //Glide.with(context).load(uri).into(binding.imageProductOrder)
-
             }
 
         }

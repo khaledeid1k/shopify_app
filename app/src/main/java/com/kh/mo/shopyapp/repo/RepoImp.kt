@@ -1,7 +1,6 @@
 package com.kh.mo.shopyapp.repo
 
 import android.util.Log
-import com.google.android.gms.tasks.Task
 import com.kh.mo.shopyapp.local.LocalSource
 import com.kh.mo.shopyapp.model.entity.CustomerEntity
 import com.kh.mo.shopyapp.model.entity.FavoriteEntity
@@ -11,35 +10,21 @@ import com.kh.mo.shopyapp.model.request.UserData
 import com.kh.mo.shopyapp.model.request.order.CreateOrderRequest
 import com.kh.mo.shopyapp.model.response.ads.DiscountCodeResponse
 import com.kh.mo.shopyapp.model.response.ads.PriceRuleResponse
-import com.kh.mo.shopyapp.model.response.allproducts.AllProductsResponse
 import com.kh.mo.shopyapp.model.response.allproducts.ProductResponse
-import com.kh.mo.shopyapp.model.response.barnds.BrandsResponse
 import com.kh.mo.shopyapp.model.response.currency.Rates
 import com.kh.mo.shopyapp.model.response.maincategory.MainCategoryResponse
 import com.kh.mo.shopyapp.model.response.order.OrdersResponse
 import com.kh.mo.shopyapp.model.response.orderdetails.OrderDetailsResponse
-import com.kh.mo.shopyapp.model.ui.Address
-import com.kh.mo.shopyapp.model.ui.Cart
-import com.kh.mo.shopyapp.model.ui.DraftOrder
-import com.kh.mo.shopyapp.model.ui.Review
-import com.kh.mo.shopyapp.model.ui.SupportedCurrencies
+import com.kh.mo.shopyapp.model.ui.*
 import com.kh.mo.shopyapp.model.ui.allproducts.Product
 import com.kh.mo.shopyapp.model.ui.allproducts.ProductVariant
+import com.kh.mo.shopyapp.model.ui.maincategory.CustomCollection
+import com.kh.mo.shopyapp.model.ui.orderdetails.LineItem
 import com.kh.mo.shopyapp.remote.ApiState
 import com.kh.mo.shopyapp.remote.RemoteSource
 import com.kh.mo.shopyapp.repo.mapper.*
-import com.kh.mo.shopyapp.utils.Constants
-import com.kh.mo.shopyapp.utils.roundTwoDecimals
-import com.kh.mo.shopyapp.utils.toEUR
-import com.kh.mo.shopyapp.utils.toGBP
-import com.kh.mo.shopyapp.utils.toUSD
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.asFlow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.toList
+import com.kh.mo.shopyapp.utils.*
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.tasks.await
 
 class RepoImp private constructor(
@@ -53,8 +38,8 @@ class RepoImp private constructor(
         Log.i(TAG, "updateCurrencyRates: $currencyRates")
         return currencyRates
     }
-    override suspend fun getListOfSpecificProductsIds( productsIds: String):Flow<ApiState<List<FavoriteEntity>>>
-    {
+
+    override suspend fun getListOfSpecificProductsIds(productsIds: String): Flow<ApiState<List<FavoriteEntity>>> {
         return flow {
 
             emit(ApiState.Loading)
@@ -64,7 +49,14 @@ class RepoImp private constructor(
             if (draftFavorite.isSuccessful) {
                 draftFavorite.body()
                     ?.let {
-                        emit(ApiState.Success(it.convertAllProductsResponseToProductsIds(getCustomerId()))) }
+                        emit(
+                            ApiState.Success(
+                                it.convertAllProductsResponseToProductsIds(
+                                    getCustomerId()
+                                )
+                            )
+                        )
+                    }
             } else {
                 emit(ApiState.Failure("Network Error"))
             }
@@ -84,13 +76,13 @@ class RepoImp private constructor(
             if (draftFavorite.isSuccessful) {
                 draftFavorite.body()
                     ?.let {
-                        if(it.draft_order.line_items[0].variant_id==null){
+                        if (it.draft_order.line_items[0].variant_id == null) {
                             emit(ApiState.Failure("No Data To Sync"))
-                        }else{
+                        } else {
                             emit(ApiState.Success(it.convertDraftOrderResponseToProductsIds()))
 
                         }
-                    }?: run { emit(ApiState.Failure("No Data To Sync")) }
+                    } ?: run { emit(ApiState.Failure("No Data To Sync")) }
             } else {
                 emit(ApiState.Failure("Network Error"))
             }
@@ -99,7 +91,6 @@ class RepoImp private constructor(
             emit(ApiState.Failure("Network Error"))
         }
     }
-
 
 
     override suspend fun singUpWithFireBase(userData: UserData) =
@@ -111,7 +102,7 @@ class RepoImp private constructor(
             emit(ApiState.Failure("An error occurred: ${it.message}"))
         }
 
-    override suspend fun singInWithFireBase(userData: UserData)=
+    override suspend fun singInWithFireBase(userData: UserData) =
         flow {
             emit(ApiState.Loading)
             remoteSource.singInWithFireBase(userData).await()
@@ -122,14 +113,14 @@ class RepoImp private constructor(
 
     override suspend fun logout() {
         remoteSource.logout()
-    clearSharedPreferences()
+        clearSharedPreferences()
     }
 
-    override fun checkIsUserLogin()=remoteSource.checkIsUserLogin()
+    override fun checkIsUserLogin() = remoteSource.checkIsUserLogin()
     override suspend fun createFavoriteDraft(draftOrderRequest: DraftOrderRequest): Flow<ApiState<DraftOrder>> {
         return flow {
             emit(ApiState.Loading)
-            val favorite =   remoteSource.createFavoriteDraft(draftOrderRequest)
+            val favorite = remoteSource.createFavoriteDraft(draftOrderRequest)
             if (!favorite.isSuccessful) {
                 emit(ApiState.Failure(favorite.body().toString()))
             } else {
@@ -146,10 +137,6 @@ class RepoImp private constructor(
         }
 
     }
-
-
-
-
 
 
     override suspend fun createCustomer(userData: UserData): Flow<ApiState<CustomerEntity>> {
@@ -186,45 +173,43 @@ class RepoImp private constructor(
         }
     }.catch {
         Log.d(TAG, "singInCustomer: ${it.message}")
-        if(it.message.toString()=="Index: 0, Size: 0"){
+        if (it.message.toString() == "Index: 0, Size: 0") {
 
             emit(ApiState.Failure("Email not exist"))
-        }else{
+        } else {
             emit(ApiState.Failure("Network Error"))
         }
 
     }
-   override suspend fun sendEmailVerification()= flow {
-                emit(ApiState.Loading)
-                remoteSource.sendEmailVerification()?.addOnCompleteListener {
-                }?.await()?:run { emit(ApiState.Failure("NetWork Error")) }
-             emit(ApiState.Success("Verification Send"))
-            }.catch {
-                emit(ApiState.Failure("${it.message}"))
-            }
 
-    override suspend fun checkEmailVerification()=
+    override suspend fun sendEmailVerification() = flow {
+        emit(ApiState.Loading)
+        remoteSource.sendEmailVerification()?.addOnCompleteListener {
+        }?.await() ?: run { emit(ApiState.Failure("NetWork Error")) }
+        emit(ApiState.Success("Verification Send"))
+    }.catch {
+        emit(ApiState.Failure("${it.message}"))
+    }
+
+    override suspend fun checkEmailVerification() =
         flow {
             emit(ApiState.Loading)
-           if( remoteSource.checkEmailVerification()){
-               emit(ApiState.Success(true))
-           }
-            else{
-               emit(ApiState.Failure("Email need Verification"))
+            if (remoteSource.checkEmailVerification()) {
+                emit(ApiState.Success(true))
+            } else {
+                emit(ApiState.Failure("Email need Verification"))
             }
         }.catch {
             emit(ApiState.Failure("${it.message}"))
         }
 
 
-
-
     override suspend fun getDraftIds(customerId: String) =
         flow {
-            val draftIDs= mutableListOf<String>()
+            val draftIDs = mutableListOf<String>()
             emit(ApiState.Loading)
-            remoteSource.getDraftIds (customerId).addOnSuccessListener {
-                if(it.exists()){
+            remoteSource.getDraftIds(customerId).addOnSuccessListener {
+                if (it.exists()) {
                     draftIDs.add(it.data?.get(Constants.DRAFT_FAVORITE_ID) as String)
                     draftIDs.add(it.data?.get(Constants.DRAFT_CART_ID) as String)
                 }
@@ -233,7 +218,6 @@ class RepoImp private constructor(
         }.catch {
             emit(ApiState.Failure("${it.message}"))
         }
-
 
 
     override fun validateUserName(userName: String) = localSource.validateUserName(userName)
@@ -339,7 +323,7 @@ class RepoImp private constructor(
     override fun validateConfirmPassword(password: String, rePassword: String) =
         localSource.validateConfirmPassword(password, rePassword)
 
-    override suspend fun getAllBrands(): Flow<ApiState<List<Product>>>{
+    override suspend fun getAllBrands(): Flow<ApiState<List<Product>>> {
         return flow {
 
             emit(ApiState.Loading)
@@ -348,9 +332,10 @@ class RepoImp private constructor(
             if (allBrands.isSuccessful) {
                 remoteSource.getAllBrands().body()
                     ?.let {
-                        val list=it.convertAllBrandsResponseToProducts()
+                        val list = it.convertAllBrandsResponseToProducts()
                         val result = checkCurrencyUnitAndCalculatePrice(list)
-                        emit(ApiState.Success(result)) }
+                        emit(ApiState.Success(result))
+                    }
             } else {
                 emit(ApiState.Failure(allBrands.message()))
             }
@@ -360,7 +345,7 @@ class RepoImp private constructor(
         }
     }
 
-    override suspend fun getMainCategories(): Flow<ApiState<MainCategoryResponse>> {
+    override suspend fun getMainCategories(): Flow<ApiState<List<CustomCollection>>> {
         return flow {
 
             emit(ApiState.Loading)
@@ -368,7 +353,7 @@ class RepoImp private constructor(
                 remoteSource.getMainCategories()
             if (mainCategories.isSuccessful) {
                 remoteSource.getMainCategories().body()
-                    ?.let { emit(ApiState.Success(it)) }
+                    ?.let { emit(ApiState.Success(it.convertToCustomCollection())) }
             } else {
                 emit(ApiState.Failure(mainCategories.message()))
             }
@@ -387,9 +372,10 @@ class RepoImp private constructor(
             if (brandItems.isSuccessful) {
                 remoteSource.getProductsOfSpecificBrand(brandName).body()
                     ?.let {
-                        val list=it.convertAllProductsResponseToProducts()
+                        val list = it.convertAllProductsResponseToProducts()
                         val result = checkCurrencyUnitAndCalculatePrice(list)
-                        emit(ApiState.Success(result)) }
+                        emit(ApiState.Success(result))
+                    }
             } else {
                 emit(ApiState.Failure(brandItems.message()))
             }
@@ -407,10 +393,35 @@ class RepoImp private constructor(
                 remoteSource.getAllProducts()
             if (allProducts.isSuccessful) {
                 allProducts.body()
-                    ?.let { emit(ApiState.Success(it.convertAllProductsResponseToProducts()
+                    ?.let {
+                        val list = it.convertAllProductsResponseToProducts()
                         .map { product->
                             changeProductFavoriteValue(product)
-                        })) }
+                        }
+                        val result = checkCurrencyUnitAndCalculatePrice(list)
+                        emit(ApiState.Success(result))
+                    }
+            } else {
+                emit(ApiState.Failure(allProducts.message()))
+            }
+
+        }.catch {
+            emit(ApiState.Failure(it.message!!))
+        }
+    }
+
+    override suspend fun getSingleProduct(productId: Long): Flow<ApiState<Product>> {
+        return flow {
+
+            emit(ApiState.Loading)
+            val allProducts =
+                remoteSource.getSingleProduct(productId)
+            if (allProducts.isSuccessful) {
+                allProducts.body()
+                    ?.let {
+                        emit(
+                            ApiState.Success(it.convertToSingleProductResponseProduct()))
+                    }
             } else {
                 emit(ApiState.Failure(allProducts.message()))
             }
@@ -447,20 +458,25 @@ class RepoImp private constructor(
         }
     }
 
-    override suspend fun filterProductsBySubCollection(
-        collectionId: Long,
-        productType: String
-    ): Flow<ApiState<List<Product>>> {
+    override suspend fun filterProductsBySubCollection(collectionId: Long, productType: String): Flow<ApiState<List<Product>>> {
         return flow {
             emit(ApiState.Loading)
             val productsSubCategory =
-                remoteSource.filterProductsBySubCollection(collectionId,productType)
+                remoteSource.filterProductsBySubCollection(collectionId, productType)
             if (productsSubCategory.isSuccessful) {
                 productsSubCategory.body()
-                    ?.let { emit(ApiState.Success(it.convertAllProductsResponseToProducts()
-                        .map { product->
-                            changeProductFavoriteValue(product)
-                        })) }
+                    ?.let {
+                        val list = it.convertAllProductsResponseToProducts()
+                            .map { product ->
+                                changeProductFavoriteValue(product)
+                            }
+                        val result = checkCurrencyUnitAndCalculatePrice(list)
+                        Log.i(TAG, "emitting result")
+                        emit(
+                            ApiState.Success(result)
+                        )
+
+                    }
             } else {
                 emit(ApiState.Failure(productsSubCategory.message()))
             }
@@ -607,10 +623,14 @@ class RepoImp private constructor(
         }
     }
 
-    override suspend fun backUpDraftFavorite(draftOrderRequest: DraftOrderRequest,draftFavoriteId: Long): Flow<ApiState<String>> {
+    override suspend fun backUpDraftFavorite(
+        draftOrderRequest: DraftOrderRequest,
+        draftFavoriteId: Long
+    ): Flow<ApiState<String>> {
         return flow {
             emit(ApiState.Loading)
-            val backUpDraftFavorite =remoteSource.backUpDraftFavorite(draftOrderRequest,draftFavoriteId)
+            val backUpDraftFavorite =
+                remoteSource.backUpDraftFavorite(draftOrderRequest, draftFavoriteId)
             if (!backUpDraftFavorite.isSuccessful) {
                 emit(ApiState.Failure(backUpDraftFavorite.body().toString()))
             } else {
@@ -626,20 +646,20 @@ class RepoImp private constructor(
         }
     }
 
-    override suspend fun getAllFavorites(): Flow<List<FavoriteEntity>>{
+    override suspend fun getAllFavorites(): Flow<List<FavoriteEntity>> {
         return localSource.getAllFavorites(getCustomerId())
 
     }
 
     override suspend fun getSingleFavorite(productId: Long): Flow<FavoriteEntity> {
-     return   localSource.getSingleFavorite(productId)
+        return localSource.getSingleFavorite(productId)
     }
 
     override suspend fun deleteFavorite(productId: Long) {
         localSource.deleteFavorite(productId)
     }
 
-    override suspend fun saveFavorite(favoriteEntity: FavoriteEntity):Long {
+    override suspend fun saveFavorite(favoriteEntity: FavoriteEntity): Long {
         return localSource.saveFavorite(favoriteEntity)
     }
 
@@ -647,7 +667,7 @@ class RepoImp private constructor(
 
         return flow {
             emit(ApiState.Loading)
-            emit(ApiState.Success(localSource.checkProductInFavorite(productId,getCustomerId())))
+            emit(ApiState.Success(localSource.checkProductInFavorite(productId, getCustomerId())))
         }.catch {
             emit(ApiState.Failure(it.message!!))
         }
@@ -667,7 +687,7 @@ class RepoImp private constructor(
     }
 
     override fun getCustomerId(): Long {
-      return  localSource.getCustomerId()
+        return localSource.getCustomerId()
     }
 
     override fun saveCartDraftId(draftId: Long) = localSource.saveCartDraftId(draftId)
@@ -681,15 +701,17 @@ class RepoImp private constructor(
     }
 
     override fun saveCustomerUserName(customerUserName: String) {
-       localSource.saveCustomerUserName(customerUserName)
+        localSource.saveCustomerUserName(customerUserName)
     }
 
     override fun getCustomerUserName(): String {
         return localSource.getCustomerUserName()
     }
+
     override fun clearSharedPreferences() {
         localSource.clearSharedPreferences()
     }
+
     private suspend fun changeProductFavoriteValue(product: Product): Product {
         checkProductInFavorite(product.id).collect {
             if (it is ApiState.Success) {
@@ -727,14 +749,14 @@ class RepoImp private constructor(
         }
     }
 
-    override suspend fun getOrderById(id: Long): Flow<ApiState<OrderDetailsResponse>> {
+    override suspend fun getOrderById(id: Long): Flow<ApiState<List<LineItem>>> {
         return flow {
             emit(ApiState.Loading)
             val order =
                 remoteSource.getOrderByID(id)
             if (order.isSuccessful) {
                 remoteSource.getOrderByID(id).body()
-                    ?.let { emit(ApiState.Success(it)) }
+                    ?.let { emit(ApiState.Success(it.convertToLineItem())) }
             } else {
                 emit(ApiState.Failure(order.message()))
             }
@@ -817,7 +839,7 @@ class RepoImp private constructor(
             }
 
             else -> {
-                "$price \u0045\u00A3"
+                "$price EGP"
             }
         }
     }
@@ -835,7 +857,11 @@ class RepoImp private constructor(
     ): Flow<ApiState<String>> {
         return flow {
             emit(ApiState.Loading)
-            remoteSource.saveCartDraftIdInFireBase(getCustomerId(), getLocalCartDraftId(), getFavoriteDraftId())
+            remoteSource.saveCartDraftIdInFireBase(
+                getCustomerId(),
+                getLocalCartDraftId(),
+                getFavoriteDraftId()
+            )
                 .await()
             emit(ApiState.Success("Draft created Successfully "))
         }.catch {
@@ -951,7 +977,7 @@ class RepoImp private constructor(
         return flow {
             emit(ApiState.Loading)
             val response = remoteSource.getPriceRule(priceRuleId)
-            if (response.isSuccessful){
+            if (response.isSuccessful) {
                 response.body()?.let {
                     emit(ApiState.Success(it))
                 } ?: emit(ApiState.Failure("Null data"))
@@ -968,10 +994,10 @@ class RepoImp private constructor(
             Log.i(TAG, "createOrder: $orderRequest")
             emit(ApiState.Loading)
             val result = remoteSource.createOrder(orderRequest)
-            if (result.isSuccessful){
+            if (result.isSuccessful) {
                 result.body()?.let {
                     emit(ApiState.Success(it))
-                }?: emit(ApiState.Failure("Null data"))
+                } ?: emit(ApiState.Failure("Null data"))
             } else {
                 emit(ApiState.Failure("failure ${result}"))
             }

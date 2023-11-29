@@ -13,6 +13,8 @@ import com.kh.mo.shopyapp.model.response.maincategory.MainCategoryResponse
 import com.kh.mo.shopyapp.model.response.order.OrdersResponse
 import com.kh.mo.shopyapp.model.response.orderdetails.OrderDetailsResponse
 import com.kh.mo.shopyapp.model.response.osm.NominatimResponse
+import com.kh.mo.shopyapp.model.response.singleproduct.SingleProduct
+import com.kh.mo.shopyapp.model.response.singleproduct.SingleProductResponse
 import com.kh.mo.shopyapp.model.ui.Address
 import com.kh.mo.shopyapp.model.ui.Cart
 import com.kh.mo.shopyapp.model.ui.DraftOrder
@@ -94,14 +96,6 @@ fun Address.convertToAddressRequest() =
         )
     )
 
-fun BrandsResponse.convertToSmartCollection(): List<SmartCollection> {
-
-    return this.smartCollections.map {
-
-        SmartCollection(it.title, it.image)
-    }
-
-}
 
 fun MainCategoryResponse.convertToCustomCollection(): List<CustomCollection> {
 
@@ -129,6 +123,23 @@ fun AllProductsResponse.convertAllProductsResponseToProducts(): List<Product> {
     }
 
 }
+fun SingleProductResponse.convertToSingleProductResponseProduct(): Product {
+    return this.product?.let {
+        Product(
+            id = it.id,
+            productImages = it.images.map { ProductImage(it.src) },
+            productType = it.productType,
+            productImage = ProductImage(it.image.src),
+            title = it.title,
+            productVariants = it.variants.map { ProductVariant(
+                it.id!!,it.price!!, it.productId!!, it.title!!,it.weightUnit!!) },
+            productOptions =it.options.map {  ProductOption(it.values)} ,
+            vendor = it.vendor,
+            status = it.status
+        )
+    } ?: Product()
+}
+
 
 fun BrandsResponse.convertAllBrandsResponseToProducts(): List<Product> {
 
@@ -176,28 +187,13 @@ fun OrdersResponse.convertToOrders(): List<Order> {
     } ?: emptyList()
 }
 
-//fun OrderResponse.convertToLineItem(): List<LineItem> {
-//    return this.lineItems?.map {
-//        LineItem(
-//            it.quantity, it.title, it.price,it.id)
-//    } ?: emptyList()
-//}
 fun OrderDetailsResponse.convertToLineItem(): List<LineItem> {
     return this.order?.lineItems?.map {
         LineItem(
-            it.giftCard, it.name, it.price, it.productId, it.quantity, it.title, it.totalDiscount
+            it.giftCard, it.name, it.price, it.productId, it.quantity, it.title, it.totalDiscount,it.priceSet
         )
     } ?: emptyList()
 }
-fun ProductResponse.convertToImage(): List<Image> {
-    return this.images.map {
-        Image(it.src)
-    }
-}
-
-
-
-
 
 fun Product.convertProductToFavoriteEntity(customerId: Long): FavoriteEntity {
     return FavoriteEntity(

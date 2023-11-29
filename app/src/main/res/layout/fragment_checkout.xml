@@ -123,6 +123,7 @@
                     android:layout_height="@dimen/_75sdp"
                     app:cardCornerRadius="@dimen/_8sdp"
                     app:cardUseCompatPadding="true"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="@id/productsRecyclerV"
                     app:layout_constraintStart_toStartOf="@id/productsRecyclerV"
                     app:layout_constraintTop_toBottomOf="@id/paymentTxtV">
@@ -160,7 +161,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/cash_on_delivery"
-                    app:layout_constraintStart_toStartOf="@id/paymentCardV"
+                    app:layout_constraintStart_toStartOf="@id/paymentTxtV"
                     style="@style/sub_title"
                     app:layout_constraintTop_toTopOf="@id/cashOnDeliverySwitch"
                     app:layout_constraintBottom_toBottomOf="@id/cashOnDeliverySwitch"/>
@@ -169,8 +170,10 @@
                     android:id="@+id/cashOnDeliverySwitch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:checked="false"
-                    app:layout_constraintEnd_toEndOf="@id/paymentCardV"
+                    android:checked="true"
+                    android:enabled="false"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginEnd="@dimen/_20sdp"
                     app:layout_constraintTop_toBottomOf="@id/paymentCardV"/>
 
                 <TextView

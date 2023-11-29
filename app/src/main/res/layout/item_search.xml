@@ -59,13 +59,14 @@
 
             <TextView
                 android:id="@+id/tv_price_product_item"
-                style="@style/sub_title"
+                style="@style/small_title"
                 android:text="@{item.productVariants.get(0).price.toString()}"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/_10sdp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/product_rate"
                 app:layout_constraintTop_toBottomOf="@+id/tv_name_product_item"
                 android:textStyle="bold"
                 tools:text="25$" />

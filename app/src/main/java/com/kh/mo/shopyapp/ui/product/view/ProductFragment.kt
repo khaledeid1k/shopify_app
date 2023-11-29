@@ -3,12 +3,14 @@ package com.kh.mo.shopyapp.ui.product.view
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.tabs.TabLayoutMediator
 import com.kh.mo.shopyapp.R
 import com.kh.mo.shopyapp.databinding.FragmentProductBinding
 import com.kh.mo.shopyapp.model.ui.allproducts.Product
+import com.kh.mo.shopyapp.remote.ApiState
 import com.kh.mo.shopyapp.ui.base.BaseFragment
 import com.kh.mo.shopyapp.ui.category.view.CategoryFragmentDirections
 import com.kh.mo.shopyapp.ui.product.viewmodel.ProductViewModel
@@ -32,6 +34,9 @@ class ProductFragment : BaseFragment<FragmentProductBinding, ProductViewModel>()
             lifecycleOwner = this@ProductFragment
             product = receiveProduct
 
+            addToCart.setOnClickListener {
+                addProductToCart()
+            }
         }
 
     }
@@ -124,6 +129,37 @@ class ProductFragment : BaseFragment<FragmentProductBinding, ProductViewModel>()
                 }
             }
 
+        }
+    }
+
+    private fun addProductToCart() {
+        viewModel.addToCart(receiveProduct)
+        observeAddToCartState()
+    }
+
+    private fun observeAddToCartState() {
+        collectLatestFlowOnLifecycle(viewModel.addToCartState) {
+            when(it) {
+                is ApiState.Failure -> {
+
+                }
+                ApiState.Loading -> {
+                    binding.loading.visibility = View.VISIBLE
+                    binding.loading.playAnimation()
+                }
+                is ApiState.Success -> {
+                    if (it.data) {
+                        binding.addToCart.apply {
+                            binding.loading.visibility = View.GONE
+                            binding.loading.pauseAnimation()
+                            text = "cart"
+                            isEnabled = false
+                            backgroundTintList =
+                                ContextCompat.getColorStateList(requireContext(), R.color.dark_gray)
+                        }
+                    }
+                }
+            }
         }
     }
 
