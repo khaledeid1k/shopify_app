@@ -407,10 +407,14 @@ class RepoImp private constructor(
                 remoteSource.getAllProducts()
             if (allProducts.isSuccessful) {
                 allProducts.body()
-                    ?.let { emit(ApiState.Success(it.convertAllProductsResponseToProducts()
+                    ?.let {
+                        val list = it.convertAllProductsResponseToProducts()
                         .map { product->
                             changeProductFavoriteValue(product)
-                        })) }
+                        }
+                        val result = checkCurrencyUnitAndCalculatePrice(list)
+                        emit(ApiState.Success(result))
+                    }
             } else {
                 emit(ApiState.Failure(allProducts.message()))
             }

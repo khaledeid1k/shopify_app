@@ -104,6 +104,7 @@ class CheckoutViewModel(private val repo: Repo) : ViewModel() {
                                 is ApiState.Success -> {
                                     if (clearResult.data == "cleared") {
                                         _productList.value = ApiState.Success(emptyList())
+                                        _orderCreated.value = ApiState.Success(true)
                                     }
                                 }
                             }

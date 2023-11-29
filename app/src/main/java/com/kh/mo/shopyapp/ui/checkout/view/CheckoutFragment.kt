@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.widget.addTextChangedListener
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.kh.mo.shopyapp.MainActivity
@@ -18,6 +19,7 @@ import com.kh.mo.shopyapp.remote.ApiState
 import com.kh.mo.shopyapp.ui.address.list.AddressFragment
 import com.kh.mo.shopyapp.ui.base.BaseFragment
 import com.kh.mo.shopyapp.ui.checkout.viewmodel.CheckoutViewModel
+import com.kh.mo.shopyapp.ui.orderconfirm.OrderConfirmFragment
 import com.kh.mo.shopyapp.utils.roundTwoDecimals
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asFlow
@@ -271,8 +273,15 @@ class CheckoutFragment : BaseFragment<FragmentCheckoutBinding, CheckoutViewModel
                         visibility = View.GONE
                         pauseAnimation()
                     }
+                    showDoneDialog()
                 }
             }
         }
+    }
+    private fun showDoneDialog() {
+        Log.i(TAG, "showDoneDialog: ")
+        val dialog = OrderConfirmFragment()
+        dialog.show(requireActivity().supportFragmentManager, dialog.tag)
+        Navigation.findNavController(_view).navigateUp()
     }
 }
