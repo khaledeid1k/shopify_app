@@ -20,6 +20,7 @@ import com.kh.mo.shopyapp.model.ui.Cart
 import com.kh.mo.shopyapp.model.ui.DraftOrder
 import com.kh.mo.shopyapp.model.ui.Review
 import com.kh.mo.shopyapp.model.ui.allproducts.Product
+import com.kh.mo.shopyapp.model.ui.maincategory.CustomCollection
 import com.kh.mo.shopyapp.remote.ApiState
 import kotlinx.coroutines.flow.Flow
 
@@ -42,7 +43,7 @@ interface Repo {
     fun validateUserName(userName: String): Validation
     fun reviews():List<Review>
     suspend fun getAllBrands(): Flow<ApiState<List<Product>>>
-    suspend fun getMainCategories(): Flow<ApiState<MainCategoryResponse>>
+    suspend fun getMainCategories(): Flow<ApiState<List<CustomCollection>>>
     suspend fun getDiscountCode(
         priceRuleId: String,
         discountCodeId: String

@@ -61,7 +61,6 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding, CategoryViewModel
         binding.tvCategoryName.text = categoryName
         getSubCategories()
         getCollectionProducts()
-        filterProductsBySubCollection()
         initDialog()
         onClick()
     }
@@ -79,15 +78,16 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding, CategoryViewModel
                 flag = false
                 productType = binding.firstSubcategory.text.toString()
                 viewModel.filterProductsBySubCollection(collectionId, productType)
+                filterProductsBySubCollection()
             } else {
                 flag = true
                 addAdapterToCategories(productList)
-
             }
             if (checkedId == R.id.second_subcategory && flag) {
                 flag = false
                 productType = binding.secondSubcategory.text.toString()
                 viewModel.filterProductsBySubCollection(collectionId, productType)
+                filterProductsBySubCollection()
             } else {
                 flag = true
                 addAdapterToCategories(productList)
@@ -97,12 +97,11 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding, CategoryViewModel
                 flag = false
                 productType = binding.thirdSubcategory.text.toString()
                 viewModel.filterProductsBySubCollection(collectionId, productType)
+                filterProductsBySubCollection()
             } else {
                 flag = true
                 addAdapterToCategories(productList)
             }
-
-
         }
         binding.etSearch.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -195,7 +194,6 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding, CategoryViewModel
                         addAdapterToCategories(it.data)
                         productList = it.data
                         Log.d(TAG, "getCollectionProducts: ${it.data}")
-
                     }
                 }
 

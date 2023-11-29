@@ -18,6 +18,7 @@ import com.kh.mo.shopyapp.model.response.orderdetails.OrderDetailsResponse
 import com.kh.mo.shopyapp.model.ui.*
 import com.kh.mo.shopyapp.model.ui.allproducts.Product
 import com.kh.mo.shopyapp.model.ui.allproducts.ProductVariant
+import com.kh.mo.shopyapp.model.ui.maincategory.CustomCollection
 import com.kh.mo.shopyapp.remote.ApiState
 import com.kh.mo.shopyapp.remote.RemoteSource
 import com.kh.mo.shopyapp.repo.mapper.*
@@ -343,7 +344,7 @@ class RepoImp private constructor(
         }
     }
 
-    override suspend fun getMainCategories(): Flow<ApiState<MainCategoryResponse>> {
+    override suspend fun getMainCategories(): Flow<ApiState<List<CustomCollection>>> {
         return flow {
 
             emit(ApiState.Loading)
@@ -351,7 +352,7 @@ class RepoImp private constructor(
                 remoteSource.getMainCategories()
             if (mainCategories.isSuccessful) {
                 remoteSource.getMainCategories().body()
-                    ?.let { emit(ApiState.Success(it)) }
+                    ?.let { emit(ApiState.Success(it.convertToCustomCollection())) }
             } else {
                 emit(ApiState.Failure(mainCategories.message()))
             }
